@@ -106,11 +106,11 @@ El estado de login en zonas públicas se resuelve **en cliente**, con
 
 ## Comandos
 
-| Comando | Para qué |
-|---|---|
-| `pnpm dev` | desarrollo |
-| `pnpm build` | build de producción (y prueba del ADR-11) |
-| `pnpm typecheck` | tipos |
-| `pnpm lint` / `lint:fix` | ESLint |
-| `pnpm format` / `format:check` | Prettier |
-| `pnpm check:supabase` | conexión a Supabase, sin imprimir claves |
+| Comando                        | Para qué                                  |
+| ------------------------------ | ----------------------------------------- |
+| `pnpm dev`                     | desarrollo                                |
+| `pnpm build`                   | build de producción (y prueba del ADR-11) |
+| `pnpm typecheck`               | tipos                                     |
+| `pnpm lint` / `lint:fix`       | ESLint                                    |
+| `pnpm format` / `format:check` | Prettier                                  |
+| `pnpm check:supabase`          | conexión a Supabase, sin imprimir claves  |

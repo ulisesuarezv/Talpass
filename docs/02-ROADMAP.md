@@ -7,7 +7,7 @@
 
 | #   | Fase                              | Entregable verificable                     | Estado |
 | --- | --------------------------------- | ------------------------------------------ | ------ |
-| 0   | Fundaciones                       | App desplegada, `/es` y `/en` vivos        | ⬜     |
+| 0   | Fundaciones                       | App desplegada, `/es` y `/en` vivos        | ✅     |
 | 1   | Datos y seguridad                 | Schema + RLS probada con tests             | ⬜     |
 | 2   | Auth y onboarding candidato       | Registro real end-to-end                   | ⬜     |
 | 3   | Vacantes públicas + SEO           | Vacante indexable en Google Jobs           | ⬜     |
@@ -26,6 +26,26 @@
 Next.js App Router + TypeScript · Tailwind + shadcn/ui · **routing `/[locale]`** con `es` y `en` (ADR-01) · proyecto Supabase en región EU (ADR-09) · variables de entorno · deploy en Vercel · convenciones de carpetas y estilo de código.
 
 **Hecho cuando:** la app está desplegada, `/es` y `/en` responden, el cambio de idioma funciona, y la conexión a Supabase está verificada.
+
+### ✅ Cerrada
+
+Desplegada en **https://ettrecruiter.vercel.app**. Next 16.3 · next-intl 4.13 · Tailwind 4 · shadcn/ui (preset Nova, base `neutral`) · pnpm.
+
+Verificado en producción:
+
+| Ruta                       | Resultado                                                    |
+| -------------------------- | ------------------------------------------------------------ |
+| `/`                        | 307 → `/es`                                                  |
+| `/es`, `/en`               | 200, `x-vercel-cache: HIT`, servidas desde `fra1`            |
+| `/es/ofertas` ↔ `/en/jobs` | 200 en cada idioma; el pathname cruzado redirige al correcto |
+| `/es/cuenta`, `/en/admin`  | 200, `no-store`, `x-ett-session-checked: 1`                  |
+| rutas públicas             | **sin** `x-ett-session-checked` y **sin** `Set-Cookie`       |
+| `next build`               | públicas `●` (SSG), privadas `ƒ`; tipos y lint limpios       |
+| `pnpm check:supabase`      | anon key válida contra el proyecto EU                        |
+
+Decisiones nuevas: **ADR-13** (un proxy, dos alcances) y **ADR-14** (ruta interna en inglés, externa traducida). Convenciones en `docs/CONVENTIONS.md`.
+
+Anotado, fuera de alcance de esta fase: `sitemap.ts`, `robots.ts` y `hreflang` completo van a la fase 3; el cliente `service_role` se creará cuando el backoffice lo necesite (fase 4); `EMAIL_FROM` y `RESEND_API_KEY` siguen vacíos hasta la fase 8; no hay dominio propio todavía (ADR-12).
 
 ---
 

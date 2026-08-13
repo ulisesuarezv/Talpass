@@ -4,15 +4,11 @@ out
 build
 .DS_Store
 
+# Secretos: nunca al repositorio. La plantilla sí.
 .env
-.env*.local
+.env*
+!.env.example
 
 .vercel
 *.tsbuildinfo
 next-env.d.ts
-
-# Vercel
-.vercel
-
-# Tipos generados por Next 16
-/.next/
