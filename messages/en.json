@@ -1,0 +1,47 @@
+{
+  "Metadata": {
+    "title": "{brand} — Jobs in Europe for Spanish speakers",
+    "description": "Verified job openings in Germany for Spanish- and Portuguese-speaking candidates. Browsing jobs is free and open to everyone."
+  },
+  "Nav": {
+    "home": "Home",
+    "jobs": "Jobs",
+    "account": "My account",
+    "skipToContent": "Skip to content"
+  },
+  "LocaleSwitcher": {
+    "label": "Language"
+  },
+  "Home": {
+    "eyebrow": "Under construction",
+    "title": "Work in Europe, without the opaque middlemen",
+    "subtitle": "{brand} connects Spanish- and Portuguese-speaking candidates with staffing agencies in Central Europe. We start with Germany.",
+    "ctaJobs": "Browse jobs",
+    "note": "Browsing jobs is always free. Candidates are never charged."
+  },
+  "Jobs": {
+    "title": "Job openings",
+    "subtitle": "No openings published yet. This section goes live in phase 3.",
+    "empty": "No results yet."
+  },
+  "Account": {
+    "title": "My account",
+    "placeholder": "Candidate area. Built in phase 2."
+  },
+  "Agency": {
+    "title": "Agency portal",
+    "placeholder": "Staffing agency area. Built in phase 6."
+  },
+  "Admin": {
+    "title": "Backoffice",
+    "placeholder": "Admin area. Built in phase 4."
+  },
+  "NotFound": {
+    "title": "Page not found",
+    "description": "The address you opened does not exist or has changed.",
+    "back": "Back to home"
+  },
+  "Footer": {
+    "rights": "{brand} · Work in progress"
+  }
+}

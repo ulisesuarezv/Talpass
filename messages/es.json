@@ -1,0 +1,47 @@
+{
+  "Metadata": {
+    "title": "{brand} — Empleo en Europa para hispanohablantes",
+    "description": "Ofertas de trabajo verificadas en Alemania para candidatos hispanohablantes y lusófonos. Ver ofertas es libre y gratuito."
+  },
+  "Nav": {
+    "home": "Inicio",
+    "jobs": "Ofertas",
+    "account": "Mi cuenta",
+    "skipToContent": "Ir al contenido"
+  },
+  "LocaleSwitcher": {
+    "label": "Idioma"
+  },
+  "Home": {
+    "eyebrow": "Fase de construcción",
+    "title": "Trabajo en Europa, sin intermediarios opacos",
+    "subtitle": "{brand} conecta a candidatos hispanohablantes y lusófonos con agencias de trabajo temporal en Europa Central. Empezamos por Alemania.",
+    "ctaJobs": "Ver ofertas",
+    "note": "Ver ofertas siempre es libre y gratuito. Al candidato no se le cobra nunca."
+  },
+  "Jobs": {
+    "title": "Ofertas de trabajo",
+    "subtitle": "Aún no hay vacantes publicadas. Esta sección se activa en la fase 3.",
+    "empty": "Sin resultados por ahora."
+  },
+  "Account": {
+    "title": "Mi cuenta",
+    "placeholder": "Área del candidato. Se construye en la fase 2."
+  },
+  "Agency": {
+    "title": "Portal de agencia",
+    "placeholder": "Área de la ETT. Se construye en la fase 6."
+  },
+  "Admin": {
+    "title": "Backoffice",
+    "placeholder": "Área de administración. Se construye en la fase 4."
+  },
+  "NotFound": {
+    "title": "Página no encontrada",
+    "description": "La dirección que has abierto no existe o ha cambiado.",
+    "back": "Volver al inicio"
+  },
+  "Footer": {
+    "rights": "{brand} · Proyecto en construcción"
+  }
+}
