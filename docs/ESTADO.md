@@ -1,6 +1,6 @@
 # Estado del proyecto — punto de retomada
 
-> Última actualización: **2026-08-14, cierre de la fase 2**.
+> Última actualización: **2026-08-15**. Fase 2 cerrada y verificada; **fase 3 preparada pero NO lanzada**.
 > Este documento dice exactamente dónde se dejó el trabajo y cuál es el siguiente paso.
 > El detalle de cada fase está en `docs/02-ROADMAP.md`; las decisiones, en `docs/00-PROJECT.md`.
 
@@ -25,6 +25,28 @@ Cierre de la fase 2 verificado por el PM el 2026-08-15: `test:security` 57/57 y 
 ---
 
 ## Lo primero al retomar
+
+**La fase 3 no se ha lanzado.** Su prompt está escrito y commiteado en
+`docs/prompts/fase-3.md`, listo para pegar en una sesión nueva y limpia. Pero
+**no la lances hasta tener las dos llaves de abajo**, porque su punto 1 se para
+en seco sin ellas:
+
+| Llave                                            | Para qué                                                                                 |
+| ------------------------------------------------ | ---------------------------------------------------------------------------------------- |
+| `supabase login` hecho en la máquina             | aplicar a producción las 3 migraciones de la fase 2, que siguen sin aplicar              |
+| Cuenta de Resend con **`talpass.eu` verificado** | configurar el SMTP y desbloquear el registro. Verificar el dominio implica tocar sus DNS |
+
+Como la verificación de Resend toca los DNS de `talpass.eu` y el dominio
+tampoco está conectado en Vercel todavía, lo eficiente es **hacer las dos cosas
+en la misma sentada** antes de abrir la sesión de la fase 3.
+
+Cuando las tengas:
+
+```
+Lee docs/prompts/fase-3.md y ejecútalo.
+```
+
+Para trabajar en local, sea cual sea la fase:
 
 ```bash
 pnpm db:start        # OrbStack tiene que estar arrancado
@@ -75,6 +97,13 @@ Los tres puntos de abajo **entran en el alcance de la Fase 3** por decisión del
 3. **Conectar `talpass.eu` en Vercel** y actualizar allí `NEXT_PUBLIC_SITE_URL` y `NEXT_PUBLIC_SITE_NAME`. El dominio ya está comprado. Se puede conectar sin riesgo de SEO: `robots.txt` devuelve `Disallow: /` hasta que la fase 3 encienda `NEXT_PUBLIC_ALLOW_INDEXING` (ADR-16), y esa bandera no se deriva del dominio a propósito. Al cambiar el dominio, actualizar también las URLs de retorno del punto 3 de arriba.
 4. **`talpass.com` queda aplazado por presupuesto.** Decisión consciente, no un olvido: es la mitigación del riesgo de ADR-12 (un `.eu` se pierde si el titular deja de estar establecido en la UE) y sigue pendiente. Revisarlo cuando haya caja.
 5. **En tu bandeja hay un correo de "Confirm your email address"** con alias `+smtp-probe-…`. Es de la medición del límite de envío; la cuenta ya está borrada y se puede ignorar.
+
+---
+
+## Decisiones tomadas el 2026-08-15, ya reflejadas en el roadmap
+
+- **Resend se adelanta de la fase 8 a la fase 3**, y solo el transporte SMTP; las plantillas i18n siguen en la 8. Motivo: sin correo que aguante, la máquina de tráfico que construye la fase 3 aterriza en un registro roto.
+- **La bandera de indexación deja de ser automática al cerrar la fase 3.** Se enciende únicamente tras comprobar un alta real de punta a punta contra producción. Si el alta no funciona, la fase entrega el SEO con la bandera apagada y lo dice (ADR-16).
 
 ---
 
