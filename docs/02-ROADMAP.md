@@ -8,7 +8,7 @@
 | #   | Fase                              | Entregable verificable                     | Estado |
 | --- | --------------------------------- | ------------------------------------------ | ------ |
 | 0   | Fundaciones                       | App desplegada, `/es` y `/en` vivos        | ✅     |
-| 1   | Datos y seguridad                 | Schema + RLS probada con tests             | ⬜     |
+| 1   | Datos y seguridad                 | Schema + RLS probada con tests             | ✅     |
 | 2   | Auth y onboarding candidato       | Registro real end-to-end                   | ⬜     |
 | 3   | Vacantes públicas + SEO           | Vacante indexable en Google Jobs           | ⬜     |
 | 4   | Verificación + backoffice         | Documento subido → aprobado por admin      | ⬜     |
@@ -56,6 +56,43 @@ Migraciones SQL completas de `docs/01-DATA-MODEL.md` · catálogos con semilla (
 **Hecho cuando:** existe un set de tests que demuestra que un usuario ETT **no puede** leer IBAN, dirección, email ni documentos de un candidato, ni por API ni por vista.
 
 > Es la fase más importante del proyecto. Un fallo aquí es una brecha de datos, no un bug.
+
+### ✅ Cerrada
+
+14 migraciones · **36 tablas, todas con RLS y con al menos una política** · vista `candidate_directory` · 3 buckets · **56 comprobaciones de seguridad en verde**.
+
+| Verificación                    | Resultado                                                                |
+| ------------------------------- | ------------------------------------------------------------------------ |
+| `supabase db reset` desde cero  | las 14 migraciones aplican sin un error                                  |
+| `pnpm test:security`            | 56/56                                                                    |
+| `pnpm test:security:drill`      | rompe 3 políticas, **la batería caza las 3**, restaura y vuelve al verde |
+| `rls_audit()` contra `pg_class` | 0 tablas sin RLS · 0 tablas sin políticas                                |
+| `/robots.txt`                   | `Disallow: /`, estático (`○`) en el build                                |
+| `next build`                    | públicas `●`, privadas `ƒ`; tipos y lint limpios                         |
+
+Decisiones nuevas: **ADR-15** (cifrado en la capa de aplicación, AES-256-GCM con
+llavero rotable e índice ciego) y **ADR-16** (indexación bajo bandera explícita).
+ADR-09 corregido: la región real es `eu-west-1` (Irlanda), no Fráncfort.
+
+**Tres cosas que la fase 1 descubrió y que condicionan fases futuras:**
+
+1. **Storage cachea la autorización por token.** Revocado un consentimiento, un
+   token nuevo es rechazado al instante, pero el que ya descargó ese archivo lo
+   sigue descargando hasta caducar. Por eso los documentos **nunca** se sirven
+   con URL autenticada directa a la ETT: van con URL firmada de vida corta que
+   emite el servidor tras comprobar el permiso. Detalle en `docs/01-DATA-MODEL.md`.
+2. **El audio exige consentimiento, como el DNI.** ADR-03 lo listaba entre lo
+   visible en la bolsa; se ha cerrado con la regla estricta y la bolsa solo
+   anuncia `has_audio`. **La fase 7 debe decidir** si la vista previa lo
+   necesita sin consentimiento, y documentarlo.
+3. **`documents_requested` no se puede saltar** en el ciclo de una candidatura.
+   Si en la fase 6 estorba, se cambia con una decisión explícita.
+
+Anotado, fuera de alcance de esta fase: `sitemap.ts` y `hreflang` siguen en la
+fase 3, y ahí se abre `NEXT_PUBLIC_ALLOW_INDEXING`; los tipos TypeScript
+generados desde el schema (`supabase gen types`) se añadirán en la fase 2, que
+es cuando el primer formulario los necesita; el cron que caduca solicitudes y
+manda recordatorios es de la fase 8, aunque los índices que necesita ya existen.
 
 ---
 

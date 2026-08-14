@@ -1,4 +1,4 @@
-# EttRecruiter — Documento maestro
+# Talpass — Documento maestro
 
 > Fuente de verdad del proyecto. Si algo aquí contradice una conversación suelta, gana este documento.
 > Fase actual: **MVP — validación con primera ETT en Alemania**. Fundador: Ulises (KAYAO).
@@ -66,7 +66,7 @@ _Motivo:_ Google Jobs es el canal de captación de coste cero, y "ver ofertas si
 
 ### ADR-03 · Bolsa de candidatos seudonimizada
 
-La ETT navegando la bolsa ve: nombre de pila + inicial ("Carlos M."), edad, ciudad/país, experiencia, sellos de verificación, nivel de inglés, audio, disponibilidad, necesidades de alojamiento/transporte. **No ve** apellidos completos, email, teléfono, dirección, IBAN ni documento alguno.
+La ETT navegando la bolsa ve: nombre de pila + inicial ("Carlos M."), edad, ciudad/país, experiencia, sellos de verificación, nivel de inglés, **el audio en inglés reproducible** (condiciones exactas en ADR-18), disponibilidad, necesidades de alojamiento/transporte. **No ve** apellidos completos, email, teléfono, dirección, IBAN ni documento alguno.
 Para contactar debe hacerlo **a través de la plataforma**.
 _Motivo:_ anti-desintermediación + minimización de datos GDPR.
 _Implementación:_ vista de base de datos con RLS, nunca filtrado en cliente.
@@ -111,7 +111,15 @@ Dirección, IBAN, teléfono, identificadores fiscales y documentos viven en tabl
 
 ### ADR-09 · Región de datos: UE
 
-Supabase en región europea (Frankfurt) y despliegue en Vercel. Datos personales de ciudadanos UE no salen de la UE.
+Supabase en región europea y despliegue en Vercel. Datos personales de ciudadanos UE no salen de la UE.
+
+_Precisión (fase 1):_ el proyecto real está en **`eu-west-1` (Irlanda)**, no en Fráncfort como decía la versión anterior de este ADR. Se corrige el texto, no la región: lo que exige la decisión es territorio UE, e Irlanda lo es. La latencia desde Alemania es equivalente a efectos prácticos.
+
+### ADR-10 · Acabado visual: sobrio, profesional, mobile-first
+
+Tailwind + shadcn/ui, sistema de diseño consistente. El candidato entra desde móvil con datos limitados: **velocidad de carga por encima del espectáculo**. Un portal lento pierde candidatos; una animación no cierra una ETT.
+
+_Concreción (fase 0):_ shadcn/ui con preset Nova sobre Radix, base de color `neutral` (escala de grises pura, sin acento) y tipografía Geist. Sin librería de animación.
 
 ### ADR-11 · Un solo dominio, con el middleware acotado
 
@@ -128,17 +136,21 @@ _Motivo real_ (el argumento de "consolidar autoridad" **no** aplica aquí: las �
 - Las páginas públicas **nunca leen la sesión en servidor**. Tocar cookies las vuelve dinámicas y destruye ISR y el caché de CDN, subiendo el TTFB justo en móvil con 4G y ante el crawler de Google Jobs.
 - El estado de login en la navegación se resuelve en cliente.
 
-### ADR-12 · Dominio `.com` genérico y slugs traducidos
+### ADR-12 · Marca **Talpass**, dominio **talpass.eu**, slugs traducidos
 
-- **`.com`, nunca un ccTLD** (`.de`): la audiencia busca en español desde España y Latinoamérica. La ubicación del empleo la comunica `jobLocation` del schema, no el TLD. Un `.de` estorbaría al abrir NL/BE/NO.
-- **Pathnames localizados por idioma**: `/es/ofertas/...` y `/en/jobs/...`, no `/en/ofertas/...`. Señal directa de relevancia y coste cero si se configura desde el inicio.
-- Nombre y dominio **provisionales**: "EttRecruiter" es nombre de trabajo. Nada de marca hardcodeada — nombre, dominio y logotipo salen de config e i18n.
+Decidido el 2026-08-13. Sustituye a la versión previa de este ADR, que pedía un `.com` genérico.
 
-### ADR-10 · Acabado visual: sobrio, profesional, mobile-first
+- **Nada de ccTLD nacional** (`.de`, `.nl`): ataría el sitio a un mercado que no es el de la audiencia y estorbaría al abrir NL/BE/NO. Ese criterio se mantiene.
+- **`.eu` no incumple ese criterio: lo cumple mejor que un `.com`.** El ámbito del negocio _es_ la Unión Europea — empleo en la UE, candidatos con ciudadanía UE, GDPR. Google fija el geo-targeting de `.eu` a la UE como región, no a un país, así que no hay mercado equivocado al que quedar atado.
+- **Pathnames localizados por idioma**: `/es/ofertas/...` y `/en/jobs/...`, no `/en/ofertas/...`. Señal directa de relevancia.
+- La marca sigue **fuera del JSX**: nombre y dominio salen de `src/config/site.ts` y de variables de entorno. Cambiar de marca debe seguir costando una variable, no un refactor.
 
-Tailwind + shadcn/ui, sistema de diseño consistente. El candidato entra desde móvil con datos limitados: **velocidad de carga por encima del espectáculo**. Un portal lento pierde candidatos; una animación no cierra una ETT.
+**Riesgos asumidos y su mitigación:**
 
-_Concreción (fase 0):_ shadcn/ui con preset Nova sobre Radix, base de color `neutral` (escala de grises pura, sin acento) y tipografía Geist. Sin librería de animación.
+1. **Segmento latinoamericano.** El geo-targeting a la UE puede restar algo de visibilidad en búsquedas desde Colombia, Argentina o Perú, donde hay candidatos con pasaporte comunitario. El efecto del TLD es hoy menor que el del contenido y el `hreflang`, así que se compensa con contenido en español y buen marcado, no cambiando de dominio.
+2. **`.eu` exige que el titular resida o esté establecido en la UE.** Si algún día la sociedad se domicilia fuera de la UE, el dominio se pierde — le pasó a miles de titulares británicos tras el Brexit. **Mitigación: registrar `talpass.com` de forma defensiva** y mantenerlo redirigido. Protege la marca y da una salida sin rehacer el SEO.
+
+   _Estado (2026-08-14):_ `talpass.eu` registrado. El `.com` **queda aplazado por presupuesto**, con el riesgo asumido de forma explícita: mientras tanto, la mitigación de este ADR no está en vigor. Pendiente en `docs/ESTADO.md`.
 
 ### ADR-13 · Un solo proxy, dos alcances
 
@@ -167,6 +179,88 @@ La carpeta se llama `src/app/[locale]/(public)/jobs/`; el usuario ve `/es/oferta
 _Motivo:_ con pathnames localizados hace falta un nombre canónico interno. Si fuera el español, abrir `de`/`nl` dejaría carpetas en un idioma arbitrario y el código sería ilegible para cualquier colaborador. El inglés interno mantiene el código en un idioma y las URLs en el del usuario, que es lo único que ve Google.
 
 _Consecuencia:_ nunca se usa `next/link` ni `redirect`/`useRouter` de `next/navigation` — no conocen el mapa. Se usa `@/i18n/navigation`, y ESLint bloquea lo demás.
+
+### ADR-15 · Cifrado de datos sensibles en la capa de aplicación
+
+_(Fase 1.)_
+
+**IBAN e identificadores fiscales** (Steuer-ID, BSN, …) se guardan cifrados con **AES-256-GCM**, cifrando y descifrando **en el servidor de la aplicación**. La base de datos nunca ve el valor en claro ni la clave. Implementación en `src/lib/crypto/sensitive.ts`.
+
+**Alternativas descartadas:**
+
+| Opción                                     | Por qué no                                                                                                                                                              |
+| ------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Texto plano + RLS estricta                 | La RLS protege del usuario de la API, no de una copia de seguridad filtrada, de un volcado, ni de quien tenga la `service_role`. Un IBAN merece defensa en profundidad. |
+| `pgcrypto` con la clave en una tabla       | La clave y el dato viajan juntos en el mismo volcado. Cifrado teatral.                                                                                                  |
+| `pgsodium` / Transparent Column Encryption | Supabase la ha dado por obsoleta y desaconseja construir nada nuevo encima. Atarse a ella hoy es una migración forzosa mañana.                                          |
+| Cifrado en cliente                         | El candidato entra desde el móvil y puede perder el dispositivo. Una clave que no se puede recuperar convierte "he cambiado de teléfono" en "he perdido mi IBAN".       |
+
+**Formato del sobre:** `v1.<keyId>.<iv>.<ciphertext+tag>`. El identificador de clave viaja en claro dentro del propio valor, que es lo que permite rotar sin reescribir la tabla: se añade `k2` al llavero, se cifra con `k2` y las filas con `k1` se siguen leyendo. `k1` no se retira mientras quede una sola fila que la use.
+
+**Datos autenticados adicionales (AAD).** Cada valor se ata a su sitio (`candidate_private.iban:<candidateId>`). Copiar un criptograma de una fila a otra no descifra: falla. Protege del atacante que consigue escritura en la base pero no la clave.
+
+**Índice ciego.** AES-GCM no es determinista, así que no permite comprobar si un Steuer-ID ya existe. Para eso hay un HMAC-SHA256 con **clave distinta** (`TALPASS_BLIND_INDEX_KEY`) en `candidate_identifiers.value_blind_index`, con restricción de unicidad. Detecta duplicados sin guardar nada en claro; y al llevar clave, no se puede recorrer hacia atrás probando los 10¹¹ valores posibles, cosa que con un SHA-256 pelado sería cuestión de minutos.
+
+**Gestión de claves:**
+
+- Viven en variables de entorno (`TALPASS_ENCRYPTION_KEYS`, `TALPASS_ENCRYPTION_ACTIVE_KEY_ID`, `TALPASS_BLIND_INDEX_KEY`), nunca en el repositorio ni en la base de datos.
+- Sin prefijo `NEXT_PUBLIC_`: no pueden llegar al navegador ni por accidente.
+- En Vercel, como variables de entorno del proyecto, distintas por entorno.
+- **Perder el llavero es perder los datos cifrados.** No hay recuperación por diseño. Copia fuera de Vercel, en el gestor de contraseñas del fundador.
+- El índice ciego **no se puede rotar** sin reescribir todas las filas: cambiar su clave invalida los HMAC guardados. Es una operación consciente, no un descuido.
+
+_Coste asumido:_ un valor cifrado no se puede buscar, ordenar ni indexar. Es aceptable porque el IBAN y los identificadores fiscales no se buscan nunca: se leen enteros, de uno en uno y en el momento de la contratación.
+
+### ADR-16 · La indexación se abre con una bandera explícita, nunca por el entorno
+
+_(Fase 1.)_
+
+`/robots.txt` devuelve `Disallow: /` salvo que `NEXT_PUBLIC_ALLOW_INDEXING` valga exactamente `true`. Hoy está apagada en todos los entornos.
+
+_Motivo:_ la decisión **no** se deriva de `VERCEL_ENV` ni del dominio de la petición. En cuanto `talpass.eu` se conecte en Vercel, un criterio basado en el host levantaría el bloqueo por su cuenta y Google indexaría marcadores de posición. Sacar basura del índice cuesta meses; poner una variable cuesta un minuto.
+
+_Se abre en la fase 3_, cuando existan vacantes reales, `sitemap.ts` y `hreflang`, y solo en producción.
+
+### ADR-17 · Local para desarrollar, remoto solo para producción
+
+_(Corrección tras la Fase 1.)_
+
+- **Todo el desarrollo, las semillas y los tests de seguridad corren contra la base local** (`supabase start`, sobre OrbStack).
+- El proyecto Supabase remoto es **producción**. Solo recibe `supabase db push` de migraciones ya validadas en local.
+- **Nunca** contra el remoto: `db reset`, el simulacro que desactiva políticas, ni datos de demostración.
+- `pnpm db:reset` debe apuntar a local. Cualquier comando destructivo contra producción exige confirmación explícita y consciente.
+
+_Motivo:_ la Fase 1 se ejecutó entera contra el proyecto de producción, incluidos un `db reset` (que borra la base) y un simulacro que desactiva tres políticas RLS a propósito. No hubo daño porque no había un solo dato real. Repetirlo a partir de la Fase 4 significa una brecha de documentos de identidad e IBAN, o una pérdida irreversible.
+
+_Causa raíz:_ una nota de contexto afirmaba que la máquina no tenía Docker. Era cierta por la mañana y falsa por la tarde. **Las notas sobre el entorno caducan; el ADR manda.**
+
+_Cumplimiento (revisión previa al primer commit):_ la regla ya no depende de que
+alguien se acuerde. `scripts/lib/supabase.mts` expone `assertLocalTarget()`, que
+resuelve el **host real** de `NEXT_PUBLIC_SUPABASE_URL` y de `SUPABASE_DB_URL` y
+aborta si alguno no es local; lo invocan `seed-demo.mts` y el simulacro de
+brecha antes de abrir una sola conexión. La salida de emergencia es una variable
+de entorno con un valor largo y explícito, que no se guarda en ningún `.env`.
+
+Detalle que importa: la comprobación anterior miraba `NEXT_PUBLIC_SITE_URL`
+—una variable que no interviene en la conexión a la base— y por eso dejaba pasar
+producción mientras el comentario del fichero afirmaba lo contrario. **Un
+guardarraíl que comprueba la variable equivocada es peor que ninguno**, porque
+sustituye la cautela por una falsa confianza.
+
+### ADR-18 · El audio en inglés se escucha en la bolsa; el resto exige consentimiento
+
+_(Decisión tras un hallazgo de la Fase 1.)_
+
+La Fase 1 aplicó a `audio_en` la misma regla que al DNI, y la bolsa quedó anunciando solo `has_audio`. Eso vacía el argumento comercial: **el audio es justo lo que permite a la ETT juzgar a un candidato sin pedir sus documentos.** Sin él, la bolsa es una lista de casillas verdes.
+
+Regla definitiva:
+
+- **`audio_en` es reproducible desde la bolsa** por una ETT aprobada, mediante URL firmada de **vida muy corta (≤ 5 min)** emitida por el servidor, **sin descarga**, y con la escucha registrada igual que una apertura de documento.
+- El audio va **siempre seudonimizado**: se sirve junto al `display_name`, nunca junto a la identidad completa.
+- **CV, DNI, carné e identificadores fiscales siguen exigiendo consentimiento por ETT** (ADR-05). Sin excepción.
+- La base legal es el **consentimiento informado que el candidato otorga al registrarse**: se le dice de forma explícita que su grabación será audible por agencias verificadas. La Fase 2 debe recogerlo como consentimiento propio y versionado, no escondido en los términos.
+
+_Motivo:_ minimización de datos real (una voz sin apellido ni contacto identifica poco) manteniendo intacto lo que hace vendible la bolsa. Si el candidato retira ese consentimiento, deja de ser audible.
 
 ---
 

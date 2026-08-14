@@ -10,6 +10,9 @@
     "module": "esnext",
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
+    // Los scripts y los tests de seguridad se ejecutan con el intérprete de
+    // TypeScript de Node, que exige la extensión real en el import.
+    "allowImportingTsExtensions": true,
     "isolatedModules": true,
     "jsx": "react-jsx",
     "incremental": true,

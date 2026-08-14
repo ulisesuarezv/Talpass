@@ -12,3 +12,7 @@ build
 .vercel
 *.tsbuildinfo
 next-env.d.ts
+
+# Estado local de la CLI de Supabase. Las migraciones SÍ se commitean.
+supabase/.temp
+supabase/.branches

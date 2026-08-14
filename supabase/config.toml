@@ -1,0 +1,26 @@
+# Configuración de la CLI de Supabase.
+#
+# Regla de la fase 1: NADA se toca a mano en el panel de Supabase. Todo cambio
+# de schema es una migración en `supabase/migrations/`, aplicable desde cero
+# sobre una base limpia. Si algo existe solo en el panel, no existe.
+
+project_id = "talpass"
+
+[db]
+# Igual que el proyecto alojado (región EU, ADR-09).
+major_version = 17
+
+[db.migrations]
+# `supabase/seed.sql` está vacío a propósito: los catálogos van en una
+# migración (son datos de producción) y la demo se siembra con
+# `pnpm seed:demo`, que necesita crear usuarios de auth.
+enabled = true
+
+[auth]
+enable_signup = true
+# El correo del candidato se confirma antes de poder entrar (fase 2).
+[auth.email]
+enable_confirmations = true
+
+[storage]
+enabled = true

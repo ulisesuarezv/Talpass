@@ -55,7 +55,14 @@ Escribe un set de tests ejecutable (script TS con clientes de Supabase autentica
 - Una ETT no ve aplicaciones ni vacantes de otra ETT.
 - Un usuario anónimo solo ve vacantes `published`.
 
-Los tests deben poder ejecutarse con un comando y salir en rojo si alguien rompe una política. Déjalo documentado en `docs/03-CONVENTIONS.md`.
+Los tests deben poder ejecutarse con un comando y salir en rojo si alguien rompe una política. Déjalo documentado en `docs/CONVENTIONS.md`.
+
+**7. Adenda fuera del tema de la fase (10 minutos, hazla primero)**
+El sitio es público y no tiene `robots.txt`. El dominio definitivo ya está decidido — **talpass.eu** (ADR-12) — pero **todavía no hay contenido real que merezca indexarse**: solo marcadores de posición. Que Google indexe placeholders, o el dominio de Vercel, nos deja basura en el índice difícil de limpiar.
+
+Añade `src/app/robots.ts` que devuelva **`Disallow: /` salvo que la indexación esté explícitamente habilitada**, mediante una variable propia (por ejemplo `NEXT_PUBLIC_ALLOW_INDEXING`) que hoy queda desactivada en todos los entornos.
+
+Importante: **no derives la decisión solo del host o de `VERCEL_ENV`**. En cuanto se conecte `talpass.eu` en Vercel, un criterio basado en el host levantaría el bloqueo solo y expondría páginas vacías. El interruptor lo activa la Fase 3, cuando existan vacantes reales y sitemap.
 
 ## Fuera de alcance — no lo hagas
 
@@ -67,6 +74,7 @@ Interfaz, pantallas, formularios, autenticación de cara al usuario, emails. Nad
 2. Todos los tests de seguridad pasan y **has comprobado que fallan** si desactivas una política (si nunca los viste en rojo, no prueban nada).
 3. Ninguna tabla tiene RLS deshabilitada. Compruébalo con una consulta al catálogo de Postgres, no de memoria.
 4. Los datos de semilla permiten trabajar en las fases siguientes: un admin, dos ETTs, varios candidatos en distintos estados de verificación, vacantes publicadas y en borrador.
+5. `/robots.txt` responde y bloquea la indexación, y `next build` sigue limpio.
 
 ## Al terminar
 
