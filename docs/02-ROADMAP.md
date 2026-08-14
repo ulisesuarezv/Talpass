@@ -9,7 +9,7 @@
 | --- | --------------------------------- | ------------------------------------------ | ------ |
 | 0   | Fundaciones                       | App desplegada, `/es` y `/en` vivos        | ✅     |
 | 1   | Datos y seguridad                 | Schema + RLS probada con tests             | ✅     |
-| 2   | Auth y onboarding candidato       | Registro real end-to-end                   | ⬜     |
+| 2   | Auth y onboarding candidato       | Registro real end-to-end                   | ✅     |
 | 3   | Vacantes públicas + SEO           | Vacante indexable en Google Jobs           | ⬜     |
 | 4   | Verificación + backoffice         | Documento subido → aprobado por admin      | ⬜     |
 | 5   | Aplicaciones                      | Candidato verificado aplica y ve su estado | ⬜     |
@@ -101,6 +101,71 @@ manda recordatorios es de la fase 8, aunque los índices que necesita ya existen
 Registro y login · confirmación de email · middleware de sesión y protección de rutas por rol · formulario de info básica (10 campos del scope) · perfil del candidato editable · consentimientos versionados en el registro.
 
 **Hecho cuando:** un candidato se registra desde el móvil, completa su info básica y ve su perfil con estado "sin verificar".
+
+### ✅ Cerrada
+
+**Antes que nada, la corrección de entorno (ADR-17).** La fase 1 se ejecutó
+entera contra producción; ya no es posible.
+
+| Corrección                        | Resultado                                                                    |
+| --------------------------------- | ---------------------------------------------------------------------------- |
+| Base local con OrbStack           | levanta y aplica las 16 migraciones desde cero sin un error                  |
+| Semillas y tests                  | leen `.env.test` (local); `.env.local` queda solo para producción            |
+| `pnpm test:security` en local     | **57/57** (56 de la fase 1 + consentir en nombre de otro)                    |
+| `pnpm test:security:drill` local  | rompe 3 políticas, la batería caza las 3, restaura y vuelve al verde         |
+| El simulacro ya no cruza entornos | ejecutaba la batería con `.env.local` mientras rompía la local — corregido   |
+| Producción, datos de demostración | borrados: 0 perfiles, 0 candidatos, 0 ETTs, 0 vacantes; catálogos intactos   |
+| Producción, RLS tras el simulacro | 36 tablas, 99 políticas — idéntico a local, el `finally` sí había restaurado |
+| `db:push:prod`                    | exige teclear `produccion`; `db:reset` sigue siendo local y no pregunta      |
+
+Y un fallo que la corrección destapó: **el schema no concedía ni un permiso de
+tabla** y vivía del ACL por defecto del proyecto alojado. En local ni la
+`service_role` podía leer `agencies`. Corregido con una migración de `grant`
+(**ADR-19**), que contra producción es un no-op.
+
+**La fase.** Registro con confirmación por correo, entrada, salida,
+recuperación y reenvío · protección por rol con redirección a donde le
+corresponde a cada uno · onboarding en 5 pasos con el progreso guardado en
+servidor · perfil editable con experiencia libre, estado activo/inactivo y
+verificación documento a documento en solo lectura · 3 consentimientos
+versionados, el de audio revocable · todo el copy en `es` y `en`.
+
+| Verificación                     | Resultado                                                                                                                                                        |
+| -------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Alta end-to-end en móvil (390px) | alta → correo → confirmación → onboarding → perfil, completo y sin errores de consola                                                                            |
+| Recuperación de contraseña       | correo → enlace → contraseña nueva → entra con ella                                                                                                              |
+| Consentimientos                  | 4 filas con versión, IP y user-agent; el de audio se revoca y se vuelve a conceder                                                                               |
+| Rol al registrarse               | `candidate`, siempre; el candidato no se asciende (test)                                                                                                         |
+| Candidato en `/agency`           | redirige a `/es/cuenta`, sin página de error                                                                                                                     |
+| Recargar a mitad del onboarding  | conserva lo escrito; `?step=5` a mano se queda en el paso alcanzado                                                                                              |
+| `next build`                     | públicas y de auth `●`, privadas `ƒ`; tipos, lint y formato limpios                                                                                              |
+| Cabeceras en `next start`        | `/es` y `/es/ofertas`: `x-nextjs-cache: HIT`, **sin** `x-ett-session-checked` ni `Set-Cookie`; `/es/cuenta` y `/es/completar-perfil`: `x-ett-session-checked: 1` |
+
+Decisiones nuevas: **ADR-19** (permisos de tabla en migración), **ADR-20** (el
+consentimiento se escribe en el alta) y **ADR-21** (el borrador del onboarding
+vive en el servidor). ADR-18 pasa de decidido a recogido.
+
+**Dos cosas que la fase 2 descubrió:**
+
+1. **El límite de correo de producción es de 1–2 envíos por hora.** Medido:
+   el segundo registro de la misma hora ya devuelve
+   `over_email_send_rate_limit`. Con eso no se puede captar ni un puñado de
+   candidatos: **hay que adelantar Resend como SMTP** (hoy en la fase 8) antes
+   de mandar tráfico real. Se mide con
+   `node --env-file=.env.local scripts/probe-email-limit.mts <correo>`.
+2. **`additional_redirect_urls` no es opcional.** Sin declararlas, GoTrue
+   ignora el `emailRedirectTo` de la aplicación y devuelve a la home: el
+   registro parece funcionar y la sesión no se canjea nunca. Está puesto en
+   `supabase/config.toml` para local; **el panel de producción lo necesita
+   aparte**.
+
+Anotado, fuera de alcance de esta fase: los `grant` replican los amplios de
+Supabase por defecto y afinarlos por tabla y operación es endurecimiento
+(fase 10); la subida de documentos y de audio sigue en la fase 4, y el perfil
+solo enseña su estado; `candidate_private` (teléfono, dirección, IBAN) y los
+identificadores fiscales no se piden todavía; las migraciones de esta fase
+**están validadas en local pero no aplicadas a producción**, porque el `push`
+necesita `supabase login` en la máquina.
 
 ---
 

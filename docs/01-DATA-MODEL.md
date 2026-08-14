@@ -71,6 +71,10 @@ impide dar de alta a un candidato rumano.
 
 **`candidate_sectors`** — experiencia por sector (N:M con `sectors`), con meses de experiencia
 
+**`candidate_onboarding_drafts`** _(fase 2, ADR-21)_ — `profile_id` PK · `data` (jsonb) · `step`
+El formulario de alta a medio rellenar. Existe porque `candidates` exige nombre, apellidos, fecha de nacimiento y dos países, y hace bien: una ficha incompleta no es un candidato. Al terminar el onboarding se crea la fila de `candidates` y el borrador se borra.
+Son datos personales sin validar: **solo su dueño tiene política, ni siquiera el admin**, y la batería de seguridad la incluye entre las tablas que nadie más puede leer.
+
 > **Vista `candidate_directory`** — lo único que la ETT puede consultar en la bolsa (ADR-03):
 > `candidate_id`, `display_name` = `first_name || ' ' || left(last_name,1) || '.'`, `age` **calculada** (nunca la fecha de nacimiento), ciudad + país + nacionalidad, `work_experience`, `sectors` (jsonb agregado), `english_level`, disponibilidad, alojamiento/transporte, y sellos booleanos: `identity_verified`, `driving_license_verified`, `tax_id_verified`, `iban_on_file`, `has_audio`, `has_cv`.
 > Solo incluye candidatos `verified` y `active` sin borrado lógico.
@@ -155,7 +159,10 @@ El alcance es una tabla hija, no un array de texto: así hay clave foránea real
 ## H. Cumplimiento y ciclo de vida
 
 **`consents`** — versionados _(GDPR)_
-`profile_id` · `type` (`terms` | `privacy` | `data_sharing`) · `version` · `granted_at` · `revoked_at` · `ip` · `user_agent`
+`profile_id` · `type` (`terms` | `privacy` | `data_sharing` | **`audio_sharing`**) · `version` · `granted_at` · `revoked_at` · `ip` · `user_agent`
+
+> **Las escribe el disparador de alta** (`app.handle_new_user`, ADR-20), en el mismo acto que crea la cuenta: con confirmación por correo no hay sesión todavía, así que ninguna política dejaría insertarlas desde el cliente. Términos y privacidad se aceptan en una casilla pero son **dos filas**, porque son dos documentos y sus versiones se moverán por separado.
+> `audio_sharing` (ADR-18) es el único opcional y revocable desde el perfil. **Retirar es marcar `revoked_at`, nunca borrar**: la fila es la prueba de que hubo consentimiento durante un periodo. Volver a concederlo escribe una fila nueva con su versión.
 
 **`activity_pings`** — inactividad 30 d / 72 h
 `candidate_id` · `token` · `sent_at` · `expires_at` · `confirmed_at`

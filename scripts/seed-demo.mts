@@ -463,6 +463,30 @@ export async function seedDemo(
     'Datos sensibles del candidato',
   );
 
+  // Un onboarding a medio rellenar (fase 2). Está aquí para que la batería
+  // tenga algo que intentar leer: una tabla vacía siempre pasa el test de "no
+  // se lee desde otra cuenta", y ese verde no demuestra nada.
+  unwrap(
+    await admin
+      .from('candidate_onboarding_drafts')
+      .upsert(
+        [
+          {
+            profile_id: candidateIds.unverified,
+            step: 2,
+            data: {
+              firstName: 'João',
+              lastName: 'Borrador Secreto',
+              dateOfBirth: '1990-07-02',
+            },
+          },
+        ],
+        { onConflict: 'profile_id' },
+      )
+      .select('profile_id'),
+    'Borrador de onboarding',
+  );
+
   const steuerIdType = await catalogId(admin, 'identifier_types', 'steuer_id');
   const steuerId = '12345678901';
 

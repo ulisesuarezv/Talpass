@@ -8,10 +8,14 @@ build
 .env
 .env*
 !.env.example
+!.env.test.example
 
 .vercel
 *.tsbuildinfo
 next-env.d.ts
+
+# Rastros de las sesiones de Playwright durante la verificación manual.
+.playwright-mcp
 
 # Estado local de la CLI de Supabase. Las migraciones SÍ se commitean.
 supabase/.temp

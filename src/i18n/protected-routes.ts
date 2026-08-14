@@ -8,6 +8,7 @@ import { locales, pathnames } from './routing';
  * pública por descuido rompe el SEO sin romper ningún test.
  */
 export const PROTECTED_INTERNAL_ROUTES = [
+  '/onboarding',
   '/account',
   '/agency',
   '/admin',

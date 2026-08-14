@@ -18,6 +18,23 @@ enabled = true
 
 [auth]
 enable_signup = true
+
+# A dónde puede devolver Supabase tras un enlace de correo.
+#
+# Sin esta lista, GoTrue ignora el `emailRedirectTo` que manda la aplicación y
+# usa `site_url` a secas: el enlace de confirmación aterriza en la home, la
+# sesión no se canjea nunca y el registro se queda a medias sin dar ningún
+# error. Cuesta un rato entender por qué "funciona pero no entra".
+#
+# El proyecto de producción necesita exactamente lo mismo configurado en su
+# panel (Authentication › URL Configuration), porque el `config.toml` solo
+# manda en local.
+site_url = "http://localhost:3000"
+additional_redirect_urls = [
+  "http://localhost:3000/**",
+  "http://127.0.0.1:3000/**",
+]
+
 # El correo del candidato se confirma antes de poder entrar (fase 2).
 [auth.email]
 enable_confirmations = true

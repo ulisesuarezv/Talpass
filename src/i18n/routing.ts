@@ -43,7 +43,34 @@ export const pathnames = {
     en: '/jobs/[slug]',
   },
 
+  // Autenticación. No leen sesión al renderizar: son páginas estáticas con un
+  // formulario en cliente, así que no entran en `protected-routes.ts`.
+  '/login': {
+    es: '/entrar',
+    en: '/login',
+  },
+  '/signup': {
+    es: '/registro',
+    en: '/signup',
+  },
+  '/check-email': {
+    es: '/revisa-tu-correo',
+    en: '/check-email',
+  },
+  '/forgot-password': {
+    es: '/recuperar-acceso',
+    en: '/forgot-password',
+  },
+  '/reset-password': {
+    es: '/nueva-contrasena',
+    en: '/reset-password',
+  },
+
   // Privado — ver `protected-routes.ts`
+  '/onboarding': {
+    es: '/completar-perfil',
+    en: '/onboarding',
+  },
   '/account': {
     es: '/cuenta',
     en: '/account',

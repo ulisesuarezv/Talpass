@@ -16,11 +16,17 @@ src/
       (public)/                 # ← estático, cacheado, indexable
         page.tsx                # home
         jobs/                   # /es/ofertas · /en/jobs
+      (auth)/                   # ← estático y noindex: no lee sesión al render
+        login/ signup/ check-email/
+        forgot-password/ reset-password/
       (private)/                # ← dinámico, noindex, pasa por sesión
         layout.tsx              # force-dynamic + robots noindex
+        onboarding/             # /es/completar-perfil · /en/onboarding
         account/                # /es/cuenta · /en/account
         agency/
         admin/
+    api/
+      auth/callback/route.ts    # canje del enlace de correo, fuera de i18n
   components/
     ui/                         # shadcn — no se editan a mano salvo necesidad
     *.tsx                       # componentes propios, kebab-case
@@ -92,7 +98,34 @@ Si una ruta pública devuelve `x-ett-session-checked`, algo se ha filtrado y el 
 está roto aunque la página se vea bien.
 
 El estado de login en zonas públicas se resuelve **en cliente**, con
-`lib/supabase/client`.
+`lib/supabase/client`. Lo hace `components/account-nav.tsx`, que es el único
+sitio de la cabecera que sabe si hay sesión.
+
+## Autenticación y roles (fase 2)
+
+- **Tres grupos de rutas, tres comportamientos.** `(public)` es estático e
+  indexable; `(auth)` es estático y `noindex` —no lee sesión al renderizar, así
+  que el formulario de entrada también llega desde el CDN—; `(private)` es
+  dinámico, `noindex` y pasa por el proxy de sesión.
+- **Una sola puerta:** `requireArea('/account' | '/agency' | '/admin' |
+'/onboarding', locale)` en `lib/auth/session.ts`. Devuelve la sesión o
+  redirige; **nunca enseña un error**. Un candidato que abre `/agency` sale
+  hacia `/cuenta`, no hacia un 403. El mapa de rol → área está en
+  `lib/auth/roles.ts` y es el único sitio donde se decide.
+- **`requireCandidate()`** añade la condición de tener el onboarding terminado,
+  que significa exactamente una cosa: existe la fila de `candidates`.
+- **Cero texto en las Server Actions.** Devuelven **claves** de traducción
+  (`{ ok: false, error: 'invalidCredentials' }`) y el componente las resuelve.
+  Un mensaje de error es copy como cualquier otro (ADR-01), y los códigos de
+  Supabase se mapean por `error.code`, nunca por el texto del mensaje.
+- **`redirectAndStop`** en lugar de `redirect` en código de servidor: es el
+  mismo, tipado como `never`. Sin él, cada guarda arrastra un `!` detrás, y un
+  `!` de más en el código que decide quién entra dónde es lo último que
+  interesa tener.
+- **Las URLs de retorno de los correos** se declaran en `supabase/config.toml`
+  (`additional_redirect_urls`) **y en el panel del proyecto de producción**. Sin
+  esa lista, GoTrue ignora el `emailRedirectTo` de la aplicación y manda a la
+  home: el registro parece funcionar y la sesión no se canjea nunca.
 
 ## Base de datos (fase 1)
 
@@ -115,16 +148,62 @@ src/lib/crypto/sensitive.ts   # cifrado de IBAN e identificadores (ADR-15)
 migración nueva. Si algo existe solo en el panel, no existe: el siguiente
 `db reset` se lo lleva por delante y nadie se entera hasta producción.
 
-| Comando                    | Para qué                                           |
-| -------------------------- | -------------------------------------------------- |
-| `pnpm db:push:prod`        | aplicar a producción migraciones ya validadas      |
-| `pnpm db:reset`            | recrear el schema entero desde cero                |
-| `pnpm seed:demo [--reset]` | sembrar admin, 2 ETTs, 4 candidatos y 5 vacantes   |
-| `pnpm test:security`       | la batería de seguridad                            |
-| `pnpm test:security:drill` | el simulacro: rompe políticas y exige que se cacen |
+| Comando                     | Para qué                                           |
+| --------------------------- | -------------------------------------------------- |
+| `pnpm db:start` / `db:stop` | levantar y parar la base local (Docker)            |
+| `pnpm db:reset`             | recrear el schema local entero desde cero          |
+| `pnpm db:types`             | regenerar `src/lib/supabase/database.types.ts`     |
+| `pnpm db:push:prod`         | aplicar a producción migraciones ya validadas      |
+| `pnpm seed:demo [--reset]`  | sembrar admin, 2 ETTs, 4 candidatos y 5 vacantes   |
+| `pnpm test:security`        | la batería de seguridad                            |
+| `pnpm test:security:drill`  | el simulacro: rompe políticas y exige que se cacen |
 
-Los tres últimos leen `.env.local` y necesitan `SUPABASE_SERVICE_ROLE_KEY`, las
-claves de cifrado y `SUPABASE_DB_URL` (esta última solo el simulacro).
+## Local para trabajar, remoto solo para producción (ADR-17)
+
+**Todo el desarrollo, las semillas y los tests corren contra la base local.** El
+proyecto Supabase remoto es producción: solo recibe migraciones ya validadas.
+
+```bash
+pnpm db:start                       # levanta Postgres, Auth, Storage y Mailpit
+cp .env.test.example .env.test      # una sola vez
+pnpm dev:local                      # Next apuntando a la base local
+```
+
+Hay **dos ficheros de entorno y no se mezclan**:
+
+| Fichero      | A dónde apunta | Quién lo lee                                                |
+| ------------ | -------------- | ----------------------------------------------------------- |
+| `.env.test`  | base local     | `dev:local`, `build:local`, `start:local`, semillas y tests |
+| `.env.local` | **producción** | `pnpm dev`, `check:supabase` y los scripts de producción    |
+
+`.env.test.example` está en el repositorio con todos los valores: los de
+`supabase start` son fijos y públicos en cualquier máquina, así que no hay nada
+que ocultar. El llavero de cifrado que lleva es solo para datos de
+demostración; no se reutiliza en ningún otro sitio.
+
+`pnpm dev` sin sufijo sigue apuntando a producción a propósito, para mirar cómo
+va lo desplegado. **Para trabajar, `dev:local`.**
+
+Los correos de confirmación y de recuperación no salen a internet en local: los
+recoge **Mailpit en http://127.0.0.1:54324**, que es donde se prueba el flujo
+completo de alta.
+
+### Subir a producción
+
+```bash
+pnpm db:reset && pnpm test:security && pnpm test:security:drill   # primero, en local
+pnpm db:push:prod                                                  # y pide confirmación
+```
+
+`db:push:prod` no es `supabase db push` a secas: hay un paso delante que dice a
+dónde apunta y exige teclear `produccion`. El camino cómodo tiene que ser el
+local y el destructivo tiene que costar un gesto — la fase 1 acabó reseteando
+la base de producción justamente porque los dos se parecían demasiado.
+
+Necesita `supabase login` (o `SUPABASE_ACCESS_TOKEN`) en la máquina.
+
+`node --env-file=.env.local scripts/check-prod-rls.mts` comprueba, sin escribir
+nada, que producción no se ha quedado con una tabla sin RLS o sin políticas.
 
 ### `seed:demo` y el simulacro solo apuntan a local (ADR-17)
 
@@ -141,6 +220,12 @@ La salida de emergencia existe pero es incómoda a propósito —
 `TALPASS_ALLOW_PRODUCTION_WRITES=si-se-lo-que-hago-y-es-produccion` — y **nunca
 se escribe en un `.env`**: se teclea en la línea de esa ejecución concreta, o
 deja de ser una decisión consciente.
+
+`scripts/clean-prod-demo.mts` es la excepción y no lleva la comprobación: su
+trabajo es precisamente tocar el destino remoto. Lo que lo hace seguro es que
+solo sabe **borrar**, y solo lo que `seed-demo.mts` sabe crear — la constante
+`DEMO`, toda en dominios `.test`. No acepta listas por parámetro, no borra por
+patrón y comprueba al terminar que los catálogos siguen en pie.
 
 ### Catálogo o código
 

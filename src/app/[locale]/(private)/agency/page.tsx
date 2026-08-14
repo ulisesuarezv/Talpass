@@ -1,6 +1,17 @@
 import { getTranslations } from 'next-intl/server';
 
-export default async function AgencyPage() {
+import { requireArea } from '@/lib/auth/session';
+
+export default async function AgencyPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+
+  // Un candidato que abra esta URL no ve un error: sale hacia su propia área.
+  await requireArea('/agency', locale);
+
   const t = await getTranslations('Agency');
 
   return (

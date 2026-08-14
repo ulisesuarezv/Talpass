@@ -4,8 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev:local": "node scripts/with-local-env.mts dev",
     "build": "next build",
+    "build:local": "node scripts/with-local-env.mts build",
     "start": "next start",
+    "start:local": "node scripts/with-local-env.mts start",
     "lint": "eslint",
     "lint:fix": "eslint --fix",
     "format": "prettier --write .",
@@ -14,12 +17,14 @@
     "check:supabase": "node --env-file=.env.local scripts/check-supabase.mjs",
     "db:start": "supabase start",
     "db:stop": "supabase stop",
+    "db:status": "supabase status",
     "db:reset": "supabase db reset",
-    "db:push:prod": "supabase db push --linked",
-    "db:diff": "supabase db diff",
-    "seed:demo": "node --env-file=.env.local scripts/seed-demo.mts",
-    "test:security": "node --env-file=.env.local tests/security/run.mts",
-    "test:security:drill": "node --env-file=.env.local tests/security/drill.mts"
+    "db:push:prod": "node scripts/db-push-prod.mts",
+    "db:diff": "supabase db diff --local",
+    "db:types": "supabase gen types typescript --local --schema public > src/lib/supabase/database.types.ts",
+    "seed:demo": "node --env-file=.env.test scripts/seed-demo.mts",
+    "test:security": "node --env-file=.env.test tests/security/run.mts",
+    "test:security:drill": "node --env-file=.env.test tests/security/drill.mts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.4",

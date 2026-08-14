@@ -29,6 +29,14 @@ import { assertLocalTarget, required } from '../../scripts/lib/supabase.mts';
 
 assertLocalTarget('El simulacro de brecha');
 
+/**
+ * El hijo hereda el destino del padre. Si aquí pusiera `.env.local` —como hacía
+ * la fase 1— el simulacro rompería las políticas de la base local y luego
+ * pasaría la batería contra producción: dos bases distintas y un verde que no
+ * significa nada.
+ */
+const ENV_FILE = process.env.TALPASS_ENV_FILE ?? '.env.test';
+
 type Drill = {
   name: string;
   why: string;
@@ -85,9 +93,15 @@ const drills: Drill[] = [
   },
 ];
 
+// La base local de `supabase start` no habla TLS; el proyecto alojado lo exige.
+const dbUrl = required('SUPABASE_DB_URL');
+const isLocalDb = /^(localhost|127\.0\.0\.1|\[::1\]|0\.0\.0\.0)$/.test(
+  new URL(dbUrl).hostname,
+);
+
 const pool = new pg.Pool({
-  connectionString: required('SUPABASE_DB_URL'),
-  ssl: { rejectUnauthorized: false },
+  connectionString: dbUrl,
+  ssl: isLocalDb ? false : { rejectUnauthorized: false },
   max: 1,
 });
 
@@ -100,7 +114,7 @@ function runSuite(): Promise<number> {
   return new Promise((resolve) => {
     const child = spawn(
       process.execPath,
-      ['--env-file=.env.local', 'tests/security/run.mts'],
+      [`--env-file=${ENV_FILE}`, 'tests/security/run.mts'],
       { stdio: ['ignore', 'pipe', 'pipe'] },
     );
 

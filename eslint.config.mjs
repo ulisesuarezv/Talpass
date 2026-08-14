@@ -46,7 +46,16 @@ const eslintConfig = defineConfig([
   // `eslint-config-prettier` al final: apaga las reglas de formato.
   prettier,
 
-  globalIgnores(['.next/**', 'out/**', 'build/**', 'next-env.d.ts']),
+  globalIgnores([
+    '.next/**',
+    'out/**',
+    'build/**',
+    'next-env.d.ts',
+    // Lo escribe `supabase start`; no es código del proyecto.
+    'supabase/.temp/**',
+    // Generado por `pnpm db:types`.
+    'src/lib/supabase/database.types.ts',
+  ]),
 ]);
 
 export default eslintConfig;

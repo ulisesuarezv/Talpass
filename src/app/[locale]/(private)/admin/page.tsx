@@ -1,6 +1,16 @@
 import { getTranslations } from 'next-intl/server';
 
-export default async function AdminPage() {
+import { requireArea } from '@/lib/auth/session';
+
+export default async function AdminPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+
+  await requireArea('/admin', locale);
+
   const t = await getTranslations('Admin');
 
   return (

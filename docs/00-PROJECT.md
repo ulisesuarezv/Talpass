@@ -262,6 +262,44 @@ Regla definitiva:
 
 _Motivo:_ minimización de datos real (una voz sin apellido ni contacto identifica poco) manteniendo intacto lo que hace vendible la bolsa. Si el candidato retira ese consentimiento, deja de ser audible.
 
+_Estado (fase 2):_ recogido. El registro pide el consentimiento de audio en **casilla propia**, sin marcar, explicada en una frase, y se guarda como `consents.audio_sharing` con versión, IP y user-agent. Se retira desde el perfil con un botón, marcando `revoked_at`; volver a concederlo escribe una fila nueva. La fase 7 tiene que **leer ese estado** antes de firmar cualquier URL de audio.
+
+### ADR-19 · Los permisos de tabla son parte del schema, no del entorno
+
+_(Fase 2.)_
+
+Toda tabla de `public` recibe sus `grant` en una migración (`20260814090000_grants.sql`), y las tablas futuras los heredan de un `alter default privileges` que también vive ahí.
+
+_Motivo:_ hasta la fase 2 el schema no concedía ni un permiso y se apoyaba en el ACL por defecto que trae el proyecto alojado. Funcionaba en producción y **no funcionaba en local**: allí ese ACL pertenece a `supabase_admin` mientras que las migraciones se aplican como `postgres`, así que las tablas nacían sin permisos y hasta la `service_role` recibía `permission denied for table agencies`. Un schema que solo se levanta entero en un entorno concreto no es reproducible, y sin reproducibilidad la base local no sirve para lo que existe: probar antes de tocar producción (ADR-17).
+
+_Precisión que no se debe perder:_ el permiso de tabla es la puerta y la RLS es el portero. Conceder `all` a `authenticated` no abre nada por sí solo — sin política, una tabla con RLS no devuelve una fila. Lo que sí se retira explícitamente es el acceso de `anon` a toda tabla con datos de una persona; `anon` solo llega a catálogos, agencias y vacantes.
+
+_Deuda anotada:_ esos permisos replican los del proyecto alojado, que son los amplios de Supabase por defecto. Afinarlos por tabla y operación es trabajo de endurecimiento (fase 10), y hacerlo aquí habría cambiado el comportamiento de producción en una fase que no iba de eso.
+
+### ADR-20 · El consentimiento se escribe en el mismo acto que crea la cuenta
+
+_(Fase 2.)_
+
+`app.handle_new_user()` inserta las filas de `consents` — `terms`, `privacy`, `data_sharing` y, si procede, `audio_sharing` — leyendo versión, IP y user-agent de los metadatos del registro.
+
+_Motivo:_ con confirmación por correo, `signUp` crea el usuario pero **no devuelve sesión**, así que ninguna política de `consents` dejaría escribir esa fila desde el cliente. Aplazarlo al primer inicio de sesión pondría en la fila una marca de tiempo que no es la del consentimiento, y de quien se registra y nunca confirma no quedaría constancia alguna pese a que sus datos ya existen.
+
+**Términos y privacidad se aceptan en una sola casilla pero se guardan como dos filas.** Son dos documentos y sus versiones se moverán por separado; unificarlos obligaría a volver a pedir el consentimiento de ambos cada vez que cambie uno.
+
+_Riesgo asumido:_ los metadatos del registro los controla quien se registra, así que alguien podría llamar a `signUp` a mano y falsear su propia fila. No abre ninguna puerta —el rol sigue naciendo `candidate` pase lo que pase, y los tres obligatorios se escriben aunque no vengan—, y consentir en nombre de **otro** sigue siendo imposible: lo impide la RLS y lo fija un test.
+
+### ADR-21 · El progreso del onboarding vive en el servidor, en una tabla aparte
+
+_(Fase 2.)_
+
+`candidate_onboarding_drafts` guarda el formulario a medias como `jsonb`. Al terminarlo se crea la fila de `candidates` y el borrador se borra.
+
+_Motivo:_ `candidates` exige nombre, apellidos, fecha de nacimiento y dos países, y hace bien — una ficha a medias no es un candidato y no debe poder existir. Pero el formulario se rellena desde un móvil, de pie y con interrupciones. Guardar en `localStorage` habría sido más barato y habría atado el progreso a un navegador concreto: el candidato que empieza en el móvil y sigue en otro sitio empezaría de cero.
+
+_Alternativa descartada:_ relajar los `not null` de `candidates`. Habría metido fichas incompletas en la tabla que alimenta la bolsa, y con ellas un `is not null` de más en cada consulta futura.
+
+_Consecuencia:_ es una tabla con datos personales sin validar. Solo su dueño tiene política — ni el admin — y la batería de seguridad la incluye entre las tablas que nadie más puede leer.
+
 ---
 
 ## 5. Reglas de negocio

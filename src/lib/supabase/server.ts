@@ -4,6 +4,7 @@ import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 
 import { env } from '@/lib/env';
+import type { Database } from '@/lib/supabase/database.types';
 
 /**
  * Cliente de Supabase para SERVIDOR (Server Components de área privada,
@@ -18,21 +19,25 @@ import { env } from '@/lib/env';
 export async function createClient() {
   const cookieStore = await cookies();
 
-  return createServerClient(env.supabaseUrl(), env.supabaseAnonKey(), {
-    cookies: {
-      getAll() {
-        return cookieStore.getAll();
-      },
-      setAll(cookiesToSet) {
-        try {
-          for (const { name, value, options } of cookiesToSet) {
-            cookieStore.set(name, value, options);
+  return createServerClient<Database>(
+    env.supabaseUrl(),
+    env.supabaseAnonKey(),
+    {
+      cookies: {
+        getAll() {
+          return cookieStore.getAll();
+        },
+        setAll(cookiesToSet) {
+          try {
+            for (const { name, value, options } of cookiesToSet) {
+              cookieStore.set(name, value, options);
+            }
+          } catch {
+            // Un Server Component no puede escribir cookies. No pasa nada:
+            // el refresco de sesión lo hace el proxy antes de llegar aquí.
           }
-        } catch {
-          // Un Server Component no puede escribir cookies. No pasa nada:
-          // el refresco de sesión lo hace el proxy antes de llegar aquí.
-        }
+        },
       },
     },
-  });
+  );
 }

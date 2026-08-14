@@ -7,16 +7,32 @@
     "home": "Inicio",
     "jobs": "Ofertas",
     "account": "Mi cuenta",
+    "login": "Entrar",
+    "logout": "Salir",
     "skipToContent": "Ir al contenido"
   },
   "LocaleSwitcher": {
     "label": "Idioma"
+  },
+  "Common": {
+    "yes": "Sí",
+    "no": "No"
+  },
+  "EnglishLevels": {
+    "a1": "A1 — Muy básico",
+    "a2": "A2 — Básico",
+    "b1": "B1 — Intermedio",
+    "b2": "B2 — Intermedio alto",
+    "c1": "C1 — Avanzado",
+    "c2": "C2 — Muy avanzado",
+    "native": "Nativo"
   },
   "Home": {
     "eyebrow": "Fase de construcción",
     "title": "Trabajo en Europa, sin intermediarios opacos",
     "subtitle": "{brand} conecta a candidatos hispanohablantes y lusófonos con agencias de trabajo temporal en Europa Central. Empezamos por Alemania.",
     "ctaJobs": "Ver ofertas",
+    "ctaSignup": "Crear mi cuenta",
     "note": "Ver ofertas siempre es libre y gratuito. Al candidato no se le cobra nunca."
   },
   "Jobs": {
@@ -24,9 +40,184 @@
     "subtitle": "Aún no hay vacantes publicadas. Esta sección se activa en la fase 3.",
     "empty": "Sin resultados por ahora."
   },
+  "Auth": {
+    "pending": "Un momento…",
+    "backToLogin": "Volver a entrar",
+    "fields": {
+      "email": "Correo electrónico",
+      "password": "Contraseña",
+      "newPassword": "Nueva contraseña",
+      "passwordConfirmation": "Repite la contraseña",
+      "passwordHint": "Mínimo {min} caracteres."
+    },
+    "login": {
+      "title": "Entrar",
+      "subtitle": "Accede a tu cuenta para completar tu perfil y aplicar a ofertas.",
+      "submit": "Entrar",
+      "forgot": "He olvidado mi contraseña",
+      "noAccount": "¿Todavía no tienes cuenta?",
+      "signupLink": "Créala gratis"
+    },
+    "signup": {
+      "title": "Crear cuenta",
+      "subtitle": "Es gratis. Al candidato no se le cobra nunca.",
+      "submit": "Crear mi cuenta",
+      "haveAccount": "¿Ya tienes cuenta?",
+      "loginLink": "Entrar"
+    },
+    "checkEmail": {
+      "title": "Revisa tu correo",
+      "body": "Te hemos enviado un enlace para confirmar tu cuenta. Ábrelo desde este mismo teléfono y podrás continuar.",
+      "spam": "Si no lo ves, mira en la carpeta de spam o de promociones.",
+      "resend": "Enviármelo otra vez"
+    },
+    "forgot": {
+      "title": "Recuperar el acceso",
+      "subtitle": "Escribe tu correo y te enviaremos un enlace para poner una contraseña nueva.",
+      "submit": "Enviarme el enlace"
+    },
+    "reset": {
+      "title": "Nueva contraseña",
+      "subtitle": "Elige una contraseña nueva para tu cuenta.",
+      "submit": "Guardar la contraseña",
+      "requestAnother": "Pedir otro enlace"
+    },
+    "consents": {
+      "legend": "Permisos que nos das",
+      "terms": "He leído y acepto los <terms>Términos de uso y la Política de Privacidad</terms> de {brand}.",
+      "dataSharing": "Autorizo a {brand} a mostrar mi perfil a agencias de trabajo verificadas.",
+      "audio": "Autorizo que mi grabación de voz en inglés sea escuchada por agencias verificadas.",
+      "audioHint": "Es lo que permite a una agencia valorar tu inglés sin pedirte todavía tus documentos. Opcional, y puedes retirarlo cuando quieras desde tu perfil."
+    },
+    "messages": {
+      "confirmationResent": "Te lo hemos enviado otra vez. Revisa tu correo.",
+      "resetLinkSent": "Si ese correo tiene una cuenta, el enlace ya va en camino."
+    },
+    "errors": {
+      "checkTheForm": "Revisa los campos marcados.",
+      "required": "Este campo es obligatorio.",
+      "emailInvalid": "Ese correo no parece válido.",
+      "passwordTooShort": "La contraseña es demasiado corta.",
+      "passwordsDoNotMatch": "Las dos contraseñas no coinciden.",
+      "birthDate": "Necesitas tener al menos 16 años y una fecha válida.",
+      "invalidCredentials": "Correo o contraseña incorrectos.",
+      "emailNotConfirmed": "Todavía no has confirmado tu correo. Busca nuestro mensaje o pide otro enlace.",
+      "emailTaken": "Ya existe una cuenta con ese correo. Prueba a entrar.",
+      "weakPassword": "Esa contraseña es demasiado débil. Prueba con una más larga.",
+      "samePassword": "La contraseña nueva es igual que la anterior.",
+      "emailRateLimit": "Hemos enviado demasiados correos en poco tiempo. Espera unos minutos y vuelve a intentarlo.",
+      "tooManyRequests": "Demasiados intentos seguidos. Espera un momento.",
+      "linkExpired": "Ese enlace ya no vale. Pide uno nuevo.",
+      "invalidInput": "Hay algún dato que no podemos aceptar.",
+      "sessionExpired": "Tu sesión ha caducado. Vuelve a entrar.",
+      "draftIncomplete": "Faltan datos por rellenar. Vuelve atrás y revísalos.",
+      "unexpected": "Algo ha fallado por nuestra parte. Inténtalo otra vez."
+    }
+  },
+  "Onboarding": {
+    "title": "Completar mi perfil",
+    "progress": "Paso {step} de {total}",
+    "progressLabel": "Progreso del formulario",
+    "next": "Continuar",
+    "back": "Volver atrás",
+    "saving": "Guardando…",
+    "finish": "Terminar y ver mi perfil",
+    "editFromStart": "Corregir algún dato",
+    "steps": {
+      "1": {
+        "title": "¿Cómo te llamas?",
+        "help": "Tal y como aparece en tu documento de identidad."
+      },
+      "2": {
+        "title": "¿De dónde eres y dónde estás?",
+        "help": "Tu nacionalidad decide en qué países puedes trabajar sin permiso."
+      },
+      "3": {
+        "title": "Inglés y conducción",
+        "help": "Es lo primero que mira una agencia. Sé sincero: se comprueba después."
+      },
+      "4": {
+        "title": "¿Qué necesitas para mudarte?",
+        "help": "Muchas ofertas incluyen alojamiento o transporte. Así te enseñamos las que encajan."
+      },
+      "5": {
+        "title": "Revisa antes de terminar",
+        "help": "Podrás cambiar cualquier dato después desde tu perfil."
+      }
+    },
+    "fields": {
+      "choose": "Elige una opción",
+      "firstName": "Nombre",
+      "lastName": "Apellidos",
+      "dateOfBirth": "Fecha de nacimiento",
+      "dateOfBirthHint": "Las agencias solo verán tu edad, nunca la fecha.",
+      "nationality": "Nacionalidad",
+      "currentCountry": "País en el que vives ahora",
+      "currentCity": "Ciudad",
+      "englishLevel": "Nivel de inglés",
+      "englishLevelHint": "Si dudas, elige el más bajo de los dos.",
+      "hasDrivingLicense": "Tengo carné de conducir",
+      "workedInNlDe": "He trabajado antes en Países Bajos o Alemania",
+      "workedInNlDeHint": "Haberlo hecho ayuda, pero no es obligatorio.",
+      "needsHousing": "Necesito que la oferta incluya alojamiento",
+      "needsHousingHint": "No todas lo incluyen. Marcarlo no reduce tus opciones: nos ayuda a ordenarlas.",
+      "needsTransport": "Necesito transporte hasta el puesto de trabajo",
+      "needsTransportHint": "Útil si no tienes coche propio en destino.",
+      "workExperience": "Experiencia laboral",
+      "workExperienceHint": "Cuenta en qué has trabajado y durante cuánto tiempo. Con tus palabras, sin formato."
+    }
+  },
   "Account": {
-    "title": "Mi cuenta",
-    "placeholder": "Área del candidato. Se construye en la fase 2."
+    "title": "Hola, {name}",
+    "profileSection": "Mis datos",
+    "save": "Guardar cambios",
+    "saving": "Guardando…",
+    "messages": {
+      "profileSaved": "Cambios guardados."
+    },
+    "verification": {
+      "unverified": "Sin verificar",
+      "pending": "En revisión",
+      "verified": "Verificado",
+      "rejected": "Rechazado"
+    },
+    "verificationHelp": {
+      "unverified": "Ya puedes ver todas las ofertas. Para poder aplicar hace falta verificar tu identidad, y eso se activa muy pronto.",
+      "pending": "Estamos revisando tus documentos. Te avisaremos por correo en cuanto terminemos.",
+      "verified": "Tu perfil está verificado. Puedes aplicar a ofertas y aparecer ante las agencias.",
+      "rejected": "No hemos podido verificar tus documentos. Revisa el motivo y vuelve a enviarlos."
+    },
+    "availability": {
+      "title": "Disponibilidad",
+      "state": "Estado",
+      "active": "Activo",
+      "inactive": "Inactivo",
+      "activeHelp": "Las agencias verificadas pueden encontrarte.",
+      "inactiveHelp": "No apareces ante ninguna agencia. Las candidaturas que ya tengas en curso siguen adelante.",
+      "pause": "Ponerme inactivo",
+      "resume": "Volver a estar disponible"
+    },
+    "documents": {
+      "title": "Verificación",
+      "explainer": "Esto es lo que hace falta para poder aplicar a ofertas. La subida se activa en la próxima entrega.",
+      "optional": "opcional",
+      "status": {
+        "missing": "Pendiente de subir",
+        "pending": "En revisión",
+        "verified": "Verificado",
+        "rejected": "Rechazado"
+      }
+    },
+    "audioConsent": {
+      "title": "Grabación de voz en inglés",
+      "explainer": "Con tu permiso, las agencias verificadas pueden escuchar tu grabación para valorar tu inglés. Nunca la oyen junto a tu apellido, tu correo ni tu teléfono, y no pueden descargarla.",
+      "state": "Estado",
+      "granted": "Autorizado",
+      "notGranted": "No autorizado",
+      "since": "Autorizado el {date}.",
+      "grant": "Autorizar",
+      "revoke": "Retirar el permiso"
+    }
   },
   "Agency": {
     "title": "Portal de agencia",

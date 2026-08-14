@@ -44,6 +44,7 @@ const SECRETS = [
   '1994-03-12', // fecha de nacimiento
   'carlos@talpass.test', // email
   '12345678901', // Steuer-ID
+  'Borrador Secreto', // apellido a medio escribir en el onboarding (fase 2)
 ];
 
 const SENSITIVE_TABLES = [
@@ -52,6 +53,7 @@ const SENSITIVE_TABLES = [
   'candidate_identifiers',
   'candidate_sectors',
   'candidate_documents',
+  'candidate_onboarding_drafts',
   'profiles',
   'consents',
   'activity_pings',
@@ -626,6 +628,21 @@ suite.check('no se asciende a administrador', async () => {
     .eq('id', ids.candidates.verified)
     .select('id');
   assertWriteDenied(result, 'Un candidato se ha hecho administrador');
+});
+
+// Fase 2: el consentimiento es la base legal de todo el producto (ADR-05,
+// ADR-18). Si se pudiera escribir a nombre de otro, la prueba de haberlo
+// obtenido no valdría nada — y con ella se cae la defensa GDPR entera.
+suite.check('no consiente en nombre de otro candidato', async () => {
+  const result = await candidate
+    .from('consents')
+    .insert({
+      profile_id: ids.candidates.pending,
+      type: 'audio_sharing',
+      version: 'falsificado',
+    })
+    .select('id');
+  assertWriteDenied(result, 'Un candidato ha consentido por otro');
 });
 
 suite.check('no marca como verificado su identificador fiscal', async () => {

@@ -32,6 +32,9 @@ export default async function HomePage({
         <Button asChild size="lg">
           <Link href="/jobs">{t('ctaJobs')}</Link>
         </Button>
+        <Button asChild size="lg" variant="outline">
+          <Link href="/signup">{t('ctaSignup')}</Link>
+        </Button>
       </div>
 
       <p className="border-t pt-6 text-sm text-muted-foreground">{t('note')}</p>

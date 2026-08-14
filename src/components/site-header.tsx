@@ -1,5 +1,6 @@
 import { getTranslations } from 'next-intl/server';
 
+import { AccountNav } from '@/components/account-nav';
 import { LocaleSwitcher } from '@/components/locale-switcher';
 import { siteConfig } from '@/config/site';
 import { Link } from '@/i18n/navigation';
@@ -7,8 +8,8 @@ import { Link } from '@/i18n/navigation';
 /**
  * Cabecera pública. Server Component y sin estado de sesión a propósito:
  * leer la sesión aquí volvería dinámica toda página que use este layout
- * (ADR-11). Cuando haga falta mostrar "mi cuenta" según login, será un
- * componente cliente aislado.
+ * (ADR-11). El estado de sesión lo pone `AccountNav`, que es cliente y aislado
+ * justamente por eso.
  */
 export async function SiteHeader() {
   const t = await getTranslations('Nav');
@@ -34,6 +35,7 @@ export async function SiteHeader() {
           >
             {t('jobs')}
           </Link>
+          <AccountNav />
           <LocaleSwitcher />
         </div>
       </div>
