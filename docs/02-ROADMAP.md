@@ -173,7 +173,11 @@ necesita `supabase login` en la máquina.
 
 Listado con filtros (país, sector, idioma, alojamiento, transporte, carnet, turno) · página de detalle server-rendered · `JobPosting` schema.org · **landings programáticas** por país / ciudad / sector / alojamiento · enlazado interno vacante ↔ landing · sitemap dinámico · `hreflang` · Open Graph · CTA a registro.
 
-**Hecho cuando:** una vacante valida en Google Rich Results Test, las landings enlazan a sus vacantes y de vuelta, y el listado carga rápido en 4G.
+**Más, adelantado de la fase 8 por decisión del 2026-08-15: Resend como SMTP de Supabase**, con `talpass.eu` verificado. Solo el transporte; las plantillas i18n bonitas siguen en la fase 8. _Motivo:_ la fase 2 midió el límite del SMTP por defecto y el **segundo** correo de la misma hora ya rebota con `over_email_send_rate_limit`. Esta fase construye la máquina de traer tráfico; mandarlo a un registro que se rompe con dos personas a la vez sería tirar el trabajo.
+
+**Hecho cuando:** una vacante valida en Google Rich Results Test, las landings enlazan a sus vacantes y de vuelta, el listado carga rápido en 4G, y **un alta real funciona de punta a punta en producción**.
+
+**La bandera de indexación se enciende bajo condición** (ADR-16): `NEXT_PUBLIC_ALLOW_INDEXING=true` solo en producción y solo después de comprobar que ese alta real funciona. Si no funciona, la fase entrega el SEO con la bandera apagada y lo dice. Indexar páginas cuyo CTA está roto gasta el primer rastreo de Google y cuesta meses deshacerlo.
 
 **Verificar obligatoriamente** _(ADR-11)_: las rutas públicas **no** pasan por el middleware de sesión y se sirven cacheadas. Si aparecen como dinámicas, el SEO está roto aunque la página se vea bien.
 
@@ -217,7 +221,7 @@ Bolsa navegable con filtros sobre la vista seudonimizada (ADR-03) · solicitud d
 
 ## Fase 8 · Emails y automatismos
 
-Resend con dominio verificado · plantillas i18n (registro, verificación aprobada/rechazada, cambio de estado, ETT te contacta, nueva aplicación para la ETT, ping de inactividad, solicitud de consentimiento) · **cron de inactividad 30 d → 72 h → `inactive`** · cron de caducidad de consentimientos · `email_log`.
+~~Resend con dominio verificado~~ **(adelantado a la fase 3)** · plantillas i18n (registro, verificación aprobada/rechazada, cambio de estado, ETT te contacta, nueva aplicación para la ETT, ping de inactividad, solicitud de consentimiento) · **cron de inactividad 30 d → 72 h → `inactive`** · cron de caducidad de consentimientos · `email_log`.
 
 **Hecho cuando:** el ciclo de inactividad se verifica de punta a punta con fechas forzadas.
 

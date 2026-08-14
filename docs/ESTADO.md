@@ -8,7 +8,9 @@
 
 ## Dónde estamos
 
-**Fases 0, 1 y 2 cerradas.** La siguiente es la **Fase 3 — Vacantes públicas y SEO**.
+**Fases 0, 1 y 2 cerradas.** La siguiente es la **Fase 3 — Vacantes públicas y SEO**, con su prompt en `docs/prompts/fase-3.md`.
+
+Cierre de la fase 2 verificado por el PM el 2026-08-15: `test:security` 57/57 y el simulacro en verde ejecutados de nuevo, cruce de entornos del simulacro corregido de verdad (`.env.test`), y ningún fichero de entorno con valores de producción en el repositorio. Son **17 migraciones**, no 16.
 
 | Fase                   | Estado                                       |
 | ---------------------- | -------------------------------------------- |
@@ -40,6 +42,8 @@ Procedimiento completo en `docs/CONVENTIONS.md`.
 ---
 
 ## Lo que la fase 2 dejó pendiente y hay que atender
+
+Los tres puntos de abajo **entran en el alcance de la Fase 3** por decisión del 2026-08-15, y su prompt (`docs/prompts/fase-3.md`) arranca con ellos antes de tocar el SEO.
 
 1. **Adelantar Resend como SMTP.** Es lo más urgente de esta lista. El límite
    de envío de producción está **medido**: el segundo correo de la misma hora
