@@ -12,7 +12,7 @@ Tu tarea es **únicamente la Fase 2: autenticación y onboarding del candidato**
 
 La Fase 1 se ejecutó entera contra el proyecto Supabase **de producción**: un `db reset` que borró la base y un simulacro que desactiva tres políticas RLS a propósito. No hubo daño porque no había datos reales. A partir de la Fase 4 los habrá.
 
-La máquina **sí tiene** Docker (OrbStack) y la CLI de Supabase. Comprueba con `docker info` y arranca OrbStack si hace falta.
+La máquina **sí tiene** Docker (OrbStack, ya arrancado al empezar esta sesión) y la CLI de Supabase 2.114. Confirma con `docker info` de todos modos: si falla, para y avisa, no sigas contra el remoto.
 
 **Ya hecho antes de esta sesión, no lo repitas:** `seed-demo.mts` y
 `tests/security/drill.mts` ya llaman a `assertLocalTarget()`
@@ -84,5 +84,7 @@ El SMTP por defecto de Supabase tiene un límite de envíos muy bajo y no sirve 
 ## Al terminar
 
 - Marca la Fase 2 como ✅ en `docs/02-ROADMAP.md` y añade los ADR nuevos que hayas tomado.
+- Actualiza `docs/ESTADO.md`: dónde queda el trabajo y cuál es el siguiente paso.
 - Reporta el límite de envío de emails que hayas medido.
 - Resume qué debe saber la sesión de la Fase 3.
+- **Commitea tu trabajo** en `main` y súbelo a `origin` (https://github.com/ulisesuarezv/Talpass). La Fase 1 dejó 19 ficheros sin commitear y sin remoto, con todo el proyecto en un solo disco; no lo repitas. Antes de commitear, comprueba que no se cuela ningún `.env` ni ninguna clave.
