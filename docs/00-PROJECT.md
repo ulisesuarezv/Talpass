@@ -152,6 +152,12 @@ Decidido el 2026-08-13. Sustituye a la versión previa de este ADR, que pedía u
 
    _Estado (2026-08-14):_ `talpass.eu` registrado. El `.com` **queda aplazado por presupuesto**, con el riesgo asumido de forma explícita: mientras tanto, la mitigación de este ADR no está en vigor. Pendiente en `docs/ESTADO.md`.
 
+_Precisión (2026-08-15) · el canónico es el apex:_ **`https://talpass.eu` sirve el sitio y `www.talpass.eu` redirige a él**, no al revés. Da igual cuál se elija a efectos de SEO mientras sea **uno solo y consistente**, pero se elige a propósito: es más corto, es el nombre de la marca y es el que dice este ADR.
+
+Se documenta porque al conectar el dominio en Vercel el valor por defecto hizo lo contrario —un 308 del apex hacia `www`— apuntando a un `www` que **no existía en el DNS**, así que el dominio entero quedó irresoluble durante unas horas. Vercel marcaba el `www` como "Valid Configuration" igualmente: comprueba su propia configuración, no si el registro DNS existe.
+
+Consecuencia para cualquier fase que toque URLs: `NEXT_PUBLIC_SITE_URL`, las `additional_redirect_urls` de Supabase, el `sitemap.xml`, el `hreflang` y las etiquetas canónicas usan **todos** el apex. Mezclar los dos hosts parte la señal de SEO en dos y rompe el canje de sesión del correo de confirmación.
+
 ### ADR-13 · Un solo proxy, dos alcances
 
 _(Fase 0. Consecuencia técnica directa de ADR-11.)_
