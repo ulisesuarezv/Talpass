@@ -23,10 +23,15 @@ Esta fase **sí** toca producción en dos momentos concretos y solo en esos: apl
 
 La Fase 2 midió el límite del SMTP por defecto de Supabase: el **segundo** correo de la misma hora ya devuelve `over_email_send_rate_limit`. Esta fase construye la máquina de traer tráfico, así que el registro tiene que aguantar tráfico antes de encenderla. **Se adelanta de la fase 8 solo el transporte**; las plantillas i18n bonitas siguen siendo de la fase 8.
 
-1. **Aplica a producción las migraciones pendientes de la fase 2.** Son tres, validadas en local pero sin aplicar: `20260814090000_grants.sql`, `20260814100000_onboarding.sql`, `20260814100100_signup_consents.sql`. Necesita `supabase login`; si no hay token en la máquina, **para y pídeselo a Ulises**, no lo esquives.
-2. **Configura Resend como SMTP de Supabase** con `talpass.eu` verificado (SPF, DKIM y el registro de retorno que pida Resend). El `EMAIL_FROM` sale de configuración, no del código.
+**Si la verificación del dominio en Resend todavía está en curso, no te bloquees:** haz los puntos 1 y 3 de abajo, que no dependen de ella, sigue con el SEO, y deja el punto 2 para el final de la sesión. Si al terminar sigue sin verificar, dilo y deja la bandera de indexación apagada (sección 6). Lo que **no** vale es dar el SMTP por hecho sin haberlo probado.
+
+1. **Aplica a producción las migraciones pendientes de la fase 2.** Son tres, validadas en local pero sin aplicar: `20260814090000_grants.sql`, `20260814100000_onboarding.sql`, `20260814100100_signup_consents.sql`. `supabase login` ya está hecho y el proyecto enlazado (`zwimxgvacykmdkoxfpmw`), así que `pnpm db:push:prod` funciona. Comprueba antes con `supabase migration list --linked` que siguen siendo esas tres y no más.
+2. **Configura Resend como SMTP de Supabase.** El dominio `talpass.eu` ya tiene los DNS puestos; confirma en el panel de Resend que aparece como **Verified** antes de darlo por bueno. El `EMAIL_FROM` sale de configuración, no del código.
 3. **Declara las URLs de retorno en el panel de producción** (Authentication › URL Configuration): `site_url` y las `additional_redirect_urls`, las mismas que `supabase/config.toml` tiene para local, con el dominio real. Sin esto el registro falla **sin dar ningún error**: GoTrue ignora el `emailRedirectTo`, manda el enlace a la home y la sesión no se canjea nunca. La fase 2 perdió un rato descubriéndolo.
-4. **Vuelve a medir** con `scripts/probe-email-limit.mts` y reporta el límite nuevo.
+
+   **El dominio canónico es el apex, `https://talpass.eu`** (ADR-12): `www` redirige a él. Usa el apex en `site_url`, en las `additional_redirect_urls`, en `NEXT_PUBLIC_SITE_URL` de Vercel y en todo lo que generes en el SEO. **No mezcles los dos hosts**: si una URL lleva `www` y otra no, el canje de sesión del correo se rompe y la señal de SEO se parte en dos.
+
+4. **Vuelve a medir** con `scripts/probe-email-limit.mts` y reporta el límite nuevo. Solo tiene sentido después del punto 2.
 
 Si algo de esto queda a medias, sigue con el resto de la fase pero **dilo claramente al cerrar**: condiciona el último punto.
 
