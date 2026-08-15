@@ -20,7 +20,7 @@ Cierre de la fase 2 verificado por el PM el 2026-08-15: `test:security` 57/57 y 
 | **3 · Vacantes + SEO** | **⬜ siguiente**                             |
 | 4–10                   | ⬜                                           |
 
-**Marca:** Talpass · **dominio:** talpass.eu (registrado, aún sin conectar en Vercel) · **producción provisional:** https://ettrecruiter.vercel.app
+**Marca:** Talpass · **dominio canónico:** https://talpass.eu (conectado y sirviendo; `www` redirige al apex, ADR-12) · `ettrecruiter.vercel.app` sigue respondiendo como dominio antiguo
 
 ---
 
@@ -102,7 +102,10 @@ Los tres puntos de abajo **entran en el alcance de la Fase 3** por decisión del
 
 1. **Guardar el llavero de cifrado de `.env.local` en el gestor de contraseñas.** Es el único secreto del proyecto que **no se puede regenerar**: perderlo es perder los IBAN cifrados, por diseño. Lo más urgente de esta lista.
 2. **Rotar la contraseña de la base de datos** — pasó por el chat. Está en `.env.local`, ignorado por git, así que es higiene, no urgencia.
-3. **Arreglar el DNS de `talpass.eu`.** Conectado en Vercel el 2026-08-15, pero **el dominio no resuelve**: el apex devuelve un 308 hacia `www.talpass.eu`, que es NXDOMAIN porque en Hostinger no existe ningún registro `www`. Decidido que **el canónico es el apex** (ADR-12): en Vercel, `talpass.eu` sirve Production y `www` redirige a él; en Hostinger, añadir el CNAME de `www` que indique Vercel para que esa redirección exista. Después, actualizar `NEXT_PUBLIC_SITE_URL` y `NEXT_PUBLIC_SITE_NAME` en Vercel, y las URLs de retorno del punto 3 de arriba — todas con el apex, sin mezclar hosts.
+3. **`talpass.eu` está conectado y funcionando** (2026-08-15). Verificado: `https://talpass.eu` sirve el sitio desde `fra1` y `https://www.talpass.eu` devuelve 308 hacia el apex, que es el canónico decidido en ADR-12. Hubo un susto por el camino —Vercel puso por defecto la redirección al revés, hacia un `www` que aún no existía en el DNS— y quedó resuelto.
+
+   **Queda pendiente de la fase 3:** actualizar `NEXT_PUBLIC_SITE_URL` y `NEXT_PUBLIC_SITE_NAME` en Vercel y las URLs de retorno de Supabase del punto 3 de arriba. Todas con el apex `https://talpass.eu`, **sin mezclar hosts**: si una queda con `www` y otra sin él, el canje de sesión del correo de confirmación se rompe y la señal de SEO se parte en dos.
+
 4. **`talpass.com` queda aplazado por presupuesto.** Decisión consciente, no un olvido: es la mitigación del riesgo de ADR-12 (un `.eu` se pierde si el titular deja de estar establecido en la UE) y sigue pendiente. Revisarlo cuando haya caja.
 5. **En tu bandeja hay un correo de "Confirm your email address"** con alias `+smtp-probe-…`. Es de la medición del límite de envío; la cuenta ya está borrada y se puede ignorar.
 
