@@ -256,7 +256,11 @@ trabajo de la fase 10; las plantillas de correo i18n siguen en la fase 8.
 
 Subida de documentos (móvil, con cámara) · **grabación de audio en navegador** con fallback a subida · estados por documento · backoffice: cola de revisión, aprobar/rechazar con motivo, ver candidatos y su estado.
 
-**Hecho cuando:** un candidato sube sus documentos desde el móvil, el admin los aprueba, y el candidato pasa a `verified` y recibe aviso.
+**Más, decidido el 2026-08-15: una forma de que el admin publique vacantes reales en producción.** No existe ninguna hoy —el CRUD es de la fase 6 y `seed:demo` se niega, con razón, a tocar producción—, así que el SEO de la fase 3 está construido sobre un catálogo vacío. Basta lo mínimo que funcione; la alternativa autoservicio llega en la fase 6 (ADR-06).
+
+_Motivo:_ la fase 3 se colocó antes que la verificación **a propósito**, para empezar a captar tráfico mientras se construye el resto. Sin vacantes reales esa máquina está encendida en vacío: Google rastrea un job board vacío y tarda en volver. Además, el criterio de la fase 3 —validar una vacante en el Rich Results Test— necesita una URL pública real.
+
+**Hecho cuando:** un candidato sube sus documentos desde el móvil, el admin los aprueba, el candidato pasa a `verified` y recibe aviso, y **el admin ha podido publicar una vacante real en producción**.
 
 ---
 
