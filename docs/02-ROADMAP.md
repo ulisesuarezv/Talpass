@@ -10,7 +10,7 @@
 | 0   | Fundaciones                       | App desplegada, `/es` y `/en` vivos        | ✅     |
 | 1   | Datos y seguridad                 | Schema + RLS probada con tests             | ✅     |
 | 2   | Auth y onboarding candidato       | Registro real end-to-end                   | ✅     |
-| 3   | Vacantes públicas + SEO           | Vacante indexable en Google Jobs           | ✅     |
+| 3   | Vacantes públicas + SEO           | Vacante indexable en Google Jobs           | 🟡     |
 | 4   | Verificación + backoffice         | Documento subido → aprobado por admin      | ⬜     |
 | 5   | Aplicaciones                      | Candidato verificado aplica y ve su estado | ⬜     |
 | 6   | Portal ETT                        | ETT gestiona vacantes y aplicaciones       | ⬜     |
@@ -183,7 +183,25 @@ Listado con filtros (país, sector, idioma, alojamiento, transporte, carnet, tur
 
 > Se coloca antes que la verificación **a propósito**: en cuanto exista, ya se puede empezar a captar tráfico y candidatos mientras se construye el resto.
 
-### ✅ Cerrada — con el bloque de producción pendiente y la indexación APAGADA
+### 🟡 Construida y verificada en local — NO cerrada
+
+> **Corrección del PM, 2026-08-15.** La sesión marcó esta fase ✅ y a la vez
+> informó, con toda honestidad, de que no pudo comprobar los dos criterios de
+> "hecho cuando" que dependen de producción: la validación en el **Google Rich
+> Results Test** y el **alta real de punta a punta**. Con el criterio sin
+> cumplir, la fase no está cerrada.
+>
+> No es contabilidad: si una fase puede marcarse ✅ con su criterio de
+> aceptación sin verificar, el roadmap deja de decir qué está realmente probado,
+> y dentro de cuatro fases nadie lo sabrá. Validar el marcado campo a campo
+> contra la documentación de Google es un buen trabajo, pero el criterio pide el
+> tester precisamente porque quien decide qué acepta Google es Google.
+>
+> **Se cierra** cuando estén los cuatro pasos de producción de `docs/ESTADO.md`
+> y la vacante valide en el tester. Todo lo demás de la fase está construido,
+> verificado y no hay que rehacerlo.
+
+Lo construido y comprobado en local:
 
 **El código de la fase está entero y verificado en local.** Lo que queda abierto
 no es código: son tres gestos contra producción que esta sesión no pudo hacer

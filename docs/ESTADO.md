@@ -10,18 +10,26 @@
 
 ## Dónde estamos
 
-**Fases 0, 1, 2 y 3 cerradas en código.** La siguiente es la **Fase 4 —
-Verificación y backoffice**, pero **antes hay que cerrar el bloque de producción
-de la fase 3** (abajo): es lo que decide si el sitio se abre a Google.
+**Fases 0, 1 y 2 cerradas. La fase 3 está construida y verificada en local, pero
+NO cerrada:** sus dos criterios de "hecho cuando" que dependen de producción —la
+validación en el Google Rich Results Test y el alta real de punta a punta— no se
+han comprobado. Se cierra con el bloque de producción de abajo, que es además lo
+que decide si el sitio se abre a Google.
 
-| Fase                  | Estado                                               |
-| --------------------- | ---------------------------------------------------- |
-| 0 · Fundaciones       | ✅ desplegada en producción                          |
-| 1 · Datos y seguridad | ✅ 36 tablas, RLS probada                            |
-| 2 · Auth y onboarding | ✅ registro real end-to-end, 57 tests verdes         |
-| 3 · Vacantes + SEO    | ✅ **en código**; producción e indexación pendientes |
-| **4 · Verificación**  | **⬜ siguiente, tras el bloque de abajo**            |
-| 5–10                  | ⬜                                                   |
+Verificado por el PM el 2026-08-15: build con 41 públicas `●` y privadas `ƒ`, el
+HTML del listado trae las vacantes dentro, `hreflang` recíproco entre
+`/es/trabajo/alemania` y `/en/work/germany`, rutas públicas con `HIT` y sin
+cabecera de sesión, y `test:security` 57/57. El trabajo está bien; lo que falta
+es solo lo que no se puede probar sin producción.
+
+| Fase                  | Estado                                              |
+| --------------------- | --------------------------------------------------- |
+| 0 · Fundaciones       | ✅ desplegada en producción                         |
+| 1 · Datos y seguridad | ✅ 36 tablas, RLS probada                           |
+| 2 · Auth y onboarding | ✅ registro real end-to-end, 57 tests verdes        |
+| 3 · Vacantes + SEO    | 🟡 construida y verificada en local; **no cerrada** |
+| **4 · Verificación**  | **⬜ siguiente, tras el bloque de abajo**           |
+| 5–10                  | ⬜                                                  |
 
 **Marca:** Talpass · **dominio canónico:** https://talpass.eu (apex; `www`
 redirige, ADR-12) · `ettrecruiter.vercel.app` sigue respondiendo como dominio antiguo
