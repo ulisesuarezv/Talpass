@@ -81,10 +81,14 @@ ADR-09 corregido: la región real es `eu-west-1` (Irlanda), no Fráncfort.
    sigue descargando hasta caducar. Por eso los documentos **nunca** se sirven
    con URL autenticada directa a la ETT: van con URL firmada de vida corta que
    emite el servidor tras comprobar el permiso. Detalle en `docs/01-DATA-MODEL.md`.
-2. **El audio exige consentimiento, como el DNI.** ADR-03 lo listaba entre lo
-   visible en la bolsa; se ha cerrado con la regla estricta y la bolsa solo
-   anuncia `has_audio`. **La fase 7 debe decidir** si la vista previa lo
-   necesita sin consentimiento, y documentarlo.
+2. ~~**El audio exige consentimiento, como el DNI.**~~ **Superado por ADR-18**
+   (decidido después de esta fase): el audio **sí es reproducible desde la
+   bolsa** por una ETT aprobada, con URL firmada de ≤5 min, sin descarga y con
+   la escucha registrada. La base legal es el consentimiento propio que el
+   candidato ya otorga al registrarse, y que la fase 2 recoge y permite
+   revocar. **La fase 7 no tiene que decidir nada aquí**: implementa ADR-18.
+   La vista `candidate_directory` sigue exponiendo solo `has_audio`, así que
+   servir el audio es trabajo de la fase 7.
 3. **`documents_requested` no se puede saltar** en el ciclo de una candidatura.
    Si en la fase 6 estorba, se cambia con una decisión explícita.
 
@@ -109,7 +113,7 @@ entera contra producción; ya no es posible.
 
 | Corrección                        | Resultado                                                                    |
 | --------------------------------- | ---------------------------------------------------------------------------- |
-| Base local con OrbStack           | levanta y aplica las 16 migraciones desde cero sin un error                  |
+| Base local con OrbStack           | levanta y aplica las 17 migraciones desde cero sin un error                  |
 | Semillas y tests                  | leen `.env.test` (local); `.env.local` queda solo para producción            |
 | `pnpm test:security` en local     | **57/57** (56 de la fase 1 + consentir en nombre de otro)                    |
 | `pnpm test:security:drill` local  | rompe 3 políticas, la batería caza las 3, restaura y vuelve al verde         |
@@ -268,6 +272,10 @@ _Motivo:_ la fase 3 se colocó antes que la verificación **a propósito**, para
 
 Aplicar a vacante (bloqueado si no está verificado, con mensaje que explica qué falta) · listado "Mis aplicaciones" con estado · log de eventos de aplicación · vista admin de aplicaciones.
 
+**El backoffice del admin crece a lo largo de tres fases** —revisión de documentos en la 4, aplicaciones en la 5, desbloqueos en la 7— así que en la 4 se monta su esqueleto y aquí se le añade una sección, no se rehace.
+
+**Al aplicar existir, hay que volver a la fase 3:** el `JobPosting` declara hoy `directApply: false` porque no se podía aplicar. Revisarlo aquí.
+
 **Hecho cuando:** un candidato verificado aplica, y el cambio de estado queda registrado en auditoría.
 
 ---
@@ -275,6 +283,8 @@ Aplicar a vacante (bloqueado si no está verificado, con mensaje que explica qu�
 ## Fase 6 · Portal ETT
 
 Alta invite-only por admin · dashboard · CRUD de vacantes con traducciones (ADR-06) · lista de aplicaciones por vacante con cambio de estado · perfil de empresa (lo que ve el candidato).
+
+**Ojo al solape con la fase 4:** allí se construye una vía mínima para que el **admin** publique vacantes reales. Aquí se construye el autoservicio de la **ETT**, que es otra cosa y otro actor. La vía del admin **no se retira**: en el MVP Ulises es el backend humano y va a seguir metiendo ofertas mientras haya una sola ETT. Lo que sí hay que hacer es que las dos escriban por el mismo sitio, para que una vacante sea igual venga de donde venga.
 
 **Hecho cuando:** una ETT publica una vacante, recibe una aplicación real y la mueve a `in_review`.
 
@@ -294,6 +304,8 @@ Bolsa navegable con filtros sobre la vista seudonimizada (ADR-03) · solicitud d
 
 ~~Resend con dominio verificado~~ **(adelantado a la fase 3)** · plantillas i18n (registro, verificación aprobada/rechazada, cambio de estado, ETT te contacta, nueva aplicación para la ETT, ping de inactividad, solicitud de consentimiento) · **cron de inactividad 30 d → 72 h → `inactive`** · cron de caducidad de consentimientos · `email_log`.
 
+**Qué llega ya hecho a esta fase.** No es una fase que empiece de cero: el transporte lo puso la fase 3, y varias fases anteriores **ya disparan correos funcionales** —el de confirmación de registro y recuperación de contraseña (fase 2), el de verificación aprobada o rechazada (fase 4), el de solicitud de consentimiento (fase 7)—. Todos son correos que llegan y están traducidos, pero sin plantilla cuidada. Aquí se les da forma, se centraliza el envío y se registra en `email_log`. **Lo que hay que revisar es si algún disparo falta, no reescribir los que ya funcionan.**
+
 **Hecho cuando:** el ciclo de inactividad se verifica de punta a punta con fechas forzadas.
 
 ---
@@ -301,6 +313,10 @@ Bolsa navegable con filtros sobre la vista seudonimizada (ADR-03) · solicitud d
 ## Fase 9 · GDPR y legal
 
 Aviso legal, política de privacidad y de cookies en `es`/`en` · banner de consentimiento · exportación de datos del candidato · flujo de borrado (art. 17) respetando obligaciones de conservación · página pública que explica al candidato qué ve una ETT y qué no.
+
+**No confundir con los consentimientos de la fase 2.** Aquellos son de tratamiento de datos (términos, privacidad, compartición con agencias, audio) y se recogen versionados en el alta con ADR-20; ya están hechos. El de esta fase es el **banner de cookies**, que es otra cosa. Lo que sí falta de aquellos son los **textos** que el candidato aceptó: hoy se versionan en `src/config/legal.ts` pero el documento en sí no existe. Escribirlos es de esta fase.
+
+**Y el banner no puede volver dinámicas las rutas públicas** (ADR-11, ADR-13). Se resuelve en cliente, como el estado de login.
 
 **Hecho cuando:** un candidato puede exportar y solicitar el borrado de sus datos desde su perfil.
 
@@ -310,7 +326,14 @@ Aviso legal, política de privacidad y de cookies en `es`/`en` · banner de cons
 
 ## Fase 10 · Hardening y lanzamiento
 
-Auditoría de RLS por segunda vez · rate limiting en registro, subidas y login · límites de tamaño y validación de tipo de archivo · rendimiento móvil (Core Web Vitals) · analítica básica del funnel · páginas de error · seed de vacantes reales · checklist de lanzamiento.
+Auditoría de RLS por segunda vez · **rate limiting** en registro, subidas y login · analítica básica del funnel · páginas de error · afinar los `grant` por tabla y operación (ADR-19) · `favicon.ico` (hoy 26 KB) · checklist de lanzamiento.
+
+**Recomprobar, no estrenar** — estas dos ya se hicieron antes y aquí solo se repiten con datos reales:
+
+- **Rendimiento móvil (Core Web Vitals).** La fase 3 midió Lighthouse 97/95/97 con 3 vacantes. Aquí se vuelve a medir con el volumen real, que es cuando aparece la paginación del listado (ADR-24).
+- **Límites de tamaño y validación de tipo de archivo.** Los básicos son de la fase 4: un endpoint de subida sin límite es un problema el día que existe, no el día del lanzamiento. Aquí se endurecen.
+
+_Ya no está aquí:_ el **seed de vacantes reales** pasó a la fase 4 el 2026-08-15, porque el SEO de la fase 3 no sirve de nada sobre un catálogo vacío.
 
 **Hecho cuando:** listo para enviar tráfico orgánico y para la demo presencial.
 
