@@ -27,20 +27,28 @@ Cierre de la fase 2 verificado por el PM el 2026-08-15: `test:security` 57/57 y 
 ## Lo primero al retomar
 
 **La fase 3 no se ha lanzado.** Su prompt está escrito y commiteado en
-`docs/prompts/fase-3.md`, listo para pegar en una sesión nueva y limpia. Pero
-**no la lances hasta tener las dos llaves de abajo**, porque su punto 1 se para
-en seco sin ellas:
+`docs/prompts/fase-3.md`, listo para pegar en una sesión nueva y limpia.
 
-| Llave                                            | Para qué                                                                                 |
-| ------------------------------------------------ | ---------------------------------------------------------------------------------------- |
-| `supabase login` hecho en la máquina             | aplicar a producción las 3 migraciones de la fase 2, que siguen sin aplicar              |
-| Cuenta de Resend con **`talpass.eu` verificado** | configurar el SMTP y desbloquear el registro. Verificar el dominio implica tocar sus DNS |
+Las dos llaves que la bloqueaban están resueltas o casi:
 
-Como la verificación de Resend toca los DNS de `talpass.eu` y el dominio
-tampoco está conectado en Vercel todavía, lo eficiente es **hacer las dos cosas
-en la misma sentada** antes de abrir la sesión de la fase 3.
+| Llave                   | Estado el 2026-08-15                                                                                                                      |
+| ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| `supabase login`        | ✅ hecho y **proyecto enlazado** (`EttRecruiter`, `zwimxgvacykmdkoxfpmw`, `eu-west-1`). Verificado: producción tiene 14 de 17 migraciones |
+| Resend con `talpass.eu` | 🟡 DNS configurado, **verificación en curso**. Antes de lanzar la fase 3, confirmar en el panel de Resend que el dominio pone `Verified`  |
 
-Cuando las tengas:
+El estado del enlace se comprueba en cualquier momento, sin tocar nada:
+
+```bash
+supabase migration list --linked   # las 3 pendientes salen con el remoto vacío
+```
+
+Las tres que faltan en producción son `20260814090000_grants.sql`,
+`20260814100000_onboarding.sql` y `20260814100100_signup_consents.sql`. **No se
+empujan a mano**: aplicarlas es el punto 1 del prompt de la fase 3, que además
+valida el resultado y encadena con las URLs de retorno y el SMTP en el orden
+correcto.
+
+Cuando Resend esté verificado:
 
 ```
 Lee docs/prompts/fase-3.md y ejecútalo.
@@ -76,8 +84,8 @@ Los tres puntos de abajo **entran en el alcance de la Fase 3** por decisión del
 
 2. **Aplicar a producción las migraciones de la fase 2.** Están validadas en
    local (`db:reset` desde cero, 57 tests y simulacro en verde) pero **no
-   aplicadas**: `pnpm db:push:prod` necesita `supabase login` en la máquina, y
-   esta sesión no tenía token. Son tres:
+   aplicadas**. Ya no falta el token: `supabase login` está hecho y el proyecto
+   enlazado, así que `pnpm db:push:prod` funciona. Son tres:
    `20260814090000_grants.sql`, `20260814100000_onboarding.sql` y
    `20260814100100_signup_consents.sql`.
 
