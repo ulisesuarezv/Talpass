@@ -1,6 +1,8 @@
 # Estado del proyecto — punto de retomada
 
-> Última actualización: **2026-08-15**. Fase 2 cerrada y verificada; **fase 3 preparada pero NO lanzada**.
+> Última actualización: **2026-08-15**. Fase 3 **construida y verificada en local**;
+> el bloque de producción que la acompaña **quedó sin ejecutar**, y con él la
+> bandera de indexación, que sigue **APAGADA**.
 > Este documento dice exactamente dónde se dejó el trabajo y cuál es el siguiente paso.
 > El detalle de cada fase está en `docs/02-ROADMAP.md`; las decisiones, en `docs/00-PROJECT.md`.
 
@@ -8,56 +10,153 @@
 
 ## Dónde estamos
 
-**Fases 0, 1 y 2 cerradas.** La siguiente es la **Fase 3 — Vacantes públicas y SEO**, con su prompt en `docs/prompts/fase-3.md`.
+**Fases 0, 1, 2 y 3 cerradas en código.** La siguiente es la **Fase 4 —
+Verificación y backoffice**, pero **antes hay que cerrar el bloque de producción
+de la fase 3** (abajo): es lo que decide si el sitio se abre a Google.
 
-Cierre de la fase 2 verificado por el PM el 2026-08-15: `test:security` 57/57 y el simulacro en verde ejecutados de nuevo, cruce de entornos del simulacro corregido de verdad (`.env.test`), y ningún fichero de entorno con valores de producción en el repositorio. Son **17 migraciones**, no 16.
+| Fase                  | Estado                                               |
+| --------------------- | ---------------------------------------------------- |
+| 0 · Fundaciones       | ✅ desplegada en producción                          |
+| 1 · Datos y seguridad | ✅ 36 tablas, RLS probada                            |
+| 2 · Auth y onboarding | ✅ registro real end-to-end, 57 tests verdes         |
+| 3 · Vacantes + SEO    | ✅ **en código**; producción e indexación pendientes |
+| **4 · Verificación**  | **⬜ siguiente, tras el bloque de abajo**            |
+| 5–10                  | ⬜                                                   |
 
-| Fase                   | Estado                                       |
-| ---------------------- | -------------------------------------------- |
-| 0 · Fundaciones        | ✅ desplegada en producción                  |
-| 1 · Datos y seguridad  | ✅ 36 tablas, RLS probada                    |
-| 2 · Auth y onboarding  | ✅ registro real end-to-end, 57 tests verdes |
-| **3 · Vacantes + SEO** | **⬜ siguiente**                             |
-| 4–10                   | ⬜                                           |
-
-**Marca:** Talpass · **dominio canónico:** https://talpass.eu (conectado y sirviendo; `www` redirige al apex, ADR-12) · `ettrecruiter.vercel.app` sigue respondiendo como dominio antiguo
+**Marca:** Talpass · **dominio canónico:** https://talpass.eu (apex; `www`
+redirige, ADR-12) · `ettrecruiter.vercel.app` sigue respondiendo como dominio antiguo
 
 ---
 
-## Lo primero al retomar
+## Lo primero al retomar — el bloque de producción de la fase 3
 
-**La fase 3 no se ha lanzado.** Su prompt está escrito y commiteado en
-`docs/prompts/fase-3.md`, listo para pegar en una sesión nueva y limpia.
+Son **cuatro gestos**, en este orden. Los tres primeros no los pudo hacer la
+sesión que construyó la fase: el primero lo bloqueó el permiso de la herramienta
+y los dos siguientes viven en paneles web. **El cuarto depende de los tres.**
 
-Las dos llaves que la bloqueaban están resueltas o casi:
+### 1. Aplicar las tres migraciones pendientes a producción
 
-| Llave                   | Estado el 2026-08-15                                                                                                                      |
-| ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| `supabase login`        | ✅ hecho y **proyecto enlazado** (`EttRecruiter`, `zwimxgvacykmdkoxfpmw`, `eu-west-1`). Verificado: producción tiene 14 de 17 migraciones |
-| Resend con `talpass.eu` | 🟡 DNS configurado, **verificación en curso**. Antes de lanzar la fase 3, confirmar en el panel de Resend que el dominio pone `Verified`  |
-
-El estado del enlace se comprueba en cualquier momento, sin tocar nada:
-
-```bash
-supabase migration list --linked   # las 3 pendientes salen con el remoto vacío
-```
-
-Las tres que faltan en producción son `20260814090000_grants.sql`,
-`20260814100000_onboarding.sql` y `20260814100100_signup_consents.sql`. **No se
-empujan a mano**: aplicarlas es el punto 1 del prompt de la fase 3, que además
-valida el resultado y encadena con las URLs de retorno y el SMTP en el orden
-correcto.
-
-Cuando Resend esté verificado:
+Validadas en local en esta misma sesión: `db:reset` desde cero, `test:security`
+**57/57** y el simulacro en verde. `supabase migration list --linked` y un
+`--dry-run` confirman que son exactamente estas tres y ninguna más:
 
 ```
-Lee docs/prompts/fase-3.md y ejecútalo.
+20260814090000_grants.sql
+20260814100000_onboarding.sql
+20260814100100_signup_consents.sql
 ```
 
-Para trabajar en local, sea cual sea la fase:
+Ejecútalo tú, desde esta sesión, con el prefijo `!`:
+
+```
+! printf 'produccion\nY\n' | pnpm db:push:prod
+```
+
+> La sesión intentó lanzarlo dos veces y el clasificador de permisos lo denegó
+> por ser una escritura contra producción. **No es un fallo del proyecto**: el
+> guardarraíl de `db:push:prod` funcionó, y encima de él hay otro.
+
+### 2. Resend como SMTP de Supabase
+
+**El DNS está completo y correcto**, comprobado el 2026-08-15 — los tres
+registros que pide Resend resuelven:
+
+| Registro                           | Valor                                      |
+| ---------------------------------- | ------------------------------------------ |
+| `send.talpass.eu` MX               | `10 feedback-smtp.eu-west-1.amazonses.com` |
+| `send.talpass.eu` TXT              | `v=spf1 include:amazonses.com ~all`        |
+| `resend._domainkey.talpass.eu` TXT | clave DKIM presente                        |
+
+Falta lo que solo se ve desde los paneles:
+
+1. Confirmar en Resend que `talpass.eu` pone **Verified**.
+2. Pegar las credenciales SMTP de Resend en Supabase (Authentication › Emails ›
+   SMTP Settings) y poner el `EMAIL_FROM` **desde configuración, no en código**.
+
+### 3. Las URLs de retorno en el panel de producción
+
+Authentication › URL Configuration, **todo con el apex y sin mezclar hosts**:
+
+```
+site_url                  https://talpass.eu
+additional_redirect_urls  https://talpass.eu/**
+```
+
+Y en Vercel, `NEXT_PUBLIC_SITE_URL=https://talpass.eu` y
+`NEXT_PUBLIC_SITE_NAME=Talpass`.
+
+> **Sin esto el registro falla sin dar ningún error**: GoTrue ignora el
+> `emailRedirectTo`, manda el enlace a la home y la sesión no se canjea nunca.
+> La fase 2 perdió un rato descubriéndolo.
+>
+> **No se usa `supabase config push`** para esto, aunque exista: empujaría el
+> `config.toml` local —con `site_url = http://localhost:3000`— y el resto del
+> bloque `[auth]` encima de producción.
+
+### 4. Alta real end-to-end y, solo entonces, la bandera
+
+Con 1–3 hechos: registrarse de verdad en `https://talpass.eu`, recibir el
+correo, confirmarlo y completar el onboarding. **Si eso funciona**, y solo
+entonces:
+
+- volver a medir el límite de envío:
+  `node --env-file=.env.local scripts/probe-email-limit.mts <correo>`
+- poner `NEXT_PUBLIC_ALLOW_INDEXING=true` **en producción y solo ahí**.
+
+**Si el alta no funciona, la bandera se queda apagada** (ADR-16). Indexar
+páginas cuyo CTA está roto gasta el primer rastreo de Google y sacarlas del
+índice cuesta meses.
+
+---
+
+## Lo que la fase 3 dejó verificado
+
+Todo contra la base local con `pnpm seed:demo` (3 vacantes publicadas):
+
+| Verificación                       | Resultado                                                                             |
+| ---------------------------------- | ------------------------------------------------------------------------------------- |
+| `next build`                       | **41 páginas públicas `●`**; `account`, `agency`, `admin`, `onboarding` siguen `ƒ`    |
+| Cabeceras (ADR-11)                 | públicas `x-nextjs-cache: HIT`, **sin** `x-ett-session-checked` ni `Set-Cookie`       |
+| Vacantes en el HTML estático       | 3 enlaces en `/es/ofertas` sin ejecutar JavaScript                                    |
+| `hreflang` recíproco               | `/es/trabajo/alemania/logistica` ↔ `/en/work/germany/logistics`, con `x-default`      |
+| Enlazado interno en ambos sentidos | landing → 3 vacantes y 7 landings vecinas; vacante → sus 4 landings                   |
+| `sitemap.xml`                      | 13 URLs, cada una con sus `xhtml:link` de `hreflang` y `x-default`                    |
+| `JobPosting`                       | los 9 campos obligatorios de Google presentes y bien formados                         |
+| Rendimiento móvil (Lighthouse, 4G) | listado **97** · detalle 95 · landing 97 — FCP 0,8 s, LCP 2,6 s, TBT 10 ms, CLS 0,001 |
+| `test:security` / `:drill`         | 57/57 y el simulacro en verde                                                         |
+| `typecheck` · `lint` · `format`    | limpios                                                                               |
+
+**Lo único del guion de la fase que no se pudo cerrar**: pasar una vacante por
+el **Google Rich Results Test**. Necesita una URL pública, y producción no tiene
+ni una vacante — el seed de vacantes reales es de la fase 10. El marcado se
+validó campo a campo contra los requisitos documentados de Google. Cuando exista
+la primera vacante real en `talpass.eu`, se pasa por
+https://search.google.com/test/rich-results y se anota aquí.
+
+---
+
+## Pendientes de Ulises (fuera del repositorio)
+
+1. **Guardar el llavero de cifrado de `.env.local` en el gestor de contraseñas.**
+   Es el único secreto del proyecto que **no se puede regenerar**: perderlo es
+   perder los IBAN cifrados, por diseño. Lo más urgente de esta lista.
+2. **Rotar la contraseña de la base de datos** — pasó por el chat. Está en
+   `.env.local`, ignorado por git, así que es higiene, no urgencia.
+3. **El bloque de producción de la fase 3**, arriba. Es lo que abre el sitio a
+   Google.
+4. **`talpass.com` queda aplazado por presupuesto.** Decisión consciente: es la
+   mitigación del riesgo de ADR-12 y sigue pendiente. Revisarlo cuando haya caja.
+5. **En tu bandeja hay un correo de "Confirm your email address"** con alias
+   `+smtp-probe-…`. Es de la medición del límite de envío; la cuenta ya está
+   borrada y se puede ignorar.
+
+---
+
+## Para trabajar en local, sea cual sea la fase
 
 ```bash
 pnpm db:start        # OrbStack tiene que estar arrancado
+pnpm seed:demo       # 3 vacantes publicadas: sin ellas el listado sale vacío
 pnpm dev:local       # Next contra la base local
 ```
 
@@ -71,65 +170,36 @@ Procedimiento completo en `docs/CONVENTIONS.md`.
 
 ---
 
-## Lo que la fase 2 dejó pendiente y hay que atender
-
-Los tres puntos de abajo **entran en el alcance de la Fase 3** por decisión del 2026-08-15, y su prompt (`docs/prompts/fase-3.md`) arranca con ellos antes de tocar el SEO.
-
-1. **Adelantar Resend como SMTP.** Es lo más urgente de esta lista. El límite
-   de envío de producción está **medido**: el segundo correo de la misma hora
-   ya devuelve `over_email_send_rate_limit`. Con eso no se puede registrar ni
-   un puñado de candidatos reales, así que la configuración de Resend, hoy
-   planificada en la fase 8, hay que traerla antes de mandar tráfico. Volver a
-   medir cuando esté: `node --env-file=.env.local scripts/probe-email-limit.mts <correo>`.
-
-2. **Aplicar a producción las migraciones de la fase 2.** Están validadas en
-   local (`db:reset` desde cero, 57 tests y simulacro en verde) pero **no
-   aplicadas**. Ya no falta el token: `supabase login` está hecho y el proyecto
-   enlazado, así que `pnpm db:push:prod` funciona. Son tres:
-   `20260814090000_grants.sql`, `20260814100000_onboarding.sql` y
-   `20260814100100_signup_consents.sql`.
-
-3. **Declarar las URLs de retorno en el panel de producción**
-   (Authentication › URL Configuration): `site_url` y las
-   `additional_redirect_urls` que ya están en `supabase/config.toml` para
-   local, apuntando al dominio real. **Sin esto el registro no funciona en
-   producción**: Supabase ignora el `emailRedirectTo` de la aplicación, manda
-   el enlace a la home y la sesión no se canjea nunca. No da ningún error.
-
----
-
-## Pendientes de Ulises (fuera del repositorio)
-
-1. **Guardar el llavero de cifrado de `.env.local` en el gestor de contraseñas.** Es el único secreto del proyecto que **no se puede regenerar**: perderlo es perder los IBAN cifrados, por diseño. Lo más urgente de esta lista.
-2. **Rotar la contraseña de la base de datos** — pasó por el chat. Está en `.env.local`, ignorado por git, así que es higiene, no urgencia.
-3. **`talpass.eu` está conectado y funcionando** (2026-08-15). Verificado: `https://talpass.eu` sirve el sitio desde `fra1` y `https://www.talpass.eu` devuelve 308 hacia el apex, que es el canónico decidido en ADR-12. Hubo un susto por el camino —Vercel puso por defecto la redirección al revés, hacia un `www` que aún no existía en el DNS— y quedó resuelto.
-
-   **Queda pendiente de la fase 3:** actualizar `NEXT_PUBLIC_SITE_URL` y `NEXT_PUBLIC_SITE_NAME` en Vercel y las URLs de retorno de Supabase del punto 3 de arriba. Todas con el apex `https://talpass.eu`, **sin mezclar hosts**: si una queda con `www` y otra sin él, el canje de sesión del correo de confirmación se rompe y la señal de SEO se parte en dos.
-
-4. **`talpass.com` queda aplazado por presupuesto.** Decisión consciente, no un olvido: es la mitigación del riesgo de ADR-12 (un `.eu` se pierde si el titular deja de estar establecido en la UE) y sigue pendiente. Revisarlo cuando haya caja.
-5. **En tu bandeja hay un correo de "Confirm your email address"** con alias `+smtp-probe-…`. Es de la medición del límite de envío; la cuenta ya está borrada y se puede ignorar.
-
----
-
-## Decisiones tomadas el 2026-08-15, ya reflejadas en el roadmap
-
-- **Resend se adelanta de la fase 8 a la fase 3**, y solo el transporte SMTP; las plantillas i18n siguen en la 8. Motivo: sin correo que aguante, la máquina de tráfico que construye la fase 3 aterriza en un registro roto.
-- **La bandera de indexación deja de ser automática al cerrar la fase 3.** Se enciende únicamente tras comprobar un alta real de punta a punta contra producción. Si el alta no funciona, la fase entrega el SEO con la bandera apagada y lo dice (ADR-16).
-
----
-
 ## Decisiones abiertas, para cuando toquen
 
-- **ADR-06** · ¿La ETT seguirá creando vacantes sin moderación? Se decide tras ver la calidad real de las ofertas de la primera ETT.
-- **ADR-04** · `documents_requested` no se puede saltar. Si estorba en la fase 6, se cambia con una decisión, no con un parche.
-- **ADR-19** · Los `grant` de tabla replican los amplios de Supabase por defecto. Afinarlos por tabla y operación es endurecimiento, fase 10.
-- **Fase 7** · El audio se reproduce en la bolsa con URL firmada de ≤5 min y escucha registrada (ADR-18). El consentimiento ya se recoge y se revoca; **la fase 7 tiene que leerlo antes de firmar nada**.
+- **ADR-06** · ¿La ETT seguirá creando vacantes sin moderación? Se decide tras
+  ver la calidad real de las ofertas de la primera ETT.
+- **ADR-04** · `documents_requested` no se puede saltar. Si estorba en la fase 6,
+  se cambia con una decisión, no con un parche.
+- **ADR-19** · Los `grant` de tabla replican los amplios de Supabase por defecto.
+  Afinarlos por tabla y operación es endurecimiento, fase 10.
+- **ADR-24** · El listado lleva todas las vacantes publicadas en el HTML. Cuando
+  el volumen lo pida, se pagina en servidor conservando el prerenderizado de la
+  primera página. No antes.
+- **Fase 7** · El audio se reproduce en la bolsa con URL firmada de ≤5 min y
+  escucha registrada (ADR-18). El consentimiento ya se recoge y se revoca; **la
+  fase 7 tiene que leerlo antes de firmar nada**.
 
 ---
 
 ## Cosas que no deben olvidarse
 
-- **Las rutas públicas no tocan la sesión** (ADR-11, ADR-13). Se verifica en cada fase con el procedimiento de `docs/CONVENTIONS.md`. Si la home deja de ser estática, el SEO está roto aunque la página se vea bien.
-- **Nunca `db reset` ni el simulacro contra producción** (ADR-17). Los scripts ya se niegan solos.
+- **Las rutas públicas no tocan la sesión** (ADR-11, ADR-13), y desde la fase 3
+  tampoco `searchParams` ni `useSearchParams`. Se verifica en cada fase con el
+  procedimiento de `docs/CONVENTIONS.md`.
+- **Que una ruta salga `●` en el build no garantiza que su HTML tenga
+  contenido.** Un `Suspense` con `useSearchParams` dentro se prerenderiza vacío.
+  Se mira también el HTML, no solo la letra del build.
+- **Qué cliente de Supabase desde dónde** (ADR-22): si un fichero lo puede
+  importar una ruta pública, no puede tocar `cookies()`. Tabla en
+  `docs/CONVENTIONS.md`.
+- **Nunca `db reset` ni el simulacro contra producción** (ADR-17). Los scripts ya
+  se niegan solos.
 - La marca no se escribe en el JSX: sale de `src/config/site.ts` (ADR-12).
-- **Cero texto en el JSX, tampoco los errores.** Las Server Actions devuelven claves de traducción, no frases.
+- **Cero texto en el JSX, tampoco los errores.** Las Server Actions devuelven
+  claves de traducción, no frases.

@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
+import { Geist } from 'next/font/google';
 import { notFound } from 'next/navigation';
 import { hasLocale, NextIntlClientProvider } from 'next-intl';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
@@ -17,11 +17,9 @@ const geistSans = Geist({
   display: 'swap',
 });
 
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
-  subsets: ['latin'],
-  display: 'swap',
-});
+// Geist Mono se cargaba aquí y no se usaba en ninguna pantalla: 29 KB de
+// tipografía en el camino crítico de un producto cuyo candidato entra con 4G
+// (ADR-10). Se retira; el día que haga falta una monoespaciada, vuelve.
 
 /** Prerenderiza un árbol por idioma. Sin esto no habría páginas estáticas. */
 export function generateStaticParams() {
@@ -40,8 +38,16 @@ export async function generateMetadata({
     metadataBase: new URL(siteConfig.url),
     title: t('title', { brand: siteConfig.name }),
     description: t('description'),
+    // `hreflang` por defecto del árbol de idioma. Cada página pública lo
+    // sobrescribe con el suyo y con su canónica vía `seoMetadata`; esto es la
+    // red de seguridad para las que no lo hacen.
     alternates: {
-      languages: Object.fromEntries(routing.locales.map((l) => [l, `/${l}`])),
+      languages: Object.fromEntries(
+        routing.locales.map((l) => [
+          l,
+          new URL(`/${l}`, siteConfig.url).toString(),
+        ]),
+      ),
     },
   };
 }
@@ -63,10 +69,7 @@ export default async function LocaleLayout({
   setRequestLocale(locale);
 
   return (
-    <html
-      lang={locale}
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
+    <html lang={locale} className={`${geistSans.variable} h-full antialiased`}>
       <body className="flex min-h-full flex-col">
         <NextIntlClientProvider>
           <SiteHeader />

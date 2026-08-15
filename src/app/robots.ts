@@ -1,5 +1,6 @@
 import type { MetadataRoute } from 'next';
 
+import { siteConfig } from '@/config/site';
 import { PROTECTED_EXTERNAL_PREFIXES } from '@/i18n/protected-routes';
 
 /**
@@ -35,5 +36,9 @@ export default function robots(): MetadataRoute.Robots {
         disallow: [...PROTECTED_EXTERNAL_PREFIXES],
       },
     ],
+    // Solo se anuncia con la bandera encendida: apuntar a un sitemap desde un
+    // `Disallow: /` es pedirle a Google que rastree lo que se le acaba de
+    // prohibir.
+    sitemap: new URL('/sitemap.xml', siteConfig.url).toString(),
   };
 }

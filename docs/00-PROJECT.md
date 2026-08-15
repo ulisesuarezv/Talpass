@@ -306,6 +306,92 @@ _Alternativa descartada:_ relajar los `not null` de `candidates`. Habría metido
 
 _Consecuencia:_ es una tabla con datos personales sin validar. Solo su dueño tiene política — ni el admin — y la batería de seguridad la incluye entre las tablas que nadie más puede leer.
 
+### ADR-22 · Tres clientes de Supabase, y el de las rutas públicas no lee cookies
+
+_(Fase 3.)_
+
+Hay **tres** clientes y cada uno tiene un sitio:
+
+| Fichero               | Lee cookies | Dónde se puede usar                                 |
+| --------------------- | ----------- | --------------------------------------------------- |
+| `lib/supabase/public` | **No**      | rutas públicas y estáticas, `sitemap.ts`, catálogos |
+| `lib/supabase/server` | Sí          | **solo** `(private)`: Server Actions y área privada |
+| `lib/supabase/client` | —           | navegador                                           |
+
+_Motivo:_ hasta la fase 2 solo había dos, y `lib/catalogs.ts` usaba el de
+servidor. Eso convertía en dinámica cualquier página pública que quisiera leer
+un catálogo — o sea, todas las de esta fase — y con ella se iban el ISR y el
+caché de CDN de los que vive el SEO (ADR-11, ADR-13).
+
+El cliente público usa la **anon key y respeta la RLS**: llega exactamente a lo
+que llega un visitante sin cuenta —catálogos, ETTs aprobadas y vacantes
+`published`— y a nada más. No es una puerta de servicio; lo que decide qué se ve
+sigue siendo la base de datos. `persistSession` y `autoRefreshToken` van a
+`false` porque detrás de una página prerenderizada no hay ningún usuario.
+
+_Consecuencia:_ `lib/catalogs.ts` pasa al cliente público y por tanto vale para
+las dos zonas. La regla que hay que recordar es una sola: **si el fichero lo
+puede importar una ruta pública, no puede tocar `cookies()`.**
+
+### ADR-23 · Las landings programáticas se derivan de las vacantes vivas
+
+_(Fase 3.)_
+
+Cuatro familias de landing, todas estáticas: país (`/es/trabajo/alemania`),
+país + sector (`/es/trabajo/alemania/logistica`), país + alojamiento
+(`/es/trabajo/alemania/con-alojamiento`) y ciudad
+(`/es/trabajo/ciudad/berlin`).
+
+**Solo existe la combinación que tiene al menos una vacante publicada**, y
+`dynamicParams = false`: lo que no está generado devuelve 404.
+
+_Motivo:_ el producto cartesiano de catálogos daría cientos de URLs indexables
+vacías. Es el mismo argumento por el que una vacante no se publica sin
+traducción, aplicado a la capa de arriba: gastar el rastreo de Google en páginas
+sin contenido cuesta meses de deshacer (ADR-16), y una landing vacía tampoco le
+sirve de nada al candidato que llega buscando.
+
+**Los slugs se derivan del nombre traducido del catálogo, no se guardan en una
+columna.** `alemania`/`germany`, `logistica`/`logistics`. Así abrir un idioma
+sigue siendo insertar filas en `*_translations` (ADR-07) y nadie tiene que
+acordarse de rellenar un slug por idioma.
+
+_Consecuencia que costó un fallo real:_ como el slug cambia de idioma, **el
+`hreflang` no puede reutilizar los params del idioma actual**. La primera
+versión generaba `/en/work/alemania`, una URL que no existe, y Google descarta
+el emparejamiento entero cuando el enlace recíproco falla. Por eso
+`seoMetadata` acepta una función `(locale) => href` y las landings pasan
+`landingHref(landing)`.
+
+La ciudad es la excepción: es texto libre de la vacante, no un catálogo, así que
+tiene un solo nombre y un solo slug en todos los idiomas.
+
+### ADR-24 · El listado filtra en cliente; lo indexable son las landings
+
+_(Fase 3.)_
+
+`/es/ofertas` se prerenderiza con **todas** las vacantes publicadas dentro del
+HTML, y los filtros —país, sector, idioma, turno, alojamiento, transporte,
+carné— se aplican en el navegador escondiendo tarjetas.
+
+_Motivo:_ filtrar en servidor obliga a leer `searchParams`, y eso vuelve la ruta
+dinámica. Las superficies filtradas que sí interesa indexar no son las
+combinaciones de la query: son las landings de ADR-23, que son rutas estáticas
+de verdad y además tienen texto propio.
+
+**Y no se usa `useSearchParams`.** Ese hook obliga a un `Suspense`, y en una
+página prerenderizada Next deja ese subárbol para el cliente: el HTML estático
+salía **sin una sola vacante dentro** — comprobado, no supuesto. El estado del
+filtro es la query de la URL, leída con `useSyncExternalStore` (snapshot de
+servidor: cadena vacía) y escrita con `history.replaceState`. Así el servidor
+pinta la lista entera, un enlace ya filtrado se restaura al montar, y el
+candidato que aún no ha ejecutado el JavaScript ve las ofertas igual.
+
+_Coste asumido:_ la página lleva todas las vacantes publicadas. A escala de MVP
+es más rápido que paginar; cuando el listado crezca lo suficiente para que
+importe, se pagina en servidor y se conserva el prerenderizado de la primera
+página. No antes.
+
 ---
 
 ## 5. Reglas de negocio

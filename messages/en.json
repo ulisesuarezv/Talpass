@@ -37,8 +37,111 @@
   },
   "Jobs": {
     "title": "Job openings",
-    "subtitle": "No openings published yet. This section goes live in phase 3.",
-    "empty": "Nothing to show yet."
+    "subtitle": "Browsing is free and needs no account. Filter by what matters to you.",
+    "empty": "No openings match those filters. Try removing one.",
+    "results": "{count, plural, =0 {No results} one {# opening} other {# openings}}",
+    "meta": {
+      "title": "Job openings in Europe",
+      "description": "Every verified opening for Spanish- and Portuguese-speaking candidates. Filter by country, sector, language, housing and shift. Browsing is free."
+    },
+    "filters": {
+      "any": "Any",
+      "country": "Country",
+      "sector": "Sector",
+      "language": "Language required",
+      "shift": "Shift",
+      "perks": "What the job includes",
+      "housing": "Housing included",
+      "transport": "Transport included",
+      "drivingLicense": "Driving licence required",
+      "clear": "Clear filters"
+    },
+    "shifts": {
+      "morning": "Morning",
+      "afternoon": "Afternoon",
+      "night": "Night",
+      "rotating": "Rotating shifts"
+    },
+    "periods": {
+      "hour": "hour",
+      "month": "month"
+    },
+    "salaryFrom": "From {min} per {period}",
+    "salaryRange": "{min} – {max} per {period}",
+    "facts": {
+      "yes": "Yes",
+      "no": "No",
+      "housing": "Housing",
+      "transport": "Transport",
+      "drivingLicense": "Licence",
+      "housingLabel": "Housing",
+      "housingWithPrice": "Yes, {price} per month",
+      "transportLabel": "Transport",
+      "drivingLicenseLabel": "Driving licence",
+      "weeklyHoursLabel": "Hours",
+      "weeklyHours": "{hours} h/week",
+      "contractLabel": "Minimum contract",
+      "contractMonths": "{months, plural, one {# month} other {# months}}",
+      "startDateLabel": "Start date",
+      "languageLabel": "Language",
+      "language": "{language} {level}",
+      "shiftsLabel": "Shifts"
+    },
+    "detail": {
+      "metaTitle": "{title} — {place}",
+      "postedBy": "Posted by {organization}",
+      "sections": {
+        "description": "The job",
+        "tasks": "What you'll do",
+        "requirements": "What they ask for",
+        "benefits": "What's included"
+      }
+    },
+    "cta": {
+      "title": "Sounds like you?",
+      "body": "Create your {brand} account, complete your profile, and you can apply as soon as we verify your details.",
+      "signup": "Create my account",
+      "login": "I already have an account",
+      "free": "Candidates are never charged. No fees, no subscription."
+    },
+    "related": {
+      "title": "Similar openings",
+      "country": "Jobs in {country}",
+      "sector": "{sector} in {country}",
+      "city": "Jobs in {city}",
+      "housing": "With housing in {country}"
+    }
+  },
+  "Landing": {
+    "related": "Keep looking",
+    "country": {
+      "title": "Jobs in {place}",
+      "intro": "{count, plural, one {# verified opening} other {# verified openings}} in {place} for Spanish- and Portuguese-speaking candidates.",
+      "metaTitle": "Jobs in {place} for Spanish speakers",
+      "metaDescription": "{count, plural, one {# job opening} other {# job openings}} in {place}: warehouse, production and logistics. Many include housing and transport. Browsing is free.",
+      "link": "Jobs in {place}"
+    },
+    "city": {
+      "title": "Jobs in {place}",
+      "intro": "{count, plural, one {# verified opening} other {# verified openings}} in {place}.",
+      "metaTitle": "Jobs in {place} for Spanish speakers",
+      "metaDescription": "{count, plural, one {# job opening} other {# job openings}} in {place} for Spanish- and Portuguese-speaking candidates. Browsing is free.",
+      "link": "Jobs in {place}"
+    },
+    "sector": {
+      "title": "{sector} jobs in {place}",
+      "intro": "{count, plural, one {# verified opening} other {# verified openings}} in {sector} in {place}.",
+      "metaTitle": "{sector} jobs in {place}",
+      "metaDescription": "{count, plural, one {# job opening} other {# job openings}} in {sector} in {place} for Spanish- and Portuguese-speaking candidates. Browsing is free.",
+      "link": "{sector} in {place}"
+    },
+    "housing": {
+      "title": "Jobs with housing in {place}",
+      "intro": "{count, plural, one {# opening includes housing} other {# openings include housing}} in {place}. It's the first question anyone moving abroad asks — answered here.",
+      "metaTitle": "Jobs with housing included in {place}",
+      "metaDescription": "{count, plural, one {# job opening} other {# job openings}} in {place} with housing included. Browsing is free and needs no account.",
+      "link": "With housing in {place}"
+    }
   },
   "Auth": {
     "pending": "One moment…",

@@ -16,6 +16,12 @@ src/
       (public)/                 # ← estático, cacheado, indexable
         page.tsx                # home
         jobs/                   # /es/ofertas · /en/jobs
+          [slug]/               # detalle de vacante, con JobPosting
+        work/                   # landings programáticas (ADR-23)
+          [country]/            # /es/trabajo/alemania
+            [sector]/           # /es/trabajo/alemania/logistica
+            with-housing/       # /es/trabajo/alemania/con-alojamiento
+          city/[city]/          # /es/trabajo/ciudad/berlin
       (auth)/                   # ← estático y noindex: no lee sesión al render
         login/ signup/ check-email/
         forgot-password/ reset-password/
@@ -39,8 +45,14 @@ src/
     protected-routes.ts         # qué áreas leen sesión
   lib/
     env.ts                      # variables de entorno con fallo explícito
+    catalogs.ts                 # países, sectores, idiomas (sin cookies)
+    jobs.ts                     # lectura pública de vacantes
+    landings.ts                 # landings programáticas (ADR-23)
+    seo.ts                      # canónica, hreflang y Open Graph
+    slug.ts                     # slug desde un nombre traducido
     supabase/
       client.ts                 # navegador
+      public.ts                 # servidor SIN cookies (rutas públicas)
       server.ts                 # servidor (SOLO en área privada)
       session.ts                # refresco de sesión en el proxy
   proxy.ts                      # Next 16: sustituye a middleware.ts
@@ -77,25 +89,49 @@ detalle escondido en cada página.
 ## La regla que no se salta (ADR-11, ADR-13)
 
 **Una ruta pública nunca lee la sesión.** Ni `createClient()` de
-`lib/supabase/server`, ni `cookies()`, ni `headers()`. Leerlas la vuelve dinámica y
-deja de servirse desde el CDN, que es de donde vive el SEO.
+`lib/supabase/server`, ni `cookies()`, ni `headers()`, ni `searchParams`, ni
+`useSearchParams`. Cualquiera de ellas la vuelve dinámica y deja de servirse
+desde el CDN, que es de donde vive el SEO.
+
+### Qué cliente de Supabase desde dónde (ADR-22)
+
+| Fichero               | Lee cookies | Se puede usar desde                                  |
+| --------------------- | ----------- | ---------------------------------------------------- |
+| `lib/supabase/public` | **No**      | rutas públicas, `sitemap.ts`, catálogos — y privadas |
+| `lib/supabase/server` | Sí          | **solo** `(private)` y Server Actions                |
+| `lib/supabase/client` | —           | navegador                                            |
+
+La regla corta: **si el fichero lo puede importar una ruta pública, no puede
+tocar `cookies()`.** Por eso `lib/catalogs.ts`, `lib/jobs.ts` y `lib/landings.ts`
+van todos por el cliente público. El de servidor lleva el aviso en su cabecera.
 
 Cómo se comprueba en cualquier momento:
 
 ```bash
-pnpm build          # /es, /en, /es/jobs, /en/jobs deben salir como ● (SSG)
-                    # /[locale]/account|agency|admin deben salir como ƒ
+pnpm build:local    # públicas ● (SSG) — home, /jobs, /jobs/[slug], /work/**
+                    # /[locale]/account|agency|admin|onboarding deben salir ƒ
 ```
 
 ```bash
-pnpm build && pnpm start -p 3210
-curl -sI localhost:3210/es      | grep -i 'x-nextjs-cache\|cache-control'   # HIT, s-maxage
-curl -sI localhost:3210/es/cuenta | grep -i 'x-ett-session-checked'         # 1
-curl -sI localhost:3210/es      | grep -i 'x-ett-session-checked'           # vacío ← obligatorio
+pnpm build:local && pnpm start:local -p 3210
+curl -sI localhost:3210/es               | grep -i 'x-nextjs-cache'          # HIT
+curl -sI localhost:3210/es/ofertas       | grep -i 'x-nextjs-cache'          # HIT
+curl -sI localhost:3210/es/trabajo/alemania | grep -i 'x-nextjs-cache'       # HIT
+curl -sI localhost:3210/es/cuenta        | grep -i 'x-ett-session-checked'   # 1
+curl -sI localhost:3210/es               | grep -i 'x-ett-session-checked'   # vacío ← obligatorio
 ```
 
 Si una ruta pública devuelve `x-ett-session-checked`, algo se ha filtrado y el SEO
 está roto aunque la página se vea bien.
+
+**Y una trampa que ya mordió una vez:** que la ruta salga `●` no basta. Si dentro
+hay un `Suspense` cuyo contenido depende de `useSearchParams`, Next prerenderiza
+la página pero deja ese subárbol para el cliente, y el HTML sale vacío por
+dentro. Se comprueba mirando el HTML, no la letra del build:
+
+```bash
+curl -s localhost:3210/es/ofertas | grep -c 'href="/es/ofertas/'   # > 0
+```
 
 El estado de login en zonas públicas se resuelve **en cliente**, con
 `lib/supabase/client`. Lo hace `components/account-nav.tsx`, que es el único

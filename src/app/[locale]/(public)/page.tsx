@@ -1,8 +1,27 @@
+import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 
 import { Button } from '@/components/ui/button';
 import { siteConfig } from '@/config/site';
 import { Link } from '@/i18n/navigation';
+import type { Locale } from '@/i18n/routing';
+import { seoMetadata } from '@/lib/seo';
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: Locale }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'Metadata' });
+
+  return seoMetadata({
+    locale,
+    href: '/',
+    title: t('title', { brand: siteConfig.name }),
+    description: t('description'),
+  });
+}
 
 export default async function HomePage({
   params,

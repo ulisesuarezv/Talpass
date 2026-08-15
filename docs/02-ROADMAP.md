@@ -10,7 +10,7 @@
 | 0   | Fundaciones                       | App desplegada, `/es` y `/en` vivos        | ✅     |
 | 1   | Datos y seguridad                 | Schema + RLS probada con tests             | ✅     |
 | 2   | Auth y onboarding candidato       | Registro real end-to-end                   | ✅     |
-| 3   | Vacantes públicas + SEO           | Vacante indexable en Google Jobs           | ⬜     |
+| 3   | Vacantes públicas + SEO           | Vacante indexable en Google Jobs           | ✅     |
 | 4   | Verificación + backoffice         | Documento subido → aprobado por admin      | ⬜     |
 | 5   | Aplicaciones                      | Candidato verificado aplica y ve su estado | ⬜     |
 | 6   | Portal ETT                        | ETT gestiona vacantes y aplicaciones       | ⬜     |
@@ -182,6 +182,55 @@ Listado con filtros (país, sector, idioma, alojamiento, transporte, carnet, tur
 **Verificar obligatoriamente** _(ADR-11)_: las rutas públicas **no** pasan por el middleware de sesión y se sirven cacheadas. Si aparecen como dinámicas, el SEO está roto aunque la página se vea bien.
 
 > Se coloca antes que la verificación **a propósito**: en cuanto exista, ya se puede empezar a captar tráfico y candidatos mientras se construye el resto.
+
+### ✅ Cerrada — con el bloque de producción pendiente y la indexación APAGADA
+
+**El código de la fase está entero y verificado en local.** Lo que queda abierto
+no es código: son tres gestos contra producción que esta sesión no pudo hacer
+(ver `docs/ESTADO.md`), y de ellos depende la bandera de indexación.
+
+Listado con filtros · detalle de vacante con `JobPosting` · **cuatro familias de
+landings programáticas** con enlazado interno en los dos sentidos · `sitemap.ts`
+dinámico con `hreflang` en las entradas · `hreflang` + canónica + Open Graph en
+cada página · CTA a registro en vacante y en landing · todo el copy en `es` y `en`.
+
+| Verificación                        | Resultado                                                                                                                         |
+| ----------------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| `next build`                        | **41 páginas públicas `●`**: home, listado, 6 vacantes y 16 landings (2 país + 6 sector + 2 alojamiento + 6 ciudad); privadas `ƒ` |
+| Cabeceras en `next start`           | públicas `x-nextjs-cache: HIT`, **sin** `x-ett-session-checked` ni `Set-Cookie`; `/es/cuenta` con `1`                             |
+| Vacantes dentro del HTML estático   | 3 enlaces de vacante en `/es/ofertas` sin ejecutar JavaScript                                                                     |
+| `hreflang` recíproco                | `/es/trabajo/alemania/logistica` ↔ `/en/work/germany/logistics`, con `x-default`                                                  |
+| Enlazado interno                    | landing → 3 vacantes y → 7 landings vecinas; vacante → sus 4 landings                                                             |
+| `JobPosting`                        | válido, con `baseSalary`, `jobLocation`, `datePosted`, `employmentType` y `directApply: false`                                    |
+| Rendimiento móvil (Lighthouse, 4G)  | listado **97** (FCP 0,8 s · LCP 2,6 s · TBT 10 ms · CLS 0,001); detalle 95; landing 97                                            |
+| `test:security` / `:drill`          | 57/57 y el simulacro en verde, sin tocar una sola migración                                                                       |
+| `typecheck`, `lint`, `format:check` | limpios                                                                                                                           |
+
+Decisiones nuevas: **ADR-22** (tres clientes de Supabase; el público no lee
+cookies), **ADR-23** (landings derivadas de las vacantes vivas, `dynamicParams`
+en `false`, slugs desde el nombre traducido) y **ADR-24** (el listado filtra en
+cliente, sin `useSearchParams`).
+
+**Tres cosas que la fase 3 descubrió:**
+
+1. **Que una ruta salga `●` en el build no significa que su HTML tenga
+   contenido.** La primera versión del listado envolvía el filtro en un
+   `Suspense` con `useSearchParams` dentro: Next prerenderizaba la página y
+   dejaba ese subárbol para el cliente, así que el HTML salía **sin una sola
+   vacante**. La comprobación del ADR-11 se amplía en `docs/CONVENTIONS.md`:
+   además de la letra del build, se mira el HTML.
+2. **Un `hreflang` con slugs traducidos no puede reutilizar los params del
+   idioma actual.** Generaba `/en/work/alemania`, que no existe, y un enlace
+   recíproco roto invalida el emparejamiento entero. Corregido con
+   `landingHref(landing)`.
+3. **Geist Mono se descargaba en todas las páginas y no se usaba en ninguna.**
+   29 KB en el camino crítico de un producto mobile-first. Retirarla subió el
+   listado de 91 a 97 y bajó el LCP de 3,5 s a 2,6 s.
+
+Anotado, fuera de alcance de esta fase: aplicar a una vacante sigue en la fase 5
+y por eso el `JobPosting` declara `directApply: false`; paginar el listado se
+hará cuando el volumen lo pida (ADR-24); el `favicon.ico` pesa 26 KB y es
+trabajo de la fase 10; las plantillas de correo i18n siguen en la fase 8.
 
 ---
 

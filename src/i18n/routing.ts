@@ -43,6 +43,28 @@ export const pathnames = {
     en: '/jobs/[slug]',
   },
 
+  // Landings programáticas (ADR-23). Los segmentos dinámicos se rellenan con
+  // slugs derivados del nombre TRADUCIDO del catálogo, así que la URL cambia
+  // entera de idioma: /es/trabajo/alemania/logistica ↔ /en/work/germany/logistics.
+  '/work/[country]': {
+    es: '/trabajo/[country]',
+    en: '/work/[country]',
+  },
+  '/work/[country]/[sector]': {
+    es: '/trabajo/[country]/[sector]',
+    en: '/work/[country]/[sector]',
+  },
+  // Segmento fijo delante del dinámico: Next resuelve antes lo estático, así
+  // que `/trabajo/ciudad/berlin` nunca se confunde con un país llamado "ciudad".
+  '/work/[country]/with-housing': {
+    es: '/trabajo/[country]/con-alojamiento',
+    en: '/work/[country]/with-housing',
+  },
+  '/work/city/[city]': {
+    es: '/trabajo/ciudad/[city]',
+    en: '/work/city/[city]',
+  },
+
   // Autenticación. No leen sesión al renderizar: son páginas estáticas con un
   // formulario en cliente, así que no entran en `protected-routes.ts`.
   '/login': {

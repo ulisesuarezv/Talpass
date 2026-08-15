@@ -37,8 +37,111 @@
   },
   "Jobs": {
     "title": "Ofertas de trabajo",
-    "subtitle": "Aún no hay vacantes publicadas. Esta sección se activa en la fase 3.",
-    "empty": "Sin resultados por ahora."
+    "subtitle": "Verlas es libre y no hace falta cuenta. Filtra por lo que necesites.",
+    "empty": "No hay ofertas que encajen con esos filtros. Prueba a quitar alguno.",
+    "results": "{count, plural, =0 {Sin resultados} one {# oferta} other {# ofertas}}",
+    "meta": {
+      "title": "Ofertas de trabajo en Europa",
+      "description": "Todas las ofertas verificadas para candidatos hispanohablantes y lusófonos. Filtra por país, sector, idioma, alojamiento y turno. Ver ofertas es gratis."
+    },
+    "filters": {
+      "any": "Cualquiera",
+      "country": "País",
+      "sector": "Sector",
+      "language": "Idioma que piden",
+      "shift": "Turno",
+      "perks": "Qué incluye la oferta",
+      "housing": "Con alojamiento",
+      "transport": "Con transporte",
+      "drivingLicense": "Piden carné de conducir",
+      "clear": "Quitar filtros"
+    },
+    "shifts": {
+      "morning": "Mañana",
+      "afternoon": "Tarde",
+      "night": "Noche",
+      "rotating": "Turnos rotativos"
+    },
+    "periods": {
+      "hour": "hora",
+      "month": "mes"
+    },
+    "salaryFrom": "Desde {min} por {period}",
+    "salaryRange": "{min} – {max} por {period}",
+    "facts": {
+      "yes": "Sí",
+      "no": "No",
+      "housing": "Alojamiento",
+      "transport": "Transporte",
+      "drivingLicense": "Carné",
+      "housingLabel": "Alojamiento",
+      "housingWithPrice": "Sí, {price} al mes",
+      "transportLabel": "Transporte",
+      "drivingLicenseLabel": "Carné de conducir",
+      "weeklyHoursLabel": "Jornada",
+      "weeklyHours": "{hours} h/semana",
+      "contractLabel": "Contrato mínimo",
+      "contractMonths": "{months, plural, one {# mes} other {# meses}}",
+      "startDateLabel": "Incorporación",
+      "languageLabel": "Idioma",
+      "language": "{language} {level}",
+      "shiftsLabel": "Turnos"
+    },
+    "detail": {
+      "metaTitle": "{title} — {place}",
+      "postedBy": "Oferta de {organization}",
+      "sections": {
+        "description": "La oferta",
+        "tasks": "Qué harás",
+        "requirements": "Qué piden",
+        "benefits": "Qué incluye"
+      }
+    },
+    "cta": {
+      "title": "¿Te encaja?",
+      "body": "Crea tu cuenta en {brand}, completa tu perfil y podrás aplicar en cuanto verifiquemos tus datos.",
+      "signup": "Crear mi cuenta",
+      "login": "Ya tengo cuenta",
+      "free": "Al candidato no se le cobra nunca. Ni comisión, ni suscripción."
+    },
+    "related": {
+      "title": "Ofertas parecidas",
+      "country": "Trabajo en {country}",
+      "sector": "{sector} en {country}",
+      "city": "Trabajo en {city}",
+      "housing": "Con alojamiento en {country}"
+    }
+  },
+  "Landing": {
+    "related": "Sigue buscando",
+    "country": {
+      "title": "Trabajo en {place}",
+      "intro": "{count, plural, one {# oferta verificada} other {# ofertas verificadas}} en {place} para candidatos hispanohablantes y lusófonos.",
+      "metaTitle": "Trabajo en {place} para hispanohablantes",
+      "metaDescription": "{count, plural, one {# oferta} other {# ofertas}} de trabajo en {place}: almacén, producción y logística. Muchas con alojamiento y transporte incluidos. Ver ofertas es gratis.",
+      "link": "Trabajo en {place}"
+    },
+    "city": {
+      "title": "Trabajo en {place}",
+      "intro": "{count, plural, one {# oferta verificada} other {# ofertas verificadas}} en {place}.",
+      "metaTitle": "Trabajo en {place} para hispanohablantes",
+      "metaDescription": "{count, plural, one {# oferta} other {# ofertas}} de trabajo en {place} para candidatos hispanohablantes y lusófonos. Ver ofertas es gratis.",
+      "link": "Trabajo en {place}"
+    },
+    "sector": {
+      "title": "Trabajo de {sector} en {place}",
+      "intro": "{count, plural, one {# oferta verificada} other {# ofertas verificadas}} de {sector} en {place}.",
+      "metaTitle": "Trabajo de {sector} en {place}",
+      "metaDescription": "{count, plural, one {# oferta} other {# ofertas}} de {sector} en {place} para candidatos hispanohablantes y lusófonos. Ver ofertas es gratis.",
+      "link": "{sector} en {place}"
+    },
+    "housing": {
+      "title": "Trabajo con alojamiento en {place}",
+      "intro": "{count, plural, one {# oferta incluye alojamiento} other {# ofertas incluyen alojamiento}} en {place}. Es la primera pregunta de quien se muda: aquí está resuelta.",
+      "metaTitle": "Trabajo con alojamiento en {place}",
+      "metaDescription": "{count, plural, one {# oferta} other {# ofertas}} de trabajo en {place} con alojamiento incluido. Ver ofertas es gratis y no hace falta cuenta.",
+      "link": "Con alojamiento en {place}"
+    }
   },
   "Auth": {
     "pending": "Un momento…",
