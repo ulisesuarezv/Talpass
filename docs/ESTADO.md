@@ -1,8 +1,8 @@
 # Estado del proyecto — punto de retomada
 
 > Última actualización: **2026-08-16**. Fase 3 **construida y verificada en local**;
-> del bloque de producción que la acompaña solo está hecho el dominio verificado
-> en Resend, y la bandera de indexación sigue **APAGADA**.
+> del bloque de producción que la acompaña ya están hechos las **migraciones** y
+> el **dominio verificado en Resend**; la bandera de indexación sigue **APAGADA**.
 > **La fase 4 se lanza el 2026-08-16 en paralelo**: se construye contra la base
 > local y no depende de este bloque.
 > Este documento dice exactamente dónde se dejó el trabajo y cuál es el siguiente paso.
@@ -40,11 +40,22 @@ redirige, ADR-12) · `ettrecruiter.vercel.app` sigue respondiendo como dominio a
 
 ## Lo primero al retomar — el bloque de producción de la fase 3
 
-Son **cuatro gestos**, en este orden. Los tres primeros no los pudo hacer la
-sesión que construyó la fase: el primero lo bloqueó el permiso de la herramienta
-y los dos siguientes viven en paneles web. **El cuarto depende de los tres.**
+Son **cuatro gestos**, en este orden. **El 1 está hecho** (2026-08-16); quedan el
+2 y el 3, que viven en paneles web, y **el 4 depende de los tres.**
 
-### 1. Aplicar las tres migraciones pendientes a producción
+### 1. ~~Aplicar las tres migraciones pendientes a producción~~ ✅ HECHO, 2026-08-16
+
+Ulises lo ejecutó desde la sesión y **el PM lo verificó**: `supabase migration
+list --linked` devuelve **17 migraciones con `local` y `remote` idénticos y sin
+huecos**, las tres nuevas incluidas. Producción está al día con el repositorio.
+
+No se pudo repetir la auditoría de RLS contra producción desde la sesión —el
+clasificador deniega usar la `service_role` contra producción, y hace bien—.
+No hace falta: son las mismas tres migraciones validadas en local con `db:reset`
+desde cero y `test:security` 57/57, y `grants.sql` contra el proyecto alojado es
+el no-op que documentó la fase 2. Se recomprobará en la auditoría de la fase 10.
+
+<details><summary>Cómo se hizo, por si hay que repetirlo</summary>
 
 Validadas en local en esta misma sesión: `db:reset` desde cero, `test:security`
 **57/57** y el simulacro en verde. `supabase migration list --linked` y un
@@ -62,9 +73,11 @@ Ejecútalo tú, desde esta sesión, con el prefijo `!`:
 ! printf 'produccion\nY\n' | pnpm db:push:prod
 ```
 
-> La sesión intentó lanzarlo dos veces y el clasificador de permisos lo denegó
-> por ser una escritura contra producción. **No es un fallo del proyecto**: el
-> guardarraíl de `db:push:prod` funcionó, y encima de él hay otro.
+> La sesión no pudo lanzarlo: el clasificador de permisos deniega las escrituras
+> contra producción. **No es un fallo del proyecto**: el guardarraíl de
+> `db:push:prod` funcionó, y encima de él hay otro. Lo ejecuta Ulises con `!`.
+
+</details>
 
 ### 2. Resend como SMTP de Supabase
 
