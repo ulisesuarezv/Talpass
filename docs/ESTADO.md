@@ -1,10 +1,11 @@
 # Estado del proyecto — punto de retomada
 
-> Última actualización: **2026-08-16**. La fase 3 **ya está desplegada y
-> verificada en producción**, y de su bloque solo queda el **alta real** (paso 4).
-> La bandera de indexación sigue **APAGADA** hasta que esa alta funcione.
-> **La fase 4 se lanza el 2026-08-16 en paralelo**: se construye contra la base
-> local y no depende de este bloque.
+> Última actualización: **2026-08-16**. **El bloque de producción de la fase 3
+> está cerrado entero**: migraciones, SMTP, URLs de retorno, despliegue y alta
+> real, todo hecho y verificado. La fase 3 sigue 🟡 por **un solo criterio**: el
+> Google Rich Results Test, que necesita una vacante pública real.
+> La bandera de indexación sigue **APAGADA a propósito** hasta que existan esas
+> vacantes. **Siguiente paso: la fase 4**, con `docs/prompts/fase-4.md`.
 > Este documento dice exactamente dónde se dejó el trabajo y cuál es el siguiente paso.
 > El detalle de cada fase está en `docs/02-ROADMAP.md`; las decisiones, en `docs/00-PROJECT.md`.
 
@@ -40,8 +41,9 @@ redirige, ADR-12) · `ettrecruiter.vercel.app` sigue respondiendo como dominio a
 
 ## Lo primero al retomar — el bloque de producción de la fase 3
 
-**Actualizado el 2026-08-16: hechos los pasos 1, 2 y 3, más un despliegue que no
-estaba en la lista y hacía falta (3 bis). Queda solo el 4, el alta real.**
+**Cerrado el 2026-08-16.** Los cuatro pasos, más un quinto que no estaba en la
+lista y resultó ser el que faltaba de verdad: **desplegar** (3 bis). Se deja
+escrito porque explica cómo está montado el entorno y qué falló por el camino.
 
 ### 1. ~~Aplicar las tres migraciones pendientes a producción~~ ✅ HECHO, 2026-08-16
 
@@ -189,19 +191,33 @@ de 13.** No es un fallo: producción no tiene ni una vacante, así que no hay
 páginas de detalle ni landings que derivar (ADR-23). Es exactamente el catálogo
 vacío que la fase 4 viene a resolver.
 
-### 4. Alta real end-to-end y, solo entonces, la bandera
+### 4. ~~Alta real end-to-end~~ ✅ HECHO, 2026-08-16 — la bandera espera
 
-Con 1–3 hechos: registrarse de verdad en `https://talpass.eu`, recibir el
-correo, confirmarlo y completar el onboarding. **Si eso funciona**, y solo
-entonces:
+Ulises se registró de verdad en `https://talpass.eu/es/registro`, recibió el
+correo, lo confirmó **entrando con la sesión hecha** y completó el onboarding.
+Con eso quedan probados por el camino real los tres pasos anteriores: las
+migraciones, el SMTP de Resend y las URLs de retorno.
 
-- volver a medir el límite de envío:
-  `node --env-file=.env.local scripts/probe-email-limit.mts <correo>`
-- poner `NEXT_PUBLIC_ALLOW_INDEXING=true` **en producción y solo ahí**.
+> **Cuidado al verificar esto con `curl`.** Una llamada directa a
+> `auth/v1/signup` **no manda `emailRedirectTo`**, así que GoTrue confirma el
+> correo pero devuelve al `site_url` a secas en vez de a `/api/auth/callback`,
+> que es quien canjea el código por sesión. Se aterriza en la home sin sesión y
+> parece que las URLs de retorno están mal cuando no lo están. **El retorno solo
+> se valida desde el formulario**; el `curl` sirve para probar el envío y nada más.
 
-**Si el alta no funciona, la bandera se queda apagada** (ADR-16). Indexar
-páginas cuyo CTA está roto gasta el primer rastreo de Google y sacarlas del
-índice cuesta meses.
+**La bandera sigue APAGADA, y ahora por otro motivo.** Decisión del 2026-08-16:
+el alta ya funciona, pero producción no tiene ni una vacante y su sitemap son 2
+URLs. Encenderla hoy es invitar a Google a rastrear un job board vacío —
+justo lo que se quiso evitar al mover la publicación de vacantes reales a la
+fase 4. **Se enciende al terminar la fase 4**, con ofertas reales publicadas, y
+en la misma tacada se pasa el Rich Results Test y se cierra la fase 3 entera.
+
+Cuando toque, son dos gestos y **el segundo no es opcional**:
+
+```bash
+printf 'true' | pnpm exec vercel env add NEXT_PUBLIC_ALLOW_INDEXING production
+pnpm exec vercel --prod   # es NEXT_PUBLIC_: se hornea en el build
+```
 
 ---
 

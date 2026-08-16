@@ -201,9 +201,15 @@ Listado con filtros (país, sector, idioma, alojamiento, transporte, carnet, tur
 > contra la documentación de Google es un buen trabajo, pero el criterio pide el
 > tester precisamente porque quien decide qué acepta Google es Google.
 >
-> **Se cierra** cuando estén los cuatro pasos de producción de `docs/ESTADO.md`
-> y la vacante valide en el tester. Todo lo demás de la fase está construido,
-> verificado y no hay que rehacerlo.
+> **Actualización del 2026-08-16: el bloque de producción está cerrado entero**
+> —migraciones, SMTP de Resend, URLs de retorno, despliegue y **alta real
+> verificada de punta a punta**—. De los dos criterios que faltaban, el del alta
+> ya está cumplido.
+>
+> **Queda uno solo: el Google Rich Results Test**, que necesita una vacante
+> pública real. Llega con la fase 4, y con ella se cierra esta. La bandera de
+> indexación se enciende en ese mismo momento y no antes: hoy el sitemap de
+> producción son 2 URLs y ninguna oferta.
 
 Lo construido y comprobado en local:
 
