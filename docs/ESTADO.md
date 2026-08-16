@@ -81,24 +81,45 @@ Ejecútalo tú, desde esta sesión, con el prefijo `!`:
 
 ### 2. ~~Resend como SMTP de Supabase~~ ✅ HECHO, 2026-08-16
 
-**El dominio `talpass.eu` ya está `Verified` en Resend** (confirmado por Ulises
-el 2026-08-16). El DNS estaba completo y correcto desde el 2026-08-15 — los tres
-registros que pide Resend resuelven:
+> **El dominio verificado en Resend es `updates.talpass.eu`, NO `talpass.eu`.**
+> Es el único de la cuenta (`region: eu-west-1`, `sending: enabled`). Dar por
+> hecho el dominio raíz costó dos intentos fallidos de alta el 2026-08-16: Resend
+> rechaza cualquier envío cuyo remitente no esté en un dominio verificado, y
+> GoTrue lo devuelve como `Error sending confirmation email` — un 500 opaco que
+> desde la pantalla de registro se ve como un error genérico.
+>
+> Por eso el remitente es **`no-reply@updates.talpass.eu`**. Si algún día se
+> quiere el raíz —se lee mejor en la bandeja del candidato—, hay que **añadir y
+> verificar `talpass.eu` como dominio aparte** en Resend, con su DNS.
 
-| Registro                           | Valor                                      |
-| ---------------------------------- | ------------------------------------------ |
-| `send.talpass.eu` MX               | `10 feedback-smtp.eu-west-1.amazonses.com` |
-| `send.talpass.eu` TXT              | `v=spf1 include:amazonses.com ~all`        |
-| `resend._domainkey.talpass.eu` TXT | clave DKIM presente                        |
+Configuración que funciona, en Authentication › Emails › SMTP Settings:
 
-Los dos gestos de panel, **hechos el 2026-08-16**:
+| Campo          | Valor                                                  |
+| -------------- | ------------------------------------------------------ |
+| Host / Port    | `smtp.resend.com` · `465`                              |
+| Username       | `resend` — literalmente esa palabra, no el correo      |
+| Password       | una API key de Resend con permiso de envío             |
+| Sender email   | `no-reply@updates.talpass.eu`                          |
+| Sender name    | `Talpass`                                              |
 
-1. `talpass.eu` **Verified** en Resend.
-2. Credenciales SMTP de Resend pegadas en Supabase (Authentication › Emails ›
-   SMTP Settings). Con eso los correos de GoTrue —confirmación de registro y
-   recuperación— dejan de chocar con el límite de 1–2 por hora. **Queda por
-   comprobarlo el alta real del paso 4**, que es lo que demuestra que el
-   transporte funciona de verdad.
+**Verificado contra producción el 2026-08-16**, llamando al `auth/v1/signup` con
+la clave pública, igual que hace la aplicación:
+
+| Verificación                | Resultado                                                        |
+| --------------------------- | ---------------------------------------------------------------- |
+| Alta por la API de Auth     | 200 con `confirmation_sent_at`                                   |
+| Entrega                     | Resend marca los tres envíos como **`delivered`**                |
+| Remitente                   | `"Talpass" <no-reply@updates.talpass.eu>`                        |
+| **Límite de envío**         | **3 altas en 16 segundos, ninguna rechazada**                    |
+
+Ese último dato es el que justificaba adelantar Resend de la fase 8 a la 3: con
+el SMTP por defecto, el **segundo** correo de la misma hora ya rebotaba con
+`over_email_send_rate_limit`. Ya no.
+
+> **El asunto llega en inglés** ("Confirm your email address"): es la plantilla
+> por defecto de Supabase. Las plantillas i18n son de la **fase 8**, así que
+> hasta entonces un candidato hispanohablante recibe el correo en inglés. Está
+> anotado, no es un fallo pendiente de esta fase.
 
 > **Ojo, son dos cosas distintas y la fase 4 necesita la segunda.** El SMTP del
 > panel solo mueve los correos que manda GoTrue. El aviso de "verificación
