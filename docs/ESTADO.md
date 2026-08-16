@@ -127,6 +127,29 @@ Y en Vercel, `NEXT_PUBLIC_SITE_URL=https://talpass.eu` y
 > `config.toml` local —con `site_url = http://localhost:3000`— y el resto del
 > bloque `[auth]` encima de producción.
 
+### 3 bis. Desplegar — descubierto el 2026-08-16
+
+**La fase 3 estaba en `origin` pero no en producción.** El único despliegue vivo
+era del 2026-08-13 (fases 0–2): `talpass.eu` servía el `<title>` "EttRecruiter",
+el `hreflang` apuntaba a `ettrecruiter.vercel.app` y `/robots.txt` daba 404.
+
+**Causa: el proyecto de Vercel no tiene integración con GitHub.** Un `git push`
+no despliega nada; los despliegues son manuales con `pnpm exec vercel --prod`.
+Conectar el repositorio es trabajo pendiente y evita que vuelva a pasar.
+
+> **Cuidado con el orden.** El alta real del paso 4 contra un build antiguo no
+> vale para cerrar nada: se prueba código que no es el que está en el repositorio.
+> **Desplegar va siempre antes de verificar.**
+
+Y faltaban en Vercel las **tres claves de cifrado** (`TALPASS_ENCRYPTION_KEYS`,
+`TALPASS_ENCRYPTION_ACTIVE_KEY_ID`, `TALPASS_BLIND_INDEX_KEY`), que la fase 4
+necesita para escribir `candidate_private`. Añadidas el 2026-08-16, junto con
+`NEXT_PUBLIC_SITE_URL` y `NEXT_PUBLIC_SITE_NAME` reescritas con el apex y la marca.
+
+> El proyecto fuerza *Sensitive* en todas las variables, también en las
+> `NEXT_PUBLIC_`, así que su valor **no se puede leer ni desde el panel ni con
+> `vercel env pull`**. Se verifican mirando el HTML desplegado, no el panel.
+
 ### 4. Alta real end-to-end y, solo entonces, la bandera
 
 Con 1–3 hechos: registrarse de verdad en `https://talpass.eu`, recibir el
