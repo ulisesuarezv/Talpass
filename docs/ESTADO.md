@@ -1,8 +1,8 @@
 # Estado del proyecto — punto de retomada
 
-> Última actualización: **2026-08-16**. Fase 3 **construida y verificada en local**;
-> del bloque de producción que la acompaña ya están hechos las **migraciones** y
-> el **dominio verificado en Resend**; la bandera de indexación sigue **APAGADA**.
+> Última actualización: **2026-08-16**. La fase 3 **ya está desplegada y
+> verificada en producción**, y de su bloque solo queda el **alta real** (paso 4).
+> La bandera de indexación sigue **APAGADA** hasta que esa alta funcione.
 > **La fase 4 se lanza el 2026-08-16 en paralelo**: se construye contra la base
 > local y no depende de este bloque.
 > Este documento dice exactamente dónde se dejó el trabajo y cuál es el siguiente paso.
@@ -40,8 +40,8 @@ redirige, ADR-12) · `ettrecruiter.vercel.app` sigue respondiendo como dominio a
 
 ## Lo primero al retomar — el bloque de producción de la fase 3
 
-Son **cuatro gestos**, en este orden. **El 1 está hecho** (2026-08-16); quedan el
-2 y el 3, que viven en paneles web, y **el 4 depende de los tres.**
+**Actualizado el 2026-08-16: hechos los pasos 1, 2 y 3, más un despliegue que no
+estaba en la lista y hacía falta (3 bis). Queda solo el 4, el alta real.**
 
 ### 1. ~~Aplicar las tres migraciones pendientes a producción~~ ✅ HECHO, 2026-08-16
 
@@ -79,7 +79,7 @@ Ejecútalo tú, desde esta sesión, con el prefijo `!`:
 
 </details>
 
-### 2. Resend como SMTP de Supabase
+### 2. ~~Resend como SMTP de Supabase~~ ✅ HECHO, 2026-08-16
 
 **El dominio `talpass.eu` ya está `Verified` en Resend** (confirmado por Ulises
 el 2026-08-16). El DNS estaba completo y correcto desde el 2026-08-15 — los tres
@@ -91,13 +91,14 @@ registros que pide Resend resuelven:
 | `send.talpass.eu` TXT              | `v=spf1 include:amazonses.com ~all`        |
 | `resend._domainkey.talpass.eu` TXT | clave DKIM presente                        |
 
-Falta el gesto que solo se hace desde el panel:
+Los dos gestos de panel, **hechos el 2026-08-16**:
 
-1. ~~Confirmar en Resend que `talpass.eu` pone **Verified**.~~ **Hecho, 2026-08-16.**
-2. Pegar las credenciales SMTP de Resend en Supabase (Authentication › Emails ›
-   SMTP Settings) y poner el `EMAIL_FROM` **desde configuración, no en código**.
-   Esto es lo que hace que los correos de GoTrue —confirmación de registro y
-   recuperación— dejen de chocar con el límite de 1–2 por hora.
+1. `talpass.eu` **Verified** en Resend.
+2. Credenciales SMTP de Resend pegadas en Supabase (Authentication › Emails ›
+   SMTP Settings). Con eso los correos de GoTrue —confirmación de registro y
+   recuperación— dejan de chocar con el límite de 1–2 por hora. **Queda por
+   comprobarlo el alta real del paso 4**, que es lo que demuestra que el
+   transporte funciona de verdad.
 
 > **Ojo, son dos cosas distintas y la fase 4 necesita la segunda.** El SMTP del
 > panel solo mueve los correos que manda GoTrue. El aviso de "verificación
@@ -107,7 +108,7 @@ Falta el gesto que solo se hace desde el panel:
 > 2026-08-16). Crea una clave de envío en Resend y ponla en `.env.local` y en
 > Vercel cuando llegue el momento; en local se sigue leyendo todo en Mailpit.
 
-### 3. Las URLs de retorno en el panel de producción
+### 3. ~~Las URLs de retorno en el panel de producción~~ ✅ HECHO, 2026-08-16
 
 Authentication › URL Configuration, **todo con el apex y sin mezclar hosts**:
 
@@ -149,6 +150,23 @@ necesita para escribir `candidate_private`. Añadidas el 2026-08-16, junto con
 > El proyecto fuerza *Sensitive* en todas las variables, también en las
 > `NEXT_PUBLIC_`, así que su valor **no se puede leer ni desde el panel ni con
 > `vercel env pull`**. Se verifican mirando el HTML desplegado, no el panel.
+
+**Desplegado el 2026-08-16** (`dpl_AHUq3dUG8D5hvM6ctJLYVX5Rqjw5`) y verificado
+por el PM contra `https://talpass.eu`:
+
+| Verificación                | Resultado en producción                                              |
+| --------------------------- | -------------------------------------------------------------------- |
+| `<title>` y marca           | **Talpass**, ya no EttRecruiter                                      |
+| Canónica y `hreflang`       | apex en las tres: `es`, `en` y `x-default` — `SITE_URL` confirmada   |
+| `/robots.txt`               | `Disallow: /` — correcto, la bandera sigue apagada (ADR-16)          |
+| `/sitemap.xml`              | responde; **solo 2 URLs**, home y listado                            |
+| `/es` y `/es/ofertas`       | `HIT` / `PRERENDER`, **sin** `x-ett-session-checked` ni `Set-Cookie` |
+| `/es/cuenta`                | 307 a `/es/entrar`, `x-ett-session-checked: 1`, `no-store`           |
+
+**28 páginas estáticas frente a las 41 de local, y un sitemap de 2 URLs en vez
+de 13.** No es un fallo: producción no tiene ni una vacante, así que no hay
+páginas de detalle ni landings que derivar (ADR-23). Es exactamente el catálogo
+vacío que la fase 4 viene a resolver.
 
 ### 4. Alta real end-to-end y, solo entonces, la bandera
 
