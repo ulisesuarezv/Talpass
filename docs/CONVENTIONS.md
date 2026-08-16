@@ -30,9 +30,11 @@ src/
         onboarding/             # /es/completar-perfil · /en/onboarding
         account/                # /es/cuenta · /en/account
         agency/
-        admin/
+        admin/                  # cola de revisión
+          [candidateId]/        # ficha del candidato (fase 4)
     api/
       auth/callback/route.ts    # canje del enlace de correo, fuera de i18n
+      documents/[id]/route.ts   # ÚNICO sitio que firma un documento privado
   components/
     ui/                         # shadcn — no se editan a mano salvo necesidad
     *.tsx                       # componentes propios, kebab-case
@@ -50,12 +52,22 @@ src/
     landings.ts                 # landings programáticas (ADR-23)
     seo.ts                      # canónica, hreflang y Open Graph
     slug.ts                     # slug desde un nombre traducido
+    email/
+      send.ts                   # ÚNICO punto de envío propio (ADR-26)
+      verification.ts           # el aviso de aprobado/rechazado
+    admin/
+      review.ts                 # lecturas del backoffice
+      actions.ts                # aprobar / rechazar
+      rejection-reasons.ts      # lista cerrada de motivos (ADR-27)
     supabase/
       client.ts                 # navegador
       public.ts                 # servidor SIN cookies (rutas públicas)
       server.ts                 # servidor (SOLO en área privada)
+      admin.ts                  # service_role: SE SALTA LA RLS (fase 4)
       session.ts                # refresco de sesión en el proxy
   proxy.ts                      # Next 16: sustituye a middleware.ts
+content/
+  jobs/*.json                   # vacantes reales, una por fichero (ADR-28)
 messages/
   es.json · en.json             # namespaces por pantalla
 scripts/
@@ -100,6 +112,13 @@ desde el CDN, que es de donde vive el SEO.
 | `lib/supabase/public` | **No**      | rutas públicas, `sitemap.ts`, catálogos — y privadas |
 | `lib/supabase/server` | Sí          | **solo** `(private)` y Server Actions                |
 | `lib/supabase/client` | —           | navegador                                            |
+| `lib/supabase/admin`  | —           | **solo** lo que ninguna política puede hacer         |
+
+`admin.ts` nace en la fase 4 y usa `service_role`, que **se salta la RLS entera
+por atributo del rol**. Hoy tiene exactamente dos usos, y los dos son tablas sin
+INSERT para nadie: `document_access_log` y `email_log`. Si una operación del
+backoffice funciona con la sesión del admin, va con la sesión del admin — así la
+RLS sigue decidiendo y la batería de seguridad sigue probando el camino real.
 
 La regla corta: **si el fichero lo puede importar una ruta pública, no puede
 tocar `cookies()`.** Por eso `lib/catalogs.ts`, `lib/jobs.ts` y `lib/landings.ts`
@@ -130,8 +149,22 @@ la página pero deja ese subárbol para el cliente, y el HTML sale vacío por
 dentro. Se comprueba mirando el HTML, no la letra del build:
 
 ```bash
-curl -s localhost:3210/es/ofertas | grep -c 'href="/es/ofertas/'   # > 0
+curl -s localhost:3210/es/ofertas | grep -o 'href="/es/ofertas/[^"]*"' | sort -u | wc -l
 ```
+
+**Antes de creerte el resultado, asegúrate de que respondes al servidor que
+crees.** En la fase 4 se perdió un buen rato investigando un "listado al que le
+falta una vacante" que era un `next start` viejo pegado al puerto 3210 sirviendo
+un build anterior — `pkill -f "next start"` no lo mató. La secuencia fiable es:
+
+```bash
+lsof -ti tcp:3210 | xargs -r kill -9    # y comprobar que el puerto queda libre
+rm -rf .next && pnpm build:local        # con el servidor ya parado
+```
+
+Y para comparar HTML servido contra HTML construido, mira el fichero
+(`.next/server/app/es/jobs.html`) **con el servidor parado**: un servidor vivo
+reescribe esos ficheros al revalidar.
 
 El estado de login en zonas públicas se resuelve **en cliente**, con
 `lib/supabase/client`. Lo hace `components/account-nav.tsx`, que es el único
@@ -191,6 +224,8 @@ migración nueva. Si algo existe solo en el panel, no existe: el siguiente
 | `pnpm db:types`             | regenerar `src/lib/supabase/database.types.ts`     |
 | `pnpm db:push:prod`         | aplicar a producción migraciones ya validadas      |
 | `pnpm seed:demo [--reset]`  | sembrar admin, 2 ETTs, 4 candidatos y 5 vacantes   |
+| `pnpm job:publish <fich>`   | publicar una vacante real en local                 |
+| `pnpm job:publish:prod`     | …y en producción, tecleando `produccion`           |
 | `pnpm test:security`        | la batería de seguridad                            |
 | `pnpm test:security:drill`  | el simulacro: rompe políticas y exige que se cacen |
 
@@ -262,6 +297,105 @@ trabajo es precisamente tocar el destino remoto. Lo que lo hace seguro es que
 solo sabe **borrar**, y solo lo que `seed-demo.mts` sabe crear — la constante
 `DEMO`, toda en dominios `.test`. No acepta listas por parámetro, no borra por
 patrón y comprueba al terminar que los catálogos siguen en pie.
+
+## Publicar una vacante real (fase 4, ADR-28)
+
+Una vacante es **un fichero JSON en `content/jobs/`** y un comando. No hay
+pantalla: el CRUD autoservicio es de la fase 6 y lo usará la ETT.
+
+```bash
+pnpm job:publish content/jobs/almacen-nuremberg.json        # base local
+pnpm job:publish:prod content/jobs/almacen-nuremberg.json   # PRODUCCIÓN
+```
+
+- **Local por defecto.** La variante `:prod` exige teclear `produccion`, igual
+  que `db:push:prod`.
+- **Idempotente**: la clave es el `slug`. Relanzarlo con la misma oferta la
+  actualiza; no la duplica. Corregir una errata es editar el fichero y repetir.
+- Exige traducción en **todos los idiomas activos** del catálogo. Media
+  traducción rompe el `hreflang` recíproco (ADR-23).
+- La **ETT se da de alta desde el mismo fichero**, por su `slug`. En producción
+  no hay ninguna, y una vacante sin ETT no existe.
+
+Fichero completo, con todo lo que acepta (`content/jobs/ejemplo-almacen-nuremberg.json`
+está en el repositorio como plantilla):
+
+```json
+{
+  "slug": "almacen-nuremberg-turnos",
+  "status": "published",
+  "agency": {
+    "slug": "franken-personal",
+    "name": "Franken Personal GmbH",
+    "countryCode": "DE",
+    "registrationType": "handelsregister",
+    "registrationNumber": "HRB 987654 N",
+    "descriptions": { "es": "ETT de Baviera…", "en": "Bavarian agency…" }
+  },
+  "countryCode": "DE",
+  "city": "Núremberg",
+  "sector": "warehouse",
+  "clientCompanyName": "Logistikzentrum Nürnberg",
+  "showClientCompany": false,
+  "salary": { "min": 14, "max": 15.5, "currency": "EUR", "period": "hour" },
+  "shifts": ["morning", "afternoon"],
+  "weeklyHours": 40,
+  "requiredLanguage": { "code": "en", "level": "a2" },
+  "requiresDrivingLicense": false,
+  "housing": { "provided": true, "price": 300, "currency": "EUR" },
+  "transportProvided": true,
+  "minContractMonths": 6,
+  "startDate": "2026-10-01",
+  "translations": {
+    "es": {
+      "title": "Mozo/a de almacén en Núremberg — turnos de mañana y tarde",
+      "description": "Centro logístico a las afueras de Núremberg…",
+      "tasks": "Preparar pedidos con terminal de radiofrecuencia…",
+      "requirements": "Ciudadanía de la UE. Inglés básico…",
+      "benefits": "Alojamiento compartido a 300 € al mes…"
+    },
+    "en": {
+      "title": "Warehouse operative in Nuremberg — morning and afternoon shifts",
+      "description": "Logistics centre on the outskirts of Nuremberg…",
+      "tasks": "Pick orders with a handheld scanner…",
+      "requirements": "EU citizenship. Basic English…",
+      "benefits": "Shared housing at €300 a month…"
+    }
+  }
+}
+```
+
+`sector`, `registrationType`, `countryCode` y `requiredLanguage.code` son slugs
+o códigos **del catálogo**: si no existen, el script aborta diciendo cuál falta.
+`tasks`, `requirements` y `benefits` son opcionales, pero son lo que hace que la
+vacante se lea como una oferta y no como una ficha.
+
+> **Una ciudad o un sector nuevos exigen redesplegar.** Las landings son
+> estáticas y se derivan de las vacantes vivas (ADR-23): hasta el siguiente
+> `pnpm exec vercel --prod`, la landing de esa ciudad devuelve 404 aunque la
+> vacante ya esté publicada y visible en su URL y en el listado. El script lo
+> recuerda al terminar.
+
+## Mandar un correo desde la aplicación (fase 4, ADR-26)
+
+Todo envío propio pasa por `src/lib/email/send.ts`. **No se manda correo desde
+ningún otro sitio**, y quien lo dispare tiene que asumir tres cosas:
+
+- `sendEmail` **no lanza**: devuelve `{ ok }`. Un fallo de correo no puede
+  tumbar la operación que lo dispara.
+- Deja fila en `email_log` siempre, `sent` o `failed` con el motivo.
+- Asunto y cuerpo llegan **ya traducidos**, en el idioma del destinatario.
+
+En local no sale nada a internet: con `EMAIL_DEV_INBOX_URL` se entrega en
+**Mailpit (http://127.0.0.1:54324)**, el mismo buzón donde ya se leen los
+correos de Supabase Auth.
+
+> **Lo que `.env.test` no declara, se hereda de `.env.local` —que es
+> producción.** `dev:local` mete `.env.test` en el entorno, pero Next sigue
+> leyendo `.env.local` para el resto. Probando la fase 4, una ejecución local
+> cogió la clave real de Resend y mandó un correo de verdad. Por eso
+> `.env.test` declara `RESEND_API_KEY=` vacía. Al añadir una variable de
+> producción, **añádela vacía a `.env.test` en la misma tacada**.
 
 ### Catálogo o código
 

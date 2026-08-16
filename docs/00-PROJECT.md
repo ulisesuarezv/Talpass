@@ -392,6 +392,133 @@ es más rápido que paginar; cuando el listado crezca lo suficiente para que
 importe, se pagina en servidor y se conserva el prerenderizado de la primera
 página. No antes.
 
+### ADR-25 · El registro de aperturas también cubre al admin
+
+_(Fase 4.)_
+
+`document_access_log.request_id` pasa a ser **nulo** cuando quien abre un
+documento es el administrador durante la revisión.
+
+_Motivo:_ la fase 1 solo imaginó una apertura, la de una ETT, que siempre nace
+de una solicitud de consentimiento (ADR-05). Pero en el MVP quien más
+documentos de identidad abre es el admin, y esa apertura tiene exactamente el
+mismo peso probatorio. Las dos alternativas eran peores: no registrar al actor
+principal, o inventar solicitudes de acceso falsas para poder apuntar a ellas,
+ensuciando con filas ficticias la tabla que sostiene la defensa GDPR.
+
+**No lleva un CHECK del tipo "o solicitud o autor".** Se probó y **rompía el
+borrado de una cuenta**: `opened_by` es `on delete set null` a propósito, así
+que al ejercer el derecho de supresión la fila se quedaría sin ninguno de los
+dos y la restricción abortaría el borrado entero. Es la misma decisión que ya
+tomó `email_log`: la traza sobrevive al perfil aunque pierda el nombre de quien
+actuó. Lo que nunca se pierde es que el documento se abrió, cuándo, desde qué
+IP y con qué navegador.
+
+_Consecuencia:_ el candidato gana una política nueva para ver **las aperturas de
+sus propios documentos**, tengan solicitud detrás o no. Sin ella, las del
+backoffice serían invisibles justo para el interesado.
+
+### ADR-26 · Un solo punto de envío de correo, y el correo nunca tumba la operación
+
+_(Fase 4.)_
+
+`src/lib/email/send.ts` es el **único** sitio del proyecto que manda un correo
+propio. Todo lo demás sigue saliendo de Supabase Auth, que no pasa por ahí.
+
+Tres garantías que la fase 8 no puede perder al centralizar y maquetar:
+
+1. **No lanza nunca.** Devuelve el resultado. Si el admin aprueba a un
+   candidato, el candidato queda aprobado aunque el proveedor esté caído; el
+   fallo se enseña al lado del resultado correcto, no en lugar de él.
+2. **Deja rastro siempre**, en `email_log`, con `sent` o `failed` y el motivo.
+   `email_log` era de la fase 8, pero un fallo que solo existe en la consola del
+   servidor no es visible para nadie, así que se empieza a escribir aquí.
+3. **No conoce ni un texto.** Asunto y cuerpo llegan traducidos desde
+   `messages/`, en el idioma **del candidato** (el de su `profiles.locale`), no
+   en el del admin que pulsa el botón.
+
+_Transporte por entorno, sin condicionales repartidos:_ con
+`EMAIL_DEV_INBOX_URL` se entrega en Mailpit y no sale a internet; si no, la API
+de Resend con `RESEND_API_KEY`. Es lo que permite probar el ciclo entero en
+local sin credencial real.
+
+_Aviso que costó un envío real:_ **`pnpm dev:local` hereda de `.env.local` todo
+lo que `.env.test` no declare.** Probando esta fase, una ejecución local cogió
+la clave de producción de Resend y mandó un correo de verdad. Por eso
+`.env.test` declara `RESEND_API_KEY=` **vacía**: lo que no está allí, se hereda.
+
+### ADR-27 · Los motivos de rechazo son claves de una lista cerrada
+
+_(Fase 4.)_
+
+`candidate_documents.rejection_reason` guarda una **clave** (`unreadable`,
+`expired`, `wrongDocument`, `incomplete`, `mismatch`, `other`), no una frase.
+
+_Motivo:_ el motivo lo escribe un admin que trabaja en español y lo lee un
+candidato que puede estar en cualquiera de los idiomas del sitio. Con texto
+libre, "la foto está borrosa" llega en español a quien se registró en inglés —y
+llega además al correo, que es donde más duele—. Es la misma regla que ya
+gobierna las Server Actions: se devuelven claves, no frases (ADR-01).
+
+_Precio asumido:_ el admin no puede matizar. Para una persona revisando
+documentos de identidad con cinco fallos posibles, sobra. El día que haga falta
+detalle, se añade una nota libre **junto** a la clave, nunca en su lugar.
+
+### ADR-28 · Las vacantes reales se publican con un comando y un fichero
+
+_(Fase 4.)_
+
+`pnpm job:publish content/jobs/<oferta>.json` da de alta o actualiza una
+vacante. `pnpm job:publish:prod` hace lo mismo contra producción, y exige
+teclear `produccion`, igual que `db:push:prod`.
+
+_Motivo:_ hacía falta **lo mínimo que funcione**, no un CRUD. Una vacante real
+lleva unos veinte campos y texto traducible en dos idiomas; un formulario para
+eso es media fase 6, que además la hará la propia ETT (ADR-06) y tiraría lo
+construido. Un fichero se redacta con calma, se corrige, se versiona con el
+repositorio y queda como plantilla de la siguiente oferta: la sexta vacante se
+publica copiando la quinta. Y es **repetible sin abrir una sesión de Claude**.
+
+- **Idempotente**, con el `slug` como clave: relanzarlo actualiza, no duplica.
+- **Local por defecto.** Publicar contra producción es una escritura deliberada.
+- Exige traducción en **todos los idiomas activos** del catálogo: media
+  traducción rompe el `hreflang` recíproco (ADR-23).
+- La ETT se da de alta desde el mismo fichero. En producción no había ninguna, y
+  una vacante sin ETT no existe.
+
+_Consecuencia que hay que recordar:_ las landings son estáticas y se derivan de
+las vacantes vivas (ADR-23), así que **publicar en una ciudad o un sector nuevos
+exige redesplegar** para que su landing exista. El script lo dice al terminar.
+
+_No se retira en la fase 6._ En el MVP Ulises es el backend humano y va a seguir
+metiendo ofertas mientras haya una sola ETT; lo que sí debe pasar es que las dos
+vías escriban por el mismo sitio.
+
+### ADR-29 · El archivo del candidato pasa por el servidor
+
+_(Fase 4.)_
+
+La subida de documentos va por una Server Action, no del navegador directo a
+Supabase Storage. `serverActions.bodySizeLimit` sube a 11 MB para que quepa el
+límite de 10 MB del catálogo más lo que añade `multipart/form-data`.
+
+_Motivo:_ el tamaño y el tipo aceptado son **catálogo** (`document_types`), y
+comprobarlos en un sitio que el candidato no controla es lo que los convierte en
+un límite y no en una sugerencia. Con subida directa, la única barrera sería la
+del bucket. Ahora son tres —formulario, Server Action y bucket— y ninguna sobra:
+un endpoint de subida sin límite es un problema el primer día, no en la fase de
+endurecimiento.
+
+_Coste asumido:_ el archivo viaja dos veces (navegador → servidor → storage).
+A escala de MVP, con un candidato subiendo cinco archivos una vez en su vida, es
+irrelevante frente a la garantía que compra.
+
+_Y una nota de la subida:_ volver a subir un documento **pendiente** actualiza
+la fila que ya existe en vez de crear otra —hay un índice único parcial que
+impide dos documentos vivos del mismo tipo—, así que no hay ni un instante en
+el que el candidato se quede sin documento por un fallo a mitad de camino. Un
+documento **ya aprobado** no se puede pisar desde la aplicación.
+
 ---
 
 ## 5. Reglas de negocio

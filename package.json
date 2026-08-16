@@ -23,6 +23,8 @@
     "db:diff": "supabase db diff --local",
     "db:types": "supabase gen types typescript --local --schema public > src/lib/supabase/database.types.ts",
     "seed:demo": "node --env-file=.env.test scripts/seed-demo.mts",
+    "job:publish": "node scripts/publish-job.mts",
+    "job:publish:prod": "node scripts/publish-job.mts --prod",
     "test:security": "node --env-file=.env.test tests/security/run.mts",
     "test:security:drill": "node --env-file=.env.test tests/security/drill.mts"
   },

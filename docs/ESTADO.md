@@ -1,45 +1,134 @@
 # Estado del proyecto — punto de retomada
 
-> Última actualización: **2026-08-16**. **El bloque de producción de la fase 3
-> está cerrado entero**: migraciones, SMTP, URLs de retorno, despliegue y alta
-> real, todo hecho y verificado. La fase 3 sigue 🟡 por **un solo criterio**: el
-> Google Rich Results Test, que necesita una vacante pública real.
-> La bandera de indexación sigue **APAGADA a propósito** hasta que existan esas
-> vacantes. **Siguiente paso: la fase 4**, con `docs/prompts/fase-4.md`.
-> Este documento dice exactamente dónde se dejó el trabajo y cuál es el siguiente paso.
+> Última actualización: **2026-08-16**. **La fase 4 está construida y verificada
+> en local**: subida de documentos, grabación de audio, backoffice de revisión,
+> el primer correo propio de la aplicación y una vía para publicar vacantes
+> reales. Se queda en 🟡 por **un solo criterio**: que exista una vacante real
+> **publicada en producción**, que es una escritura deliberada y la hace Ulises.
+> Esa misma vacante es la que desbloquea la fase 3 entera (Rich Results Test) y
+> la bandera de indexación, que sigue **APAGADA a propósito**.
+> **Siguiente paso: publicar las primeras ofertas reales** — abajo, "Lo primero
+> al retomar".
 > El detalle de cada fase está en `docs/02-ROADMAP.md`; las decisiones, en `docs/00-PROJECT.md`.
 
 ---
 
 ## Dónde estamos
 
-**Fases 0, 1 y 2 cerradas. La fase 3 está construida y verificada en local, pero
-NO cerrada:** sus dos criterios de "hecho cuando" que dependen de producción —la
-validación en el Google Rich Results Test y el alta real de punta a punta— no se
-han comprobado. Se cierra con el bloque de producción de abajo, que es además lo
-que decide si el sitio se abre a Google.
+**Fases 0, 1 y 2 cerradas. Las fases 3 y 4 están construidas y verificadas, y
+las dos esperan a lo mismo: una vacante real en producción.** La 3 la necesita
+para el Google Rich Results Test; la 4, porque su criterio de "hecho cuando"
+incluye que el admin haya podido publicar una. No es trabajo de código: la vía
+existe, está probada y documentada.
 
-Verificado por el PM el 2026-08-15: build con 41 públicas `●` y privadas `ƒ`, el
-HTML del listado trae las vacantes dentro, `hreflang` recíproco entre
-`/es/trabajo/alemania` y `/en/work/germany`, rutas públicas con `HIT` y sin
-cabecera de sesión, y `test:security` 57/57. El trabajo está bien; lo que falta
-es solo lo que no se puede probar sin producción.
+| Fase                  | Estado                                               |
+| --------------------- | ---------------------------------------------------- |
+| 0 · Fundaciones       | ✅ desplegada en producción                          |
+| 1 · Datos y seguridad | ✅ 36 tablas, RLS probada                            |
+| 2 · Auth y onboarding | ✅ registro real end-to-end                          |
+| 3 · Vacantes + SEO    | 🟡 falta el Rich Results Test sobre una vacante real |
+| 4 · Verificación      | 🟡 falta publicar una vacante real en producción     |
+| **5 · Aplicaciones**  | **⬜ siguiente fase de código**                      |
+| 6–10                  | ⬜                                                   |
 
-| Fase                  | Estado                                              |
-| --------------------- | --------------------------------------------------- |
-| 0 · Fundaciones       | ✅ desplegada en producción                         |
-| 1 · Datos y seguridad | ✅ 36 tablas, RLS probada                           |
-| 2 · Auth y onboarding | ✅ registro real end-to-end, 57 tests verdes        |
-| 3 · Vacantes + SEO    | 🟡 construida y verificada en local; **no cerrada** |
-| **4 · Verificación**  | **⬜ siguiente, tras el bloque de abajo**           |
-| 5–10                  | ⬜                                                  |
+### Lo que dejó la fase 4 (2026-08-16, verificado contra la base local)
+
+| Verificación                      | Resultado                                                                        |
+| --------------------------------- | -------------------------------------------------------------------------------- |
+| Ciclo completo en móvil (390×844) | 4 documentos → **rechazo con motivo** → vuelve a subir → aprobación → `verified` |
+| Aviso al candidato                | leído en Mailpit, en **su** idioma, aprobado y rechazado                         |
+| Registro de aperturas             | una fila por apertura del admin, con IP y user-agent (ADR-25)                    |
+| URL firmada                       | 60 s, emitida en servidor tras comprobar permiso; sin sesión, **404**            |
+| Sin credencial de correo          | el candidato **igual pasa a `verified`**; el fallo se ve y queda en `email_log`  |
+| `test:security` · `:drill`        | **64/64** y el simulacro en verde                                                |
+| Rutas públicas                    | `HIT`, sin cabecera de sesión ni `Set-Cookie`; privadas `ƒ`                      |
+| Publicar una vacante              | idempotente, en el listado sin JavaScript y con su landing de ciudad             |
+
+Evidencia en `docs/evidencia/fase-4/`. ADR nuevos: **25** (registro de aperturas
+del admin), **26** (un solo punto de envío de correo), **27** (motivos de rechazo
+como claves), **28** (publicar vacantes por fichero) y **29** (la subida pasa por
+el servidor).
 
 **Marca:** Talpass · **dominio canónico:** https://talpass.eu (apex; `www`
 redirige, ADR-12) · `ettrecruiter.vercel.app` sigue respondiendo como dominio antiguo
 
 ---
 
-## Lo primero al retomar — el bloque de producción de la fase 3
+## Lo primero al retomar — poner las primeras vacantes reales en producción
+
+Es lo que cierra **dos fases a la vez** (la 3 y la 4) y lo que abre el sitio a
+Google. No hay que escribir código: hay que redactar ofertas y lanzar un comando.
+
+### 1. Redactar las ofertas
+
+Una por fichero, en `content/jobs/`. Copia
+`content/jobs/ejemplo-almacen-nuremberg.json` y cambia lo que haga falta; el
+formato entero, campo a campo, está en `docs/CONVENTIONS.md` → "Publicar una
+vacante real". La investigación de mercado (`docs/prompts/investigacion-ofertas.md`)
+es de dónde salen los rangos salariales, las ciudades y el vocabulario.
+
+Prueba siempre primero en local, que no cuesta nada y es idempotente:
+
+```bash
+pnpm db:start && pnpm dev:local
+pnpm job:publish content/jobs/mi-oferta.json
+```
+
+### 2. Antes de publicar en producción: la migración de la fase 4
+
+Producción está al día **hasta la fase 3**. La fase 4 añade una migración
+(`20260816120000_verification.sql`) y sin ella el backoffice no funciona ahí.
+Validada en local con `db:reset` desde cero, `test:security` 64/64 y el
+simulacro en verde:
+
+```bash
+! printf 'produccion\nY\n' | pnpm db:push:prod
+```
+
+> Lo ejecuta Ulises con el prefijo `!`: el clasificador de permisos deniega las
+> escrituras contra producción desde la sesión, y hace bien.
+
+### 3. Publicar, y **desplegar después**
+
+```bash
+pnpm job:publish:prod content/jobs/mi-oferta.json    # pide teclear "produccion"
+pnpm exec vercel --prod
+```
+
+**El despliegue no es opcional.** Las landings son estáticas y se derivan de las
+vacantes vivas (ADR-23): una ciudad o un sector nuevos no tienen landing hasta
+que se redespliega, aunque la vacante ya esté publicada y visible en su URL.
+Y recuerda que **este proyecto de Vercel no tiene integración con GitHub**: un
+`git push` no despliega nada (ver 3 bis, más abajo).
+
+### 4. Tres variables de entorno que faltan en Vercel
+
+Sin ellas el backoffice de la fase 4 no funciona en producción:
+
+| Variable                    | Para qué                                                          |
+| --------------------------- | ----------------------------------------------------------------- |
+| `SUPABASE_SERVICE_ROLE_KEY` | escribir `document_access_log` y `email_log` — no hay política    |
+| `RESEND_API_KEY`            | el aviso de aprobado/rechazado **lo manda la aplicación**         |
+| `EMAIL_FROM`                | `no-reply@updates.talpass.eu` (el dominio verificado, no el apex) |
+
+> La clave de Resend **ya es válida** — se comprobó sin querer el 2026-08-16, ver
+> "Cosas que no deben olvidarse". Es la misma que usa el SMTP del panel.
+
+### 5. Y entonces sí: encender la indexación y cerrar la fase 3
+
+Con ofertas reales publicadas, se pasa una por
+https://search.google.com/test/rich-results, se anota el resultado, y se
+encienden **los dos gestos** —el segundo no es opcional, `NEXT_PUBLIC_` se
+hornea en el build:
+
+```bash
+printf 'true' | pnpm exec vercel env add NEXT_PUBLIC_ALLOW_INDEXING production
+pnpm exec vercel --prod
+```
+
+---
+
+## Historia — el bloque de producción de la fase 3
 
 **Cerrado el 2026-08-16.** Los cuatro pasos, más un quinto que no estaba en la
 lista y resultó ser el que faltaba de verdad: **desplegar** (3 bis). Se deja
@@ -96,23 +185,23 @@ Ejecútalo tú, desde esta sesión, con el prefijo `!`:
 
 Configuración que funciona, en Authentication › Emails › SMTP Settings:
 
-| Campo          | Valor                                                  |
-| -------------- | ------------------------------------------------------ |
-| Host / Port    | `smtp.resend.com` · `465`                              |
-| Username       | `resend` — literalmente esa palabra, no el correo      |
-| Password       | una API key de Resend con permiso de envío             |
-| Sender email   | `no-reply@updates.talpass.eu`                          |
-| Sender name    | `Talpass`                                              |
+| Campo        | Valor                                             |
+| ------------ | ------------------------------------------------- |
+| Host / Port  | `smtp.resend.com` · `465`                         |
+| Username     | `resend` — literalmente esa palabra, no el correo |
+| Password     | una API key de Resend con permiso de envío        |
+| Sender email | `no-reply@updates.talpass.eu`                     |
+| Sender name  | `Talpass`                                         |
 
 **Verificado contra producción el 2026-08-16**, llamando al `auth/v1/signup` con
 la clave pública, igual que hace la aplicación:
 
-| Verificación                | Resultado                                                        |
-| --------------------------- | ---------------------------------------------------------------- |
-| Alta por la API de Auth     | 200 con `confirmation_sent_at`                                   |
-| Entrega                     | Resend marca los tres envíos como **`delivered`**                |
-| Remitente                   | `"Talpass" <no-reply@updates.talpass.eu>`                        |
-| **Límite de envío**         | **3 altas en 16 segundos, ninguna rechazada**                    |
+| Verificación            | Resultado                                         |
+| ----------------------- | ------------------------------------------------- |
+| Alta por la API de Auth | 200 con `confirmation_sent_at`                    |
+| Entrega                 | Resend marca los tres envíos como **`delivered`** |
+| Remitente               | `"Talpass" <no-reply@updates.talpass.eu>`         |
+| **Límite de envío**     | **3 altas en 16 segundos, ninguna rechazada**     |
 
 Ese último dato es el que justificaba adelantar Resend de la fase 8 a la 3: con
 el SMTP por defecto, el **segundo** correo de la misma hora ya rebotaba con
@@ -170,21 +259,21 @@ Y faltaban en Vercel las **tres claves de cifrado** (`TALPASS_ENCRYPTION_KEYS`,
 necesita para escribir `candidate_private`. Añadidas el 2026-08-16, junto con
 `NEXT_PUBLIC_SITE_URL` y `NEXT_PUBLIC_SITE_NAME` reescritas con el apex y la marca.
 
-> El proyecto fuerza *Sensitive* en todas las variables, también en las
+> El proyecto fuerza _Sensitive_ en todas las variables, también en las
 > `NEXT_PUBLIC_`, así que su valor **no se puede leer ni desde el panel ni con
 > `vercel env pull`**. Se verifican mirando el HTML desplegado, no el panel.
 
 **Desplegado el 2026-08-16** (`dpl_AHUq3dUG8D5hvM6ctJLYVX5Rqjw5`) y verificado
 por el PM contra `https://talpass.eu`:
 
-| Verificación                | Resultado en producción                                              |
-| --------------------------- | -------------------------------------------------------------------- |
-| `<title>` y marca           | **Talpass**, ya no EttRecruiter                                      |
-| Canónica y `hreflang`       | apex en las tres: `es`, `en` y `x-default` — `SITE_URL` confirmada   |
-| `/robots.txt`               | `Disallow: /` — correcto, la bandera sigue apagada (ADR-16)          |
-| `/sitemap.xml`              | responde; **solo 2 URLs**, home y listado                            |
-| `/es` y `/es/ofertas`       | `HIT` / `PRERENDER`, **sin** `x-ett-session-checked` ni `Set-Cookie` |
-| `/es/cuenta`                | 307 a `/es/entrar`, `x-ett-session-checked: 1`, `no-store`           |
+| Verificación          | Resultado en producción                                              |
+| --------------------- | -------------------------------------------------------------------- |
+| `<title>` y marca     | **Talpass**, ya no EttRecruiter                                      |
+| Canónica y `hreflang` | apex en las tres: `es`, `en` y `x-default` — `SITE_URL` confirmada   |
+| `/robots.txt`         | `Disallow: /` — correcto, la bandera sigue apagada (ADR-16)          |
+| `/sitemap.xml`        | responde; **solo 2 URLs**, home y listado                            |
+| `/es` y `/es/ofertas` | `HIT` / `PRERENDER`, **sin** `x-ett-session-checked` ni `Set-Cookie` |
+| `/es/cuenta`          | 307 a `/es/entrar`, `x-ett-session-checked: 1`, `no-store`           |
 
 **28 páginas estáticas frente a las 41 de local, y un sitemap de 2 URLs en vez
 de 13.** No es un fallo: producción no tiene ni una vacante, así que no hay
@@ -254,13 +343,20 @@ https://search.google.com/test/rich-results y se anota aquí.
    perder los IBAN cifrados, por diseño. Lo más urgente de esta lista.
 2. **Rotar la contraseña de la base de datos** — pasó por el chat. Está en
    `.env.local`, ignorado por git, así que es higiene, no urgencia.
-3. **El bloque de producción de la fase 3**, arriba. Es lo que abre el sitio a
-   Google.
-4. **`talpass.com` queda aplazado por presupuesto.** Decisión consciente: es la
+3. **Publicar las primeras vacantes reales**, arriba. Es lo que cierra las fases
+   3 y 4 y lo que abre el sitio a Google. Incluye subir la migración de la fase
+   4 y poner tres variables en Vercel.
+4. **Conectar el repositorio de GitHub al proyecto de Vercel.** Hoy los
+   despliegues son manuales (`pnpm exec vercel --prod`) y por eso la fase 3
+   estuvo cinco días en `origin` sin estar en producción.
+5. **`talpass.com` queda aplazado por presupuesto.** Decisión consciente: es la
    mitigación del riesgo de ADR-12 y sigue pendiente. Revisarlo cuando haya caja.
-5. **En tu bandeja hay un correo de "Confirm your email address"** con alias
+6. **En tu bandeja hay un correo de "Confirm your email address"** con alias
    `+smtp-probe-…`. Es de la medición del límite de envío; la cuenta ya está
    borrada y se puede ignorar.
+7. **En Resend verás un envío a `maria@talpass.test` del 2026-08-16.** Salió de
+   una prueba en local que heredó la clave real (ver abajo). Rebotará: ese
+   dominio no existe. No hay nada que hacer, pero explica el rebote.
 
 ---
 
@@ -276,7 +372,14 @@ pnpm dev:local       # Next contra la base local
 ficheros de entorno y no se mezclan: `.env.test` apunta a local y lo leen
 `dev:local`, las semillas y los tests; `.env.local` apunta a producción. Si
 falta `.env.test`, se crea con `cp .env.test.example .env.test`. Los correos de
-prueba se leen en Mailpit, http://127.0.0.1:54324.
+prueba se leen en Mailpit, http://127.0.0.1:54324 — desde la fase 4, también los
+que manda la propia aplicación.
+
+> **Y no se mezclan… salvo lo que `.env.test` no declare.** Next lee `.env.local`
+> para todo lo que no venga ya en el entorno, así que una variable que solo
+> exista en producción se cuela en una ejecución local. Por eso `.env.test`
+> lleva `RESEND_API_KEY=` **vacía**. Al añadir una variable de producción,
+> añádela vacía a `.env.test` en la misma tacada.
 
 Procedimiento completo en `docs/CONVENTIONS.md`.
 
@@ -314,4 +417,16 @@ Procedimiento completo en `docs/CONVENTIONS.md`.
   se niegan solos.
 - La marca no se escribe en el JSX: sale de `src/config/site.ts` (ADR-12).
 - **Cero texto en el JSX, tampoco los errores.** Las Server Actions devuelven
-  claves de traducción, no frases.
+  claves de traducción, no frases. Desde la fase 4 eso incluye el **motivo de
+  rechazo de un documento**, que se guarda como clave (ADR-27).
+- **Lo que `.env.test` no declara, se hereda de `.env.local`.** Costó un correo
+  real enviado desde la cuenta de producción durante una prueba en local
+  (2026-08-16). Variable de producción nueva ⇒ entrada vacía en `.env.test`.
+- **`service_role` se salta la RLS entera.** Vive en `lib/supabase/admin.ts` y
+  hoy solo escribe `document_access_log` y `email_log`, que no tienen política
+  de INSERT para nadie. Si algo funciona con la sesión del usuario, va con la
+  sesión del usuario: si no, los tests dejan de probar el camino real.
+- **Comprueba a qué servidor le estás preguntando.** Un `next start` viejo
+  pegado al puerto sirve un build anterior y parece un fallo del código;
+  `pkill -f "next start"` no siempre lo mata. Procedimiento en
+  `docs/CONVENTIONS.md`.

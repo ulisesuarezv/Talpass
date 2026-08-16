@@ -214,6 +214,13 @@
       "invalidInput": "Hay algún dato que no podemos aceptar.",
       "sessionExpired": "Tu sesión ha caducado. Vuelve a entrar.",
       "draftIncomplete": "Faltan datos por rellenar. Vuelve atrás y revísalos.",
+      "fileMissing": "No hemos recibido ningún archivo. Vuelve a intentarlo.",
+      "fileTooLarge": "El archivo pesa demasiado. Prueba con una foto de menos calidad.",
+      "fileTypeNotAccepted": "Ese tipo de archivo no vale para este documento.",
+      "documentTypeUnknown": "Ese documento no se pide ahora mismo.",
+      "documentAlreadyVerified": "Ese documento ya está aprobado y no se puede cambiar.",
+      "uploadFailed": "No hemos podido guardar el archivo. Inténtalo otra vez.",
+      "microphoneDenied": "No hemos podido usar el micrófono. Puedes subir un archivo de audio en su lugar.",
       "unexpected": "Algo ha fallado por nuestra parte. Inténtalo otra vez."
     }
   },
@@ -302,13 +309,37 @@
     },
     "documents": {
       "title": "Verificación",
-      "explainer": "Esto es lo que hace falta para poder aplicar a ofertas. La subida se activa en la próxima entrega.",
+      "explainer": "Esto es lo que hace falta para poder aplicar a ofertas. Puedes hacer las fotos con el móvil.",
       "optional": "opcional",
+      "upload": "Subir",
+      "uploading": "Subiendo…",
+      "maxSize": "Máximo {megabytes} MB",
+      "view": "Ver lo que has subido",
+      "rejectedReason": "Motivo",
+      "lockedWhenVerified": "Aprobado. Si necesitas cambiarlo, escríbenos.",
       "status": {
         "missing": "Pendiente de subir",
         "pending": "En revisión",
         "verified": "Verificado",
         "rejected": "Rechazado"
+      },
+      "rejectionReasons": {
+        "unreadable": "No se lee bien: repite la foto con más luz y sin reflejos.",
+        "expired": "El documento está caducado.",
+        "wrongDocument": "El documento no es el que se pedía.",
+        "incomplete": "Falta parte del documento: tienen que verse las cuatro esquinas.",
+        "mismatch": "Los datos no coinciden con los de tu perfil.",
+        "other": "No podemos darlo por válido. Vuelve a enviarlo."
+      },
+      "audio": {
+        "help": "Preséntate en inglés durante unos 30 segundos: cómo te llamas, en qué has trabajado y qué buscas. Puedes repetirlo las veces que quieras.",
+        "record": "Grabar",
+        "again": "Grabar otra vez",
+        "stop": "Parar",
+        "recording": "Grabando…",
+        "send": "Enviar esta grabación",
+        "discard": "Descartar",
+        "uploadInstead": "Subir un archivo de audio"
       }
     },
     "audioConsent": {
@@ -328,7 +359,62 @@
   },
   "Admin": {
     "title": "Backoffice",
-    "placeholder": "Área de administración. Se construye en la fase 4."
+    "queue": {
+      "title": "Cola de revisión",
+      "explainer": "Documentos pendientes de revisar, empezando por quien lleva más tiempo esperando.",
+      "empty": "No hay nada pendiente de revisar.",
+      "waitingSince": "Esperando desde el {date}",
+      "pending": "{count, plural, one {# documento} other {# documentos}}"
+    },
+    "candidate": {
+      "back": "Volver a la cola",
+      "documents": "Documentos",
+      "optional": "Opcional",
+      "missing": "Todavía no lo ha subido.",
+      "view": "Abrir el documento",
+      "approve": "Aprobar",
+      "reject": "Rechazar",
+      "reasonLabel": "Motivo del rechazo",
+      "working": "Guardando…",
+      "city": "Ciudad",
+      "english": "Inglés",
+      "openings": "Aperturas registradas",
+      "noOpenings": "Todavía no ha abierto nadie estos documentos.",
+      "verification": {
+        "unverified": "Sin verificar",
+        "pending": "En revisión",
+        "verified": "Verificado",
+        "rejected": "Rechazado"
+      },
+      "status": {
+        "missing": "Sin subir",
+        "pending": "Pendiente",
+        "verified": "Aprobado",
+        "rejected": "Rechazado"
+      },
+      "messages": {
+        "documentApproved": "Documento aprobado.",
+        "documentRejected": "Documento rechazado y candidato avisado.",
+        "emailNotSent": "El aviso por correo no ha salido. Queda registrado en email_log.",
+        "verificationNotSaved": "El documento se aprobó, pero el estado del candidato no se ha podido cambiar.",
+        "rejectionReasonRequired": "Elige un motivo para rechazarlo.",
+        "sessionExpired": "Tu sesión ha caducado. Vuelve a entrar.",
+        "unexpected": "Algo ha fallado. Inténtalo otra vez."
+      }
+    }
+  },
+  "Emails": {
+    "verification": {
+      "approved": {
+        "subject": "Tu perfil de {brand} ya está verificado",
+        "body": "Hola {name}:\n\nHemos revisado tus documentos y tu perfil ya está verificado. A partir de ahora puedes aplicar a ofertas y las agencias verificadas pueden encontrarte.\n\nEntra en tu cuenta: {url}\n\nUn saludo,\nEl equipo de {brand}"
+      },
+      "rejected": {
+        "subject": "Falta algo en tus documentos de {brand}",
+        "body": "Hola {name}:\n\nHemos revisado tus documentos y todavía no podemos verificar tu perfil. Puedes volver a subirlos desde tu cuenta: {url}\n\nUn saludo,\nEl equipo de {brand}",
+        "reasonsTitle": "Qué hay que corregir:"
+      }
+    }
   },
   "NotFound": {
     "title": "Página no encontrada",

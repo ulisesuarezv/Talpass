@@ -1,0 +1,57 @@
+{
+  "slug": "almacen-nuremberg-turnos",
+  "status": "published",
+  "agency": {
+    "slug": "franken-personal",
+    "name": "Franken Personal GmbH",
+    "countryCode": "DE",
+    "registrationType": "handelsregister",
+    "registrationNumber": "HRB 987654 N",
+    "descriptions": {
+      "es": "ETT de Baviera especializada en almacén y logística.",
+      "en": "Bavarian staffing agency focused on warehouse and logistics."
+    }
+  },
+  "countryCode": "DE",
+  "city": "Núremberg",
+  "sector": "warehouse",
+  "clientCompanyName": "Logistikzentrum Nürnberg",
+  "showClientCompany": false,
+  "salary": {
+    "min": 14,
+    "max": 15.5,
+    "currency": "EUR",
+    "period": "hour"
+  },
+  "shifts": ["morning", "afternoon"],
+  "weeklyHours": 40,
+  "requiredLanguage": {
+    "code": "en",
+    "level": "a2"
+  },
+  "requiresDrivingLicense": false,
+  "housing": {
+    "provided": true,
+    "price": 300,
+    "currency": "EUR"
+  },
+  "transportProvided": true,
+  "minContractMonths": 6,
+  "startDate": "2026-10-01",
+  "translations": {
+    "es": {
+      "title": "Mozo/a de almacén en Núremberg — turnos de mañana y tarde",
+      "description": "Centro logístico a las afueras de Núremberg. Preparación de pedidos, escaneo y paletizado. Se entra en turnos fijos de mañana o tarde, alternando cada dos semanas.",
+      "tasks": "Preparar pedidos con terminal de radiofrecuencia. Paletizar y flejar. Control visual de la mercancía. Orden y limpieza de la zona.",
+      "requirements": "Ciudadanía de la UE. Inglés básico para entenderse con el encargado. No hace falta experiencia previa: la formación es en el puesto y pagada.",
+      "benefits": "Alojamiento compartido a 300 € al mes, transporte desde el alojamiento hasta la nave, contrato mínimo de 6 meses con posibilidad de renovación."
+    },
+    "en": {
+      "title": "Warehouse operative in Nuremberg — morning and afternoon shifts",
+      "description": "Logistics centre on the outskirts of Nuremberg. Order picking, scanning and palletising. Fixed morning or afternoon shifts, alternating every two weeks.",
+      "tasks": "Pick orders with a handheld scanner. Palletise and strap. Visual checks on the goods. Keep the area tidy.",
+      "requirements": "EU citizenship. Basic English to get by with the supervisor. No previous experience needed: training is on the job and paid.",
+      "benefits": "Shared housing at €300 a month, transport from the accommodation to the warehouse, minimum 6-month contract with the option to renew."
+    }
+  }
+}

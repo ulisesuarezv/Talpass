@@ -11,7 +11,7 @@
 | 1   | Datos y seguridad                 | Schema + RLS probada con tests             | ✅     |
 | 2   | Auth y onboarding candidato       | Registro real end-to-end                   | ✅     |
 | 3   | Vacantes públicas + SEO           | Vacante indexable en Google Jobs           | 🟡     |
-| 4   | Verificación + backoffice         | Documento subido → aprobado por admin      | ⬜     |
+| 4   | Verificación + backoffice         | Documento subido → aprobado por admin      | 🟡     |
 | 5   | Aplicaciones                      | Candidato verificado aplica y ve su estado | ⬜     |
 | 6   | Portal ETT                        | ETT gestiona vacantes y aplicaciones       | ⬜     |
 | 7   | Bolsa + consentimiento documental | Flujo completo de desbloqueo con log       | ⬜     |
@@ -279,6 +279,41 @@ Ulises reunió enlaces a ofertas reales de **otras ETTs** y se planteó cargarla
 En su lugar, esos enlaces se explotan como **investigación de mercado**: rangos salariales por sector, ciudades y sectores reales, y el vocabulario con el que se escriben las ofertas. Con eso Ulises redacta ofertas **propias**. El prompt está en `docs/prompts/investigacion-ofertas.md` y **no es una fase**: no toca código ni base de datos, entrega un informe y puede correr en paralelo.
 
 Sale además una lista de **sectores y ciudades que faltan en el catálogo**, que es catálogo en base de datos y no código.
+
+### 🟡 Construida y verificada en local — falta un criterio
+
+Todo lo construido está probado contra la base local, ciclo completo incluido.
+**Lo único que falta para cerrarla es el último criterio: que exista una vacante
+real publicada en producción.** La vía existe y funciona (`pnpm job:publish:prod`,
+ADR-28), pero publicar es una escritura deliberada contra producción y la hace
+Ulises con sus ofertas reales; esta sesión no toca producción (ADR-17).
+
+| Verificación                      | Resultado                                                                             |
+| --------------------------------- | ------------------------------------------------------------------------------------- |
+| Ciclo completo en móvil (390×844) | 4 documentos → **rechazo con motivo** → vuelve a subir → aprobación → `verified`      |
+| Aviso al candidato                | leído en Mailpit, en **su** idioma, tanto el aprobado como el rechazado               |
+| Motivo del rechazo                | visible en `/es/cuenta` y en `/en/account`, traducido en cada uno (ADR-27)            |
+| Registro de aperturas             | una fila en `document_access_log` por apertura del admin, con IP y user-agent         |
+| URL firmada                       | 60 s, emitida en servidor tras comprobar permiso; sin sesión, **404**                 |
+| Sin credencial de correo          | el candidato **igual pasa a `verified`**; el fallo se ve en pantalla y en `email_log` |
+| `test:security` · `:drill`        | **64/64** (7 comprobaciones nuevas) y el simulacro en verde                           |
+| Rutas públicas                    | `HIT`, sin `x-ett-session-checked` ni `Set-Cookie`; las privadas siguen `ƒ`           |
+| Vacante publicada en local        | idempotente, sale en el listado **sin JavaScript** y estrena su landing de ciudad     |
+| `typecheck` · `lint` · `build`    | limpios                                                                               |
+
+Evidencia en `docs/evidencia/fase-4/`.
+
+**Lo que llega hecho a la fase 5:**
+
+- El backoffice ya tiene esqueleto (`/admin` con la cola y `/admin/[candidateId]`
+  con la ficha). Las aplicaciones **se añaden como sección**, no se rehace.
+- El correo propio ya existe y es un solo punto (ADR-26): un aviso nuevo es una
+  plantilla en `messages/`, no un envío nuevo repartido por las acciones.
+- `verification_status` ya se mueve solo: `pending` al subir un documento,
+  `verified`/`rejected` por el admin. Que un candidato sin verificar no pueda
+  aplicar ya lo fija la RLS y lo prueba un test.
+- **`directApply: false` sigue en el `JobPosting`**: al existir el aplicar, hay
+  que volver a la fase 3 y revisarlo.
 
 ---
 

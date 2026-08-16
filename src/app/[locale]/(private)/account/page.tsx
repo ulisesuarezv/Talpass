@@ -6,7 +6,7 @@ import { DocumentsStatus } from '@/components/candidate/documents-status';
 import { ProfileForm } from '@/components/candidate/profile-form';
 import { Badge } from '@/components/ui/badge';
 import { requireCandidate } from '@/lib/auth/session';
-import { listDocumentStatus } from '@/lib/candidate/documents';
+import { listCandidateDocuments } from '@/lib/candidate/documents';
 import { listCountries } from '@/lib/catalogs';
 import { createClient } from '@/lib/supabase/server';
 
@@ -25,7 +25,9 @@ export default async function AccountPage({
       getTranslations({ locale, namespace: 'Account' }),
       getFormatter({ locale }),
       listCountries(locale),
-      listDocumentStatus(userId, locale),
+      listCandidateDocuments(userId, locale, {
+        hasDrivingLicense: candidate.has_driving_license,
+      }),
       supabase
         .from('consents')
         .select('granted_at')

@@ -105,6 +105,12 @@ export const pathnames = {
     es: '/admin',
     en: '/admin',
   },
+  // La ficha de un candidato en el backoffice. No se traduce el segmento: es
+  // una pantalla interna de una sola persona, y su URL no la ve nadie más.
+  '/admin/[candidateId]': {
+    es: '/admin/[candidateId]',
+    en: '/admin/[candidateId]',
+  },
 } as const;
 
 export const routing = defineRouting({

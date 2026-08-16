@@ -214,6 +214,13 @@
       "invalidInput": "There's something here we can't accept.",
       "sessionExpired": "Your session has expired. Please sign in again.",
       "draftIncomplete": "Some details are still missing. Go back and check them.",
+      "fileMissing": "We didn't receive any file. Please try again.",
+      "fileTooLarge": "That file is too big. Try a lower-quality photo.",
+      "fileTypeNotAccepted": "That file type doesn't work for this document.",
+      "documentTypeUnknown": "That document isn't being asked for right now.",
+      "documentAlreadyVerified": "That document is already approved and can't be changed.",
+      "uploadFailed": "We couldn't save the file. Please try again.",
+      "microphoneDenied": "We couldn't use the microphone. You can upload an audio file instead.",
       "unexpected": "Something went wrong on our side. Please try again."
     }
   },
@@ -302,13 +309,37 @@
     },
     "documents": {
       "title": "Verification",
-      "explainer": "This is what's needed before you can apply to jobs. Uploading goes live in the next release.",
+      "explainer": "This is what's needed before you can apply to jobs. You can take the photos with your phone.",
       "optional": "optional",
+      "upload": "Upload",
+      "uploading": "Uploading…",
+      "maxSize": "Up to {megabytes} MB",
+      "view": "See what you uploaded",
+      "rejectedReason": "Reason",
+      "lockedWhenVerified": "Approved. If you need to change it, get in touch.",
       "status": {
         "missing": "Not uploaded yet",
         "pending": "Under review",
         "verified": "Verified",
         "rejected": "Rejected"
+      },
+      "rejectionReasons": {
+        "unreadable": "It can't be read: retake the photo with more light and no glare.",
+        "expired": "The document has expired.",
+        "wrongDocument": "This isn't the document we asked for.",
+        "incomplete": "Part of the document is missing: all four corners must be visible.",
+        "mismatch": "The details don't match your profile.",
+        "other": "We can't accept it. Please send it again."
+      },
+      "audio": {
+        "help": "Introduce yourself in English for about 30 seconds: your name, where you've worked and what you're looking for. You can redo it as many times as you like.",
+        "record": "Record",
+        "again": "Record again",
+        "stop": "Stop",
+        "recording": "Recording…",
+        "send": "Send this recording",
+        "discard": "Discard",
+        "uploadInstead": "Upload an audio file"
       }
     },
     "audioConsent": {
@@ -328,7 +359,62 @@
   },
   "Admin": {
     "title": "Backoffice",
-    "placeholder": "Administration area. Built in phase 4."
+    "queue": {
+      "title": "Review queue",
+      "explainer": "Documents waiting to be reviewed, oldest first.",
+      "empty": "Nothing left to review.",
+      "waitingSince": "Waiting since {date}",
+      "pending": "{count, plural, one {# document} other {# documents}}"
+    },
+    "candidate": {
+      "back": "Back to the queue",
+      "documents": "Documents",
+      "optional": "Optional",
+      "missing": "Not uploaded yet.",
+      "view": "Open the document",
+      "approve": "Approve",
+      "reject": "Reject",
+      "reasonLabel": "Rejection reason",
+      "working": "Saving…",
+      "city": "City",
+      "english": "English",
+      "openings": "Logged openings",
+      "noOpenings": "Nobody has opened these documents yet.",
+      "verification": {
+        "unverified": "Unverified",
+        "pending": "Under review",
+        "verified": "Verified",
+        "rejected": "Rejected"
+      },
+      "status": {
+        "missing": "Not uploaded",
+        "pending": "Pending",
+        "verified": "Approved",
+        "rejected": "Rejected"
+      },
+      "messages": {
+        "documentApproved": "Document approved.",
+        "documentRejected": "Document rejected and candidate notified.",
+        "emailNotSent": "The email notification didn't go out. It's recorded in email_log.",
+        "verificationNotSaved": "The document was approved, but the candidate's status couldn't be changed.",
+        "rejectionReasonRequired": "Pick a reason for rejecting it.",
+        "sessionExpired": "Your session has expired. Please sign in again.",
+        "unexpected": "Something went wrong. Please try again."
+      }
+    }
+  },
+  "Emails": {
+    "verification": {
+      "approved": {
+        "subject": "Your {brand} profile is verified",
+        "body": "Hi {name},\n\nWe've reviewed your documents and your profile is now verified. From now on you can apply to jobs and verified agencies can find you.\n\nGo to your account: {url}\n\nBest,\nThe {brand} team"
+      },
+      "rejected": {
+        "subject": "Something's missing in your {brand} documents",
+        "body": "Hi {name},\n\nWe've reviewed your documents and we can't verify your profile yet. You can upload them again from your account: {url}\n\nBest,\nThe {brand} team",
+        "reasonsTitle": "What needs fixing:"
+      }
+    }
   },
   "NotFound": {
     "title": "Page not found",

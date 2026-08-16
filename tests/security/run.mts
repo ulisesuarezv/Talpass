@@ -922,4 +922,169 @@ suite.check(
 );
 
 // ==========================================================================
+suite.section('10 · Verificación y backoffice (fase 4)');
+
+suite.check('el candidato no sube un documento a nombre de otro', async () => {
+  const result = await candidate
+    .from('candidate_documents')
+    .insert({
+      candidate_id: ids.candidates.pending,
+      document_type_id: ids.documentTypes.tax_doc,
+      storage_path: `${ids.candidates.pending}/suplantacion.pdf`,
+      mime_type: 'application/pdf',
+      size_bytes: 1024,
+    })
+    .select('id');
+  assertWriteDenied(result, 'Un candidato ha subido un documento por otro');
+});
+
+suite.check(
+  'el candidato no escribe en la carpeta de storage de otro',
+  async () => {
+    const result = await candidate.storage
+      .from('candidate-documents')
+      .upload(
+        `${ids.candidates.pending}/intruso.pdf`,
+        new Blob(['x'], { type: 'application/pdf' }),
+        { contentType: 'application/pdf' },
+      );
+
+    assert(
+      result.error != null,
+      'Un candidato ha escrito en la carpeta de otro candidato',
+    );
+  },
+);
+
+suite.check('el candidato no se firma un veredicto de revisión', async () => {
+  // No basta con que no pueda cambiar el `status`: `reviewed_by` es lo que
+  // dice QUIÉN miró el documento, y una fila que se firma sola no prueba nada.
+  const result = await otherCandidate
+    .from('candidate_documents')
+    .update({ reviewed_by: ids.candidates.pending, rejection_reason: null })
+    .eq('candidate_id', ids.candidates.pending)
+    .select('id');
+  assertWriteDenied(result, 'El candidato ha firmado su propia revisión');
+});
+
+// Subir un documento pone al candidato en `pending` por disparador (fase 4).
+// Lo que hay que fijar es el límite: `pending` sí, `verified` jamás.
+suite.check('subir un documento deja al candidato en `pending`', async () => {
+  const joao = await signInAs(DEMO.candidates.unverified, DEMO_PASSWORD);
+
+  assertOk(
+    await joao.from('candidate_documents').insert({
+      candidate_id: ids.candidates.unverified,
+      document_type_id: ids.documentTypes.cv,
+      storage_path: `${ids.candidates.unverified}/cv-nuevo.pdf`,
+      mime_type: 'application/pdf',
+      size_bytes: 2048,
+    }),
+    'El candidato no ha podido subir su propio CV',
+  );
+
+  const after = rows(
+    await joao
+      .from('candidates')
+      .select('verification_status')
+      .eq('profile_id', ids.candidates.unverified),
+    'Relectura del estado de verificación',
+  ) as { verification_status: string }[];
+
+  assert(
+    after[0]?.verification_status === 'pending',
+    `Subir un documento debía dejarlo "pending" y quedó "${after[0]?.verification_status}"`,
+  );
+});
+
+suite.check(
+  'el registro de aperturas no lo escribe nadie, ni el admin',
+  async () => {
+    // La fila la escribe el servidor con `service_role` en el mismo paso en
+    // que firma la URL. Si un actor pudiera escribirla —o abrir sin
+    // escribirla—, el registro dejaría de valer como prueba.
+    const adminUser = await signInAs(DEMO.admin, DEMO_PASSWORD);
+
+    for (const [who, client] of [
+      ['el admin', adminUser],
+      ['el candidato', candidate],
+      ['la ETT', agency],
+      ['un anónimo', anon],
+    ] as const) {
+      const result = await client
+        .from('document_access_log')
+        .insert({
+          document_id: ids.documents.verifiedCandidateIdFront,
+          opened_by: ids.admin,
+        })
+        .select('id');
+      assertWriteDenied(result, `${who} ha escrito en document_access_log`);
+    }
+  },
+);
+
+suite.check(
+  'nadie escribe en `email_log`, y solo el admin lo lee',
+  async () => {
+    const write = await candidate
+      .from('email_log')
+      .insert({
+        recipient_email: 'falsificado@talpass.test',
+        template: 'candidate_verification_approved',
+        status: 'sent',
+      })
+      .select('id');
+    assertWriteDenied(write, 'Un candidato ha escrito en email_log');
+
+    assertNoRows(
+      await candidate.from('email_log').select('*'),
+      'Un candidato ha leído el registro de correos',
+    );
+    assertNoRows(
+      await agency.from('email_log').select('*'),
+      'La ETT ha leído el registro de correos',
+    );
+  },
+);
+
+suite.check(
+  'el candidato ve quién ha abierto sus documentos (control positivo)',
+  async () => {
+    // Transparencia: es su derecho, y desde la fase 4 el admin abre documentos
+    // sin que exista solicitud de consentimiento. Sin esta política, esas
+    // aperturas serían invisibles justo para el interesado.
+    const opening = await admin
+      .from('document_access_log')
+      .insert({
+        document_id: ids.documents.verifiedCandidateIdFront,
+        opened_by: ids.admin,
+      })
+      .select('id')
+      .single();
+    assertOk(opening, 'El servidor no ha podido registrar una apertura');
+
+    const seen = rows(
+      await candidate
+        .from('document_access_log')
+        .select('id, document_id')
+        .eq('document_id', ids.documents.verifiedCandidateIdFront),
+      'El candidato no puede leer las aperturas de sus documentos',
+    );
+
+    assert(
+      seen.length > 0,
+      'El candidato no ve la apertura de su propio documento',
+    );
+
+    assertNoRows(
+      await otherCandidate
+        .from('document_access_log')
+        .select('id')
+        .eq('document_id', ids.documents.verifiedCandidateIdFront),
+      'Otro candidato ha leído las aperturas de documentos ajenos',
+    );
+  },
+);
+
+// ==========================================================================
 process.exit(await suite.run());

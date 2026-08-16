@@ -67,6 +67,8 @@ impide dar de alta a un candidato rumano.
 
 **`candidate_documents`**
 `candidate_id` · `document_type_id` · `storage_bucket` · `storage_path` (bucket privado) · `status` (`pending` | `verified` | `rejected`) · `reviewed_by` (nulo = revisión automática futura) · `reviewed_at` · `rejection_reason` · `mime_type` · `size_bytes`
+_(Fase 4)_ Subir un documento mueve al candidato de `unverified`/`rejected` a **`pending`**, por disparador `SECURITY DEFINER`. No puede hacerlo él —el guardarraíl de la fase 1 se lo impide, y eso no se toca— ni tiene sentido que lo haga el admin a mano: el hecho que lo dispara es la subida. Lo que hace segura a esa función es que **solo sabe escribir `pending`**; `verified` sigue siendo un acto del admin.
+
 `storage_path` empieza obligatoriamente por `<candidate_id>/` **por CHECK**: de esa convención depende la política de storage que impide leer la carpeta de otro, así que no puede ser una costumbre. Índice único parcial por `(candidate_id, document_type_id)` donde `status <> 'rejected'`: un documento vigente por tipo, y los rechazados se conservan como historial.
 
 **`candidate_sectors`** — experiencia por sector (N:M con `sectors`), con meses de experiencia
@@ -145,9 +147,11 @@ El alcance es una tabla hija, no un array de texto: así hay clave foránea real
 > **Conceder, denegar y revocar son actos del candidato**, comprobados en el disparador además de en la política. La ETT no tiene UPDATE sobre esta tabla: si lo tuviera, lo único entre ella y los documentos sería un disparador.
 
 **`document_access_log`** — una fila por **apertura** de documento
-`request_id` · `document_id` · `opened_by` · `opened_at` · `ip` · `user_agent`
+`request_id` (nulo si abre el admin) · `document_id` · `opened_by` · `opened_at` · `ip` · `user_agent`
 
 > **No tiene política de INSERT para ningún rol.** La fila la escribe el servidor con `service_role` en el mismo paso en el que firma la URL. Si se pudiera abrir un documento sin dejar rastro, el registro no valdría como prueba, que es justo para lo que existe.
+>
+> _(Fase 4, ADR-25)_ `request_id` es **nulo** cuando quien abre es el **admin** revisando: esa apertura no nace de un consentimiento de ADR-05 y se registra igual. No hay CHECK que exija "solicitud o autor" porque `opened_by` es `on delete set null` y abortaría el borrado de una cuenta. El candidato tiene política propia para ver las aperturas de **sus** documentos, con solicitud detrás o sin ella.
 
 > Esta pareja de tablas es la que sostiene el argumento de venta, la defensa GDPR y la futura facturación. No es logging opcional.
 

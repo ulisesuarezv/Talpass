@@ -959,7 +959,7 @@ export type Database = {
           ip: unknown;
           opened_at: string;
           opened_by: string | null;
-          request_id: string;
+          request_id: string | null;
           user_agent: string | null;
         };
         Insert: {
@@ -968,7 +968,7 @@ export type Database = {
           ip?: unknown;
           opened_at?: string;
           opened_by?: string | null;
-          request_id: string;
+          request_id?: string | null;
           user_agent?: string | null;
         };
         Update: {
@@ -977,7 +977,7 @@ export type Database = {
           ip?: unknown;
           opened_at?: string;
           opened_by?: string | null;
-          request_id?: string;
+          request_id?: string | null;
           user_agent?: string | null;
         };
         Relationships: [
