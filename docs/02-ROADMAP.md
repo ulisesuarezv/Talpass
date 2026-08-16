@@ -272,6 +272,14 @@ _Motivo:_ la fase 3 se colocó antes que la verificación **a propósito**, para
 
 **Hecho cuando:** un candidato sube sus documentos desde el móvil, el admin los aprueba, el candidato pasa a `verified` y recibe aviso, y **el admin ha podido publicar una vacante real en producción**.
 
+### De dónde salen esas vacantes — decidido el 2026-08-16
+
+Ulises reunió enlaces a ofertas reales de **otras ETTs** y se planteó cargarlas como catálogo. **Se descartó.** Publicar ofertas ajenas rompe la promesa al candidato —una aplicación que no llega a ninguna parte— y ante Google Jobs deja el dominio con perfil de agregador duplicado, que es exactamente lo contrario de lo que persigue la fase 3.
+
+En su lugar, esos enlaces se explotan como **investigación de mercado**: rangos salariales por sector, ciudades y sectores reales, y el vocabulario con el que se escriben las ofertas. Con eso Ulises redacta ofertas **propias**. El prompt está en `docs/prompts/investigacion-ofertas.md` y **no es una fase**: no toca código ni base de datos, entrega un informe y puede correr en paralelo.
+
+Sale además una lista de **sectores y ciudades que faltan en el catálogo**, que es catálogo en base de datos y no código.
+
 ---
 
 ## Fase 5 · Aplicaciones
