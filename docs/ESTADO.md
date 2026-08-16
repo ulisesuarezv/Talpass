@@ -128,6 +128,37 @@ pnpm exec vercel --prod
 
 ---
 
+## Si retomas como PM — qué te toca
+
+El método completo está en `docs/02-ROADMAP.md` → "Cómo trabajamos cada fase".
+El resumen: **el PM no ejecuta**, redacta el prompt de cada fase en
+`docs/prompts/fase-N.md`, y **verifica los cierres en vez de fiarse del
+resumen**. Esta regla se ganó con dos errores reales: un resumen con 16
+migraciones cuando eran 17, y una fase marcada ✅ mientras el propio resumen
+admitía que su criterio no se había comprobado.
+
+Ahora mismo, y por este orden:
+
+1. **Acompañar a Ulises en los cinco pasos de arriba.** No los ejecuta el PM
+   —las escrituras contra producción las lanza él con `!`— pero **cada uno se
+   verifica al terminar**: `migration list --linked` tras el `db:push:prod`,
+   `curl` del HTML y del sitemap tras el despliegue, `vercel env ls` tras las
+   variables. Sirve de guion lo que ya se hizo el 2026-08-16.
+2. **Cerrar las fases 3 y 4** en `docs/02-ROADMAP.md` cuando —y solo cuando— la
+   vacante real esté publicada y el Rich Results Test la valide. Anotar el
+   resultado del tester aquí.
+3. **Redactar `docs/prompts/fase-5.md`**, y no antes: un prompt escrito hoy
+   ignoraría lo que traiga la publicación de las primeras ofertas. Ojo a lo que
+   la fase 4 dejó dicho: el backoffice **se amplía, no se rehace**, y al existir
+   el aplicar hay que volver al `directApply: false` del `JobPosting` de la
+   fase 3.
+
+**Lo que el PM no debe hacer:** dar por hecho lo que diga un panel —Vercel llegó
+a marcar "Valid Configuration" con el DNS roto—, ni aceptar un ✅ cuyo criterio
+no se haya medido.
+
+---
+
 ## Historia — el bloque de producción de la fase 3
 
 **Cerrado el 2026-08-16.** Los cuatro pasos, más un quinto que no estaba en la
@@ -212,13 +243,15 @@ el SMTP por defecto, el **segundo** correo de la misma hora ya rebotaba con
 > hasta entonces un candidato hispanohablante recibe el correo en inglés. Está
 > anotado, no es un fallo pendiente de esta fase.
 
-> **Ojo, son dos cosas distintas y la fase 4 necesita la segunda.** El SMTP del
-> panel solo mueve los correos que manda GoTrue. El aviso de "verificación
-> aprobada / rechazada" lo manda **la aplicación**, y para eso hace falta una
-> `RESEND_API_KEY` **real**: la que hay hoy en `.env.local` es el hueco de la
-> fase 0 y la API de Resend la rechaza con `API key is invalid` (comprobado el
-> 2026-08-16). Crea una clave de envío en Resend y ponla en `.env.local` y en
-> Vercel cuando llegue el momento; en local se sigue leyendo todo en Mailpit.
+> **Ojo, son dos cosas distintas.** El SMTP del panel solo mueve los correos que
+> manda GoTrue —confirmación de registro y recuperación—. El aviso de
+> "verificación aprobada / rechazada" lo manda **la aplicación** y va por la API
+> de Resend con `RESEND_API_KEY`, que es otra vía aunque use la misma clave.
+>
+> Esa clave **es válida desde el 2026-08-16**. Hasta entonces `.env.local` tenía
+> el hueco vacío de la fase 0, y la API la rechazaba con `API key is invalid`;
+> se sustituyó al configurar el SMTP. Lo que falta es **ponerla en Vercel**, con
+> `EMAIL_FROM` — están en "Lo primero al retomar", paso 4.
 
 ### 3. ~~Las URLs de retorno en el panel de producción~~ ✅ HECHO, 2026-08-16
 
@@ -328,11 +361,13 @@ Todo contra la base local con `pnpm seed:demo` (3 vacantes publicadas):
 | `typecheck` · `lint` · `format`    | limpios                                                                               |
 
 **Lo único del guion de la fase que no se pudo cerrar**: pasar una vacante por
-el **Google Rich Results Test**. Necesita una URL pública, y producción no tiene
-ni una vacante — el seed de vacantes reales es de la fase 10. El marcado se
-validó campo a campo contra los requisitos documentados de Google. Cuando exista
-la primera vacante real en `talpass.eu`, se pasa por
-https://search.google.com/test/rich-results y se anota aquí.
+el **Google Rich Results Test**. Necesita una URL pública y producción no tiene
+ni una vacante. El marcado se validó campo a campo contra los requisitos
+documentados de Google, pero quien decide qué acepta Google es Google.
+
+La vía para publicarlas la construyó la **fase 4** (`pnpm job:publish:prod`,
+ADR-28), así que ya no falta código: falta redactar las ofertas. Está todo en
+"Lo primero al retomar", arriba.
 
 ---
 
@@ -348,15 +383,16 @@ https://search.google.com/test/rich-results y se anota aquí.
    4 y poner tres variables en Vercel.
 4. **Conectar el repositorio de GitHub al proyecto de Vercel.** Hoy los
    despliegues son manuales (`pnpm exec vercel --prod`) y por eso la fase 3
-   estuvo cinco días en `origin` sin estar en producción.
+   pasó un día entero en `origin` sin llegar a producción, con todo el mundo
+   creyendo que estaba desplegada.
 5. **`talpass.com` queda aplazado por presupuesto.** Decisión consciente: es la
    mitigación del riesgo de ADR-12 y sigue pendiente. Revisarlo cuando haya caja.
-6. **En tu bandeja hay un correo de "Confirm your email address"** con alias
-   `+smtp-probe-…`. Es de la medición del límite de envío; la cuenta ya está
-   borrada y se puede ignorar.
-7. **En Resend verás un envío a `maria@talpass.test` del 2026-08-16.** Salió de
-   una prueba en local que heredó la clave real (ver abajo). Rebotará: ese
-   dominio no existe. No hay nada que hacer, pero explica el rebote.
+6. **Ruido conocido en la bandeja y en Resend, nada que hacer.** Correos de
+   "Confirm your email address" con alias `+smtp-probe-…` y `+talpassprobe…`,
+   de las pruebas de envío; **sus cuentas se borraron el 2026-08-16 y se
+   comprobó que ya no existen**. Y un envío a `maria@talpass.test`, de una
+   prueba en local que heredó la clave real: rebotará, porque ese dominio no
+   existe.
 
 ---
 
@@ -367,6 +403,13 @@ pnpm db:start        # OrbStack tiene que estar arrancado
 pnpm seed:demo       # 3 vacantes publicadas: sin ellas el listado sale vacío
 pnpm dev:local       # Next contra la base local
 ```
+
+> **`seed:demo` y `job:publish` no son lo mismo y no compiten.** `seed:demo`
+> llena la base local de datos de mentira para poder desarrollar, y **se niega a
+> tocar producción**. `job:publish` (fase 4, ADR-28) publica **una oferta real**
+> desde un fichero de `content/jobs/`, va a local por defecto y a producción solo
+> si se lo pides a propósito. Para desarrollar, `seed:demo`; para publicar una
+> oferta de verdad, `job:publish`.
 
 **Se desarrolla contra la base local, no contra producción** (ADR-17). Hay dos
 ficheros de entorno y no se mezclan: `.env.test` apunta a local y lo leen
