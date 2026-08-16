@@ -355,6 +355,10 @@ Bolsa navegable con filtros sobre la vista seudonimizada (ADR-03) · solicitud d
 
 **Qué llega ya hecho a esta fase.** No es una fase que empiece de cero: el transporte lo puso la fase 3, y varias fases anteriores **ya disparan correos funcionales** —el de confirmación de registro y recuperación de contraseña (fase 2), el de verificación aprobada o rechazada (fase 4), el de solicitud de consentimiento (fase 7)—. Todos son correos que llegan y están traducidos, pero sin plantilla cuidada. Aquí se les da forma, se centraliza el envío y se registra en `email_log`. **Lo que hay que revisar es si algún disparo falta, no reescribir los que ya funcionan.**
 
+**Un guardarraíl que hay que añadir aquí, descubierto el 2026-08-16.** Una prueba en local mandó un correo **real** a `maria@talpass.test` —un candidato de mentira— porque `.env.test` tenía una clave de Resend válida. No hubo daño: `.test` es un TLD reservado, no existe ningún destinatario y el envío rebota. Se tapó vaciando la clave en `.env.test`, pero eso es un fichero que cualquiera vuelve a rellenar sin darse cuenta.
+
+Como esta fase centraliza el envío (ADR-26), es aquí donde el punto único **debe negarse a enviar de verdad cuando el entorno es local**, en vez de depender de que falte una credencial. El día que un seed lleve direcciones reales en lugar de `@talpass.test`, la diferencia deja de ser inocua.
+
 **Hecho cuando:** el ciclo de inactividad se verifica de punta a punta con fechas forzadas.
 
 ---
