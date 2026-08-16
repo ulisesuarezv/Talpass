@@ -1,8 +1,10 @@
 # Estado del proyecto — punto de retomada
 
-> Última actualización: **2026-08-15**. Fase 3 **construida y verificada en local**;
-> el bloque de producción que la acompaña **quedó sin ejecutar**, y con él la
-> bandera de indexación, que sigue **APAGADA**.
+> Última actualización: **2026-08-16**. Fase 3 **construida y verificada en local**;
+> del bloque de producción que la acompaña solo está hecho el dominio verificado
+> en Resend, y la bandera de indexación sigue **APAGADA**.
+> **La fase 4 se lanza el 2026-08-16 en paralelo**: se construye contra la base
+> local y no depende de este bloque.
 > Este documento dice exactamente dónde se dejó el trabajo y cuál es el siguiente paso.
 > El detalle de cada fase está en `docs/02-ROADMAP.md`; las decisiones, en `docs/00-PROJECT.md`.
 
@@ -66,7 +68,8 @@ Ejecútalo tú, desde esta sesión, con el prefijo `!`:
 
 ### 2. Resend como SMTP de Supabase
 
-**El DNS está completo y correcto**, comprobado el 2026-08-15 — los tres
+**El dominio `talpass.eu` ya está `Verified` en Resend** (confirmado por Ulises
+el 2026-08-16). El DNS estaba completo y correcto desde el 2026-08-15 — los tres
 registros que pide Resend resuelven:
 
 | Registro                           | Valor                                      |
@@ -75,11 +78,21 @@ registros que pide Resend resuelven:
 | `send.talpass.eu` TXT              | `v=spf1 include:amazonses.com ~all`        |
 | `resend._domainkey.talpass.eu` TXT | clave DKIM presente                        |
 
-Falta lo que solo se ve desde los paneles:
+Falta el gesto que solo se hace desde el panel:
 
-1. Confirmar en Resend que `talpass.eu` pone **Verified**.
+1. ~~Confirmar en Resend que `talpass.eu` pone **Verified**.~~ **Hecho, 2026-08-16.**
 2. Pegar las credenciales SMTP de Resend en Supabase (Authentication › Emails ›
    SMTP Settings) y poner el `EMAIL_FROM` **desde configuración, no en código**.
+   Esto es lo que hace que los correos de GoTrue —confirmación de registro y
+   recuperación— dejen de chocar con el límite de 1–2 por hora.
+
+> **Ojo, son dos cosas distintas y la fase 4 necesita la segunda.** El SMTP del
+> panel solo mueve los correos que manda GoTrue. El aviso de "verificación
+> aprobada / rechazada" lo manda **la aplicación**, y para eso hace falta una
+> `RESEND_API_KEY` **real**: la que hay hoy en `.env.local` es el hueco de la
+> fase 0 y la API de Resend la rechaza con `API key is invalid` (comprobado el
+> 2026-08-16). Crea una clave de envío en Resend y ponla en `.env.local` y en
+> Vercel cuando llegue el momento; en local se sigue leyendo todo en Mailpit.
 
 ### 3. Las URLs de retorno en el panel de producción
 

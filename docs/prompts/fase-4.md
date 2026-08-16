@@ -17,7 +17,7 @@ pnpm dev:local       # Next contra la base local
 
 Todo esta fase se construye **contra la base local** (ADR-17).
 
-**No toques producción.** `docs/ESTADO.md` tiene un bloque de cuatro pasos de producción pendientes de la fase 3 (migraciones, SMTP de Resend, URLs de retorno, bandera de indexación). **Son de Ulises y los está haciendo por su cuenta en paralelo.** No los ejecutes, no los des por hechos y no construyas nada que dependa de que estén hechos. Si te topas con algo que los necesita, anótalo y sigue.
+**No toques producción.** `docs/ESTADO.md` tiene un bloque de pasos de producción pendientes de la fase 3 (migraciones, SMTP de Resend, URLs de retorno, bandera de indexación). **Son de Ulises y los está haciendo por su cuenta en paralelo.** No los ejecutes, no los des por hechos y no construyas nada que dependa de que estén hechos. Si te topas con algo que los necesita, anótalo y sigue. De ese bloque solo está hecho el dominio `talpass.eu` **verificado en Resend** (2026-08-16); lo demás sigue abierto.
 
 Aviso de la fase 0 que ahora aplica: el cliente `service_role` **se crea en esta fase**, que es cuando el backoffice lo necesita. Nace con las mismas cautelas que el resto: solo servidor, nunca `NEXT_PUBLIC_`, y solo donde la RLS no baste para lo que legítimamente tiene que hacer un admin.
 
@@ -38,6 +38,18 @@ Aviso de la fase 0 que ahora aplica: el cliente `service_role` **se crea en esta
 - Cada apertura de un documento por el admin **queda registrada**, igual que la de una ETT. El log ya existe desde la fase 1; úsalo.
 
 **Lo que no debes debilitar:** el disparador que impide a un candidato marcarse como verificado o tocar las columnas de revisión de sus propios documentos. Es lo que el simulacro de brecha rompe a propósito para comprobar que la batería lo caza. Si te estorba, es que estás escribiendo desde el sitio equivocado.
+
+### 2 bis. El primer correo que manda la aplicación
+
+El aviso de aprobado / rechazado **no lo manda GoTrue**. Hoy todo el correo del proyecto sale de Supabase Auth —confirmación de registro y recuperación—, y en el código no hay ni un envío propio: `RESEND_API_KEY` y `EMAIL_FROM` están en `.env.local` desde la fase 0 como hueco, y la clave que hay **es inválida** (la API de Resend la rechaza; comprobado el 2026-08-16). El dominio, en cambio, ya está verificado en Resend, así que el transporte existe.
+
+Monta aquí **el primer envío propio**, con la cabeza puesta en que la fase 8 lo va a centralizar y a registrar en `email_log`:
+
+- Un único punto de envío en servidor, sobre la API de Resend. Que la fase 8 tenga que dar forma a las plantillas y añadir el log, no que tenga que desmontar envíos repartidos por las acciones.
+- **Solo servidor**, nunca `NEXT_PUBLIC_`. `EMAIL_FROM` desde configuración, como la marca (ADR-12).
+- Asunto y cuerpo desde i18n, en el idioma del candidato. **Cero texto en el código**, tampoco aquí.
+- **Si falta la clave, el aviso no puede tumbar la aprobación.** Que el admin apruebe correctamente y el fallo de correo se registre y se vea, no que la Server Action reviente. En local se lee todo en Mailpit y la clave real no hace falta.
+- Anota en `docs/ESTADO.md` que Ulises tiene que crear una `RESEND_API_KEY` real y ponerla en `.env.local` y en Vercel para que el aviso salga en producción.
 
 ## 3. Publicar vacantes reales en producción
 
@@ -67,7 +79,8 @@ Aplicar a una vacante (fase 5), portal de ETT y su CRUD de vacantes (fase 6), la
 4. Los documentos no son accesibles sin permiso: compruébalo con un usuario que no debería verlos, no razonándolo.
 5. Las rutas públicas siguen estáticas: procedimiento de `docs/CONVENTIONS.md`, **incluida la comprobación del HTML**, no solo la letra del build. Esa trampa ya mordió en la fase 3.
 6. Publicar una vacante funciona **contra local**, es idempotente y aparece en el listado y en su landing.
-7. `typecheck`, `lint`, `format:check` y `build` limpios.
+7. **Sin credencial de correo, aprobar sigue funcionando**: quita la clave, aprueba un candidato y comprueba que pasa a `verified` y que el fallo del aviso queda visible en vez de romper la acción.
+8. `typecheck`, `lint`, `format:check` y `build` limpios.
 
 ## 6. Al terminar
 
