@@ -9,7 +9,8 @@
     "account": "Mi cuenta",
     "login": "Entrar",
     "logout": "Salir",
-    "skipToContent": "Ir al contenido"
+    "skipToContent": "Ir al contenido",
+    "opportunities": "Oportunidades"
   },
   "LocaleSwitcher": {
     "label": "Idioma"
@@ -110,7 +111,10 @@
       "sector": "{sector} en {country}",
       "city": "Trabajo en {city}",
       "housing": "Con alojamiento en {country}"
-    }
+    },
+    "emptyTitle": "Todavía no hay vacantes publicadas",
+    "emptyBody": "Estamos cerrando los primeros acuerdos con agencias. Mientras tanto, puedes ver qué se paga de verdad en Alemania por sector, con datos y no con promesas.",
+    "emptyCta": "Ver las condiciones del mercado"
   },
   "Landing": {
     "related": "Sigue buscando",
@@ -141,6 +145,213 @@
       "metaTitle": "Trabajo con alojamiento en {place}",
       "metaDescription": "{count, plural, one {# oferta} other {# ofertas}} de trabajo en {place} con alojamiento incluido. Ver ofertas es gratis y no hace falta cuenta.",
       "link": "Con alojamiento en {place}"
+    }
+  },
+  "Opportunities": {
+    "title": "Qué se paga de verdad en Alemania",
+    "subtitle": "Cinco perfiles de trabajo temporal con su franja salarial, su jornada, sus turnos y el nivel de alemán que piden. Sale de 14 ofertas reales analizadas y del convenio del sector, no de una promesa.",
+    "meta": {
+      "title": "Condiciones reales del trabajo temporal en Alemania",
+      "description": "Cuánto se paga por hora en almacén, logística, producción, cárnico y agrícola en Alemania, qué jornada y qué turnos se hacen, y qué nivel de alemán piden. Datos de 14 ofertas reales y del convenio de la Zeitarbeit."
+    },
+    "disclosure": {
+      "title": "Esto no es un listado de vacantes",
+      "body": "Detrás de estas páginas no hay una empresa, ni una fecha de incorporación, ni un puesto al que aplicar. Son las condiciones típicas del mercado alemán para cada perfil: lo que se paga, lo que se trabaja y lo que se pide. Las vacantes reales, cuando las haya, se publican aparte.",
+      "source": "Fuente: 14 ofertas de Randstad, Adecco y Tempton analizadas el {date}, y el convenio de la Zeitarbeit (GVP/DGB). Los salarios del sector suben el 1 de septiembre de 2026 y otra vez en abril de 2027, así que estas cifras tienen fecha de caducidad conocida.",
+      "jobs": "Ver las vacantes publicadas"
+    },
+    "agreement": {
+      "title": "El suelo lo fija el convenio, no la agencia",
+      "body": "El trabajo por ETT en Alemania tiene su propio salario mínimo, superior al general: {amount} brutos por hora desde el {date}. Una oferta por debajo de esa cifra no es una ganga, es ilegal. Es lo primero que conviene comprobar, y vale para los cinco perfiles de esta página."
+    },
+    "ask": {
+      "title": "Lo que casi ninguna oferta dice, y hay que preguntar",
+      "intro": "De las 14 ofertas analizadas, ninguna decía la jornada semanal exacta, ninguna decía si hay alojamiento y ninguna decía cuánto dura el contrato. Estas son las preguntas que deciden si te compensa mudarte:",
+      "items": [
+        "¿Cuántas horas son a la semana? Con salario por hora, la jornada es la mitad del sueldo: 16 € la hora a 35 horas y a 40 no son el mismo mes.",
+        "¿Hay alojamiento, cuánto cuesta y viene por escrito en el contrato? El descuento sorpresa en la nómina es la queja más repetida del sector.",
+        "¿Cuánto dura el contrato como mínimo? «Temporal» sin plazo no permite decidir una mudanza.",
+        "¿Quién firma el contrato, la agencia o la fábrica? En este sector, «contrato indefinido» casi siempre significa indefinido con la agencia, y no es lo mismo.",
+        "¿Qué nivel de alemán piden, medido? «Buen alemán» no es un requisito, es un filtro opaco: solo 3 de las 14 ofertas daban un nivel de la escala MCER."
+      ]
+    },
+    "facts": {
+      "salaryLabel": "Salario",
+      "salaryRange": "{min} – {max} por {period}",
+      "salaryFrom": "Desde {min} por {period}",
+      "basisObserved": "Suelo del convenio y techo observado en las ofertas analizadas",
+      "basisAgreement": "Suelo del convenio. Sin rango observado: no publicamos un techo que no hemos medido.",
+      "weeklyHoursLabel": "Jornada",
+      "weeklyHours": "{hours} h/semana",
+      "weeklyHoursRange": "{min}–{max} h/semana",
+      "unknown": "Sin datos en la muestra",
+      "shiftsLabel": "Turnos",
+      "languageLabel": "Alemán",
+      "languageLevel": "Nivel {level} habitual",
+      "housingLabel": "Alojamiento",
+      "transportLabel": "Transporte",
+      "perkSometimes": "En algunas ofertas",
+      "perkUndocumented": "Sin datos"
+    },
+    "card": {
+      "regionLabel": "Dónde",
+      "more": "Ver el perfil"
+    },
+    "detail": {
+      "metaTitle": "{sector} en {country}: cuánto se paga y qué piden",
+      "eyebrow": "Perfil de mercado",
+      "sections": {
+        "intro": "El perfil",
+        "tasks": "Qué se hace",
+        "requirements": "Qué se pide",
+        "conditions": "Qué condiciones se ven en el mercado"
+      },
+      "back": "Ver los demás perfiles"
+    },
+    "cta": {
+      "title": "¿Te encaja este perfil?",
+      "body": "Crea tu cuenta en {brand} y completa tu perfil. Cuando una agencia publique una vacante de este tipo, podrás aplicar desde el primer día.",
+      "signup": "Crear mi cuenta",
+      "login": "Ya tengo cuenta",
+      "free": "Al candidato no se le cobra nunca. Ni comisión, ni suscripción."
+    },
+    "profiles": {
+      "warehouse": {
+        "title": "Almacén y carretilla",
+        "region": "Sajonia y Turingia",
+        "cities": "Grimma, Döbeln, Pößneck",
+        "summary": "El perfil con más ofertas de la muestra y el que mejor paga sin titulación: el certificado de carretilla vale entre 0,50 y 1 € más por hora.",
+        "intro": "Preparar pedidos y mover mercancía en centros de distribución del este de Alemania, casi siempre a tres turnos rotativos y 40 horas semanales. Seis de las catorce ofertas analizadas son de almacén y logística, y es el bloque donde el rango salarial se publica con más frecuencia. Tres exigían certificado de carretilla elevadora (Staplerschein) y las tres pagaban por encima de la franja de producción sin cualificar. El alemán que se pide es el del turno —señalización, instrucciones, incidencias—, no el de oficina.",
+        "tasks": [
+          "Descargar y ubicar mercancía con carretilla frontal y retráctil",
+          "Preparar pedidos con terminal de radiofrecuencia",
+          "Controlar cantidades y estado de la mercancía a la entrada",
+          "Mantener despejadas las zonas de paso y de picking",
+          "Registrar los movimientos en el sistema de almacén"
+        ],
+        "requirements": [
+          "Ciudadanía de la UE",
+          "Certificado de carretilla elevadora en las ofertas mejor pagadas; el español se puede convalidar y también se obtiene en Alemania en pocos días",
+          "Alemán A2, suficiente para señalización e instrucciones de turno",
+          "Disponibilidad para tres turnos rotativos, incluida la noche",
+          "Experiencia previa valorada, casi nunca imprescindible"
+        ],
+        "conditions": [
+          "Salario por hora y bruto: es la unidad en la que publica todo el sector, y nadie publica sueldo mensual ni neto",
+          "Pluses de nocturnidad, domingo y festivo aparte del salario base, en 4 de las 14 ofertas",
+          "Hasta 30 días de vacaciones al año, en 9 de las 14",
+          "Paga de vacaciones y paga de Navidad, en 8 de las 14",
+          "Ropa de trabajo y equipo de protección gratuitos, en 8 de las 14"
+        ]
+      },
+      "logistics": {
+        "title": "Logística y expedición",
+        "region": "Turingia y Sajonia",
+        "cities": "Pößneck, Döbeln, Grimma",
+        "summary": "Carga, descarga y salida de mercancía. Es el bloque que más veces publica su rango salarial de los tres analizados.",
+        "intro": "Mover mercancía entre el muelle, la nave y el camión en plataformas de Turingia y Sajonia. En la muestra son ofertas a tres turnos y jornada completa, y es donde el rango salarial aparece publicado con más frecuencia: una de las tres agencias analizadas lo publica siempre, otra nunca y la tercera solo cuando es el gancho. El certificado de carretilla aparece como requisito en tres de las seis ofertas de este bloque.",
+        "tasks": [
+          "Cargar y descargar camiones con carretilla y transpaleta",
+          "Comprobar albaranes y documentación de expedición",
+          "Preparar, flejar y retractilar palés para su salida",
+          "Clasificar mercancía por ruta y por destino",
+          "Avisar de daños e incidencias en la recepción"
+        ],
+        "requirements": [
+          "Ciudadanía de la UE",
+          "Alemán A2 para las instrucciones del turno y la documentación de salida",
+          "Disponibilidad para tres turnos rotativos",
+          "Certificado de carretilla elevadora, valorado y a veces exigido",
+          "Precisión y capacidad para trabajo físico de pie"
+        ],
+        "conditions": [
+          "Salario por hora y bruto, con rango de mínimo y máximo en 5 de las 6 ofertas que dan cifra",
+          "Pluses por trabajo nocturno, en domingo y en festivo",
+          "Hasta 30 días de vacaciones al año",
+          "Convenio del sector (GVP/DGB) citado expresamente en 12 de las 14 ofertas",
+          "Ropa de trabajo y equipo de protección a cargo de la empresa"
+        ]
+      },
+      "production": {
+        "title": "Producción industrial",
+        "region": "Baden-Wurtemberg, Sajonia y Hamburgo",
+        "cities": "Dresde, Nagold, Haigerloch, Hamburgo",
+        "summary": "El perfil más abierto: varias ofertas dicen expresamente que no hace falta experiencia y que la formación se da en planta. También el que más se ensancha por arriba.",
+        "intro": "Trabajo de línea en fábrica: alimentar la máquina, control visual, envasado y paletizado. Ocho de las catorce ofertas analizadas son de producción, y es por donde entra quien no tiene oficio. El rango se ensancha mucho por arriba cuando el cliente es una industria grande con turno continuo: la mejor pagada de la muestra, en Hamburgo, llegaba a 24,85 € la hora, pero exigía turno continuo y aptitud médica, así que no es la cifra que cabe esperar de un primer puesto. Es también el bloque donde el requisito de alemán aparece con menos frecuencia: tres de las ocho ofertas de producción no indicaban ningún nivel.",
+        "tasks": [
+          "Alimentar y vigilar la línea de producción o envasado",
+          "Comprobar visualmente el producto y retirar el defectuoso",
+          "Pesar, etiquetar y paletizar el producto terminado",
+          "Limpiar el puesto al final del turno según el protocolo",
+          "Avisar al responsable de las paradas de línea"
+        ],
+        "requirements": [
+          "Ciudadanía de la UE",
+          "Destreza manual y capacidad para trabajar de pie durante el turno",
+          "Disponibilidad para turnos de mañana y tarde, y para turno rotativo en las ofertas mejor pagadas",
+          "Experiencia previa valorada; varias ofertas dicen expresamente que no es imprescindible",
+          "El nivel de alemán varía mucho: va de no indicarse a exigirse hablado y escrito"
+        ],
+        "conditions": [
+          "Salario por hora y bruto; el suelo de la muestra coincide con el del convenio, no es casualidad",
+          "Turno continuo y cliente industrial grande pagan bastante más, y exigen bastante más",
+          "Hasta 30 días de vacaciones al año, paga de vacaciones y paga de Navidad",
+          "Formación en planta y equipo de protección a cargo de la empresa",
+          "Contrato indefinido con la agencia en 6 de las 14 ofertas, y opción de pasar a plantilla del cliente en 3"
+        ]
+      },
+      "meat-processing": {
+        "title": "Procesado cárnico",
+        "region": "",
+        "cities": "",
+        "summary": "Uno de los sectores que sí recluta en España, y de los que no se anuncian en los portales alemanes: por eso no aparece en la muestra.",
+        "intro": "Despiece, deshuesado, envasado y limpieza en plantas cárnicas. Ninguna de las catorce ofertas analizadas es de este sector, y eso es un dato en sí mismo: no se anuncia por los portales domésticos de las grandes agencias alemanas, lo que no significa que no haya demanda —es, de hecho, uno de los sectores que sí reclutan en España—. Como no hay rango observado, aquí no publicamos uno. Lo que sí se puede afirmar es el suelo, porque la contratación es a través de una ETT y le aplica el convenio de la Zeitarbeit.",
+        "tasks": [
+          "Despiece y deshuesado en línea",
+          "Clasificar, pesar y calibrar piezas",
+          "Envasar, etiquetar y paletizar producto",
+          "Limpieza y desinfección del puesto según el protocolo de higiene",
+          "Control visual de calidad del producto"
+        ],
+        "requirements": [
+          "Ciudadanía de la UE",
+          "Capacidad para trabajar de pie en ambiente frío",
+          "Formación en higiene alimentaria, que normalmente se da en destino",
+          "Disponibilidad para turnos de mañana y tarde",
+          "La muestra analizada no documenta el nivel de alemán de este sector"
+        ],
+        "conditions": [
+          "Suelo del convenio de la Zeitarbeit: {floor} brutos por hora desde el {floorDate}",
+          "Sin rango observado: no publicamos un techo que no hemos medido",
+          "La jornada, el alojamiento, el transporte y la duración del contrato los fija cada agencia, y conviene pedirlos por escrito antes de aceptar"
+        ]
+      },
+      "agriculture": {
+        "title": "Agrícola y manipulado",
+        "region": "",
+        "cities": "",
+        "summary": "Trabajo de temporada, y el perfil donde más importa saber quién firma el contrato: de ello depende qué salario mínimo se aplica.",
+        "intro": "Recolección, invernadero, manipulado y envasado en explotaciones agrícolas. Tampoco aparece en la muestra analizada, por el mismo motivo que el cárnico. Aquí hay un aviso que importa más que en ningún otro perfil: el suelo del convenio de la Zeitarbeit se aplica cuando te contrata una ETT, que es como trabaja este sitio; el trabajo de temporada contratado directamente por la explotación se rige por el salario mínimo general, que en 2026 es más bajo. Si una oferta no dice quién firma el contrato, esa es la primera pregunta que hay que hacer.",
+        "tasks": [
+          "Recolección y manipulado en campo o en invernadero",
+          "Clasificar el producto por calibre y calidad",
+          "Envasar, etiquetar y preparar pedidos para expedición",
+          "Mantener limpias y ordenadas las instalaciones",
+          "Registrar cantidades y mermas"
+        ],
+        "requirements": [
+          "Ciudadanía de la UE",
+          "Capacidad para trabajo físico al aire libre y de pie",
+          "Disponibilidad estacional, con picos de campaña",
+          "Experiencia previa valorada, no imprescindible",
+          "La muestra analizada no documenta el nivel de alemán de este sector"
+        ],
+        "conditions": [
+          "Suelo del convenio de la Zeitarbeit: {floor} brutos por hora desde el {floorDate}, siempre que quien contrate sea una ETT",
+          "Sin rango observado: no publicamos un techo que no hemos medido",
+          "Contratado directamente por la explotación se aplica el salario mínimo general, que es más bajo: preguntar siempre quién firma"
+        ]
+      }
     }
   },
   "Auth": {

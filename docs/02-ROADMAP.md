@@ -12,6 +12,7 @@
 | 2   | Auth y onboarding candidato       | Registro real end-to-end                   | ✅     |
 | 3   | Vacantes públicas + SEO           | Vacante indexable en Google Jobs           | 🟡     |
 | 4   | Verificación + backoffice         | Documento subido → aprobado por admin      | 🟡     |
+| 4b  | Oportunidades de mercado          | Gancho publicado y sitio indexado sin ETT  | ✅     |
 | 5   | Aplicaciones                      | Candidato verificado aplica y ve su estado | ⬜     |
 | 6   | Portal ETT                        | ETT gestiona vacantes y aplicaciones       | ⬜     |
 | 7   | Bolsa + consentimiento documental | Flujo completo de desbloqueo con log       | ⬜     |
@@ -317,6 +318,178 @@ Evidencia en `docs/evidencia/fase-4/`.
 
 ---
 
+## Fase 4b · Oportunidades de mercado
+
+> **Fase nueva, decidida el 2026-08-17.** Se numera `4b` y no `5` a propósito:
+> renumerar arrastraría las referencias cruzadas de las fases 5 a 10 por toda la
+> documentación. No es una fase del plan original — es la respuesta a un bloqueo
+> real que el plan no previó.
+
+**El bloqueo.** Las fases 3 y 4 esperan una vacante real en producción, y una
+vacante real exige una ETT. Pero no se consigue una ETT sin enseñarle candidatos,
+y no se consiguen candidatos sin ofertas que enganchen. Es un pollo y huevo, y
+el proyecto lleva parado en él desde el 2026-08-16.
+
+**La decisión de Ulises, 2026-08-17:** romperlo por el lado del candidato,
+publicando el gancho **sin fingir que hay vacantes**.
+
+Sección propia `/es/oportunidades` ↔ `/en/opportunities`, derivada de
+`docs/investigacion/ofertas-mercado.md`: tarjetas con sector, ciudad, franja
+salarial, idioma exigido y alojamiento, y una página por perfil con tareas,
+requisitos y condiciones. Se ve como un listado de ofertas —que es lo que
+convierte— pero **no es un catálogo de vacantes**.
+
+### Las cuatro reglas que la hacen legítima
+
+Se descartó publicar los borradores como vacantes reales. Lo que activa las
+políticas de Google Jobs no es el texto: es el marcado `JobPosting`, que es una
+declaración legible por máquina de que el empleo existe y está abierto. El
+castigo es una acción manual por _job posting spam_ justo en el canal del que
+depende toda la estrategia de la fase 3.
+
+1. **Cero marcado `JobPosting`** en esta sección. Es el interruptor.
+2. **Ninguna empresa concreta con vacante abierta.** Nada de agencias inventadas
+   ni fechas de incorporación.
+3. **Ninguna promesa específica sin confirmar** — alojamiento a 280 €, meses
+   gratis, transporte diario. Lo avisa la sección 5 de la propia investigación:
+   eso solo lo promete la ETT que lo va a cumplir.
+4. **Encuadre honesto y visible**, no en letra pequeña: son condiciones típicas
+   del mercado, no una vacante a la que se aplica.
+
+**Lo que sí se publica, porque es cierto y está documentado:** los rangos
+salariales, el convenio de la Zeitarbeit, las ciudades y sectores con demanda, y
+que en varios de ellos no se exige alemán. Sale de 14 ofertas reales analizadas
+con fecha de consulta. **Y es lo único que hace falta para convertir**: quien se
+registra lo hace por las cifras y las condiciones, no porque exista un número de
+referencia de vacante.
+
+### Lo que cuesta y lo que hay que vigilar
+
+- **Una oportunidad NUNCA es una fila en `jobs`.** Es la restricción estructural
+  de la fase, y es de seguridad: si vive en esa tabla, el listado, el sitemap, el
+  `JobPosting`, las landings y —en la fase 5— el botón de aplicar la tratan
+  automáticamente como vacante real, y una bandera olvidada publica justo lo que
+  esta fase existe para no publicar. Lo natural es por fichero, como ADR-28 con
+  las vacantes: `content/opportunities/`, rutas estáticas propias, sin base de
+  datos y sin migración.
+- **Por ese camino NO hace falta enmendar ADR-23 aquí.** Las landings siguen
+  derivando de vacantes vivas y las oportunidades son su propio árbol de rutas.
+  La enmienda —permitir páginas indexables que no cuelguen de una vacante— es de
+  las landings de mercado, que están aplazadas más abajo. La fase sale bastante
+  más pequeña de lo que parecía el 2026-08-17.
+- **`/ofertas` vacío va en `noindex`** con enlace a oportunidades, para que no
+  sea un callejón sin salida ni una página delgada en el sitemap.
+- **Namespace aparte, no `/ofertas`.** El día que entre una vacante real tiene
+  que verse distinta de un perfil de mercado; además evita colisión de slugs y
+  permite que las oportunidades pasen a ser la parte alta del embudo.
+- **Techo de tres a ocho perfiles.** Multiplicar ciudad × sector hasta cincuenta
+  páginas delgadas las convierte en _doorway pages_, que sí es un problema de
+  calidad. La contención está en no multiplicarlas.
+- **La bandera de indexación se puede encender aquí** (ADR-16), que es el motivo
+  de la fase: sin `JobPosting` no hay riesgo de acción manual.
+
+### Lo que esta fase NO resuelve
+
+**Las fases 3 y 4 siguen 🟡.** Su criterio pide el Rich Results Test sobre una
+vacante real y esto no lo sustituye. Se cierran cuando haya ETT.
+
+**El activo se enfría.** Esta fase acumula registros de gente esperando una
+vacante que todavía no existe. Cuanto más tarde la ETT, menos vale la lista. No
+lo arregla el código: condiciona el calendario comercial.
+
+**Hecho cuando:** las oportunidades están publicadas en producción, sin una sola
+línea de `JobPosting` en su HTML, el sitio está indexado, y un candidato llega a
+una oportunidad y completa el registro.
+
+### ✅ Cerrada, 2026-08-17
+
+**Cinco perfiles** en `/es/oportunidades` ↔ `/en/opportunities`: almacén,
+logística, producción, cárnico y agrícola. **El sitio está abierto a Google** por
+primera vez desde que existe, y el sitemap pasó de 2 URLs a 7.
+
+| Verificación (producción, `dpl_BTmB7MvesM7E65iDJNXvyeEbaM4U`) | Resultado                                                      |
+| ------------------------------------------------------------- | -------------------------------------------------------------- |
+| **`JobPosting` en el HTML de las oportunidades**              | **cero**, en local (102 ficheros del build) y en `curl`        |
+| `/robots.txt`                                                 | ya no dice `Disallow: /`; anuncia el sitemap                   |
+| `/sitemap.xml`                                                | **7 URLs**, cada una con sus `xhtml:link`                      |
+| Oportunidades en el HTML sin ejecutar JavaScript              | 5 perfiles enlazados, cifras y encuadre incluidos              |
+| Cabeceras públicas                                            | `HIT`/`PRERENDER`, sin `x-ett-session-checked` ni `Set-Cookie` |
+| `/es/cuenta` (control)                                        | 307 a `/es/entrar`, `x-ett-session-checked: 1`                 |
+| `hreflang` recíproco con `x-default`                          | segmentos traducidos enteros, en el apex                       |
+| `/es/ofertas` vacío                                           | `noindex, follow` + enlace visible a oportunidades             |
+| Registro desde una oportunidad, móvil 390×844                 | completo de punta a punta, fila en `candidates`                |
+| `test:security` · `:drill` · `typecheck` · `lint` · `format`  | 64/64, simulacro en verde, todo limpio                         |
+
+Evidencia en `docs/evidencia/fase-4b/`. Decisión nueva: **ADR-30** (una
+oportunidad no es una vacante y no puede llegar a serlo). **ADR-16 y ADR-23 se
+corrigieron el 2026-08-17** —la bandera de indexación ya no exige vacantes
+reales, y las páginas indexables sin vacante detrás no contradicen ADR-23— y
+esta fase se construyó sobre esas correcciones.
+
+**Esta fase no toca la base de datos:** ni migración, ni tabla, ni política. Los
+perfiles viven en `src/lib/opportunities.ts` y su copy en `messages/`.
+
+#### Dos decisiones que conviene conocer antes de tocar esto
+
+**Los slugs son los de la landing, a propósito.**
+`/es/oportunidades/alemania/almacen` ↔ `/es/trabajo/alemania/almacen`: mismos
+segmentos, derivados del mismo catálogo. Por eso hay **una oportunidad por
+sector y ninguna más**, y por eso el 301 del día que se retiren es mecánico.
+Cambiar la forma de la URL cierra esa puerta.
+
+**El "sin alemán" se publica medido, no prometido.** El prompt de la fase listaba
+"que en varios no se exige alemán" como publicable, pero el informe no lo
+sostiene tal cual: 11 de 14 ofertas exigen alemán y de las 3 que no lo dicen,
+ninguna afirma que no haga falta —el anuncio entero está en alemán—. Lo que sí
+está documentado, y es lo que se publica, es el dato exacto: _"tres de las ocho
+ofertas de producción no indicaban ningún nivel"_, y que solo 3 de 14 lo miden
+con la escala MCER. Es la misma ventaja de venta dicha sin inventar, que es lo
+que pedían las reglas 3 y 4 de la propia fase.
+
+**Lo que no cierra:** las fases 3 y 4 **siguen 🟡**. Su criterio pide el Rich
+Results Test sobre una vacante real y esto no lo sustituye.
+
+### La salida — decidido el 2026-08-17, y condiciona el diseño de HOY
+
+`/oportunidades` es de esta etapa: existe para captar candidatos mientras no hay
+ETT. Pero **no se borra cuando deje de hacer falta.** Para entonces esas URLs
+tendrán posiciones, enlaces e historial, y se retiran justo cuando por fin hay
+ofertas reales que colocar ahí.
+
+- **Se retira con 301, nunca con un borrado.** Y **cada oportunidad redirige a su
+  equivalente concreto** —almacén en Sajonia → la landing de almacén en Sajonia,
+  ya derivada de vacantes reales—, no todas en bloque a `/ofertas`: Google trata
+  como _soft 404_ el redirect a una página que no es el equivalente, así que un
+  301 masivo pierde casi tanto como borrar.
+- **Por eso los slugs de la 4b tienen que encajar con los de las landings.** Es
+  la restricción de diseño que esta sección viene a fijar: si la sesión que
+  construye la 4b elige slugs cómodos, cierra esa puerta sin enterarse.
+- **Y lo más probable es que no haya que retirarlas.** Una página que explica las
+  condiciones reales de un sector en una región, con rangos y sin vacante
+  asociada, **es** la landing de mercado aplazada más abajo: mismo contenido,
+  misma arquitectura, misma enmienda a ADR-23. La transición natural es un cambio
+  de papel, no una demolición: `/ofertas` sale de `noindex` y pasa a ser lo
+  principal, `/oportunidades` cede el sitio en la navegación y su CTA cambia de
+  "regístrate" a "mira las vacantes abiertas". Eso es configuración, no obra.
+
+### Anotado para más adelante — landings de mercado
+
+Idea aceptada el 2026-08-17 y **aplazada por calendario, no descartada**:
+páginas de contenido real por ciudad y sector —_"Trabajo en almacén en Alemania:
+cuánto se paga en 2026"_, _"Trabajar en Alemania sin saber alemán"_— construidas
+con los rangos, el convenio y el apartado "qué callan" de la investigación.
+
+Rankean por consultas informativas, que es donde un dominio sin autoridad puede
+competir de verdad: por un título de puesto concreto pierde contra Indeed,
+Randstad y StepStone. **Se aplazan porque el SEO informativo tarda meses y no
+engancha**: nadie se registra en un job board para leer un informe salarial. El
+gancho va primero.
+
+Cuando toquen, se apoyan en la misma enmienda a ADR-23 que hace esta fase, así
+que el trabajo no se repite.
+
+---
+
 ## Fase 5 · Aplicaciones
 
 Aplicar a vacante (bloqueado si no está verificado, con mensaje que explica qué falta) · listado "Mis aplicaciones" con estado · log de eventos de aplicación · vista admin de aplicaciones.
@@ -358,6 +531,19 @@ Bolsa navegable con filtros sobre la vista seudonimizada (ADR-03) · solicitud d
 **Un guardarraíl que hay que añadir aquí, descubierto el 2026-08-16.** Una prueba en local mandó un correo **real** a `maria@talpass.test` —un candidato de mentira— porque `.env.test` tenía una clave de Resend válida. No hubo daño: `.test` es un TLD reservado, no existe ningún destinatario y el envío rebota. Se tapó vaciando la clave en `.env.test`, pero eso es un fichero que cualquiera vuelve a rellenar sin darse cuenta.
 
 Como esta fase centraliza el envío (ADR-26), es aquí donde el punto único **debe negarse a enviar de verdad cuando el entorno es local**, en vez de depender de que falte una credencial. El día que un seed lleve direcciones reales en lugar de `@talpass.test`, la diferencia deja de ser inocua.
+
+**Aviso al candidato cuando entre una vacante de su perfil** — anotado por la
+fase 4b, que es la que lo hace necesario: acumula gente registrada esperando una
+vacante que todavía no existe, y sin ese aviso la lista se enfría sola.
+
+**Y el onboarding hoy NO captura de dónde saldría ese aviso.** Comprobado paso a
+paso el 2026-08-17: recoge nombre, nacionalidad, país y ciudad **de residencia**,
+nivel de inglés, carné, experiencia previa y si necesita alojamiento o
+transporte. **No pregunta ni sector ni ciudad preferidos en destino.** Así que el
+aviso, tal cual está el modelo, solo puede segmentar por país de destino y por
+necesidad de alojamiento o transporte. Si se quiere por sector —que es lo que
+pide un candidato que llega desde `/oportunidades/alemania/almacen`—, hay que
+añadir el campo antes, y el sitio natural es el onboarding.
 
 **Hecho cuando:** el ciclo de inactividad se verifica de punta a punta con fechas forzadas.
 

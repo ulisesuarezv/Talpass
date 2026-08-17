@@ -9,7 +9,8 @@
     "account": "My account",
     "login": "Sign in",
     "logout": "Sign out",
-    "skipToContent": "Skip to content"
+    "skipToContent": "Skip to content",
+    "opportunities": "Opportunities"
   },
   "LocaleSwitcher": {
     "label": "Language"
@@ -110,7 +111,10 @@
       "sector": "{sector} in {country}",
       "city": "Jobs in {city}",
       "housing": "With housing in {country}"
-    }
+    },
+    "emptyTitle": "No vacancies published yet",
+    "emptyBody": "We are closing the first agreements with agencies. In the meantime, you can see what German work actually pays by sector, with data rather than promises.",
+    "emptyCta": "See market conditions"
   },
   "Landing": {
     "related": "Keep looking",
@@ -141,6 +145,213 @@
       "metaTitle": "Jobs with housing included in {place}",
       "metaDescription": "{count, plural, one {# job opening} other {# job openings}} in {place} with housing included. Browsing is free and needs no account.",
       "link": "With housing in {place}"
+    }
+  },
+  "Opportunities": {
+    "title": "What German temp work actually pays",
+    "subtitle": "Five temporary-work profiles with their pay band, weekly hours, shifts and the level of German they ask for. Taken from 14 real job ads and from the sector's collective agreement — not from a promise.",
+    "meta": {
+      "title": "Real conditions of temporary work in Germany",
+      "description": "What warehouse, logistics, production, meat processing and agriculture pay per hour in Germany, what hours and shifts are worked, and what level of German is required. Based on 14 real job ads and the Zeitarbeit collective agreement."
+    },
+    "disclosure": {
+      "title": "This is not a list of open vacancies",
+      "body": "There is no company behind these pages, no start date and no position to apply to. They describe the typical conditions of the German market for each profile: what it pays, what the work is and what is asked for. Real vacancies, once there are any, are published separately.",
+      "source": "Source: 14 job ads from Randstad, Adecco and Tempton reviewed on {date}, and the Zeitarbeit collective agreement (GVP/DGB). Sector pay rises on 1 September 2026 and again in April 2027, so these figures have a known expiry date.",
+      "jobs": "See published vacancies"
+    },
+    "agreement": {
+      "title": "The floor is set by the collective agreement, not by the agency",
+      "body": "Temporary agency work in Germany has its own minimum wage, above the general one: {amount} gross per hour from {date}. An offer below that figure is not a bargain, it is illegal. It is the first thing worth checking, and it applies to all five profiles on this page."
+    },
+    "ask": {
+      "title": "What almost no advert says, and you should ask",
+      "intro": "Of the 14 ads reviewed, none stated the exact weekly hours, none said whether accommodation was available and none said how long the contract lasts. These are the questions that decide whether moving is worth it:",
+      "items": [
+        "How many hours a week? With hourly pay, the working week is half the wage: €16 an hour at 35 hours and at 40 hours are not the same month.",
+        "Is there accommodation, what does it cost, and is the amount written into the contract? A surprise payroll deduction is the sector's most repeated complaint.",
+        "What is the minimum contract length? \"Temporary\" with no term does not let you decide on a move.",
+        "Who signs the contract, the agency or the factory? In this sector a \"permanent contract\" almost always means permanent with the agency, which is not the same thing.",
+        "What level of German is required, measured? \"Good German\" is not a requirement, it is an opaque filter: only 3 of the 14 ads gave a CEFR level."
+      ]
+    },
+    "facts": {
+      "salaryLabel": "Pay",
+      "salaryRange": "{min} – {max} per {period}",
+      "salaryFrom": "From {min} per {period}",
+      "basisObserved": "Collective agreement floor and ceiling observed in the ads reviewed",
+      "basisAgreement": "Collective agreement floor. No observed range: we do not publish a ceiling we have not measured.",
+      "weeklyHoursLabel": "Weekly hours",
+      "weeklyHours": "{hours} h/week",
+      "weeklyHoursRange": "{min}–{max} h/week",
+      "unknown": "Not documented in the sample",
+      "shiftsLabel": "Shifts",
+      "languageLabel": "German",
+      "languageLevel": "{level} typically",
+      "housingLabel": "Accommodation",
+      "transportLabel": "Transport",
+      "perkSometimes": "In some offers",
+      "perkUndocumented": "No data"
+    },
+    "card": {
+      "regionLabel": "Where",
+      "more": "See the profile"
+    },
+    "detail": {
+      "metaTitle": "{sector} in {country}: what it pays and what is required",
+      "eyebrow": "Market profile",
+      "sections": {
+        "intro": "The profile",
+        "tasks": "What the work is",
+        "requirements": "What is required",
+        "conditions": "Conditions seen in the market"
+      },
+      "back": "See the other profiles"
+    },
+    "cta": {
+      "title": "Does this profile fit you?",
+      "body": "Create your {brand} account and complete your profile. When an agency publishes a vacancy of this kind, you will be able to apply from day one.",
+      "signup": "Create my account",
+      "login": "I already have an account",
+      "free": "Candidates are never charged. No fees, no subscription."
+    },
+    "profiles": {
+      "warehouse": {
+        "title": "Warehouse and forklift",
+        "region": "Saxony and Thuringia",
+        "cities": "Grimma, Döbeln, Pößneck",
+        "summary": "The most common profile in the sample and the best paid without a qualification: a forklift licence is worth €0.50 to €1 more per hour.",
+        "intro": "Picking orders and moving goods in distribution centres in eastern Germany, almost always on three rotating shifts and 40 hours a week. Six of the fourteen ads reviewed are warehouse and logistics, and this is the block where the pay range is published most often. Three required a forklift licence (Staplerschein) and all three paid above the unqualified production band. The German asked for is shift German — signage, instructions, incidents — not office German.",
+        "tasks": [
+          "Unload and put away goods with counterbalance and reach trucks",
+          "Pick orders using an RF handheld terminal",
+          "Check quantities and condition of incoming goods",
+          "Keep aisles and picking areas clear",
+          "Record movements in the warehouse system"
+        ],
+        "requirements": [
+          "EU citizenship",
+          "Forklift licence for the best-paid offers; an EU licence can be recognised, and one can also be obtained in Germany within a few days",
+          "German at A2, enough for signage and shift instructions",
+          "Availability for three rotating shifts, including nights",
+          "Previous experience welcome, rarely essential"
+        ],
+        "conditions": [
+          "Hourly and gross pay: it is the unit the whole sector publishes in, and nobody publishes monthly or net pay",
+          "Night, Sunday and public-holiday premiums on top of base pay, in 4 of the 14 ads",
+          "Up to 30 days' holiday a year, in 9 of the 14",
+          "Holiday and Christmas bonuses, in 8 of the 14",
+          "Free workwear and protective equipment, in 8 of the 14"
+        ]
+      },
+      "logistics": {
+        "title": "Logistics and dispatch",
+        "region": "Thuringia and Saxony",
+        "cities": "Pößneck, Döbeln, Grimma",
+        "summary": "Loading, unloading and dispatch. It is the block that publishes its pay range most often of the three agencies reviewed.",
+        "intro": "Moving goods between the dock, the warehouse and the lorry at sites in Thuringia and Saxony. In the sample these are three-shift, full-time roles, and this is where the pay range appears published most often: one of the three agencies reviewed always publishes it, another never does, and the third only when it is the hook. A forklift licence appears as a requirement in three of the six ads in this block.",
+        "tasks": [
+          "Load and unload lorries with forklifts and pallet trucks",
+          "Check delivery notes and dispatch paperwork",
+          "Prepare, strap and wrap pallets for dispatch",
+          "Sort goods by route and destination",
+          "Report damage and discrepancies on receipt"
+        ],
+        "requirements": [
+          "EU citizenship",
+          "German at A2 for shift instructions and dispatch paperwork",
+          "Availability for three rotating shifts",
+          "Forklift licence, valued and sometimes required",
+          "Accuracy and the ability to work on your feet"
+        ],
+        "conditions": [
+          "Hourly and gross pay, with a minimum and a maximum in 5 of the 6 ads that give a figure",
+          "Premiums for night, Sunday and public-holiday work",
+          "Up to 30 days' holiday a year",
+          "The sector agreement (GVP/DGB) cited explicitly in 12 of the 14 ads",
+          "Workwear and protective equipment at the company's expense"
+        ]
+      },
+      "production": {
+        "title": "Industrial production",
+        "region": "Baden-Württemberg, Saxony and Hamburg",
+        "cities": "Dresden, Nagold, Haigerloch, Hamburg",
+        "summary": "The most open profile: several ads state outright that no experience is needed and that training is given on site. Also the one that stretches furthest at the top.",
+        "intro": "Line work in factories: feeding the machine, visual checks, packing and palletising. Eight of the fourteen ads reviewed are production roles, and this is where people without a trade get in. The range stretches a long way at the top when the client is a large industrial site on continuous shifts: the best paid in the sample, in Hamburg, reached €24.85 an hour, but required continuous shift work and a medical clearance, so it is not the figure to expect from a first job. It is also the block where a German requirement appears least often: three of the eight production ads gave no level at all.",
+        "tasks": [
+          "Feed and monitor the production or packaging line",
+          "Visually check the product and remove defects",
+          "Weigh, label and palletise finished product",
+          "Clean the workstation at the end of the shift to protocol",
+          "Report line stoppages to the supervisor"
+        ],
+        "requirements": [
+          "EU citizenship",
+          "Manual dexterity and the ability to stand throughout the shift",
+          "Availability for morning and afternoon shifts, and for rotating shifts in the best-paid offers",
+          "Previous experience welcome; several ads state outright that it is not essential",
+          "The German requirement varies widely: from not stated at all to spoken and written"
+        ],
+        "conditions": [
+          "Hourly and gross pay; the floor in the sample matches the collective agreement floor, which is no coincidence",
+          "Continuous shifts and large industrial clients pay considerably more, and ask considerably more",
+          "Up to 30 days' holiday a year, plus holiday and Christmas bonuses",
+          "On-site training and protective equipment at the company's expense",
+          "A permanent contract with the agency in 6 of the 14 ads, and the option to join the client's payroll in 3"
+        ]
+      },
+      "meat-processing": {
+        "title": "Meat processing",
+        "region": "",
+        "cities": "",
+        "summary": "One of the sectors that does recruit in Spain, and one of those not advertised on German portals — which is why it does not appear in the sample.",
+        "intro": "Cutting, boning, packing and cleaning in meat plants. None of the fourteen ads reviewed is from this sector, and that is a finding in itself: it is not advertised through the domestic portals of the large German agencies, which does not mean there is no demand — it is in fact one of the sectors that does recruit in Spain. Since there is no observed range, we do not publish one here. What can be stated is the floor, because hiring is through a temporary work agency and the Zeitarbeit agreement applies.",
+        "tasks": [
+          "Cutting and boning on the line",
+          "Sorting, weighing and grading cuts",
+          "Packing, labelling and palletising product",
+          "Cleaning and disinfecting the workstation to hygiene protocol",
+          "Visual quality control of the product"
+        ],
+        "requirements": [
+          "EU citizenship",
+          "Ability to work standing in a cold environment",
+          "Food hygiene training, normally provided on arrival",
+          "Availability for morning and afternoon shifts",
+          "The sample reviewed does not document the German level for this sector"
+        ],
+        "conditions": [
+          "Zeitarbeit agreement floor: {floor} gross per hour from {floorDate}",
+          "No observed range: we do not publish a ceiling we have not measured",
+          "Weekly hours, accommodation, transport and contract length are set by each agency, and are worth asking for in writing before accepting"
+        ]
+      },
+      "agriculture": {
+        "title": "Agriculture and packing",
+        "region": "",
+        "cities": "",
+        "summary": "Seasonal work, and the profile where it matters most who signs the contract: that determines which minimum wage applies.",
+        "intro": "Harvesting, greenhouse work, grading and packing on farms. It does not appear in the sample either, for the same reason as meat processing. There is a warning here that matters more than on any other profile: the Zeitarbeit floor applies when a temporary work agency hires you, which is how this site works; seasonal work hired directly by the farm falls under the general minimum wage, which in 2026 is lower. If an advert does not say who signs the contract, that is the first question to ask.",
+        "tasks": [
+          "Harvesting and handling in the field or greenhouse",
+          "Grading product by size and quality",
+          "Packing, labelling and preparing orders for dispatch",
+          "Keeping the facilities clean and tidy",
+          "Recording quantities and waste"
+        ],
+        "requirements": [
+          "EU citizenship",
+          "Ability to do physical work outdoors and on your feet",
+          "Seasonal availability, with peaks during the campaign",
+          "Previous experience welcome, not essential",
+          "The sample reviewed does not document the German level for this sector"
+        ],
+        "conditions": [
+          "Zeitarbeit agreement floor: {floor} gross per hour from {floorDate}, provided the employer is a temporary work agency",
+          "No observed range: we do not publish a ceiling we have not measured",
+          "Hired directly by the farm, the lower general minimum wage applies: always ask who signs"
+        ]
+      }
     }
   },
   "Auth": {

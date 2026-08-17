@@ -3,6 +3,7 @@ import type { MetadataRoute } from 'next';
 import { defaultLocale, locales, type Locale } from '@/i18n/routing';
 import { listPublishedJobs } from '@/lib/jobs';
 import { landingHref, listLandings } from '@/lib/landings';
+import { listOpportunities, opportunityHref } from '@/lib/opportunities';
 import { absoluteUrl, type LocalizedHref } from '@/lib/seo';
 
 /**
@@ -43,14 +44,24 @@ function entry(
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [jobs, landings] = await Promise.all([
+  const [jobs, landings, opportunities] = await Promise.all([
     listPublishedJobs(defaultLocale),
     listLandings(),
+    listOpportunities(defaultLocale),
   ]);
 
   return [
     entry('/', { priority: 1 }),
-    entry('/jobs', { priority: 0.9 }),
+
+    // `/ofertas` solo entra en el sitemap cuando tiene vacantes. Vacío es
+    // `noindex` (fase 4b), y declarar en el sitemap una URL que luego se
+    // bloquea es la contradicción que más rastreo gasta.
+    ...(jobs.length > 0 ? [entry('/jobs', { priority: 0.9 })] : []),
+
+    entry('/opportunities', { priority: 0.9 }),
+    ...opportunities.map((opportunity) =>
+      entry(opportunityHref(opportunity), { priority: 0.8 }),
+    ),
 
     ...landings.map((landing) =>
       entry(landingHref(landing), { priority: 0.7 }),

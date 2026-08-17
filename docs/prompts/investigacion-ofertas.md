@@ -33,19 +33,19 @@ del mercado real, no inventadas.
 
 Una tabla con **una fila por oferta** y, en la medida en que el anuncio lo diga:
 
-| Dato                  | Detalle                                                     |
-| --------------------- | ----------------------------------------------------------- |
-| Agencia y país        | quién publica y dónde se trabaja                            |
-| Sector                | y si encaja en los sectores del catálogo o falta uno        |
-| Ciudad o región       | ídem: ¿está en el catálogo?                                 |
-| Salario               | importe, **moneda** y **periodo** (hora, mes, año) — bruto o neto |
-| Contrato y jornada    | temporal/indefinido, completa/parcial, turnos, horas semanales |
-| Idioma exigido        | cuál y qué nivel; si no piden alemán, dilo — es el argumento de venta |
-| Alojamiento           | ofrecido, ayudado o nada; si se descuenta del sueldo y cuánto |
-| Transporte            | ídem                                                        |
-| Carné                 | exigido o no, y de qué tipo                                 |
-| Requisitos            | experiencia, titulación, documentación                      |
-| Qué prometen          | el gancho: pagas extra, alojamiento gratis, viaje pagado…   |
+| Dato               | Detalle                                                               |
+| ------------------ | --------------------------------------------------------------------- |
+| Agencia y país     | quién publica y dónde se trabaja                                      |
+| Sector             | y si encaja en los sectores del catálogo o falta uno                  |
+| Ciudad o región    | ídem: ¿está en el catálogo?                                           |
+| Salario            | importe, **moneda** y **periodo** (hora, mes, año) — bruto o neto     |
+| Contrato y jornada | temporal/indefinido, completa/parcial, turnos, horas semanales        |
+| Idioma exigido     | cuál y qué nivel; si no piden alemán, dilo — es el argumento de venta |
+| Alojamiento        | ofrecido, ayudado o nada; si se descuenta del sueldo y cuánto         |
+| Transporte         | ídem                                                                  |
+| Carné              | exigido o no, y de qué tipo                                           |
+| Requisitos         | experiencia, titulación, documentación                                |
+| Qué prometen       | el gancho: pagas extra, alojamiento gratis, viaje pagado…             |
 
 Si un dato no aparece, escribe "no dice". **Que un anuncio calle el salario es un
 hallazgo, no un hueco**: conviene contar cuántos lo callan.
@@ -55,7 +55,7 @@ hallazgo, no un hueco**: conviene contar cuántos lo callan.
 - **Rangos salariales por sector**, con moneda y periodo. Es lo que evita que
   Ulises escriba una cifra que delate que la oferta no es real.
 - **Ciudades y sectores que más se repiten**: por ahí empieza el catálogo.
-- **Cómo titulan.** Reproduce la *estructura* del título, no el título.
+- **Cómo titulan.** Reproduce la _estructura_ del título, no el título.
 - **Qué extensión y qué secciones** tiene el cuerpo de un anuncio típico.
 - **Qué se promete y con qué palabras**, en español y en alemán si aparece.
 - **Qué callan.** Lo que sistemáticamente no se dice es una oportunidad de

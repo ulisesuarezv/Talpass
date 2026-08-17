@@ -3,6 +3,8 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 
 import { JobBrowser } from '@/components/jobs/job-browser';
 import { SignupCta } from '@/components/jobs/signup-cta';
+import { Button } from '@/components/ui/button';
+import { Link } from '@/i18n/navigation';
 import type { Locale } from '@/i18n/routing';
 import { listCountries, listLanguages, listSectors } from '@/lib/catalogs';
 import { listPublishedJobs } from '@/lib/jobs';
@@ -26,12 +28,22 @@ export async function generateMetadata({
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'Jobs' });
 
-  return seoMetadata({
+  const metadata = seoMetadata({
     locale,
     href: '/jobs',
     title: t('meta.title'),
     description: t('meta.description'),
   });
+
+  // Un listado de ofertas sin una sola oferta es una página delgada, y hasta
+  // que haya ETT va a seguir vacío. **La condición es el contenido, no una
+  // bandera**: en cuanto se publique una vacante, la página vuelve sola al
+  // índice sin que nadie tenga que acordarse de cambiar nada (fase 4b).
+  const jobs = await listPublishedJobs(locale);
+
+  return jobs.length > 0
+    ? metadata
+    : { ...metadata, robots: { index: false, follow: true } };
 }
 
 export default async function JobsPage({
@@ -69,19 +81,36 @@ export default async function JobsPage({
         <p className="text-muted-foreground">{t('subtitle')}</p>
       </header>
 
-      {/*
-        Sin `Suspense` y sin `useSearchParams` dentro: `JobBrowser` es cliente,
-        pero se prerenderiza aquí con todas las vacantes, así que salen en el
-        HTML estático. Ver el comentario de ese fichero — es la diferencia entre
-        una página que el rastreador lee y una que solo existe si se ejecuta el
-        JavaScript.
-      */}
-      <JobBrowser
-        jobs={jobs}
-        countries={countries.filter((c) => usedCountries.has(c.id))}
-        sectors={sectors.filter((s) => usedSectors.has(s.id))}
-        languages={languages.filter((l) => usedLanguages.has(l.id))}
-      />
+      {jobs.length === 0 ? (
+        // Sin vacantes, la página es `noindex` (ver `generateMetadata`) y lo
+        // único útil que puede hacer es no ser un callejón sin salida: se manda
+        // al candidato a los perfiles de mercado, que sí tienen contenido.
+        <section className="flex flex-col gap-3 rounded-lg border bg-muted/40 p-6">
+          <h2 className="text-lg font-semibold tracking-tight">
+            {t('emptyTitle')}
+          </h2>
+          <p className="text-sm text-muted-foreground">{t('emptyBody')}</p>
+          <div>
+            <Button asChild>
+              <Link href="/opportunities">{t('emptyCta')}</Link>
+            </Button>
+          </div>
+        </section>
+      ) : (
+        /*
+          Sin `Suspense` y sin `useSearchParams` dentro: `JobBrowser` es cliente,
+          pero se prerenderiza aquí con todas las vacantes, así que salen en el
+          HTML estático. Ver el comentario de ese fichero — es la diferencia entre
+          una página que el rastreador lee y una que solo existe si se ejecuta el
+          JavaScript.
+        */
+        <JobBrowser
+          jobs={jobs}
+          countries={countries.filter((c) => usedCountries.has(c.id))}
+          sectors={sectors.filter((s) => usedSectors.has(s.id))}
+          languages={languages.filter((l) => usedLanguages.has(l.id))}
+        />
+      )}
 
       <SignupCta />
     </div>

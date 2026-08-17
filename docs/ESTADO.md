@@ -1,14 +1,52 @@
 # Estado del proyecto — punto de retomada
 
+> ## ✅ Fase 4b cerrada, 2026-08-17 — el sitio ya está abierto a Google
+>
+> El pollo y huevo **está roto por el lado del candidato**. Se publicaron **cinco
+> perfiles de mercado** en `/es/oportunidades` ↔ `/en/opportunities` —almacén,
+> logística, producción, cárnico y agrícola—, sacados de
+> `docs/investigacion/ofertas-mercado.md` y del convenio de la Zeitarbeit, **sin
+> una sola línea de `JobPosting` y sin fingir que hay vacantes abiertas**.
+>
+> **`NEXT_PUBLIC_ALLOW_INDEXING` está ENCENDIDA en producción.** `/robots.txt` ya
+> no dice `Disallow: /` y el sitemap pasó de **2 URLs a 7**. Es la primera vez
+> que el sitio es rastreable.
+>
+> Dos despliegues, en ese orden: `dpl_C5jM3MRvPU49pSugvnusD99LowDr` (el
+> contenido) y `dpl_BTmB7MvesM7E65iDJNXvyeEbaM4U` (la bandera, que se hornea en
+> el build y por eso exige redesplegar). Verificación completa contra
+> `https://talpass.eu` en `docs/evidencia/fase-4b/02-produccion.md`.
+>
+> **Decisión nueva: ADR-30.** Una oportunidad no es una vacante y no puede llegar
+> a serlo: no hay tabla, no hay migración y no hay camino de código hasta `jobs`.
+> Y **ADR-16 y ADR-23 quedaron corregidas** el mismo día: la bandera ya no exige
+> vacantes reales, y una página indexable sin vacante detrás no contradice
+> ADR-23.
+>
+> **Las fases 3 y 4 siguen 🟡** y esta fase **no las cierra**: su criterio pide el
+> Rich Results Test sobre una vacante real. Todo lo de "Lo primero al retomar"
+> sigue vigente palabra por palabra, pero como el guion **del día que haya ETT**.
+>
+> **Siguiente paso real: conseguir la primera ETT.** Ya hay algo que enseñarle
+> —un sitio indexado y una lista que empieza a llenarse—, que es exactamente lo
+> que no había ayer.
+>
+> ⚠️ **Y el activo se enfría.** Esto acumula registros de gente esperando una
+> vacante que todavía no existe: cuanto más tarde la ETT, menos vale la lista.
+> No lo arregla el código, condiciona el calendario comercial.
+
 > Última actualización: **2026-08-16**. **La fase 4 está construida y verificada
 > en local**: subida de documentos, grabación de audio, backoffice de revisión,
 > el primer correo propio de la aplicación y una vía para publicar vacantes
 > reales. Se queda en 🟡 por **un solo criterio**: que exista una vacante real
 > **publicada en producción**, que es una escritura deliberada y la hace Ulises.
-> Esa misma vacante es la que desbloquea la fase 3 entera (Rich Results Test) y
-> la bandera de indexación, que sigue **APAGADA a propósito**.
-> **Siguiente paso: publicar las primeras ofertas reales** — abajo, "Lo primero
-> al retomar".
+> Esa misma vacante es la que desbloquea la fase 3 entera (Rich Results Test).
+> ~~Y la bandera de indexación, que sigue APAGADA~~ — **caducado el 2026-08-17**:
+> la bandera la encendió la fase 4b y ya no depende de que haya vacantes
+> (ADR-16, corregida).
+> ~~**Siguiente paso: publicar las primeras ofertas reales**~~ — **caducado el
+> 2026-08-17**, ver el aviso de arriba. Sigue siendo el guion del día que haya
+> ETT, y por eso no se borra.
 > El detalle de cada fase está en `docs/02-ROADMAP.md`; las decisiones, en `docs/00-PROJECT.md`.
 
 ---
@@ -21,15 +59,21 @@ para el Google Rich Results Test; la 4, porque su criterio de "hecho cuando"
 incluye que el admin haya podido publicar una. No es trabajo de código: la vía
 existe, está probada y documentada.
 
-| Fase                  | Estado                                               |
-| --------------------- | ---------------------------------------------------- |
-| 0 · Fundaciones       | ✅ desplegada en producción                          |
-| 1 · Datos y seguridad | ✅ 36 tablas, RLS probada                            |
-| 2 · Auth y onboarding | ✅ registro real end-to-end                          |
-| 3 · Vacantes + SEO    | 🟡 falta el Rich Results Test sobre una vacante real |
-| 4 · Verificación      | 🟡 falta publicar una vacante real en producción     |
-| **5 · Aplicaciones**  | **⬜ siguiente fase de código**                      |
-| 6–10                  | ⬜                                                   |
+**Pero desde el 2026-08-17 se sabe que eso no depende de ponerse a ello, sino de
+que exista una ETT** — una vacante real es de una agencia real. Por eso las dos
+están bloqueadas y por eso existe la 4b: para conseguir los candidatos con los
+que se cierra esa ETT.
+
+| Fase                   | Estado                                                                     |
+| ---------------------- | -------------------------------------------------------------------------- |
+| 0 · Fundaciones        | ✅ desplegada en producción                                                |
+| 1 · Datos y seguridad  | ✅ 36 tablas, RLS probada                                                  |
+| 2 · Auth y onboarding  | ✅ registro real end-to-end                                                |
+| 3 · Vacantes + SEO     | 🟡 **bloqueada hasta que haya ETT** — Rich Results Test sobre vacante real |
+| 4 · Verificación       | 🟡 **bloqueada hasta que haya ETT** — publicar una vacante real            |
+| **4b · Oportunidades** | **✅ cerrada 2026-08-17 — 5 perfiles vivos y el sitio abierto a Google**   |
+| **5 · Aplicaciones**   | **⬜ siguiente fase de código** — su prompt sigue sin escribirse           |
+| 6–10                   | ⬜                                                                         |
 
 ### Lo que dejó la fase 4 (2026-08-16, verificado contra la base local)
 
@@ -54,10 +98,22 @@ redirige, ADR-12) · `ettrecruiter.vercel.app` sigue respondiendo como dominio a
 
 ---
 
-## Lo primero al retomar — poner las primeras vacantes reales en producción
+## El día que haya ETT — poner las primeras vacantes reales en producción
 
-Es lo que cierra **dos fases a la vez** (la 3 y la 4) y lo que abre el sitio a
-Google. No hay que escribir código: hay que redactar ofertas y lanzar un comando.
+> **Esto ya NO es "lo primero al retomar"** (cambiado el 2026-08-17). Es el guion
+> del día que Ulises firme una ETT, y hasta entonces **no se ejecuta ningún paso
+> de esta sección**. Lo que toca antes es la fase 4b. Se conserva entero porque
+> el día que toque vale palabra por palabra.
+>
+> Y ojo al paso 1: las ofertas tienen que ser **de esa ETT y confirmadas por
+> ella**. `content/jobs/ejemplo-almacen-nuremberg.json` lleva una agencia
+> inventada (`Franken Personal GmbH`) y es **solo un molde de formato**:
+> publicarlo tal cual en producción es exactamente lo que la fase 4b existe para
+> evitar.
+
+Es lo que cierra **dos fases a la vez** (la 3 y la 4). ~~Y lo que abre el sitio a
+Google~~ — eso ya lo hizo la fase 4b el 2026-08-17. No hay que escribir código:
+hay que redactar ofertas y lanzar un comando.
 
 ### 1. Redactar las ofertas
 
@@ -114,12 +170,17 @@ Sin ellas el backoffice de la fase 4 no funciona en producción:
 > La clave de Resend **ya es válida** — se comprobó sin querer el 2026-08-16, ver
 > "Cosas que no deben olvidarse". Es la misma que usa el SMTP del panel.
 
-### 5. Y entonces sí: encender la indexación y cerrar la fase 3
+### 5. Y entonces sí: cerrar la fase 3 con el Rich Results Test
 
 Con ofertas reales publicadas, se pasa una por
-https://search.google.com/test/rich-results, se anota el resultado, y se
-encienden **los dos gestos** —el segundo no es opcional, `NEXT_PUBLIC_` se
-hornea en el build:
+https://search.google.com/test/rich-results y se anota el resultado. **Eso es lo
+único que le falta a la fase 3.**
+
+> **La bandera de indexación ya no se enciende aquí** (2026-08-17): la enciende
+> la fase 4b, y ADR-16 quedó corregida en consecuencia. Si al llegar a este paso
+> la 4b ya se ejecutó, la bandera está puesta y estos dos comandos **ya se
+> lanzaron**; volver a lanzarlos no rompe nada, pero no hace falta. Se dejan por
+> si se llega aquí sin haber pasado por la 4b.
 
 ```bash
 printf 'true' | pnpm exec vercel env add NEXT_PUBLIC_ALLOW_INDEXING production
@@ -137,9 +198,24 @@ resumen**. Esta regla se ganó con dos errores reales: un resumen con 16
 migraciones cuando eran 17, y una fase marcada ✅ mientras el propio resumen
 admitía que su criterio no se había comprobado.
 
-Ahora mismo, y por este orden:
+Ahora mismo, y por este orden **(revisado el 2026-08-17 — ver el aviso de
+arriba)**:
 
-1. **Acompañar a Ulises en los cinco pasos de arriba.** No los ejecuta el PM
+0. **Verificar el cierre de la 4b contra `https://talpass.eu`** — la sesión que
+   la construyó también la desplegó y dejó su propia evidencia en
+   `docs/evidencia/fase-4b/`, así que **es juez y parte del criterio central**.
+   Al PM le toca recomprobarlo de cero, y son cuatro comandos:
+
+   ```bash
+   curl -s https://talpass.eu/es/oportunidades/alemania/almacen | grep -ci jobposting   # 0
+   curl -s https://talpass.eu/robots.txt                                                # sin Disallow: /
+   curl -s https://talpass.eu/sitemap.xml | grep -c '<url>'                             # 7
+   curl -s https://talpass.eu/es/ofertas | grep -o '<meta name="robots"[^>]*>'          # noindex, follow
+   ```
+
+   Los puntos 1 y 2 de abajo siguen en espera hasta que haya una ETT firmada.
+
+1. **Acompañar a Ulises en los cinco pasos de arriba** — _en espera_. No los ejecuta el PM
    —las escrituras contra producción las lanza él con `!`— pero **cada uno se
    verifica al terminar**: `migration list --linked` tras el `db:push:prod`,
    `curl` del HTML y del sitemap tras el despliegue, `vercel env ls` tras las
@@ -147,7 +223,8 @@ Ahora mismo, y por este orden:
 2. **Cerrar las fases 3 y 4** en `docs/02-ROADMAP.md` cuando —y solo cuando— la
    vacante real esté publicada y el Rich Results Test la valide. Anotar el
    resultado del tester aquí.
-3. **Redactar `docs/prompts/fase-5.md`**, y no antes: un prompt escrito hoy
+3. **Redactar `docs/prompts/fase-5.md`** — con la 4b cerrada, es **el siguiente
+   prompt de código**, y sigue sin escribirse a propósito: uno escrito hoy
    ignoraría lo que traiga la publicación de las primeras ofertas. Ojo a lo que
    la fase 4 dejó dicho: el backoffice **se amplía, no se rehace**, y al existir
    el aplicar hay que volver al `directApply: false` del `JobPosting` de la
@@ -378,9 +455,15 @@ ADR-28), así que ya no falta código: falta redactar las ofertas. Está todo en
    perder los IBAN cifrados, por diseño. Lo más urgente de esta lista.
 2. **Rotar la contraseña de la base de datos** — pasó por el chat. Está en
    `.env.local`, ignorado por git, así que es higiene, no urgencia.
-3. **Publicar las primeras vacantes reales**, arriba. Es lo que cierra las fases
-   3 y 4 y lo que abre el sitio a Google. Incluye subir la migración de la fase
-   4 y poner tres variables en Vercel.
+3. **Conseguir la primera ETT.** Es lo único que desbloquea las fases 3 y 4, y
+   desde el 2026-08-17 hay con qué enseñarse: el sitio está indexado y las
+   oportunidades ya están captando. Cuando la haya, publicar sus vacantes reales
+   —arriba—, que incluye subir la migración de la fase 4 y poner **tres
+   variables en Vercel** (`SUPABASE_SERVICE_ROLE_KEY`, `RESEND_API_KEY`,
+   `EMAIL_FROM`), que siguen faltando.
+   **Revisar los textos de las oportunidades** (`messages/es.json` y
+   `messages/en.json`, namespace `Opportunities`): están vivos en producción y
+   respondes tú de ellos. Y **caducan el 2026-09-01**, cuando suba el convenio.
 4. **Conectar el repositorio de GitHub al proyecto de Vercel.** Hoy los
    despliegues son manuales (`pnpm exec vercel --prod`) y por eso la fase 3
    pasó un día entero en `origin` sin llegar a producción, con todo el mundo

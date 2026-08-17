@@ -225,7 +225,13 @@ _(Fase 1.)_
 
 _Motivo:_ la decisión **no** se deriva de `VERCEL_ENV` ni del dominio de la petición. En cuanto `talpass.eu` se conecte en Vercel, un criterio basado en el host levantaría el bloqueo por su cuenta y Google indexaría marcadores de posición. Sacar basura del índice cuesta meses; poner una variable cuesta un minuto.
 
-_Se abre en la fase 3_, cuando existan vacantes reales, `sitemap.ts` y `hreflang`, y solo en producción.
+~~_Se abre en la fase 3_, cuando existan vacantes reales, `sitemap.ts` y `hreflang`, y solo en producción.~~
+
+**Corregido el 2026-08-17: se abre en la fase 4b, y no exige vacantes reales.** La condición nunca fue "que haya vacantes": era **que haya contenido real que indexar y que el CTA funcione**. Las oportunidades de mercado de la fase 4b cumplen las dos cosas —contenido cierto, sacado de `docs/investigacion/ofertas-mercado.md`, y registro que funciona de punta a punta desde el 2026-08-16— sin fingir una sola vacante.
+
+Atarla a las vacantes reales habría dejado el sitio sin indexar indefinidamente: una vacante real exige una ETT, y una ETT exige candidatos que solo llegan con el sitio indexado. La bandera se convirtió en parte del bloqueo en lugar de una protección contra él.
+
+Lo que **no** cambia es lo que la bandera protege: sigue sin derivarse de `VERCEL_ENV` ni del host, sigue siendo `NEXT_PUBLIC_` —así que encenderla exige redesplegar— y sigue sin abrirse sobre marcadores de posición. Las oportunidades no lo son; los borradores publicados como vacantes con `JobPosting`, sí lo habrían sido.
 
 ### ADR-17 · Local para desarrollar, remoto solo para producción
 
@@ -350,6 +356,21 @@ vacías. Es el mismo argumento por el que una vacante no se publica sin
 traducción, aplicado a la capa de arriba: gastar el rastreo de Google en páginas
 sin contenido cuesta meses de deshacer (ADR-16), y una landing vacía tampoco le
 sirve de nada al candidato que llega buscando.
+
+**Matiz del 2026-08-17, para que nadie lea de más.** Esta regla habla de **las
+landings**, y su motivo es que no haya URLs indexables **vacías**. No dice que
+toda página indexable tenga que colgar de una vacante: las **oportunidades de
+mercado** de la fase 4b son páginas indexables sin vacante detrás y **no la
+contradicen**, porque tienen contenido real —rangos del convenio y del mercado,
+documentados y fechados— que es justo lo que a una landing vacía le falta.
+
+Viven en su propio árbol de rutas y **nunca como filas en `jobs`**, así que
+`listLandings` sigue derivando de vacantes vivas y esta ADR no se toca. Lo que sí
+está pendiente es **enmendarla el día de las landings de mercado**, que sí querrán
+existir sin vacante; está anotado en la ficha de la 4b en el roadmap.
+
+**Y los slugs de las oportunidades tienen que ser compatibles con los de aquí**,
+porque al retirarlas se redirige cada una con 301 a su landing equivalente.
 
 **Los slugs se derivan del nombre traducido del catálogo, no se guardan en una
 columna.** `alemania`/`germany`, `logistica`/`logistics`. Así abrir un idioma
@@ -518,6 +539,67 @@ la fila que ya existe en vez de crear otra —hay un índice único parcial que
 impide dos documentos vivos del mismo tipo—, así que no hay ni un instante en
 el que el candidato se quede sin documento por un fallo a mitad de camino. Un
 documento **ya aprobado** no se puede pisar desde la aplicación.
+
+### ADR-30 · Una oportunidad de mercado no es una vacante, y no puede llegar a serlo
+
+_(Fase 4b.)_
+
+Las oportunidades de `/es/oportunidades` describen **condiciones típicas del
+mercado** por sector: rangos salariales, jornada, turnos y nivel de idioma,
+sacados de `docs/investigacion/ofertas-mercado.md` (14 ofertas reales analizadas
+el 2026-08-16) y del convenio de la Zeitarbeit. No hay empresa, ni fecha de
+incorporación, ni forma de aplicar.
+
+**Tres decisiones, y las tres son estructurales:**
+
+**1. Nunca son filas en `jobs`.** Viven en `src/lib/opportunities.ts` como cinco
+perfiles tipados y su copy en `messages/`. Si vivieran en esa tabla, el listado,
+el sitemap, el marcado `JobPosting`, las landings de ADR-23 y —en la fase 5— el
+botón de aplicar las tratarían como vacantes reales, y **una bandera olvidada
+publicaría exactamente lo que la fase existe para no publicar**. Así el error no
+depende de que nadie se olvide: no hay tabla, no hay migración y no hay ningún
+camino de código desde una oportunidad hasta `jobs`.
+
+**2. Cero marcado `JobPosting`, y ese es el interruptor.** Lo que activa las
+políticas de Google Jobs no es el texto ni el tono: es el marcado, que es una
+declaración legible por máquina de que ese empleo existe y está abierto. Ponerlo
+sobre condiciones de mercado arriesga una acción manual por _job posting spam_ en
+el canal exacto del que depende toda la estrategia de SEO de la fase 3, y cuesta
+meses deshacerla. Sin él, la página es contenido ordinario y Google la juzga por
+su calidad. Se verifica sobre el **HTML construido y sobre el de producción**, no
+sobre el código.
+
+**3. La URL es la de su landing, en otro árbol.**
+`/es/oportunidades/alemania/almacen` ↔ `/es/trabajo/alemania/almacen`: mismos
+segmentos, derivados del mismo catálogo por el mismo `slugify`. No es estética.
+`/oportunidades` no se borrará el día que haya vacantes reales —para entonces
+esas URLs tendrán posiciones, enlaces e historial—: se retirará con un **301 de
+cada oportunidad a su landing equivalente**, y Google trata como _soft 404_ el
+301 a una página que no es el equivalente. Por eso hay **una oportunidad por
+sector y ninguna más**: es lo que hace que la equivalencia sea uno a uno y el
+301, mecánico.
+
+_Por qué no por fichero, como ADR-28 con las vacantes:_ una vacante es dato que
+un operador publica **sin desplegar** —entra, se corrige y caduca al ritmo de la
+ETT—, y por eso tiene fichero y script. Una oportunidad es contenido editorial
+del sitio: cambia cuando cambia el convenio, se revisa en el diff y viaja con el
+código. Un cargador de ficheros y un script de publicación serían ceremonia sin
+nadie que la use, y el módulo tipado da algo que el JSON no da: **si alguien
+escribe un sector que no está en el catálogo, el build se para**.
+
+_Lo que se publica y lo que no._ Se publica lo que está documentado y fechado:
+rangos observados, el suelo del convenio y su subida del 2026-09-01, ciudades y
+sectores con demanda. **No se publica una promesa que no ha hecho la ETT que la
+va a cumplir** —alojamiento a 280 €, meses gratis, transporte diario—, que es lo
+que avisa la sección 5 del propio informe. De los cinco perfiles, tres llevan
+rango observado y dos solo el suelo del convenio, dicho en la página: inventar un
+techo para los sectores que la muestra no cubre sería exactamente el fallo que
+esta ADR evita.
+
+_Coste asumido:_ el techo de perfiles es bajo a propósito. Multiplicar ciudad ×
+sector daría decenas de páginas delgadas —_doorway pages_—, que es un problema de
+calidad real y ataca lo mismo que ADR-23 protege. La contención está en no
+multiplicarlas, no en un límite escrito en el código.
 
 ---
 

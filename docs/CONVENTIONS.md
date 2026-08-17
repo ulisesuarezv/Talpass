@@ -17,6 +17,8 @@ src/
         page.tsx                # home
         jobs/                   # /es/ofertas · /en/jobs
           [slug]/               # detalle de vacante, con JobPosting
+        opportunities/          # /es/oportunidades (fase 4b, ADR-30)
+          [country]/[sector]/   # perfil de mercado — SIN JobPosting, nunca
         work/                   # landings programáticas (ADR-23)
           [country]/            # /es/trabajo/alemania
             [sector]/           # /es/trabajo/alemania/logistica
@@ -50,6 +52,7 @@ src/
     catalogs.ts                 # países, sectores, idiomas (sin cookies)
     jobs.ts                     # lectura pública de vacantes
     landings.ts                 # landings programáticas (ADR-23)
+    opportunities.ts            # perfiles de mercado (ADR-30) — NUNCA tocan `jobs`
     seo.ts                      # canónica, hreflang y Open Graph
     slug.ts                     # slug desde un nombre traducido
     email/
@@ -121,8 +124,8 @@ backoffice funciona con la sesión del admin, va con la sesión del admin — as
 RLS sigue decidiendo y la batería de seguridad sigue probando el camino real.
 
 La regla corta: **si el fichero lo puede importar una ruta pública, no puede
-tocar `cookies()`.** Por eso `lib/catalogs.ts`, `lib/jobs.ts` y `lib/landings.ts`
-van todos por el cliente público. El de servidor lleva el aviso en su cabecera.
+tocar `cookies()`.** Por eso `lib/catalogs.ts`, `lib/jobs.ts`, `lib/landings.ts`
+y `lib/opportunities.ts` van todos por el cliente público. El de servidor lleva el aviso en su cabecera.
 
 Cómo se comprueba en cualquier momento:
 
@@ -299,6 +302,17 @@ solo sabe **borrar**, y solo lo que `seed-demo.mts` sabe crear — la constante
 patrón y comprueba al terminar que los catálogos siguen en pie.
 
 ## Publicar una vacante real (fase 4, ADR-28)
+
+> **⚠️ Esto NO es la vía para las oportunidades de mercado** (fase 4b, desde el
+> 2026-08-17). Una **vacante** es un puesto real de una ETT real: va aquí, lleva
+> marcado `JobPosting` y se puede aplicar a ella. Una **oportunidad** describe
+> condiciones típicas del mercado, no tiene agencia detrás, **no lleva
+> `JobPosting`** y **nunca es una fila en `jobs`**. Si lo que tienes entre manos
+> no es de una ETT que lo va a cumplir, no es una vacante: mira la ficha de la
+> fase 4b en `docs/02-ROADMAP.md`.
+>
+> Y `content/jobs/ejemplo-almacen-nuremberg.json` es **un molde de formato**: su
+> agencia (`Franken Personal GmbH`) es inventada. No lo publiques en producción.
 
 Una vacante es **un fichero JSON en `content/jobs/`** y un comando. No hay
 pantalla: el CRUD autoservicio es de la fase 6 y lo usará la ETT.

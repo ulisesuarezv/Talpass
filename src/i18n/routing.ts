@@ -43,6 +43,20 @@ export const pathnames = {
     en: '/jobs/[slug]',
   },
 
+  // Oportunidades de mercado (fase 4b, ADR-30). Sección propia y separada de
+  // `/jobs`: no son vacantes, no llevan `JobPosting` y no se puede aplicar a
+  // ellas. Los segmentos son EXACTAMENTE los de la landing de país+sector, para
+  // que el día que se retiren cada URL tenga su equivalente concreto al que
+  // redirigir con un 301 — ver ADR-30.
+  '/opportunities': {
+    es: '/oportunidades',
+    en: '/opportunities',
+  },
+  '/opportunities/[country]/[sector]': {
+    es: '/oportunidades/[country]/[sector]',
+    en: '/opportunities/[country]/[sector]',
+  },
+
   // Landings programáticas (ADR-23). Los segmentos dinámicos se rellenan con
   // slugs derivados del nombre TRADUCIDO del catálogo, así que la URL cambia
   // entera de idioma: /es/trabajo/alemania/logistica ↔ /en/work/germany/logistics.

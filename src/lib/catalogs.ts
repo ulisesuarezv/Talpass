@@ -34,6 +34,19 @@ export type CountryOption = CatalogOption & {
   isActive: boolean;
 };
 
+/**
+ * El sector lleva además su **slug de catálogo**, que es su identidad estable.
+ *
+ * No confundir con `slugs`, que son los de la URL y se derivan del nombre
+ * traducido (ADR-23): `almacen` en `es`, `warehouse` en `en`. Este es el de la
+ * columna `sectors.slug`, el mismo que nombra un sector en `content/jobs/*.json`
+ * y en los perfiles de `lib/opportunities.ts`. Un nombre se puede reescribir sin
+ * migración; la fila no.
+ */
+export type SectorOption = CatalogOption & {
+  slug: string;
+};
+
 type TranslationRow = { locale: string; name: string };
 
 /**
@@ -88,7 +101,7 @@ export async function listCountries(locale: string): Promise<CountryOption[]> {
     .sort((a, b) => a.name.localeCompare(b.name, locale));
 }
 
-export async function listSectors(locale: string): Promise<CatalogOption[]> {
+export async function listSectors(locale: string): Promise<SectorOption[]> {
   const supabase = createPublicClient();
 
   const { data, error } = await supabase
@@ -107,6 +120,7 @@ export async function listSectors(locale: string): Promise<CatalogOption[]> {
 
       return {
         id: row.id,
+        slug: row.slug,
         name: names[locale as Locale] ?? row.slug,
         names,
         slugs: toSlugs(names),

@@ -5,15 +5,26 @@ import { siteConfig } from '@/config/site';
 import { Link } from '@/i18n/navigation';
 
 /**
- * Llamada a crear cuenta, al pie de cada vacante y de cada landing.
+ * Llamada a crear cuenta, al pie de cada vacante, de cada landing y de cada
+ * perfil de mercado.
  *
  * Ver es libre y sin cuenta (ADR-02, regla de negocio 1); la cuenta hace falta
  * para aplicar. La nota de que al candidato no se le cobra nunca no es adorno:
  * es la diferencia frente a lo que se encuentra el candidato en cualquier otro
  * sitio, y va donde se toma la decisión.
+ *
+ * La variante cambia **solo el copy**, no el patrón: en una vacante se aplica y
+ * en una oportunidad no hay a dónde aplicar todavía (fase 4b), así que prometer
+ * lo mismo en las dos sería mentir en una de ellas.
  */
-export function SignupCta() {
-  const t = useTranslations('Jobs.cta');
+export function SignupCta({
+  variant = 'jobs',
+}: {
+  variant?: 'jobs' | 'opportunities';
+}) {
+  const t = useTranslations(
+    variant === 'jobs' ? 'Jobs.cta' : 'Opportunities.cta',
+  );
 
   return (
     <aside className="flex flex-col gap-3 rounded-lg border bg-muted/40 p-6">

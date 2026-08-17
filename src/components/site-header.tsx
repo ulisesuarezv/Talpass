@@ -30,6 +30,12 @@ export async function SiteHeader() {
 
         <div className="flex items-center gap-4">
           <Link
+            href="/opportunities"
+            className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+          >
+            {t('opportunities')}
+          </Link>
+          <Link
             href="/jobs"
             className="text-sm text-muted-foreground transition-colors hover:text-foreground"
           >
