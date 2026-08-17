@@ -208,9 +208,13 @@ Listado con filtros (país, sector, idioma, alojamiento, transporte, carnet, tur
 > ya está cumplido.
 >
 > **Queda uno solo: el Google Rich Results Test**, que necesita una vacante
-> pública real. Llega con la fase 4, y con ella se cierra esta. La bandera de
-> indexación se enciende en ese mismo momento y no antes: hoy el sitemap de
-> producción son 2 URLs y ninguna oferta.
+> pública real, y por tanto una ETT real. **Es lo único que le falta a esta fase.**
+>
+> ~~La bandera de indexación se enciende en ese mismo momento y no antes: hoy el
+> sitemap de producción son 2 URLs y ninguna oferta.~~ **Caducado el 2026-08-17:**
+> la bandera **ya está encendida** —la encendió la fase 4b, con contenido de
+> mercado en lugar de vacantes, y ADR-16 quedó corregida en consecuencia—. El
+> sitemap son 7 URLs. Esta fase ya no bloquea la indexación de nada.
 
 Lo construido y comprobado en local:
 

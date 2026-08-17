@@ -24,8 +24,8 @@
 > ADR-23.
 >
 > **Las fases 3 y 4 siguen 🟡** y esta fase **no las cierra**: su criterio pide el
-> Rich Results Test sobre una vacante real. Todo lo de "Lo primero al retomar"
-> sigue vigente palabra por palabra, pero como el guion **del día que haya ETT**.
+> Rich Results Test sobre una vacante real. Todo lo de la sección "El día que
+> haya ETT" sigue vigente palabra por palabra, pero como el guion de ese día.
 >
 > **Siguiente paso real: conseguir la primera ETT.** Ya hay algo que enseñarle
 > —un sitio indexado y una lista que empieza a llenarse—, que es exactamente lo
@@ -201,29 +201,69 @@ admitía que su criterio no se había comprobado.
 Ahora mismo, y por este orden **(revisado el 2026-08-17 — ver el aviso de
 arriba)**:
 
-0. **Verificar el cierre de la 4b contra `https://talpass.eu`** — la sesión que
-   la construyó también la desplegó y dejó su propia evidencia en
-   `docs/evidencia/fase-4b/`, así que **es juez y parte del criterio central**.
-   Al PM le toca recomprobarlo de cero, y son cuatro comandos:
+0. ~~**Verificar el cierre de la 4b**~~ **✅ HECHO por el PM, 2026-08-17.** Se
+   recomprobó de cero contra `https://talpass.eu`, sin fiarse de la evidencia de
+   la sesión que construyó y desplegó (era juez y parte). Resultado: `robots.txt`
+   con `Allow: /`, **las 10 páginas a 200 con `JobPosting = 0`** tras encender la
+   bandera, sitemap de 7 URLs con alternates, `/es/ofertas` en `noindex, follow`,
+   y **0 ficheros tocados en `supabase/`** —así se verificó "no toca la base" sin
+   depender del test—. Commit `c416f9f`.
+
+   > **Un fallo real que dejó la 4b, y que el PM cazó al verificar.** Tres
+   > franjas salariales se publicaban con la etiqueta "Rango observado en las
+   > ofertas analizadas" cuando eran **derivadas**: el suelo es el del convenio
+   > (15,33 € desde el 2026-09-01), no el mínimo visto en la muestra (14,96 €).
+   > Las cifras eran las correctas —copiar el 14,96 volvería la página falsa
+   > sola en septiembre—, pero la etiqueta afirmaba una procedencia que no
+   > tenía, en unas páginas cuya premisa entera es que cada dato es verificable.
+   > Corregido en `messages/{es,en}.json` y en el comentario de `SalaryBasis`.
+   > **La lección para el próximo PM: en esta fase lo que hay que auditar no son
+   > las cifras, son las atribuciones.**
+
+1. **Desplegar la corrección de esa etiqueta.** ⚠️ **Pendiente y es lo primero.**
+   Está commiteada pero **producción sigue sirviendo el texto viejo**: este
+   proyecto de Vercel no tiene integración con GitHub y un `git push` no despliega
+   nada. Es un cambio de copy, sin riesgo:
 
    ```bash
-   curl -s https://talpass.eu/es/oportunidades/alemania/almacen | grep -ci jobposting   # 0
-   curl -s https://talpass.eu/robots.txt                                                # sin Disallow: /
-   curl -s https://talpass.eu/sitemap.xml | grep -c '<url>'                             # 7
-   curl -s https://talpass.eu/es/ofertas | grep -o '<meta name="robots"[^>]*>'          # noindex, follow
+   pnpm exec vercel --prod
+   curl -s https://talpass.eu/es/oportunidades/alemania/almacen | grep -o 'Suelo del convenio[^<]*'
    ```
 
-   Los puntos 1 y 2 de abajo siguen en espera hasta que haya una ETT firmada.
+2. **Arreglar la contradicción del informe de mercado.** `docs/investigacion/ofertas-mercado.md`
+   dice en el §0 que "**ocho** de las catorce exigen alemán de forma explícita" y
+   en la tabla de recuento que "`Idioma exigido: **11 / 14**`". No pueden ser las
+   dos. Importa porque **es la fuente de todo el copy publicado y del que venga**,
+   y decidir cuál vale exige releer las 14 fichas. Hacerlo antes de escribir el
+   sexto perfil.
 
-1. **Acompañar a Ulises en los cinco pasos de arriba** — _en espera_. No los ejecuta el PM
+3. **Los cinco textos caducan el 2026-09-01**, cuando sube el convenio de la
+   Zeitarbeit (15,33 → 15,87 €/h en abril de 2027). Los suelos publicados dejan
+   de ser ciertos ese día. Es una revisión con fecha, no una tarea abierta.
+
+4. **Decidir si las páginas siguen nombrando a Randstad, Adecco y Tempton.**
+   Hoy los citan como fuente del análisis, y es honesto y da credibilidad. Pero
+   son competidores, y algún día una ETT socia leerá esas páginas. Nadie tomó
+   esa decisión explícitamente: se puede cambiar por "tres de las mayores ETTs
+   de Alemania" sin perder nada. **Es decisión de Ulises, no del PM.**
+
+5. **Vigilar que la lista de candidatos no se enfríe.** La 4b acumula registros
+   de gente esperando vacantes que aún no existen. Cuanto más tarde la ETT, menos
+   vale la lista, y eso no lo arregla el código. Si pasan semanas sin ETT, **es
+   señal de replantear el orden del roadmap**, no de seguir construyendo fases.
+
+> **Del 6 al 8: en espera hasta que haya una ETT firmada.** No son trabajo
+> pendiente, son el guion de un día que todavía no ha llegado.
+
+6. **Acompañar a Ulises en los cinco pasos de "El día que haya ETT"** — _en espera_. No los ejecuta el PM
    —las escrituras contra producción las lanza él con `!`— pero **cada uno se
    verifica al terminar**: `migration list --linked` tras el `db:push:prod`,
    `curl` del HTML y del sitemap tras el despliegue, `vercel env ls` tras las
    variables. Sirve de guion lo que ya se hizo el 2026-08-16.
-2. **Cerrar las fases 3 y 4** en `docs/02-ROADMAP.md` cuando —y solo cuando— la
+7. **Cerrar las fases 3 y 4** en `docs/02-ROADMAP.md` cuando —y solo cuando— la
    vacante real esté publicada y el Rich Results Test la valide. Anotar el
    resultado del tester aquí.
-3. **Redactar `docs/prompts/fase-5.md`** — con la 4b cerrada, es **el siguiente
+8. **Redactar `docs/prompts/fase-5.md`** — con la 4b cerrada, es **el siguiente
    prompt de código**, y sigue sin escribirse a propósito: uno escrito hoy
    ignoraría lo que traiga la publicación de las primeras ofertas. Ojo a lo que
    la fase 4 dejó dicho: el backoffice **se amplía, no se rehace**, y al existir
@@ -241,6 +281,12 @@ no se haya medido.
 **Cerrado el 2026-08-16.** Los cuatro pasos, más un quinto que no estaba en la
 lista y resultó ser el que faltaba de verdad: **desplegar** (3 bis). Se deja
 escrito porque explica cómo está montado el entorno y qué falló por el camino.
+
+> **Todo lo que sigue en esta sección es una foto del 2026-08-16 y no describe
+> el presente.** Verás frases como "la bandera sigue APAGADA" o "el sitemap son
+> 2 URLs": eran ciertas ese día y dejaron de serlo el 2026-08-17, cuando la fase
+> 4b abrió el sitio a Google. **No actúes sobre nada de aquí**; se conserva
+> porque documenta cómo está montado el entorno y qué falla cuando se hace mal.
 
 ### 1. ~~Aplicar las tres migraciones pendientes a producción~~ ✅ HECHO, 2026-08-16
 
@@ -328,7 +374,7 @@ el SMTP por defecto, el **segundo** correo de la misma hora ya rebotaba con
 > Esa clave **es válida desde el 2026-08-16**. Hasta entonces `.env.local` tenía
 > el hueco vacío de la fase 0, y la API la rechazaba con `API key is invalid`;
 > se sustituyó al configurar el SMTP. Lo que falta es **ponerla en Vercel**, con
-> `EMAIL_FROM` — están en "Lo primero al retomar", paso 4.
+> `EMAIL_FROM` — están en "El día que haya ETT", paso 4.
 
 ### 3. ~~Las URLs de retorno en el panel de producción~~ ✅ HECHO, 2026-08-16
 
@@ -443,8 +489,8 @@ ni una vacante. El marcado se validó campo a campo contra los requisitos
 documentados de Google, pero quien decide qué acepta Google es Google.
 
 La vía para publicarlas la construyó la **fase 4** (`pnpm job:publish:prod`,
-ADR-28), así que ya no falta código: falta redactar las ofertas. Está todo en
-"Lo primero al retomar", arriba.
+ADR-28), así que ya no falta código: falta **una ETT** cuyas ofertas publicar.
+Está todo en "El día que haya ETT", arriba.
 
 ---
 
@@ -464,13 +510,22 @@ ADR-28), así que ya no falta código: falta redactar las ofertas. Está todo en
    **Revisar los textos de las oportunidades** (`messages/es.json` y
    `messages/en.json`, namespace `Opportunities`): están vivos en producción y
    respondes tú de ellos. Y **caducan el 2026-09-01**, cuando suba el convenio.
-4. **Conectar el repositorio de GitHub al proyecto de Vercel.** Hoy los
+4. **Dar de alta `talpass.eu` en Google Search Console y enviarle el sitemap**
+   (`https://talpass.eu/sitemap.xml`). ⚠️ **Es lo que convierte la fase 4b en
+   visitas, y solo puedes hacerlo tú**: exige verificar la propiedad del dominio.
+   Encender la bandera el 2026-08-17 solo dejó de prohibirle el paso a Google;
+   después de meses sirviendo `Disallow: /`, Google no tiene ningún motivo para
+   volver pronto por su cuenta. Sin este gesto, el trabajo de la 4b tarda semanas
+   en notarse. Search Console es además el único sitio donde se ve si Google
+   **acepta** las páginas o las descarta, que es información que no da ningún
+   `curl`.
+5. **Conectar el repositorio de GitHub al proyecto de Vercel.** Hoy los
    despliegues son manuales (`pnpm exec vercel --prod`) y por eso la fase 3
    pasó un día entero en `origin` sin llegar a producción, con todo el mundo
    creyendo que estaba desplegada.
-5. **`talpass.com` queda aplazado por presupuesto.** Decisión consciente: es la
+6. **`talpass.com` queda aplazado por presupuesto.** Decisión consciente: es la
    mitigación del riesgo de ADR-12 y sigue pendiente. Revisarlo cuando haya caja.
-6. **Ruido conocido en la bandeja y en Resend, nada que hacer.** Correos de
+7. **Ruido conocido en la bandeja y en Resend, nada que hacer.** Correos de
    "Confirm your email address" con alias `+smtp-probe-…` y `+talpassprobe…`,
    de las pruebas de envío; **sus cuentas se borraron el 2026-08-16 y se
    comprobó que ya no existen**. Y un envío a `maria@talpass.test`, de una

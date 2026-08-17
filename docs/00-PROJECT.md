@@ -221,7 +221,9 @@ _Coste asumido:_ un valor cifrado no se puede buscar, ordenar ni indexar. Es ace
 
 _(Fase 1.)_
 
-`/robots.txt` devuelve `Disallow: /` salvo que `NEXT_PUBLIC_ALLOW_INDEXING` valga exactamente `true`. Hoy está apagada en todos los entornos.
+`/robots.txt` devuelve `Disallow: /` salvo que `NEXT_PUBLIC_ALLOW_INDEXING` valga exactamente `true`.
+
+**Estado desde el 2026-08-17: `true` en producción, apagada en el resto.** El sitio está abierto a Google desde el cierre de la fase 4b; `/robots.txt` sirve `Allow: /` con las áreas privadas bloqueadas y anuncia el sitemap. Sigue apagada en local y en preview, que es el punto: la bandera no se deriva del entorno y hay que ponerla a mano donde se quiera.
 
 _Motivo:_ la decisión **no** se deriva de `VERCEL_ENV` ni del dominio de la petición. En cuanto `talpass.eu` se conecte en Vercel, un criterio basado en el host levantaría el bloqueo por su cuenta y Google indexaría marcadores de posición. Sacar basura del índice cuesta meses; poner una variable cuesta un minuto.
 
