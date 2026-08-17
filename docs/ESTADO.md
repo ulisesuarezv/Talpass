@@ -220,15 +220,11 @@ arriba)**:
    > **La lección para el próximo PM: en esta fase lo que hay que auditar no son
    > las cifras, son las atribuciones.**
 
-1. **Desplegar la corrección de esa etiqueta.** ⚠️ **Pendiente y es lo primero.**
-   Está commiteada pero **producción sigue sirviendo el texto viejo**: este
-   proyecto de Vercel no tiene integración con GitHub y un `git push` no despliega
-   nada. Es un cambio de copy, sin riesgo:
-
-   ```bash
-   pnpm exec vercel --prod
-   curl -s https://talpass.eu/es/oportunidades/alemania/almacen | grep -o 'Suelo del convenio[^<]*'
-   ```
+1. ~~**Desplegar la corrección de esa etiqueta.**~~ **✅ HECHO, 2026-08-17**
+   (`dpl_14Fw5ScwWntESvy6wTGkjaEiEYJR`). Verificado: la etiqueta nueva viva en
+   `es` y en `en`, **cero apariciones de la vieja**, y sin regresión —
+   `JobPosting = 0`, `robots.txt` con `Allow: /` y el sitemap en 7 URLs.
+   **Git y producción quedan sincronizados.**
 
 2. **Arreglar la contradicción del informe de mercado.** `docs/investigacion/ofertas-mercado.md`
    dice en el §0 que "**ocho** de las catorce exigen alemán de forma explícita" y
