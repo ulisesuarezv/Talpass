@@ -1,5 +1,113 @@
 # Estado del proyecto — punto de retomada
 
+> ## 📋 2026-08-18 — auditoría previa hecha, y el rumbo cambia
+>
+> **Lee esto primero y no actúes sobre los bloques de abajo sin haberlo leído.**
+> Los de más abajo son ciertos en lo suyo, pero este los reordena.
+>
+> **Se ha pasado una auditoría al proyecto entero.** Entregable en
+> `docs/evidencia/auditoria-previa/` (6 ficheros), y su `00-resumen.md` abre con
+> **una tabla de 40 cifras con el comando que produce cada una**. Esa tabla es la
+> línea base del rediseño: la auditoría posterior la vuelve a rellenar columna a
+> columna. **No la reinventes; rellénala.**
+>
+> **Decisión de Ulises, 2026-08-18: se replantea el orden del roadmap y se hace
+> un pase de credibilidad sobre las páginas públicas.** El motivo no es estético.
+> La home son 375 bytes de copy, un `h1` y cero `h2`; no hay ni una cara, ni
+> quién hay detrás, ni un texto legal. Un peón que se plantea subir su DNI y su
+> IBAN a un dominio que no conoce, en un sector lleno de estafas, **no tiene con
+> qué decidir que esto no es un fraude**. Eso es lo que se arregla, y por eso es
+> medible.
+>
+> **El roadmap no se renumera: se corta en dos vías.** Nada se tira, nada cambia
+> de número.
+>
+> - **Vía A — espera a la ETT** (fases 3, 4, 5, 6, 7): construidas y verificadas,
+>   congeladas donde están. Se retoman el día que haya ETT.
+> - **Vía B — captar y retener candidatos, ahora**: corregir el copy falso ·
+>   textos legales · desbloquear la verificación en producción · el campo de
+>   sector de destino en el onboarding · el pase de credibilidad.
+>
+> **Los textos legales dejan de ser fase 9** y entran en la vía B: caen dentro de
+> la superficie del rediseño y son parte del problema de confianza, no un
+> trámite posterior.
+>
+> **Pendiente de decisión de Ulises: precisar ADR-10** — el presupuesto de
+> velocidad se queda intacto y "sobrio y profesional" pasa a definirse como
+> **creíble**, no como vacío. Es una enmienda de un párrafo, no una sustitución.
+> Y **nada de GSAP, R3F ni shaders**: hay agentes instalados para eso en la
+> máquina y en este proyecto restan. El candidato entra con 4G desde el móvil.
+>
+> ### Lo que la auditoría encontró, por orden de gravedad
+>
+> 1. ~~**La fase 4b no existía fuera del portátil.**~~ **✅ RESUELTO HOY.**
+>    `origin/main` iba 4 commits por detrás y **no tenía ni uno de los 6 ficheros
+>    de `opportunities`**: el sitio que Google está indexando existía solo en
+>    local. Hecho `git push`; `origin/main` = `a71fba5` y verificado que los 6
+>    ficheros están. La frase "Git y producción quedan sincronizados" que este
+>    documento tenía escrita **era falsa** y la escribió el PM.
+> 2. 🔴 **Cinco atribuciones falsas siguen vivas en producción.** La peor: los
+>    perfiles de **almacén, logística y producción** publican "Alojamiento / En
+>    algunas ofertas" y "Transporte / En algunas ofertas" sobre una investigación
+>    cuyo dato es **0 de 14 lo ofrecen y 14 de 14 callan**. No es una etiqueta mal
+>    puesta como la que se cazó al cerrar la 4b: **es un hecho inventado**, y cae
+>    justo en las dos casillas que son la apuesta del producto. Las otras cuatro:
+>    dos techos salariales etiquetados "observado" que salen de las **reglas de
+>    redacción** del informe (18,00 en almacén y 17,00 en producción; nunca se
+>    observaron) y dos frases de la ficha de almacén que contradicen a la de
+>    producción. Detalle en `04-superficie-copy.md` §B.1.
+> 3. 🔴 **El registro pide aceptar unos Términos que no existen.** No hay ninguna
+>    ruta legal (`/es/privacidad`, `/es/terminos`, `/es/legal` son 404), la
+>    casilla obligatoria pone los Términos **en negrita en vez de enlazarlos**
+>    (`<terms>` → `<strong>`), y `src/config/legal.ts` versiona con fecha
+>    `2026-08-14` cuatro documentos que no están en el repositorio.
+> 4. 🔴 **Las funciones se ejecutan en Estados Unidos.** `x-vercel-id:
+fra1::iad1::` — el borde está en Fráncfort y **la función en Washington**,
+>    contra una base de datos en Irlanda. Con ADR-29 la subida de documentos
+>    **pasa por el servidor**, así que hoy un DNI transita por `iad1`. Choca de
+>    frente con ADR-09 ("los datos personales de ciudadanos UE no salen de la
+>    UE"). No lo cubre ningún ADR y no hay `vercel.json` ni `regions`. El arreglo
+>    es una línea de configuración y un redespliegue; la decisión de si es
+>    urgente es de Ulises.
+> 5. 🔴 **`/es/trabajo/**` es 404 entero en producción** (0 vacantes ⇒ 0
+>    landings, ADR-23). Funciona como está diseñado, pero **ningún documento lo
+>    decía** y el roadmap sigue presentando las landings como entregadas. La
+>    superficie indexable real de producción son **7 URLs**, y el "landing 97"
+>    del roadmap **no se puede reproducir donde se sirve**: el rediseño mide en
+>    local para tener las seis páginas.
+> 6. 🟡 **Faltan DOS variables en Vercel, no tres.** `SUPABASE_SERVICE_ROLE_KEY`
+>    ya está puesta desde el 2026-08-14. Faltan `RESEND_API_KEY` y `EMAIL_FROM`.
+> 7. 🟡 **Las páginas de `(auth)` no tienen metadatos propios**: `/es/registro`
+>    sirve el título y la descripción **de la home**, sin canónica y con el
+>    `hreflang` apuntando a la home. Cae dentro del rediseño.
+> 8. 🟡 **`ettrecruiter.vercel.app` sirve el sitio entero a 200 y es rastreable**
+>    en vez de redirigir. Mitigado porque su canónica apunta al apex.
+>
+> ### Y una decisión que sigue abierta, de Ulises
+>
+> Corregir el punto 2 **baja las cifras publicadas**: almacén 18,00 → 17,50 y
+> producción 17,00 → 16,50, y el alojamiento pasa de "en algunas ofertas" a decir
+> que **nadie lo publica**. La corrección honesta hace las páginas menos
+> atractivas a primera vista. Es su llamada, y es exactamente la clase de decisión
+> que este proyecto dice tomar a favor de la verdad.
+>
+> ### El orden acordado — nada de diseño hasta que esto esté
+>
+> 1. ~~`git push`~~ ✅ hecho el 2026-08-18.
+> 2. **Corregir el copy falso y redesplegar.** Es lo único que está mintiendo en
+>    una página viva.
+> 3. **Los textos legales y su ruta.**
+> 4. **Desbloquear la verificación en producción**: `db:push:prod` de
+>    `20260816120000_verification.sql` + las dos variables + redespliegue.
+> 5. **El campo de sector/ciudad de destino en el onboarding** — antes de captar,
+>    no después: pedírselo a 30 personas ya captadas es hacerlas volver.
+> 6. **El pase de credibilidad**, y su auditoría posterior contra la tabla.
+>
+> **Lo siguiente que le toca al PM: redactar el prompt de la corrección del copy**
+> (punto 2), que es una sesión corta con criterio medible contra
+> `docs/investigacion/ofertas-mercado.md`. Ulises tiene que decidir antes lo de
+> las cifras.
+
 > ## ✅ Fase 4b cerrada, 2026-08-17 — el sitio ya está abierto a Google
 >
 > El pollo y huevo **está roto por el lado del candidato**. Se publicaron **cinco
@@ -157,15 +265,19 @@ que se redespliega, aunque la vacante ya esté publicada y visible en su URL.
 Y recuerda que **este proyecto de Vercel no tiene integración con GitHub**: un
 `git push` no despliega nada (ver 3 bis, más abajo).
 
-### 4. Tres variables de entorno que faltan en Vercel
+### 4. Dos variables de entorno que faltan en Vercel
+
+> **Corregido el 2026-08-18 con `vercel env ls`**: aquí decía **tres**.
+> `SUPABASE_SERVICE_ROLE_KEY` **ya está puesta** en `production` desde el
+> 2026-08-14. Faltan dos, y esto ya no espera a la ETT: es del punto 4 del orden
+> acordado arriba.
 
 Sin ellas el backoffice de la fase 4 no funciona en producción:
 
-| Variable                    | Para qué                                                          |
-| --------------------------- | ----------------------------------------------------------------- |
-| `SUPABASE_SERVICE_ROLE_KEY` | escribir `document_access_log` y `email_log` — no hay política    |
-| `RESEND_API_KEY`            | el aviso de aprobado/rechazado **lo manda la aplicación**         |
-| `EMAIL_FROM`                | `no-reply@updates.talpass.eu` (el dominio verificado, no el apex) |
+| Variable         | Para qué                                                          |
+| ---------------- | ----------------------------------------------------------------- |
+| `RESEND_API_KEY` | el aviso de aprobado/rechazado **lo manda la aplicación**         |
+| `EMAIL_FROM`     | `no-reply@updates.talpass.eu` (el dominio verificado, no el apex) |
 
 > La clave de Resend **ya es válida** — se comprobó sin querer el 2026-08-16, ver
 > "Cosas que no deben olvidarse". Es la misma que usa el SMTP del panel.
@@ -198,8 +310,12 @@ resumen**. Esta regla se ganó con dos errores reales: un resumen con 16
 migraciones cuando eran 17, y una fase marcada ✅ mientras el propio resumen
 admitía que su criterio no se había comprobado.
 
-Ahora mismo, y por este orden **(revisado el 2026-08-17 — ver el aviso de
-arriba)**:
+> **⚠️ Esta lista está superada desde el 2026-08-18.** El orden que manda es el
+> del bloque de arriba ("El orden acordado"). Lo de aquí se conserva porque los
+> puntos 3, 4 y 5 siguen vivos tal cual y porque los tachados dejan escrito qué
+> falló, que es de donde salen las reglas de esta casa.
+
+Lo que decía el 2026-08-17, con lo hecho desde entonces marcado:
 
 0. ~~**Verificar el cierre de la 4b**~~ **✅ HECHO por el PM, 2026-08-17.** Se
    recomprobó de cero contra `https://talpass.eu`, sin fiarse de la evidencia de
@@ -224,14 +340,19 @@ arriba)**:
    (`dpl_14Fw5ScwWntESvy6wTGkjaEiEYJR`). Verificado: la etiqueta nueva viva en
    `es` y en `en`, **cero apariciones de la vieja**, y sin regresión —
    `JobPosting = 0`, `robots.txt` con `Allow: /` y el sitemap en 7 URLs.
-   **Git y producción quedan sincronizados.**
+   ~~**Git y producción quedan sincronizados.**~~ **Esta frase era falsa** y la
+   escribió el PM: se comprobó producción y se dio por hecho `origin`. La
+   auditoría del 2026-08-18 encontró `origin/main` **4 commits por detrás y sin
+   la fase 4b entera**. Resuelto ese mismo día con `git push` (`a71fba5`).
+   **La lección: "desplegado" y "subido" son dos hechos distintos, y en este
+   proyecto —sin integración con GitHub— no se implican.**
 
-2. **Arreglar la contradicción del informe de mercado.** `docs/investigacion/ofertas-mercado.md`
-   dice en el §0 que "**ocho** de las catorce exigen alemán de forma explícita" y
-   en la tabla de recuento que "`Idioma exigido: **11 / 14**`". No pueden ser las
-   dos. Importa porque **es la fuente de todo el copy publicado y del que venga**,
-   y decidir cuál vale exige releer las 14 fichas. Hacerlo antes de escribir el
-   sexto perfil.
+2. ~~**Arreglar la contradicción del informe de mercado.**~~ **✅ HECHO,
+   2026-08-18.** El §0 decía "ocho de las catorce exigen alemán" contra su propia
+   tabla de recuento. Recontadas las 14 fichas una a una: son **once** —las 5 de
+   Randstad, A1 y A5 de Adecco, las 4 de Tempton—, y las mudas son A2, A3 y A4.
+   Corregido en el propio informe, con la nota de qué se cambió. **No afecta a
+   nada vivo**: el código y el copy publicado ya usaban el 11.
 
 3. **Los cinco textos caducan el 2026-09-01**, cuando sube el convenio de la
    Zeitarbeit (15,33 → 15,87 €/h en abril de 2027). Los suelos publicados dejan
@@ -500,9 +621,11 @@ Está todo en "El día que haya ETT", arriba.
 3. **Conseguir la primera ETT.** Es lo único que desbloquea las fases 3 y 4, y
    desde el 2026-08-17 hay con qué enseñarse: el sitio está indexado y las
    oportunidades ya están captando. Cuando la haya, publicar sus vacantes reales
-   —arriba—, que incluye subir la migración de la fase 4 y poner **tres
-   variables en Vercel** (`SUPABASE_SERVICE_ROLE_KEY`, `RESEND_API_KEY`,
-   `EMAIL_FROM`), que siguen faltando.
+   —arriba—, que incluye subir la migración de la fase 4 y poner **dos variables
+   en Vercel** (`RESEND_API_KEY` y `EMAIL_FROM`; la `SUPABASE_SERVICE_ROLE_KEY`
+   ya está puesta). **Desde el 2026-08-18 la migración y las variables ya no
+   esperan a la ETT**: son el punto 4 del orden acordado, porque sin ellas no se
+   puede verificar a nadie y una bolsa sin verificar no se le enseña a nadie.
    **Revisar los textos de las oportunidades** (`messages/es.json` y
    `messages/en.json`, namespace `Opportunities`): están vivos en producción y
    respondes tú de ellos. Y **caducan el 2026-09-01**, cuando suba el convenio.
@@ -515,10 +638,13 @@ Está todo en "El día que haya ETT", arriba.
    en notarse. Search Console es además el único sitio donde se ve si Google
    **acepta** las páginas o las descarta, que es información que no da ningún
    `curl`.
-5. **Conectar el repositorio de GitHub al proyecto de Vercel.** Hoy los
-   despliegues son manuales (`pnpm exec vercel --prod`) y por eso la fase 3
-   pasó un día entero en `origin` sin llegar a producción, con todo el mundo
-   creyendo que estaba desplegada.
+5. **Conectar el repositorio de GitHub al proyecto de Vercel.** ⚠️ **Subió de
+   prioridad el 2026-08-18.** Hoy los despliegues son manuales
+   (`pnpm exec vercel --prod`), y esa desconexión ya ha fallado **en los dos
+   sentidos**: la fase 3 pasó un día entero en `origin` sin llegar a producción,
+   y la fase 4b pasó un día entero **en producción sin llegar a `origin`** —
+   indexándose en Google desde un código que solo existía en tu portátil. Mientras
+   no estén conectados, "desplegado" y "subido" hay que comprobarlos por separado.
 6. **`talpass.com` queda aplazado por presupuesto.** Decisión consciente: es la
    mitigación del riesgo de ADR-12 y sigue pendiente. Revisarlo cuando haya caja.
 7. **Ruido conocido en la bandeja y en Resend, nada que hacer.** Correos de
