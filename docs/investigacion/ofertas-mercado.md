@@ -16,10 +16,16 @@
 
 Las 14 ofertas están **escritas para un trabajador que ya vive en Alemania y ya
 habla alemán**. Ninguna de las tres agencias, en esta muestra, ofrece alojamiento,
-ni transporte, ni viaje pagado, ni menciona la reubicación desde otro país. Ocho
-de las catorce exigen alemán de forma explícita, y de las que no lo exigen,
+ni transporte, ni viaje pagado, ni menciona la reubicación desde otro país. Once
+de las catorce exigen alemán de forma explícita, y de las tres que no lo exigen,
 ninguna dice que no haga falta: el anuncio entero está en alemán, que es la
 exigencia implícita.
+
+> **Corregido el 2026-08-18.** Aquí ponía "ocho de las catorce", en contra de la
+> tabla de recuento de la sección 1 y de las propias fichas. Recontado una a una:
+> son **once** —las 5 de Randstad, A1 y A5 de Adecco, y las 4 de Tempton—, y las
+> mudas son A2, A3 y A4. El código y el copy publicado ya usaban el 11, así que
+> esta corrección no cambia nada de lo que está vivo.
 
 Es decir: **la muestra no contiene el segmento de Talpass.** Lo que sí da —y es
 para lo que sirve— es el **listón de mercado**: qué se paga por hora, cómo se

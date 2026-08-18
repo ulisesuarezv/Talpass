@@ -109,14 +109,14 @@ medida en otras condiciones no se puede comparar y no sirve para nada.
 
 Mide **seis** páginas, no tres:
 
-| Página                        | Por qué                                              |
-| ----------------------------- | ---------------------------------------------------- |
-| Home                          | la toca el rediseño y **no tiene línea base**        |
-| `/es/oportunidades`           | ídem — es la puerta de entrada del embudo            |
-| Una oportunidad concreta      | ídem                                                 |
-| `/es/registro`                | ídem — es donde convierte o se pierde                |
-| `/es/ofertas`                 | línea base **97**                                    |
-| Una landing de `/es/trabajo/` | línea base **97**                                    |
+| Página                        | Por qué                                       |
+| ----------------------------- | --------------------------------------------- |
+| Home                          | la toca el rediseño y **no tiene línea base** |
+| `/es/oportunidades`           | ídem — es la puerta de entrada del embudo     |
+| Una oportunidad concreta      | ídem                                          |
+| `/es/registro`                | ídem — es donde convierte o se pierde         |
+| `/es/ofertas`                 | línea base **97**                             |
+| Una landing de `/es/trabajo/` | línea base **97**                             |
 
 Anota FCP, LCP, TBT y CLS además de la nota. La nota sola esconde justo lo que un
 rediseño empeora.
@@ -147,7 +147,8 @@ Recorre el namespace `Opportunities` en `es` y en `en` y monta una tabla:
   idiomas.
 
 Anota también qué textos **caducan el 2026-09-01**, cuando el convenio de la
-Zeitarbeit sube de 15,33 a 15,87 €/h, y en qué claves exactas están.
+Zeitarbeit sube de 14,96 a 15,33 €/h —la subida a 15,87 € es del 2027-04-01, y
+son dos fechas distintas—, y en qué claves exactas están.
 
 > Hay una contradicción conocida en `docs/investigacion/ofertas-mercado.md`: el
 > §0 dice "ocho de las catorce exigen alemán" y la tabla de recuento dice
@@ -190,14 +191,14 @@ que se pasa esa vara por el proyecto entero de una sentada.
 
 En `docs/evidencia/auditoria-previa/`, con la fecha de la medición en cada uno:
 
-| Fichero                 | Contenido                                                      |
-| ----------------------- | -------------------------------------------------------------- |
+| Fichero                 | Contenido                                                       |
+| ----------------------- | --------------------------------------------------------------- |
 | `00-resumen.md`         | **La tabla de cifras a batir**, las discrepancias y 5 hallazgos |
-| `01-local.md`           | build, rutas, invariantes, HTML, seguridad y calidad           |
-| `02-produccion.md`      | despliegue vivo, SEO, cabeceras, migraciones y variables       |
-| `03-rendimiento.md`     | Lighthouse, con la configuración exacta                        |
-| `04-superficie-copy.md` | inventario del rediseño y auditoría de atribuciones            |
-| `05-embudo.md`          | el camino del candidato, dónde se para y los huecos legales    |
+| `01-local.md`           | build, rutas, invariantes, HTML, seguridad y calidad            |
+| `02-produccion.md`      | despliegue vivo, SEO, cabeceras, migraciones y variables        |
+| `03-rendimiento.md`     | Lighthouse, con la configuración exacta                         |
+| `04-superficie-copy.md` | inventario del rediseño y auditoría de atribuciones             |
+| `05-embudo.md`          | el camino del candidato, dónde se para y los huecos legales     |
 
 `00-resumen.md` abre con **una sola tabla**, pensada para volver a rellenarla
 después del rediseño: métrica · valor hoy · comando que lo mide. Esa tabla es el
