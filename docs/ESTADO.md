@@ -61,8 +61,9 @@
 >    casilla obligatoria pone los Términos **en negrita en vez de enlazarlos**
 >    (`<terms>` → `<strong>`), y `src/config/legal.ts` versiona con fecha
 >    `2026-08-14` cuatro documentos que no están en el repositorio.
-> 4. 🔴 **Las funciones se ejecutan en Estados Unidos.** `x-vercel-id:
-fra1::iad1::` — el borde está en Fráncfort y **la función en Washington**,
+> 4. 🔴 **Las funciones se ejecutan en Estados Unidos.** La cabecera
+>    `x-vercel-id` de una ruta privada empieza por `fra1::iad1::`: el borde está
+>    en Fráncfort y **la función en Washington**,
 >    contra una base de datos en Irlanda. Con ADR-29 la subida de documentos
 >    **pasa por el servidor**, así que hoy un DNI transita por `iad1`. Choca de
 >    frente con ADR-09 ("los datos personales de ciudadanos UE no salen de la
