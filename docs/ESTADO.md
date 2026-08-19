@@ -1,10 +1,10 @@
 # Estado del proyecto — punto de retomada
 
-> ## ⚠️ 2026-08-19 — los textos legales, escritos y verificados… pero SIN DESPLEGAR
+> ## ✅ 2026-08-19 — los textos legales, publicados y vivos
 >
-> **Punto 3 del orden acordado: hecho en el repositorio, `79e6291`, y NO vivo.**
-> Léelo entero antes de tocar nada, porque la mitad del criterio de cierre sigue
-> sin comprobar y no se puede dar por buena.
+> **Punto 3 del orden acordado: hecho, desplegado y verificado contra
+> producción.** En `https://talpass.eu` ya no se pide un consentimiento sobre
+> documentos que no existen.
 >
 > ### Lo que está hecho y medido
 >
@@ -42,20 +42,31 @@
 >   `drill` verde · `JobPosting` en `/oportunidades` = **0** · paridad `es`/`en`
 >   limpia en los dos pares de ficheros.
 >
-> ### 🔴 Lo que falta, y es la mitad del criterio
+> ### Desplegado y verificado
 >
-> **No se pudo desplegar.** `vercel --prod` y los `curl` contra `talpass.eu`
-> los bloqueó el clasificador de permisos del entorno, no un fallo del proyecto.
-> Así que **en producción sigue vivo el consentimiento en falso**: la casilla en
-> negrita y las rutas legales a 404.
+> **`dpl_2vHfuQdbqKGdAJwxjjcZ41CMJbSd`**, aliased a `talpass.eu` y confirmado
+> con `vercel inspect` **antes** de leer ninguna cabecera.
 >
-> **Lo siguiente es literalmente un comando y su verificación**, con los pasos
-> ya escritos y la tabla preparada en
-> `docs/evidencia/textos-legales/02-produccion.md`. Recordatorio de ahí: en
-> producción **`x-nextjs-cache` no existe** —Next 16 sobre Vercel lo expresa
-> como `x-vercel-cache` + `x-nextjs-prerender: 1`— y hay que **anotar el ID del
-> despliegue y confirmar que se mira el nuevo** antes de creerse una cabecera.
-> Hoy el sitemap son 7 URLs; tienen que quedar **13**.
+> - **Las doce rutas a 200** en `es` y `en`, legibles sin ejecutar JavaScript.
+> - `x-vercel-cache: HIT` + `x-nextjs-prerender: 1`, **sin**
+>   `x-ett-session-checked` y **sin** `Set-Cookie`. Su `x-vercel-id` es `fra1::`
+>   a secas: las sirve el borde sin llegar a ejecutar función.
+> - **Control negativo intacto:** `/es/cuenta` sigue en 307 con
+>   `x-ett-session-checked: 1` y con la función en **`dub1`**. ADR-11, ADR-13 y
+>   ADR-32 siguen en pie después de este despliegue.
+> - **El sitemap pasa de 7 a 13 URLs.**
+> - **El Impressum enseña los seis campos** en el HTML servido.
+> - **Y lo que motivaba la sesión:** el consentimiento del registro trae
+>   **cuatro enlaces reales, uno por documento, y ni un `<strong>`**. El
+>   hallazgo 3 está cerrado donde importa, que es donde se sirve.
+>
+> Detalle y tabla de cierre en `docs/evidencia/textos-legales/02-produccion.md`.
+>
+> ⚠️ **Lo que NO se comprobó, para que nadie lo dé por hecho:** el alta
+> end-to-end se hizo a 390×844 **contra la base local**, no contra producción.
+> Las cuatro filas de `consents` con la versión `2026-08-19` están demostradas
+> en local. Ejercitar el alta real contra el remoto es del punto 4, que es donde
+> van la migración y las dos variables de Vercel.
 >
 > ### Lo que la sesión encontró y no estaba en el guion
 >
@@ -354,12 +365,12 @@ PRERENDER` y **sin** cabecera de sesión ni `Set-Cookie` (ADR-11, ADR-13).
 > 2. ~~**Corregir el copy falso y redesplegar.**~~ ✅ **hecho el 2026-08-19**
 >    con `docs/prompts/correccion-copy.md`, desplegado y verificado contra
 >    producción. Ver el bloque de arriba y `docs/evidencia/correccion-copy/`.
-> 3. ~~**Los textos legales y su ruta.**~~ ⚠️ **Escritos y verificados el
->    2026-08-19 (`79e6291`, ADR-33 y ADR-34), pero SIN DESPLEGAR**: el
->    `vercel --prod` lo bloqueó el clasificador del entorno. En producción sigue
->    vivo el consentimiento en falso. Ver el bloque de arriba y la tabla
->    preparada en `docs/evidencia/textos-legales/02-produccion.md`. **Cerrar esto
->    es un comando y su verificación, y va antes que el punto 4.**
+> 3. ~~**Los textos legales y su ruta.**~~ ✅ **hecho el 2026-08-19** (ADR-33 y
+>    ADR-34, `dpl_2vHfuQdbqKGdAJwxjjcZ41CMJbSd`), desplegado y verificado contra
+>    producción. Ver el bloque de arriba y `docs/evidencia/textos-legales/`.
+>    **Lo siguiente es el punto 4: desbloquear la verificación en producción** —
+>    las dos variables de Vercel (`RESEND_API_KEY`, `EMAIL_FROM`) y el
+>    `db:push:prod` de la migración de la fase 4.
 >    3.5. ~~**La región de las funciones**~~ ✅ **hecho el 2026-08-19** (ADR-32,
 >    `dpl_6TMu6yXKRiP9bCpsuXyzsatCHFVU`). Se adelantó al punto 3 por decisión de
 >    Ulises, para que la política de privacidad se escriba ya sin rodeos.
