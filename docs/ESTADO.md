@@ -84,19 +84,47 @@
 > 8. 🟡 **`ettrecruiter.vercel.app` sirve el sitio entero a 200 y es rastreable**
 >    en vez de redirigir. Mitigado porque su canónica apunta al apex.
 >
-> ### Y una decisión que sigue abierta, de Ulises
+> ### La decisión de las cifras — **tomada el 2026-08-19 por Ulises**
 >
-> Corregir el punto 2 **baja las cifras publicadas**: almacén 18,00 → 17,50 y
-> producción 17,00 → 16,50, y el alojamiento pasa de "en algunas ofertas" a decir
-> que **nadie lo publica**. La corrección honesta hace las páginas menos
-> atractivas a primera vista. Es su llamada, y es exactamente la clase de decisión
-> que este proyecto dice tomar a favor de la verdad.
+> Estaba abierta desde el día 18 y ya no lo está. Dos partes, y no van en la
+> misma dirección:
+>
+> **1. Los salarios pasan a rango observado puro.** Se abandona la fórmula mixta
+> "suelo del convenio + techo observado": los dos extremos salen de las ofertas
+> analizadas. Almacén y producción bajan (18,00 y 17,00 eran reglas de redacción
+> del informe, no observaciones) y logística también se revisa, porque su mínimo
+> era el del convenio. El suelo del convenio no se va de la página: sigue en el
+> bloque `Opportunities.agreement`, que es su sitio. Queda como **ADR-31**, que
+> escribe la sesión de la corrección.
+>
+> ⚠️ **Efecto con fecha:** producción arrancará en 14,96 €/h, y **el 2026-09-01
+> el suelo legal pasa a 15,33 €/h**. Ese día la ficha enseñará un mínimo por
+> debajo del suelo legal, al lado de un bloque que anuncia el 15,33. No es falso
+> —es lo medido el 2026-08-16 y la página publica su fecha— pero **tiene que
+> leerse como lo que es**, y entra en la lista con fecha de B.3.
+>
+> **2. Alojamiento y transporte se quedan en "En algunas ofertas".** El hallazgo
+> R3 —el más grave de la auditoría— **no se corrige**. La fuente dice
+> **0 de 14 lo ofrecen y 14 de 14 callan**; la página seguirá diciendo "en
+> algunas". Motivo dado por Ulises: estas páginas son un reclamo temporal para
+> captar las primeras 30 personas y "en tres días esto dará igual".
+>
+> Queda escrito aquí, y no como ADR, porque **un ADR es una regla que se sigue y
+> esto es una excepción consciente y temporal**. El PM planteó dos veces que la
+> fuente dice cero; Ulises lo reafirmó. Se anota también junto al código, para
+> que dentro de un mes nadie lo tome por un descuido.
+>
+> Lo que conviene no perder de vista: las páginas están **indexadas desde el
+> 2026-08-17**, así que lo que se lea estos días entra en el índice de Google
+> aunque el copy cambie después. **Revisar esta excepción es una tarea viva, no
+> un asunto cerrado.**
 >
 > ### El orden acordado — nada de diseño hasta que esto esté
 >
 > 1. ~~`git push`~~ ✅ hecho el 2026-08-18.
 > 2. **Corregir el copy falso y redesplegar.** Es lo único que está mintiendo en
->    una página viva.
+>    una página viva. **Prompt escrito el 2026-08-19:
+>    `docs/prompts/correccion-copy.md`.** Pendiente de ejecutar.
 > 3. **Los textos legales y su ruta.**
 > 4. **Desbloquear la verificación en producción**: `db:push:prod` de
 >    `20260816120000_verification.sql` + las dos variables + redespliegue.
@@ -104,10 +132,20 @@
 >    no después: pedírselo a 30 personas ya captadas es hacerlas volver.
 > 6. **El pase de credibilidad**, y su auditoría posterior contra la tabla.
 >
-> **Lo siguiente que le toca al PM: redactar el prompt de la corrección del copy**
-> (punto 2), que es una sesión corta con criterio medible contra
-> `docs/investigacion/ofertas-mercado.md`. Ulises tiene que decidir antes lo de
-> las cifras.
+> ### Lo siguiente — **el prompt del punto 2 ya está escrito**
+>
+> `docs/prompts/correccion-copy.md`, del 2026-08-19. Es una sesión corta y
+> quirúrgica: corrige R1, R2, R4, R5 y la contradicción B.2 del informe, deja R3
+> intacto por la decisión de arriba, resuelve el efecto con fecha del 14,96 y
+> **redespliega**. No empieza el rediseño y no toca nada visual.
+>
+> **Se pega en una sesión nueva y limpia. El PM no la ejecuta: verifica su
+> cierre**, y lo verifica contra producción, no contra el resumen que entregue.
+>
+> Cuando esa sesión cierre, al PM le toca el **prompt del punto 3, los textos
+> legales**, que arrastra además el `<terms>` en negrita del registro y las
+> cuatro fechas de `src/config/legal.ts` que hoy versionan documentos que no
+> existen.
 
 > ## ✅ Fase 4b cerrada, 2026-08-17 — el sitio ya está abierto a Google
 >
