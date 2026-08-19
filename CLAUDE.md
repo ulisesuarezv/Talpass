@@ -8,7 +8,7 @@ Marketplace de dos lados: candidatos hispanohablantes/lusófonos ↔ ETTs de Eur
 
 ## Antes de trabajar, leer
 
-1. `docs/00-PROJECT.md` — negocio, roles, decisiones cerradas (ADR-01…29), reglas de negocio
+1. `docs/00-PROJECT.md` — negocio, roles, decisiones cerradas (ADR-01…31), reglas de negocio
 2. `docs/01-DATA-MODEL.md` — schema y matriz de acceso
 3. `docs/02-ROADMAP.md` — fases y estado actual
 4. `docs/CONVENTIONS.md` — naming, organización de carpetas, patrón servidor/cliente

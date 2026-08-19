@@ -603,6 +603,51 @@ sector daría decenas de páginas delgadas —_doorway pages_—, que es un prob
 calidad real y ataca lo mismo que ADR-23 protege. La contención está en no
 multiplicarlas, no en un límite escrito en el código.
 
+### ADR-31 · Un rango salarial publicado es rango observado puro
+
+_(Decisión de Ulises, 2026-08-19, a raíz de la auditoría del 2026-08-18.)_
+
+**Los dos extremos de un rango salarial publicado salen de ofertas concretas del
+informe de mercado, y de ninguna otra parte.** Ni el mínimo ni el máximo pueden
+venir del convenio, de una franja recomendada ni de un redondeo.
+
+**Qué se abandona y por qué.** Hasta hoy se publicaba una fórmula mixta —«suelo
+del convenio y techo observado»— bajo una sola etiqueta. Tenía dos problemas, y
+la auditoría cazó los dos: el techo de almacén (18,00 €/h) y el de producción
+(17,00 €/h) **no se observaron en ninguna oferta**, salían de las «reglas
+prácticas para escribir anuncios» del §2.1 del informe, que son consejos de
+redacción y no mediciones; y la etiqueta afirmaba una procedencia que la cifra no
+tenía, que es exactamente el fallo que ya se había cazado una vez al cerrar la
+fase 4b. Un proyecto cuya propuesta entera es «aquí no te mienten» no puede
+publicar una cifra inventada por muy razonable que suene.
+
+**Las reglas, y son cuatro:**
+
+1. **Cada extremo traza a una oferta.** El comentario del perfil en
+   `src/lib/opportunities.ts` nombra los identificadores del informe (R1, R2,
+   R4…) de los que sale cada extremo. Si no se puede nombrar, no se publica.
+2. **Las reglas de redacción del §2.1 del informe no son fuente.** Sirven para
+   escribir una vacante creíble, no para describir el mercado.
+3. **Sin rango observado no hay rango.** Se publica solo el suelo del convenio
+   con la etiqueta `basisAgreement` y se dice que no se mide un techo. Es lo que
+   hacen `meat-processing` y `agriculture`, y sigue siendo correcto.
+4. **El suelo del convenio no desaparece de la página**, cambia de sitio: vive
+   en el bloque `Opportunities.agreement` y en la ficha, donde se dice que manda
+   por encima de lo medido. Es un hecho legal, no una observación de mercado, y
+   mezclarlo con una medición bajo la misma etiqueta es lo que se prohíbe aquí.
+
+**Consecuencia que se acepta con los ojos abiertos.** Producción arranca en
+14,96 €/h, que es lo medido el 2026-08-16, y el **2026-09-01 el suelo legal pasa
+a 15,33 €/h**: ese día la ficha enseñará un mínimo medido por debajo del suelo
+vigente. No es falso —la página publica su fecha de consulta— y el copy de
+`production.conditions[0]` lo dice expresamente, pero **entra en la lista de
+revisión con fecha** del 2026-09-01 (auditoría, B.3). La alternativa —subir el
+mínimo al del convenio— es justo la fórmula mixta que esta ADR elimina.
+
+_Lo que esta ADR no cubre:_ los campos de alojamiento y transporte. Su valor
+publicado hoy es una excepción consciente y temporal, no una regla, y por eso
+vive fechada en `docs/ESTADO.md` y anotada junto al código, no aquí.
+
 ---
 
 ## 5. Reglas de negocio

@@ -1,5 +1,44 @@
 # Estado del proyecto — punto de retomada
 
+> ## ✅ 2026-08-19 — el copy falso, corregido y desplegado
+>
+> **Punto 2 del orden acordado: hecho y vivo en `https://talpass.eu`.** Las
+> cinco páginas de oportunidad ya no publican ninguna cifra que no salga de una
+> oferta concreta del informe.
+>
+> - **Rango observado puro (ADR-31, ya escrita).** Almacén **15,69 – 17,50**
+>   (R2, R4, R5), logística **15,69 – 17,50** (las mismas tres, que son las
+>   únicas de su bloque con cifra) y producción **14,96 – 16,50** (R3, Dresde).
+>   Se fueron el 18,00 y el 17,00, que salían de las reglas de redacción del
+>   §2.1 y no de ninguna oferta. Cárnico y agrícola, intactos.
+> - **`facts.basisObserved` reescrita** en `es` y `en`: ya no habla del suelo del
+>   convenio, dice que los dos extremos son lo observado, con la fecha de
+>   consulta interpolada desde `OPPORTUNITY_SOURCE_DATE`.
+> - **R4 y R5 corregidos.** El `summary` de almacén ya no dice ser el perfil más
+>   frecuente ni el mejor pagado —los dos eran falsos y contradecían a la ficha
+>   de producción—: ahora se apoya en el certificado de carretilla, que sí está
+>   verificado (§2.1, regla 3).
+> - **El efecto del 2026-09-01, resuelto en el copy.**
+>   `production.conditions[0]` dice que el rango es lo medido en su fecha y que
+>   el suelo del convenio manda por encima. Sigue en la lista de B.3.
+> - **B.2 ya estaba corregido** en el propio commit de la auditoría (`a71fba5`):
+>   el §0 del informe dice «Once de las catorce». No había nada que hacer.
+> - **R3 no se toca**, por la decisión de Ulises de abajo, y queda anotado junto
+>   a los tres pares de campos en `src/lib/opportunities.ts`.
+>
+> Evidencia y tabla B.1 rellenada de nuevo en
+> `docs/evidencia/correccion-copy/`.
+>
+> **Desplegado: `dpl_rQSDT7UzxqMPkHieAVfUVBsm15pB`**, confirmado con
+> `vercel inspect talpass.eu` antes de leer ninguna cabecera. En producción, sin
+> ejecutar JavaScript: las cifras nuevas en `es` y `en`, `x-vercel-cache: HIT`
+> con `x-nextjs-prerender: 1` y sin `x-ett-session-checked` ni `Set-Cookie`, y
+> cero `JobPosting`. Detalle en `docs/evidencia/correccion-copy/02-produccion.md`.
+>
+> **Lo siguiente es el punto 3: los textos legales y su ruta**, que arrastra el
+> `<terms>` en negrita del registro y las cuatro fechas de `src/config/legal.ts`
+> que hoy versionan documentos que no existen.
+
 > ## 📋 2026-08-18 — auditoría previa hecha, y el rumbo cambia
 >
 > **Lee esto primero y no actúes sobre los bloques de abajo sin haberlo leído.**
@@ -119,12 +158,29 @@
 > aunque el copy cambie después. **Revisar esta excepción es una tarea viva, no
 > un asunto cerrado.**
 >
+> ### 🗓️ Tarea con fecha: **2026-09-01**
+>
+> Ese día sube el convenio a 15,33 €/h y hay que revisar **la lista de B.3 de la
+> auditoría** (`docs/evidencia/auditoria-previa/04-superficie-copy.md`), que
+> desde el 2026-08-19 incluye un punto más:
+>
+> - **El mínimo de producción, 14,96 €/h**, queda por debajo del suelo legal
+>   vigente. El copy ya lo explica (`production.conditions[0]`), pero hay que
+>   releerlo ese día y decidir si se mantiene o se rehace la medición.
+> - `Opportunities.disclosure.source` pasa a hablar en pasado de una subida que
+>   ya habrá ocurrido.
+> - `agreement.body` y los `conditions[0]` de cárnico y agrícola interpolan
+>   `AGREEMENT_FLOOR`, así que se corrigen solos: lo que caduca es el texto que
+>   los rodea, no la cifra.
+> - La excepción de alojamiento y transporte (arriba) es buen momento para
+>   revisarla también.
+>
 > ### El orden acordado — nada de diseño hasta que esto esté
 >
 > 1. ~~`git push`~~ ✅ hecho el 2026-08-18.
-> 2. **Corregir el copy falso y redesplegar.** Es lo único que está mintiendo en
->    una página viva. **Prompt escrito el 2026-08-19:
->    `docs/prompts/correccion-copy.md`.** Pendiente de ejecutar.
+> 2. ~~**Corregir el copy falso y redesplegar.**~~ ✅ **hecho el 2026-08-19**
+>    con `docs/prompts/correccion-copy.md`, desplegado y verificado contra
+>    producción. Ver el bloque de arriba y `docs/evidencia/correccion-copy/`.
 > 3. **Los textos legales y su ruta.**
 > 4. **Desbloquear la verificación en producción**: `db:push:prod` de
 >    `20260816120000_verification.sql` + las dos variables + redespliegue.
@@ -132,20 +188,15 @@
 >    no después: pedírselo a 30 personas ya captadas es hacerlas volver.
 > 6. **El pase de credibilidad**, y su auditoría posterior contra la tabla.
 >
-> ### Lo siguiente — **el prompt del punto 2 ya está escrito**
+> ### Lo siguiente — ~~el prompt del punto 2~~ **ejecutado el 2026-08-19**
 >
-> `docs/prompts/correccion-copy.md`, del 2026-08-19. Es una sesión corta y
-> quirúrgica: corrige R1, R2, R4, R5 y la contradicción B.2 del informe, deja R3
-> intacto por la decisión de arriba, resuelve el efecto con fecha del 14,96 y
-> **redespliega**. No empieza el rediseño y no toca nada visual.
+> `docs/prompts/correccion-copy.md` ya está ejecutado y desplegado: ver el
+> bloque del 2026-08-19, arriba del todo. **El PM verifica su cierre contra
+> producción, no contra el resumen de la sesión.**
 >
-> **Se pega en una sesión nueva y limpia. El PM no la ejecuta: verifica su
-> cierre**, y lo verifica contra producción, no contra el resumen que entregue.
->
-> Cuando esa sesión cierre, al PM le toca el **prompt del punto 3, los textos
-> legales**, que arrastra además el `<terms>` en negrita del registro y las
-> cuatro fechas de `src/config/legal.ts` que hoy versionan documentos que no
-> existen.
+> Le toca ahora el **prompt del punto 3, los textos legales**, que arrastra
+> además el `<terms>` en negrita del registro y las cuatro fechas de
+> `src/config/legal.ts` que hoy versionan documentos que no existen.
 
 > ## ✅ Fase 4b cerrada, 2026-08-17 — el sitio ya está abierto a Google
 >

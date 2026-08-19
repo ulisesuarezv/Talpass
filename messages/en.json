@@ -179,7 +179,7 @@
       "salaryLabel": "Pay",
       "salaryRange": "{min} – {max} per {period}",
       "salaryFrom": "From {min} per {period}",
-      "basisObserved": "Collective agreement floor and ceiling observed in the ads reviewed",
+      "basisObserved": "Observed range: both ends come from the ads reviewed on {date}, not from a recommended band.",
       "basisAgreement": "Collective agreement floor. No observed range: we do not publish a ceiling we have not measured.",
       "weeklyHoursLabel": "Weekly hours",
       "weeklyHours": "{hours} h/week",
@@ -220,7 +220,7 @@
         "title": "Warehouse and forklift",
         "region": "Saxony and Thuringia",
         "cities": "Grimma, Döbeln, Pößneck",
-        "summary": "The most common profile in the sample and the best paid without a qualification: a forklift licence is worth €0.50 to €1 more per hour.",
+        "summary": "The three ads in the sample that required a forklift licence all paid above the unqualified production band: the licence is worth €0.50 to €1 more per hour.",
         "intro": "Picking orders and moving goods in distribution centres in eastern Germany, almost always on three rotating shifts and 40 hours a week. Six of the fourteen ads reviewed are warehouse and logistics, and this is the block where the pay range is published most often. Three required a forklift licence (Staplerschein) and all three paid above the unqualified production band. The German asked for is shift German — signage, instructions, incidents — not office German.",
         "tasks": [
           "Unload and put away goods with counterbalance and reach trucks",
@@ -276,7 +276,7 @@
         "title": "Industrial production",
         "region": "Baden-Württemberg, Saxony and Hamburg",
         "cities": "Dresden, Nagold, Haigerloch, Hamburg",
-        "summary": "The most open profile: several ads state outright that no experience is needed and that training is given on site. Also the one that stretches furthest at the top.",
+        "summary": "The most open profile: several ads state outright that no experience is needed and that training is given on site. It is also where the best paid ad in the sample sits, €24.85 an hour in Hamburg, on continuous shifts and with a medical fitness check.",
         "intro": "Line work in factories: feeding the machine, visual checks, packing and palletising. Eight of the fourteen ads reviewed are production roles, and this is where people without a trade get in. The range stretches a long way at the top when the client is a large industrial site on continuous shifts: the best paid in the sample, in Hamburg, reached €24.85 an hour, but required continuous shift work and a medical clearance, so it is not the figure to expect from a first job. It is also the block where a German requirement appears least often: three of the eight production ads gave no level at all.",
         "tasks": [
           "Feed and monitor the production or packaging line",
@@ -293,7 +293,7 @@
           "The German requirement varies widely: from not stated at all to spoken and written"
         ],
         "conditions": [
-          "Hourly and gross pay; the floor in the sample matches the collective agreement floor, which is no coincidence",
+          "Hourly and gross pay. The published range is what we measured in the unqualified production ads on {date}: the best paid ad in the sample, on continuous shifts and with a medical fitness check, falls outside that band and is explained above. And above what we measured the collective agreement floor always applies, {floor} gross per hour from {floorDate}: below that figure no offer can pay you.",
           "Continuous shifts and large industrial clients pay considerably more, and ask considerably more",
           "Up to 30 days' holiday a year, plus holiday and Christmas bonuses",
           "On-site training and protective equipment at the company's expense",

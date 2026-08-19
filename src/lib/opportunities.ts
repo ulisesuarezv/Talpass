@@ -43,10 +43,14 @@ export type Shift = 'morning' | 'afternoon' | 'night' | 'rotating';
 /**
  * De dónde sale la franja salarial, y se dice en la página.
  *
- * - `observed`: **suelo del convenio y techo observado** en las ofertas
- *   analizadas. El suelo no se copia de la muestra a propósito: el mínimo real
- *   visto fue 14,96 €/h, que el 2026-09-01 queda **por debajo** del convenio y
- *   volvería la página falsa sola. Se publica el suelo vigente y se dice.
+ * - `observed`: **rango observado puro** (ADR-31, 2026-08-19). Los dos
+ *   extremos salen de ofertas concretas de `docs/investigacion/ofertas-mercado.md`,
+ *   y el comentario de cada perfil dice de cuáles. Se abandonó la fórmula
+ *   mixta «suelo del convenio + techo observado»: mezclaba un dato legal con
+ *   uno medido bajo una sola etiqueta que afirmaba una procedencia que la
+ *   cifra no tenía (hallazgos R1 y R2 de la auditoría del 2026-08-18). El
+ *   suelo del convenio no se va de la página: vive en `Opportunities.agreement`,
+ *   que es su sitio, y manda por encima de lo medido.
  * - `agreement`: no hay rango en la muestra para ese sector, así que se publica
  *   **solo el suelo del convenio**, que es un hecho legal y aplica a todo el
  *   trabajo por ETT. Inventar el techo sería exactamente lo que esta fase
@@ -100,13 +104,17 @@ export type OpportunityProfile = {
  */
 export const OPPORTUNITY_PROFILES: readonly OpportunityProfile[] = [
   {
-    // Rango observado: 15,69–17,50 en tres ofertas de Randstad con
-    // Staplerschein. Se publica 15,50–18,00, la franja del informe (§2.1).
+    // Rango observado puro (ADR-31): 15,69 – 17,50. Suelo = R2, R4 y R5, las
+    // tres con Staplerschein, que arrancan las tres en 15,69. Techo = R4 y R5
+    // (17,50); R2 se queda en 16,21. Informe §1 (fichas de Randstad) y §2.1,
+    // tabla de rangos observados. **No se usa la regla 3 del informe
+    // (15,50–18,00): es una franja para redactar anuncios, no una medición**,
+    // y publicarla bajo la etiqueta «observado» fue el hallazgo R1.
     sector: 'warehouse',
     countryCode: 'DE',
     salary: {
-      min: 15.5,
-      max: 18,
+      min: 15.69,
+      max: 17.5,
       currency: 'EUR',
       period: 'hour',
       basis: 'observed',
@@ -114,16 +122,24 @@ export const OPPORTUNITY_PROFILES: readonly OpportunityProfile[] = [
     weeklyHours: { min: 40, max: 40 },
     shifts: ['rotating', 'night'],
     germanLevel: 'a2',
+    // ⚠️ La muestra dice alojamiento 0/14 y transporte 0/14, y 14/14 callan
+    // (informe §0, §1 y §2.6). Publicar 'sometimes' es una decisión de Ulises
+    // del 2026-08-19 —reclamo temporal para captar las primeras 30 personas—,
+    // no un descuido: hallazgo R3 de la auditoría, pendiente de revisar.
     housing: 'sometimes',
     transport: 'sometimes',
   },
   {
-    // R2 (15,69–16,21) y R5 (15,69–17,50). El suelo se baja al del convenio
-    // desde el 2026-09-01, que es lo que garantiza la ley.
+    // Rango observado puro (ADR-31): 15,69 – 17,50. Las seis ofertas del bloque
+    // de almacén y logística son R2, R4, R5, T1, T2 y T3, y solo las tres de
+    // Randstad dan cifra: R2 15,69–16,21, R4 y R5 15,69–17,50 (informe §1).
+    // Coincide con `warehouse` porque salen de las mismas tres ofertas.
+    // El suelo era el del convenio (15,33) bajo etiqueta de observado, que es
+    // justo lo que ADR-31 prohibe: el mínimo tiene que estar medido.
     sector: 'logistics',
     countryCode: 'DE',
     salary: {
-      min: 15.33,
+      min: 15.69,
       max: 17.5,
       currency: 'EUR',
       period: 'hour',
@@ -132,17 +148,31 @@ export const OPPORTUNITY_PROFILES: readonly OpportunityProfile[] = [
     weeklyHours: { min: 40, max: 40 },
     shifts: ['morning', 'afternoon', 'night', 'rotating'],
     germanLevel: 'a2',
+    // ⚠️ La muestra dice alojamiento 0/14 y transporte 0/14, y 14/14 callan
+    // (informe §0, §1 y §2.6). Publicar 'sometimes' es una decisión de Ulises
+    // del 2026-08-19 —reclamo temporal para captar las primeras 30 personas—,
+    // no un descuido: hallazgo R3 de la auditoría, pendiente de revisar.
     housing: 'sometimes',
     transport: 'sometimes',
   },
   {
-    // Producción sin cualificación: 14,96–16,50 observado en Dresde, y la
-    // franja honrada del informe es 15,00–17,00. El suelo sube a 15,33.
+    // Rango observado puro (ADR-31): 14,96 – 16,50, que es R3 (Dresde),
+    // la única oferta de producción sin cualificar con cifra (informe §1 y
+    // §2.1). **R1 (Hamburgo, 19,31 – 24,85) queda fuera a propósito**: es
+    // Vollkonti con aptitud médica y cliente industrial grande, otra franja
+    // (§2.1, regla 4), y se publica aparte en `production.intro`. El techo
+    // anterior de 17,00 salía de la regla 2 de redacción y no se observó en
+    // ninguna oferta: hallazgo R2 de la auditoría.
+    //
+    // ⚠️ El mínimo de 14,96 era el suelo del convenio hasta el 2026-09-01;
+    // ese día el suelo legal pasa a 15,33 y esta página enseñará un mínimo
+    // medido por debajo del suelo vigente. No es falso —está fechado— pero
+    // `production.conditions[0]` lo dice expresamente. Revisar el 2026-09-01.
     sector: 'production',
     countryCode: 'DE',
     salary: {
-      min: 15.33,
-      max: 17,
+      min: 14.96,
+      max: 16.5,
       currency: 'EUR',
       period: 'hour',
       basis: 'observed',
@@ -150,6 +180,10 @@ export const OPPORTUNITY_PROFILES: readonly OpportunityProfile[] = [
     weeklyHours: { min: 35, max: 40 },
     shifts: ['morning', 'afternoon', 'rotating'],
     germanLevel: 'a2',
+    // ⚠️ La muestra dice alojamiento 0/14 y transporte 0/14, y 14/14 callan
+    // (informe §0, §1 y §2.6). Publicar 'sometimes' es una decisión de Ulises
+    // del 2026-08-19 —reclamo temporal para captar las primeras 30 personas—,
+    // no un descuido: hallazgo R3 de la auditoría, pendiente de revisar.
     housing: 'sometimes',
     transport: 'sometimes',
   },

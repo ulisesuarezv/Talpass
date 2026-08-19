@@ -179,7 +179,7 @@
       "salaryLabel": "Salario",
       "salaryRange": "{min} – {max} por {period}",
       "salaryFrom": "Desde {min} por {period}",
-      "basisObserved": "Suelo del convenio y techo observado en las ofertas analizadas",
+      "basisObserved": "Rango observado: los dos extremos salen de las ofertas analizadas el {date}, no de una franja recomendada.",
       "basisAgreement": "Suelo del convenio. Sin rango observado: no publicamos un techo que no hemos medido.",
       "weeklyHoursLabel": "Jornada",
       "weeklyHours": "{hours} h/semana",
@@ -220,7 +220,7 @@
         "title": "Almacén y carretilla",
         "region": "Sajonia y Turingia",
         "cities": "Grimma, Döbeln, Pößneck",
-        "summary": "El perfil con más ofertas de la muestra y el que mejor paga sin titulación: el certificado de carretilla vale entre 0,50 y 1 € más por hora.",
+        "summary": "Las tres ofertas de la muestra que exigían certificado de carretilla pagaban por encima de la franja de producción sin cualificar: el certificado vale entre 0,50 y 1 € más por hora.",
         "intro": "Preparar pedidos y mover mercancía en centros de distribución del este de Alemania, casi siempre a tres turnos rotativos y 40 horas semanales. Seis de las catorce ofertas analizadas son de almacén y logística, y es el bloque donde el rango salarial se publica con más frecuencia. Tres exigían certificado de carretilla elevadora (Staplerschein) y las tres pagaban por encima de la franja de producción sin cualificar. El alemán que se pide es el del turno —señalización, instrucciones, incidencias—, no el de oficina.",
         "tasks": [
           "Descargar y ubicar mercancía con carretilla frontal y retráctil",
@@ -276,7 +276,7 @@
         "title": "Producción industrial",
         "region": "Baden-Wurtemberg, Sajonia y Hamburgo",
         "cities": "Dresde, Nagold, Haigerloch, Hamburgo",
-        "summary": "El perfil más abierto: varias ofertas dicen expresamente que no hace falta experiencia y que la formación se da en planta. También el que más se ensancha por arriba.",
+        "summary": "El perfil más abierto: varias ofertas dicen expresamente que no hace falta experiencia y que la formación se da en planta. Es también donde está la mejor pagada de la muestra, 24,85 € la hora en Hamburgo, con turno continuo y aptitud médica.",
         "intro": "Trabajo de línea en fábrica: alimentar la máquina, control visual, envasado y paletizado. Ocho de las catorce ofertas analizadas son de producción, y es por donde entra quien no tiene oficio. El rango se ensancha mucho por arriba cuando el cliente es una industria grande con turno continuo: la mejor pagada de la muestra, en Hamburgo, llegaba a 24,85 € la hora, pero exigía turno continuo y aptitud médica, así que no es la cifra que cabe esperar de un primer puesto. Es también el bloque donde el requisito de alemán aparece con menos frecuencia: tres de las ocho ofertas de producción no indicaban ningún nivel.",
         "tasks": [
           "Alimentar y vigilar la línea de producción o envasado",
@@ -293,7 +293,7 @@
           "El nivel de alemán varía mucho: va de no indicarse a exigirse hablado y escrito"
         ],
         "conditions": [
-          "Salario por hora y bruto; el suelo de la muestra coincide con el del convenio, no es casualidad",
+          "Salario por hora y bruto. El rango publicado es lo medido en las ofertas de producción sin cualificar el {date}: la mejor pagada de la muestra, con turno continuo y aptitud médica, queda fuera de esa franja y se explica arriba. Y por encima de lo medido manda siempre el suelo del convenio, {floor} brutos por hora desde el {floorDate}: por debajo de esa cifra ninguna oferta puede pagarte.",
           "Turno continuo y cliente industrial grande pagan bastante más, y exigen bastante más",
           "Hasta 30 días de vacaciones al año, paga de vacaciones y paga de Navidad",
           "Formación en planta y equipo de protección a cargo de la empresa",

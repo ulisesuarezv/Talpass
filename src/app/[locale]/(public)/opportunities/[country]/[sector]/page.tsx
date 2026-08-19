@@ -20,6 +20,7 @@ import {
   AGREEMENT_FLOOR,
   getOpportunity,
   listOpportunities,
+  OPPORTUNITY_SOURCE_DATE,
   opportunityHref,
 } from '@/lib/opportunities';
 import { seoMetadata } from '@/lib/seo';
@@ -117,11 +118,19 @@ export default async function OpportunityPage({
       maximumFractionDigits: 2,
     });
 
+  // La fecha de consulta del informe: es lo que convierte «rango observado» en
+  // una afirmación comprobable (ADR-31). Vive en la constante, no en el copy,
+  // porque caduca el día que se rehaga la investigación.
+  const sourceDate = format.dateTime(new Date(OPPORTUNITY_SOURCE_DATE), {
+    dateStyle: 'long',
+  });
+
   const conditionValues = {
     floor: money(AGREEMENT_FLOOR.amount),
     floorDate: format.dateTime(new Date(AGREEMENT_FLOOR.since), {
       dateStyle: 'long',
     }),
+    date: sourceDate,
   };
 
   const sections = [
@@ -151,7 +160,7 @@ export default async function OpportunityPage({
         </p>
         <p className="text-xs text-muted-foreground">
           {opportunity.salary.basis === 'observed'
-            ? t('facts.basisObserved')
+            ? t('facts.basisObserved', { date: sourceDate })
             : t('facts.basisAgreement')}
         </p>
       </header>
