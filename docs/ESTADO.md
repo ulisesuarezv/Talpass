@@ -158,35 +158,30 @@
 > aunque el copy cambie después. **Revisar esta excepción es una tarea viva, no
 > un asunto cerrado.**
 >
-> ### ❗ Pendiente de Ulises antes de desplegar los legales
+> ### El responsable del tratamiento — cerrado el 2026-08-19
 >
-> El responsable del tratamiento queda fijado el 2026-08-19: **José Ulises
-> Suárez Victoria, NIF 50232706S, Theodor-Heuss-Straße 16, Göttingen
-> (Alemania)**, persona física. Los datos están en
-> `docs/prompts/textos-legales.md` §2 y van a un módulo de configuración, no al
-> copy.
+> ```
+> José Ulises Suárez Victoria · NIF 50232706S
+> Theodor-Heuss-Straße 16, 37075 Göttingen (Alemania)
+> kayaosv@gmail.com
+> ```
 >
-> Faltan **dos cosas, y sin ellas el Impressum no se publica**:
+> Persona física. **Completo: nada bloquea el despliegue de los legales.** Va a
+> un módulo de configuración, no al copy. Reside en Alemania, así que el
+> documento que manda es un **Impressum (§5 DDG)**, no un aviso legal español;
+> el NIF identifica al responsable pero no es lo que pide el Impressum (ahí iría
+> la USt-IdNr, y solo si se tiene).
 >
-> 1. **El código postal de Göttingen.** Una dirección postal incompleta no
->    cumple el §5 DDG.
-> 2. **Un email de contacto que exista y que alguien lea.** El §5 DDG exige vía
->    directa y rápida; un formulario no basta por sí solo.
+> **Decisión de Ulises, 2026-08-19: la captación no espera a una revisión
+> legal.** Los textos los redacta el responsable y salen publicados y en vigor.
+> Los documentos dicen que no son un dictamen jurídico —eso se queda, porque es
+> cierto—, pero **no llevan ninguna fórmula de «pendiente de revisión»**. El PM
+> planteó el riesgo; Ulises lo asumió y pidió no volver sobre ello.
 >
-> Y dos precisiones ya dadas: el responsable **reside en Alemania**, así que el
-> documento que manda es un **Impressum**, no un aviso legal español; y el
-> **NIF español no es lo que pide un Impressum** —ahí va la USt-IdNr, y solo si
-> se tiene—, aunque sirve para identificar al responsable en la política.
->
-> ⚠️ **Y una dependencia con el punto 4:** mientras las funciones se ejecuten en
-> `iad1`, la política de privacidad **no puede escribir que los datos no salen
-> de la UE**. Los dos puntos están atados: el que se ejecute primero condiciona
-> al otro.
->
-> ⚠️ Estos textos **los redacta el responsable y no son un dictamen jurídico**.
-> Este proyecto trata DNI, IBAN y grabaciones de voz de trabajadores migrantes:
-> **necesitan revisión de un profesional antes de captar en serio.** Los propios
-> documentos lo dicen, y decirlo es parte del arreglo.
+> ⚠️ **Dependencia con el punto 4, que sigue viva:** mientras las funciones se
+> ejecuten en `iad1`, la política de privacidad **no puede escribir que los
+> datos no salen de la UE**. El punto que se ejecute primero condiciona al otro,
+> y arreglar la región antes ahorra reescribir la política.
 
 > ### 🗓️ Tarea con fecha: **2026-09-01**
 >
@@ -212,8 +207,8 @@
 >    con `docs/prompts/correccion-copy.md`, desplegado y verificado contra
 >    producción. Ver el bloque de arriba y `docs/evidencia/correccion-copy/`.
 > 3. **Los textos legales y su ruta.** **Prompt escrito el 2026-08-19:
->    `docs/prompts/textos-legales.md`.** Pendiente de ejecutar, y **con dos
->    huecos que bloquean su despliegue**: ver abajo.
+>    `docs/prompts/textos-legales.md`, listo para ejecutar y sin bloqueos** — el
+>    responsable del tratamiento está completo, ver abajo.
 > 4. **Desbloquear la verificación en producción**: `db:push:prod` de
 >    `20260816120000_verification.sql` + las dos variables + redespliegue.
 > 5. **El campo de sector/ciudad de destino en el onboarding** — antes de captar,

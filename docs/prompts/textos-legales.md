@@ -32,21 +32,15 @@ Contra la base local (ADR-17). **Nada de escrituras contra la base de producció
 ```
 Nombre:     José Ulises Suárez Victoria
 NIF:        50232706S
-Domicilio:  Theodor-Heuss-Straße 16, Göttingen, Alemania
+Domicilio:  Theodor-Heuss-Straße 16, 37075 Göttingen, Alemania
+Contacto:   kayaosv@gmail.com
 ```
 
-**Persona física, no sociedad.** Es el responsable del tratamiento a efectos del RGPD y el titular del sitio.
+**Persona física, no sociedad.** Es el responsable del tratamiento a efectos del RGPD y el titular del sitio. **Los cuatro campos están completos y confirmados por Ulises el 2026-08-19: no falta nada y nada bloquea el despliegue.** Cópialos literalmente, con la `ß` y con la diéresis — un Impressum con la dirección mal escrita no cumple.
 
-### 2.1 Los dos huecos que **bloquean el despliegue**
+El contacto es una cuenta personal de Gmail y **vale**: el §5 DDG pide una vía directa y rápida, no un dominio propio. Cuando `talpass.eu` tenga buzón, esto se cambia en un solo sitio — **por eso va en configuración y no repetido por el copy**. Y cuenta con que una dirección publicada en un Impressum **se acaba llenando de spam**: es el precio del documento, no un problema que resuelvas aquí.
 
-Ulises dio la dirección sin código postal y sin email de contacto, y las dos cosas son obligatorias:
-
-- **El código postal de Göttingen.** Un Impressum sin dirección postal completa no cumple.
-- **Un email de contacto que funcione y que alguien lea.** El §5 DDG exige una vía de contacto **directa y rápida**; un formulario no basta por sí solo. Sirve `legal@talpass.eu` o similar **si el buzón existe de verdad** — comprueba si el dominio ya tiene correo configurado antes de inventarte una dirección.
-
-**Construye todo, y si al llegar al despliegue alguno de los dos sigue sin resolver, no despliegues:** anótalo en `docs/ESTADO.md` con el prefijo `!` como pendiente de Ulises y entrega el resto completo. Publicar un Impressum incompleto es peor que no publicarlo: es el documento con el que se te denuncia.
-
-### 2.2 Precisiones que Ulises ya conoce, para que no las redescubras
+### 2.1 Precisiones que Ulises ya conoce, para que no las redescubras
 
 - El responsable **reside en Alemania**, así que el documento que manda es un **Impressum (§5 DDG)**, no un aviso legal español. Nombre completo, dirección postal completa y contacto directo.
 - **El NIF español no es lo que pide un Impressum.** Ahí se publica la **USt-IdNr** y solo si se tiene. Incluir el NIF es correcto para el lado español y para identificar al responsable en la política de privacidad; **no sustituye** a nada del Impressum. Si no hay USt-IdNr, no se inventa y no se pone.
@@ -70,7 +64,9 @@ Cada documento abre diciendo **de qué fecha es su versión**, y esa fecha tiene
 
 ### 3.1 Que digan lo que son
 
-Los cuatro llevan, visible y no en letra pequeña, que **son textos redactados por el responsable y no un dictamen jurídico, y que están pendientes de revisión legal profesional**. No es una excusa: es cierto, y ocultarlo sería la misma clase de fallo que esta sesión viene a arreglar.
+Los cuatro llevan, visible y no en letra pequeña, que **son textos redactados por el responsable y no un dictamen jurídico**. Es cierto, y ocultarlo sería la misma clase de fallo que esta sesión viene a arreglar: un proyecto que vende transparencia no puede fingir un sello que no tiene.
+
+Lo que **no** escribes es que estén «pendientes de revisión» ni ninguna fórmula que sugiera que el sitio aún no está operativo. Ulises decidió el 2026-08-19 que la captación no espera a una revisión legal, y esa es su llamada: los textos salen tal cual, publicados y en vigor.
 
 ## 4. La ruta
 
@@ -105,7 +101,7 @@ Enlazadas desde el pie en todas las páginas públicas, y el Impressum **tambié
 - Las cuatro rutas responden **200** en `es` y `en` y se leen **sin ejecutar JavaScript**.
 - `x-vercel-cache` cacheado + `x-nextjs-prerender: 1`, **sin** `x-ett-session-checked` ni `Set-Cookie`. Control negativo: `/es/cuenta` sigue con su 307 y **con** `x-ett-session-checked: 1`.
 - `/sitemap.xml` las incluye — hoy son **7 URLs**; anota cuántas quedan.
-- El Impressum publicado enseña **nombre, dirección completa con código postal y contacto**. Si falta alguno, **no has desplegado** (sección 2.1).
+- El Impressum publicado enseña **nombre, dirección completa con código postal y contacto**. Los cuatro campos están dados y confirmados: si algo no cuadra, es un fallo tuyo de transcripción, no un dato que falte.
 - Anota el **ID del despliegue** y confirma que miras el nuevo antes de dar por buena una cabecera.
 
 Evidencia en `docs/evidencia/textos-legales/`.
