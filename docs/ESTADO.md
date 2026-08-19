@@ -158,6 +158,36 @@
 > aunque el copy cambie después. **Revisar esta excepción es una tarea viva, no
 > un asunto cerrado.**
 >
+> ### ❗ Pendiente de Ulises antes de desplegar los legales
+>
+> El responsable del tratamiento queda fijado el 2026-08-19: **José Ulises
+> Suárez Victoria, NIF 50232706S, Theodor-Heuss-Straße 16, Göttingen
+> (Alemania)**, persona física. Los datos están en
+> `docs/prompts/textos-legales.md` §2 y van a un módulo de configuración, no al
+> copy.
+>
+> Faltan **dos cosas, y sin ellas el Impressum no se publica**:
+>
+> 1. **El código postal de Göttingen.** Una dirección postal incompleta no
+>    cumple el §5 DDG.
+> 2. **Un email de contacto que exista y que alguien lea.** El §5 DDG exige vía
+>    directa y rápida; un formulario no basta por sí solo.
+>
+> Y dos precisiones ya dadas: el responsable **reside en Alemania**, así que el
+> documento que manda es un **Impressum**, no un aviso legal español; y el
+> **NIF español no es lo que pide un Impressum** —ahí va la USt-IdNr, y solo si
+> se tiene—, aunque sirve para identificar al responsable en la política.
+>
+> ⚠️ **Y una dependencia con el punto 4:** mientras las funciones se ejecuten en
+> `iad1`, la política de privacidad **no puede escribir que los datos no salen
+> de la UE**. Los dos puntos están atados: el que se ejecute primero condiciona
+> al otro.
+>
+> ⚠️ Estos textos **los redacta el responsable y no son un dictamen jurídico**.
+> Este proyecto trata DNI, IBAN y grabaciones de voz de trabajadores migrantes:
+> **necesitan revisión de un profesional antes de captar en serio.** Los propios
+> documentos lo dicen, y decirlo es parte del arreglo.
+
 > ### 🗓️ Tarea con fecha: **2026-09-01**
 >
 > Ese día sube el convenio a 15,33 €/h y hay que revisar **la lista de B.3 de la
@@ -181,7 +211,9 @@
 > 2. ~~**Corregir el copy falso y redesplegar.**~~ ✅ **hecho el 2026-08-19**
 >    con `docs/prompts/correccion-copy.md`, desplegado y verificado contra
 >    producción. Ver el bloque de arriba y `docs/evidencia/correccion-copy/`.
-> 3. **Los textos legales y su ruta.**
+> 3. **Los textos legales y su ruta.** **Prompt escrito el 2026-08-19:
+>    `docs/prompts/textos-legales.md`.** Pendiente de ejecutar, y **con dos
+>    huecos que bloquean su despliegue**: ver abajo.
 > 4. **Desbloquear la verificación en producción**: `db:push:prod` de
 >    `20260816120000_verification.sql` + las dos variables + redespliegue.
 > 5. **El campo de sector/ciudad de destino en el onboarding** — antes de captar,
