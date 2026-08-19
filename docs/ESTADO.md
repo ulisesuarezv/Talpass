@@ -234,6 +234,18 @@ PRERENDER` y **sin** cabecera de sesión ni `Set-Cookie` (ADR-11, ADR-13).
 >
 > **Consecuencia inmediata: la política de privacidad ya puede afirmar que el
 > tratamiento ocurre en la UE.** Los legales quedan desbloqueados.
+>
+> ⚠️ **Lo que NO se comprobó, para que nadie lo dé por hecho:** un flujo con
+> **sesión real** —entrar, `/es/cuenta`, abrir un documento en el backoffice—.
+> La sesión solo pudo ver 307 y 401, que es lo que devuelve sin credenciales, y
+> el A/B contra el despliegue anterior **no se pudo hacer**: su URL está tras la
+> protección de despliegue y responde 302 en el borde sin ejecutar la
+> aplicación. Así que **hay dirección demostrada pero no magnitud medida**.
+>
+> Ulises decidió el 2026-08-19 no hacer esa prueba a mano y pasar a los legales.
+> No queda al aire: **el criterio de cierre del prompt de los legales incluye un
+> alta completa end-to-end desde el móvil**, que ejercita sesión y escritura con
+> credenciales reales. Si eso falla, mirar la región antes que los legales.
 
 > ### El orden acordado — nada de diseño hasta que esto esté
 >
