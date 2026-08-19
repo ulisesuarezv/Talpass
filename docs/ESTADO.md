@@ -201,36 +201,39 @@
 > - La excepción de alojamiento y transporte (arriba) es buen momento para
 >   revisarla también.
 >
-> ### 🔴 La región: arreglada en el repositorio, **pendiente de un despliegue**
+> ### ✅ La región, cerrada el 2026-08-19 — las funciones corren en Dublín
 >
-> Hallazgo 4 de la auditoría: `x-vercel-id` de `/es/cuenta` empezaba por
+> Era el hallazgo 4 de la auditoría: `x-vercel-id` de `/es/cuenta` empezaba por
 > **`fra1::iad1::`** —borde en Fráncfort, **función en Washington**— contra una
-> base de datos en Irlanda. Con ADR-29 el archivo del candidato pasa por el
-> servidor, así que un DNI transitaba por Estados Unidos, contra ADR-09.
+> base en Irlanda. Con ADR-29 el archivo del candidato pasa por el servidor, así
+> que un DNI transitaba por Estados Unidos, contra ADR-09.
 >
-> **Hecho el 2026-08-19:** `vercel.json` con `"regions": ["dub1"]`, y **ADR-32**
-> que lo razona. Dublín es `eu-west-1`, **la misma región de AWS donde está
-> Supabase**: lo que domina la latencia de una ruta privada son las idas y
-> venidas función↔base, no la distancia al candidato, porque las páginas
-> públicas las sirve el borde y son estáticas.
+> `vercel.json` con `"regions": ["dub1"]` y **ADR-32**, que razona por qué
+> Dublín y no Fráncfort: `dub1` es `eu-west-1`, **la misma región de AWS donde
+> está Supabase**, y lo que domina la latencia de una ruta privada son las idas
+> y venidas función↔base, no la distancia al candidato.
 >
-> ❗ **Falta el despliegue, y lo tiene que lanzar Ulises**: el clasificador de
-> permisos denegó `vercel --prod` a la sesión.
+> Desplegado por Ulises: **`dpl_6TMu6yXKRiP9bCpsuXyzsatCHFVU`**, aliased a
+> `talpass.eu`. Verificado con `curl` sobre producción:
 >
-> ```bash
-> ! npx vercel --prod --yes
-> ```
+> | Ruta                                         | `x-vercel-id`  | Qué es                                     |
+> | -------------------------------------------- | -------------- | ------------------------------------------ |
+> | `/es`, `/es/oportunidades`, ficha de almacén | `fra1::…`      | estáticas: las sirve el borde, sin función |
+> | `/es/cuenta`, `/es/admin`                    | `fra1::dub1::` | borde Fráncfort, **función Dublín**        |
+> | `/api/auth/callback`                         | `fra1::dub1::` | ídem                                       |
+> | **`/api/documents/[id]`**                    | `fra1::dub1::` | **la vía del DNI: ya no toca EEUU**        |
 >
-> **Y verificarlo después — sin esto no está hecho:**
+> Tres peticiones seguidas a `/es/cuenta` dieron `dub1` las tres. **Ni un
+> `iad1` en ninguna ruta.** Control negativo intacto: `/es/cuenta` 307 con
+> `x-ett-session-checked: 1`, `/es/oportunidades` 200 con `x-vercel-cache:
+PRERENDER` y **sin** cabecera de sesión ni `Set-Cookie` (ADR-11, ADR-13).
 >
-> ```bash
-> curl -sS -D - -o /dev/null https://talpass.eu/es/cuenta | grep -i x-vercel-id
-> ```
+> ℹ️ El log de construcción dice `Running build in Washington – iad1`: esa es la
+> **máquina que compila**, no dónde corre el código, no la cambia `regions` y no
+> trata datos de nadie. Lo que importa es el runtime, y está en Dublín.
 >
-> Tiene que empezar por **`dub1::`** o traer `dub1` como región de función. Si
-> sigue diciendo `iad1`, el despliegue no ha tomado la configuración y **no se
-> pasa a los legales**. Antes del cambio decía:
-> `x-vercel-id: fra1::iad1::mm24x-1787150590812-e375026b0466`.
+> **Consecuencia inmediata: la política de privacidad ya puede afirmar que el
+> tratamiento ocurre en la UE.** Los legales quedan desbloqueados.
 
 > ### El orden acordado — nada de diseño hasta que esto esté
 >
@@ -241,6 +244,9 @@
 > 3. **Los textos legales y su ruta.** **Prompt escrito el 2026-08-19:
 >    `docs/prompts/textos-legales.md`, listo para ejecutar y sin bloqueos** — el
 >    responsable del tratamiento está completo, ver abajo.
+>    3.5. ~~**La región de las funciones**~~ ✅ **hecho el 2026-08-19** (ADR-32,
+>    `dpl_6TMu6yXKRiP9bCpsuXyzsatCHFVU`). Se adelantó al punto 3 por decisión de
+>    Ulises, para que la política de privacidad se escriba ya sin rodeos.
 > 4. **Desbloquear la verificación en producción**: `db:push:prod` de
 >    `20260816120000_verification.sql` + las dos variables + redespliegue.
 > 5. **El campo de sector/ciudad de destino en el onboarding** — antes de captar,
