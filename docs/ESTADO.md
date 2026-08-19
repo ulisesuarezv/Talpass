@@ -1,5 +1,106 @@
 # Estado del proyecto — punto de retomada
 
+> ## ⚠️ 2026-08-19 — los textos legales, escritos y verificados… pero SIN DESPLEGAR
+>
+> **Punto 3 del orden acordado: hecho en el repositorio, `79e6291`, y NO vivo.**
+> Léelo entero antes de tocar nada, porque la mitad del criterio de cierre sigue
+> sin comprobar y no se puede dar por buena.
+>
+> ### Lo que está hecho y medido
+>
+> - **Cinco documentos publicados en `es` y `en`**, con su fecha de versión y
+>   diciendo, visible y no en letra pequeña, que los redacta el responsable y no
+>   son un dictamen jurídico. Sin ninguna fórmula de «pendiente de revisión»,
+>   por la decisión de Ulises: la captación no espera a un abogado.
+>   Son los cuatro que se consienten **más el Impressum** (§5 DDG), que no es un
+>   permiso sino la identificación del responsable.
+> - **Ruta `/legal/[documento]`** con el segmento traducido
+>   (`/es/legal/privacidad` ↔ `/en/legal/privacy`). Estáticas, cacheadas, sin
+>   tocar la sesión y con metadatos propios — no los de la home, que es el
+>   hallazgo 7. **ADR-33.**
+> - **El cuerpo NO va en `messages/`, y está medido por qué.**
+>   `NextIntlClientProvider` serializa el fichero entero en el HTML de **todas**
+>   las páginas: la home son 52 KB y llevan dentro el backoffice y los correos.
+>   Los documentos pesan 24,6 KB por idioma. Van a `messages/legal/`, que importa
+>   solo la ruta legal; los títulos sí se quedan en `messages/` porque los enlaza
+>   el pie en todas las páginas. Resultado: la home sube 6,4 KB en vez de 24, y
+>   el cuerpo **no aparece** en su HTML (`grep` = 0).
+> - **El consentimiento del registro, arreglado. ADR-34.** Cuatro enlaces
+>   reales, uno por documento, que abren en pestaña nueva —verificado a 390×844
+>   que el formulario relleno **no se pierde**—. `CONSENT_VERSIONS` sube a
+>   `2026-08-19`, porque una versión que apunta a un texto inexistente no
+>   acredita nada.
+> - **Las casillas siguen siendo tres, a propósito y razonado.** Lo que la ley
+>   exige consentir por separado —`data_sharing` y `audio_sharing`— ya tenía
+>   casilla propia desde la fase 2. `terms` + `privacy` comparten casilla porque
+>   ninguno es consentimiento del 6.1.a, y siguen siendo **dos filas** con su
+>   versión cada una. Separarlos habría añadido una pulsación al alta desde el
+>   móvil sin ganar granularidad legal.
+> - **Datos del responsable en `src/config/controller.ts`**, no rociados por el
+>   copy, y comprobados en el HTML con la `ß` y la diéresis.
+> - `typecheck`, `lint`, `format:check` limpios · `test:security` 64 verdes ·
+>   `drill` verde · `JobPosting` en `/oportunidades` = **0** · paridad `es`/`en`
+>   limpia en los dos pares de ficheros.
+>
+> ### 🔴 Lo que falta, y es la mitad del criterio
+>
+> **No se pudo desplegar.** `vercel --prod` y los `curl` contra `talpass.eu`
+> los bloqueó el clasificador de permisos del entorno, no un fallo del proyecto.
+> Así que **en producción sigue vivo el consentimiento en falso**: la casilla en
+> negrita y las rutas legales a 404.
+>
+> **Lo siguiente es literalmente un comando y su verificación**, con los pasos
+> ya escritos y la tabla preparada en
+> `docs/evidencia/textos-legales/02-produccion.md`. Recordatorio de ahí: en
+> producción **`x-nextjs-cache` no existe** —Next 16 sobre Vercel lo expresa
+> como `x-vercel-cache` + `x-nextjs-prerender: 1`— y hay que **anotar el ID del
+> despliegue y confirmar que se mira el nuevo** antes de creerse una cabecera.
+> Hoy el sitemap son 7 URLs; tienen que quedar **13**.
+>
+> ### Lo que la sesión encontró y no estaba en el guion
+>
+> - **La política dice que hoy NO se pide IBAN, ni dirección, ni teléfono, y es
+>   cierto.** El prompt daba por hecho que se recogían. Las tablas existen desde
+>   la fase 1 (`candidate_private`, con el IBAN cifrado), pero **ninguna pantalla
+>   los escribe**: `grep` sobre `src` no encuentra un solo campo. Escribir que se
+>   recogen habría sido copy falso en la dirección contraria, en la sesión que
+>   viene justo de arreglar copy falso. El texto dice qué se recoge hoy y qué
+>   pasará el día que se pidan.
+> - **Tampoco hay botón de borrar la cuenta.** `data_deletion_requests` existe
+>   con su RLS y no la usa nada. La política lo dice con todas las letras, y el
+>   día que se construya **hay que subir la versión del texto**.
+> - **La cabecera desborda en móvil, y ya lo hacía.** A 390 px el documento mide
+>   **453**, por la cabecera (`header > div`), no por los legales. Comprobado que
+>   la home, que esta sesión no toca, hace exactamente lo mismo. El pie nuevo con
+>   sus cinco enlaces mide 390 y envuelve bien. **Va al rediseño (punto 6).**
+> - **`parity.mjs` cazó algo real**: 8 divergencias entre `art. 6.1.b` y
+>   `Art. 6(1)(b)`. No era un error de fondo, pero ocho divergencias fijas en la
+>   salida habrían escondido la novena. Numeración unificada a `6.1(b)`, válida
+>   en los dos idiomas. El script ahora acepta el par de ficheros por argumento
+>   —se generalizó el que había en vez de escribir otro—.
+>
+> ### Decisiones que quedan escritas y le tocan a Ulises revisar
+>
+> - **Las filas de `consents` con versión vieja.** En la base local hay **24 con
+>   versión `1`** (el valor de reserva del disparador) y **3 con `2026-08-14`**.
+>   Ninguna acredita consentimiento informado, porque su texto no existió nunca.
+>   **No se borran** —la fila prueba que hubo un acto—, y lo correcto es volver a
+>   pedirlo en el siguiente acceso. **Ese flujo no se construye aquí.**
+>   👉 **Antes de construir nada, mira cuántas cuentas reales hay en producción.**
+>   Si son de prueba, el arreglo es borrarlas, no montar un reconsentimiento.
+> - **La política se compromete a plazos que hoy se cumplen a mano**: 30 días
+>   para el borrado, 3 años para consentimientos y aperturas, 1 año para
+>   `email_log`. El texto lo admite expresamente en vez de fingir un proceso
+>   automático. Programarlos queda en la fase 9.
+> - **Sin banner de cookies, y es una decisión.** No hay analítica, ni
+>   seguimiento, ni cookie de idioma; las públicas no ponen ni una `Set-Cookie`.
+>   Sin cookies que consentir, un banner sería teatro. La política lo dice. Si
+>   algún día entra analítica, el banner vuelve a ser tarea.
+>
+> **Fase 9 pasa a 🟡** en el roadmap: los textos y la página de «qué ve una ETT»
+> ya no son suyos; le quedan la exportación, el borrado desde el producto y los
+> plazos programados.
+
 > ## ✅ 2026-08-19 — el copy falso, corregido y desplegado
 >
 > **Punto 2 del orden acordado: hecho y vivo en `https://talpass.eu`.** Las
@@ -253,9 +354,12 @@ PRERENDER` y **sin** cabecera de sesión ni `Set-Cookie` (ADR-11, ADR-13).
 > 2. ~~**Corregir el copy falso y redesplegar.**~~ ✅ **hecho el 2026-08-19**
 >    con `docs/prompts/correccion-copy.md`, desplegado y verificado contra
 >    producción. Ver el bloque de arriba y `docs/evidencia/correccion-copy/`.
-> 3. **Los textos legales y su ruta.** **Prompt escrito el 2026-08-19:
->    `docs/prompts/textos-legales.md`, listo para ejecutar y sin bloqueos** — el
->    responsable del tratamiento está completo, ver abajo.
+> 3. ~~**Los textos legales y su ruta.**~~ ⚠️ **Escritos y verificados el
+>    2026-08-19 (`79e6291`, ADR-33 y ADR-34), pero SIN DESPLEGAR**: el
+>    `vercel --prod` lo bloqueó el clasificador del entorno. En producción sigue
+>    vivo el consentimiento en falso. Ver el bloque de arriba y la tabla
+>    preparada en `docs/evidencia/textos-legales/02-produccion.md`. **Cerrar esto
+>    es un comando y su verificación, y va antes que el punto 4.**
 >    3.5. ~~**La región de las funciones**~~ ✅ **hecho el 2026-08-19** (ADR-32,
 >    `dpl_6TMu6yXKRiP9bCpsuXyzsatCHFVU`). Se adelantó al punto 3 por decisión de
 >    Ulises, para que la política de privacidad se escriba ya sin rodeos.

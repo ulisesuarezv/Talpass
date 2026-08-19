@@ -17,7 +17,7 @@
 | 6   | Portal ETT                        | ETT gestiona vacantes y aplicaciones       | ⬜     |
 | 7   | Bolsa + consentimiento documental | Flujo completo de desbloqueo con log       | ⬜     |
 | 8   | Emails y automatismos             | Cron de inactividad funcionando            | ⬜     |
-| 9   | GDPR y legal                      | Export y borrado de datos operativos       | ⬜     |
+| 9   | GDPR y legal                      | Export y borrado de datos operativos       | 🟡     |
 | 10  | Hardening y lanzamiento           | Auditoría pasada, listo para captar        | ⬜     |
 
 ---
@@ -555,9 +555,48 @@ añadir el campo antes, y el sitio natural es el onboarding.
 
 ## Fase 9 · GDPR y legal
 
-Aviso legal, política de privacidad y de cookies en `es`/`en` · banner de consentimiento · exportación de datos del candidato · flujo de borrado (art. 17) respetando obligaciones de conservación · página pública que explica al candidato qué ve una ETT y qué no.
+> 🟡 **Parcialmente hecha, y no por esta fase.** Los **textos legales salieron
+> de aquí el 2026-08-18** y se hicieron el 2026-08-19 dentro de la vía B del
+> rediseño de credibilidad, porque no eran un trámite posterior: eran el
+> hallazgo 3 de la auditoría —un consentimiento pedido sobre documentos
+> inexistentes— y parte del problema de confianza. Ver ADR-33, ADR-34 y
+> `docs/evidencia/textos-legales/`.
 
-**No confundir con los consentimientos de la fase 2.** Aquellos son de tratamiento de datos (términos, privacidad, compartición con agencias, audio) y se recogen versionados en el alta con ADR-20; ya están hechos. El de esta fase es el **banner de cookies**, que es otra cosa. Lo que sí falta de aquellos son los **textos** que el candidato aceptó: hoy se versionan en `src/config/legal.ts` pero el documento en sí no existe. Escribirlos es de esta fase.
+**Hecho ya, fuera de esta fase:**
+
+- Los cinco documentos en `es` y `en`, versionados y publicados en
+  `/legal/[documento]`: Impressum (§5 DDG), política de privacidad, términos de
+  uso y los dos consentimientos de compartición. Estáticos, enlazados desde el
+  pie de todas las páginas y desde el registro con un enlace real por documento.
+- **La página pública que explica qué ve una ETT y qué no** era una entrega de
+  esta fase: la cubre «Cómo se comparte tu perfil», que lo enumera campo a campo
+  a partir de la vista seudonimizada real.
+- **El banner de cookies no se hace, y es una decisión, no un olvido.** El sitio
+  no pone cookies que no sean estrictamente necesarias: no hay analítica, ni
+  seguimiento, ni cookie de idioma (`localeCookie: false`), y las públicas se
+  sirven sin tocar la sesión. Comprobado: `Set-Cookie` ausente en las doce rutas
+  legales y en las públicas. Sin cookies que consentir, un banner sería teatro.
+  Lo dice la política. Si algún día se añade analítica, el banner vuelve a ser
+  una tarea y esta nota es su disparador.
+
+**Lo que sigue pendiente de esta fase:**
+
+- **Exportación de datos del candidato** (portabilidad, art. 20) desde el
+  producto. Hoy se atiende por correo, y la política lo dice tal cual.
+- **Flujo de borrado (art. 17) desde el producto.** La tabla
+  `data_deletion_requests` existe desde la fase 1 con su RLS, pero **no hay ni
+  una pantalla ni una acción que la use**: hoy la baja se pide por correo. La
+  política lo dice expresamente —«todavía no hay un botón para borrar la cuenta
+  dentro del producto»—, así que **el día que se construya hay que subir la
+  versión del texto**.
+- **Ejecutar de verdad los plazos de conservación.** La política se compromete a
+  30 días para el borrado, 3 años para consentimientos y aperturas, y 1 año para
+  `email_log`. Hoy se cumplen a mano y el texto lo admite. Programarlos es de
+  esta fase.
+- **El flujo de reconsentimiento** para las filas cuya versión apunta a un texto
+  que nunca existió (ADR-34).
+
+**No confundir con los consentimientos de la fase 2.** Aquellos son de tratamiento de datos (términos, privacidad, compartición con agencias, audio) y se recogen versionados en el alta con ADR-20; ya están hechos, y desde el 2026-08-19 los **textos** que se aceptan existen y se enlazan.
 
 **Y el banner no puede volver dinámicas las rutas públicas** (ADR-11, ADR-13). Se resuelve en cliente, como el estado de login.
 
