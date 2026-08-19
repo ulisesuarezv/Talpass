@@ -5,6 +5,13 @@
 // punto para que "15,69 €" y "€15.69" se comparen como el mismo número.
 //
 //   node docs/evidencia/correccion-copy/parity.mjs
+//   node docs/evidencia/correccion-copy/parity.mjs messages/legal/es.json messages/legal/en.json
+//
+// Acepta el par de ficheros por argumento (2026-08-19, sesión de los textos
+// legales): el cuerpo de los documentos legales vive fuera de `messages/` por
+// peso — ver ADR-33 y `src/lib/legal.ts`—, y necesitaba la misma comprobación.
+// Se generaliza el que ya había en vez de escribir un segundo script que
+// hiciera lo mismo con otras rutas dentro.
 //
 // Vive aquí y no en `scripts/` porque es la herramienta de una verificación,
 // no del producto: se ejecuta al cerrar una sesión de copy, no en el build.
@@ -19,8 +26,13 @@ const flat = (obj, prefix = '', out = {}) => {
   return out;
 };
 
-const es = flat(JSON.parse(readFileSync('messages/es.json', 'utf8')));
-const en = flat(JSON.parse(readFileSync('messages/en.json', 'utf8')));
+const [esPath = 'messages/es.json', enPath = 'messages/en.json'] =
+  process.argv.slice(2);
+
+const es = flat(JSON.parse(readFileSync(esPath, 'utf8')));
+const en = flat(JSON.parse(readFileSync(enPath, 'utf8')));
+
+console.log(`comparando: ${esPath} ↔ ${enPath}`);
 
 console.log(
   `claves hoja: es=${Object.keys(es).length} en=${Object.keys(en).length}`,

@@ -662,6 +662,100 @@ vive fechada en `docs/ESTADO.md` y anotada junto al código, no aquí.
 
 ---
 
+### ADR-33 · Los textos legales son una ruta pública con parámetro, y su cuerpo no vive en `messages/`
+
+_(2026-08-19, sesión de los textos legales.)_
+
+**Los cinco documentos se sirven desde `/legal/[documento]`**, con el segmento
+traducido por idioma (`/es/legal/privacidad` ↔ `/en/legal/privacy`) desde el
+mapa de `src/config/legal.ts`. Son cinco: los cuatro que se consienten
+—`terms`, `privacy`, `data_sharing`, `audio_sharing`— **más el Impressum**, que
+no se consiente porque no es un permiso sino la identificación del responsable
+que exige el §5 DDG.
+
+**Por qué un parámetro y no cinco rutas.** Los cinco documentos tienen la misma
+forma —título, fecha de versión, epígrafes— y difieren solo en el copy. Cinco
+ficheros de página serían cinco sitios donde arreglar el mismo fallo de
+metadatos, que es exactamente el fallo que la auditoría encontró en `(auth)`.
+Lo que la decisión no negocia es que cada documento tenga **una dirección
+estable y enlazable**, porque el consentimiento del registro apunta a ellas.
+
+**Por qué el cuerpo no está en `messages/`, y es lo importante de esta ADR.**
+`NextIntlClientProvider` serializa el fichero de mensajes **entero** en el HTML
+de todas las páginas: medido el 2026-08-19, la home son 52 KB y llevan dentro el
+backoffice y las plantillas de correo. Los cinco documentos son **24,6 KB por
+idioma**; meterlos ahí habría inflado un 47 % el camino crítico de **todas** las
+páginas, para un candidato que entra con 4G desde el móvil, y para que los lea
+una visita de cada mil. Va contra ADR-10.
+
+Así que el reparto es:
+
+- **`messages/<locale>.json`, namespace `Legal`** — lo corto: los títulos de los
+  documentos, sus metadatos y las etiquetas comunes. Lo enlaza el pie en todas
+  las páginas y el registro, que es cliente, así que ahí tiene que estar. Ningún
+  título se escribe dos veces.
+- **`messages/legal/<locale>.json`** — el cuerpo. Lo importa **solo** la ruta
+  legal, que es un Server Component (`src/lib/legal.ts`, con `server-only`), así
+  que el texto no viaja a ninguna página donde no se esté leyendo.
+
+La regla de `CONVENTIONS.md` —cero texto en el JSX, el copy en un fichero por
+idioma— se cumple igual: cambia **qué** fichero, no que el copy viva fuera del
+código. La paridad `es`/`en` la comprueba el mismo `parity.mjs` de la sesión
+anterior, al que se le pasa el par de ficheros por argumento en vez de escribir
+un segundo script.
+
+_Lo que esta ADR deja anotado y no resuelve:_ que el proveedor de i18n mande
+**todos** los mensajes al cliente es un problema del que los legales solo son el
+síntoma más caro. Acotar qué namespaces se serializan es una tarea propia, con
+su propia medición, y no se hace aquí.
+
+---
+
+### ADR-34 · El consentimiento es específico donde la ley lo exige, y una versión sin texto no es consentimiento
+
+_(2026-08-19, sesión de los textos legales. Cierra el hallazgo 3 de la auditoría
+del 2026-08-18.)_
+
+**Un enlace por documento, y ninguno decorativo.** En el registro, cada
+documento que se menciona se enlaza de verdad, abriendo en pestaña nueva para no
+costarle a nadie el formulario que ya ha rellenado. Hasta hoy el marcador
+`<terms>` se renderizaba como `<strong>`: el texto salía en negrita, no llevaba
+a ninguna parte, y las direcciones a las que habría llevado eran 404.
+
+**Las casillas se quedan en tres, y es una decisión, no una omisión.** El RGPD
+exige consentimiento **específico** para cada finalidad consentida, y las
+finalidades que de verdad se apoyan en el consentimiento —mostrar el perfil a
+las agencias (`data_sharing`) y que se escuche la grabación (`audio_sharing`)—
+**ya tienen casilla propia** desde la fase 2. Lo que comparte casilla es
+`terms` + `privacy`, y ninguno de los dos es consentimiento en el sentido del
+artículo 6.1.a: los Términos son la aceptación de un contrato (6.1.b) y la
+política de privacidad es el cumplimiento del deber de información del artículo
+13, que se acredita, no se consiente.
+
+Separarlos en dos casillas añadiría una cuarta pulsación al alta desde el móvil
+—el embudo real— sin ganar ni un ápice de granularidad legal. Y siguen siendo
+**dos filas** en `consents`, con su versión cada una, porque son dos documentos
+cuyas versiones se moverán por separado. La granularidad que importa está en la
+base, que es donde se prueba.
+
+**Una versión que apunta a un texto inexistente no vale como consentimiento
+informado.** `CONSENT_VERSIONS` sube de `2026-08-14` a `2026-08-19`, la fecha en
+que los textos existen por primera vez. La regla que queda escrita: **no se
+publica una versión de consentimiento sin el documento que describe**, y quien
+suba una versión sube el texto en el mismo commit.
+
+_Qué pasa con las filas anteriores._ Las escritas con `2026-08-14` —o con el `1`
+de reserva del disparador— **no acreditan un consentimiento informado**, porque
+el texto al que apuntan no existió nunca. No se borran: la fila sigue siendo la
+prueba de que hubo un acto, y borrarla empeoraría el registro en vez de
+arreglarlo. Lo correcto es **volver a pedirlo en el siguiente acceso**, y ese
+flujo de reconsentimiento **no se construye en esta sesión**: queda anotado en
+`docs/ESTADO.md` como tarea, junto al aviso de comprobar antes cuántas cuentas
+reales hay en producción — si son las de prueba, el arreglo es borrarlas y no
+construir nada.
+
+---
+
 ## 5. Reglas de negocio
 
 1. Ver ofertas: libre y sin cuenta. **Aplicar: requiere cuenta verificada.**

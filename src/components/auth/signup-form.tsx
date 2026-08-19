@@ -6,8 +6,10 @@ import { useLocale, useTranslations } from 'next-intl';
 import { Field, FormAlert, SubmitButton } from '@/components/forms/form-parts';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
+import { legalLink, type LegalDocument } from '@/config/legal';
 import { siteConfig } from '@/config/site';
 import { Link } from '@/i18n/navigation';
+import type { Locale } from '@/i18n/routing';
 import { signUpAction, type ActionResult } from '@/lib/auth/actions';
 import { MIN_PASSWORD_LENGTH } from '@/lib/validation';
 
@@ -20,6 +22,16 @@ import { MIN_PASSWORD_LENGTH } from '@/lib/validation';
  * términos (ADR-18): es el único que se puede retirar después sin cerrar la
  * cuenta, y el candidato tiene que saber qué está concediendo — que su voz sea
  * audible por agencias verificadas.
+ *
+ * **Los documentos se enlazan de verdad, uno a uno** (ADR-34). Hasta el
+ * 2026-08-19 el marcador `<terms>` se renderizaba como `<strong>`: el texto
+ * salía en negrita y no llevaba a ninguna parte, y las direcciones a las que
+ * habría llevado eran 404. Se pedía un consentimiento sobre unos documentos
+ * que nadie podía leer.
+ *
+ * Los enlaces abren en una pestaña nueva a propósito. Leer un texto legal a
+ * mitad del alta no puede costarte el formulario que ya has rellenado, y en un
+ * móvil volver atrás es exactamente donde se pierde a la gente.
  */
 export function SignupForm() {
   const t = useTranslations('Auth');
@@ -79,21 +91,47 @@ export function SignupForm() {
           error={fieldError('acceptTerms')}
           label={t.rich('consents.terms', {
             brand: siteConfig.name,
-            terms: (chunks) => <strong>{chunks}</strong>,
+            terms: (chunks) => (
+              <LegalLink document="terms" locale={locale as Locale}>
+                {chunks}
+              </LegalLink>
+            ),
+            privacy: (chunks) => (
+              <LegalLink document="privacy" locale={locale as Locale}>
+                {chunks}
+              </LegalLink>
+            ),
           })}
         />
 
         <ConsentBox
           name="acceptDataSharing"
           error={fieldError('acceptDataSharing')}
-          label={t('consents.dataSharing', { brand: siteConfig.name })}
+          label={t.rich('consents.dataSharing', {
+            brand: siteConfig.name,
+            dataSharing: (chunks) => (
+              <LegalLink document="data_sharing" locale={locale as Locale}>
+                {chunks}
+              </LegalLink>
+            ),
+          })}
         />
 
         <ConsentBox
           name="acceptAudio"
-          label={t('consents.audio')}
+          label={t.rich('consents.audio', {
+            audio: (chunks) => (
+              <LegalLink document="audio_sharing" locale={locale as Locale}>
+                {chunks}
+              </LegalLink>
+            ),
+          })}
           hint={t('consents.audioHint')}
         />
+
+        <p className="text-xs text-muted-foreground">
+          {t('consents.openInNewTab')}
+        </p>
       </fieldset>
 
       <SubmitButton label={t('signup.submit')} pendingLabel={t('pending')} />
@@ -105,6 +143,34 @@ export function SignupForm() {
         </Link>
       </p>
     </form>
+  );
+}
+
+/**
+ * El enlace a un documento legal desde una frase de consentimiento.
+ *
+ * `target="_blank"` no es una preferencia: si leer los Términos te devuelve al
+ * formulario vacío, nadie los lee. Va con `rel="noopener noreferrer"`, que es
+ * lo que impide que la pestaña abierta pueda tocar a la que la abrió.
+ */
+function LegalLink({
+  document,
+  locale,
+  children,
+}: {
+  document: LegalDocument;
+  locale: Locale;
+  children: React.ReactNode;
+}) {
+  return (
+    <Link
+      href={legalLink(document, locale)}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="underline underline-offset-4"
+    >
+      {children}
+    </Link>
   );
 }
 

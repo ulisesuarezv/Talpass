@@ -79,6 +79,20 @@ export const pathnames = {
     en: '/work/city/[city]',
   },
 
+  // Textos legales (ADR-33). Públicas y estáticas como el resto de `(public)`:
+  // el consentimiento del registro apunta a ellas, así que tienen que poder
+  // leerse sin sesión, sin JavaScript y desde el CDN. El documento va como
+  // parámetro y su segmento cambia entero de idioma — el mapa está en
+  // `src/config/legal.ts`, que es donde vive la lista de documentos.
+  '/legal': {
+    es: '/legal',
+    en: '/legal',
+  },
+  '/legal/[document]': {
+    es: '/legal/[document]',
+    en: '/legal/[document]',
+  },
+
   // Autenticación. No leen sesión al renderizar: son páginas estáticas con un
   // formulario en cliente, así que no entran en `protected-routes.ts`.
   '/login': {

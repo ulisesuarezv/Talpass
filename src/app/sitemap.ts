@@ -1,5 +1,6 @@
 import type { MetadataRoute } from 'next';
 
+import { legalHref, LEGAL_DOCUMENTS } from '@/config/legal';
 import { defaultLocale, locales, type Locale } from '@/i18n/routing';
 import { listPublishedJobs } from '@/lib/jobs';
 import { landingHref, listLandings } from '@/lib/landings';
@@ -14,7 +15,7 @@ import { absoluteUrl, type LocalizedHref } from '@/lib/seo';
  * depender de que rastree las dos y encuentre las etiquetas del `<head>`.
  *
  * Solo entra lo que se puede visitar de verdad: la portada, el listado, las
- * vacantes publicadas y las landings vivas. **Las áreas privadas y las de
+ * vacantes publicadas, las landings vivas y los textos legales. **Las áreas privadas y las de
  * autenticación no**, que son `noindex`. Declarar en el sitemap una URL que
  * luego se bloquea es la contradicción más común y la que gasta rastreo.
  *
@@ -75,6 +76,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
           lastModified: job.publishedAt ? new Date(job.publishedAt) : undefined,
         },
       ),
+    ),
+
+    // Los legales entran, con prioridad baja (ADR-33). No compiten por rastreo
+    // con las páginas que captan, pero un Impressum que Google no encuentra no
+    // cumple la función por la que existe: que alguien que duda del sitio pueda
+    // dar con quién hay detrás sin tener que fiarse del propio sitio.
+    entry('/legal', { priority: 0.3 }),
+    ...LEGAL_DOCUMENTS.map((document) =>
+      entry(legalHref(document), { priority: 0.3 }),
     ),
   ];
 }

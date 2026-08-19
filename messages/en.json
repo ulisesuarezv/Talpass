@@ -34,7 +34,9 @@
     "subtitle": "{brand} connects Spanish- and Portuguese-speaking candidates with staffing agencies in Central Europe. We start with Germany.",
     "ctaJobs": "Browse jobs",
     "ctaSignup": "Create my account",
-    "note": "Browsing jobs is always free. Candidates are never charged."
+    "note": "Browsing jobs is always free. Candidates are never charged.",
+    "behind": "Behind {brand} there is a person with a published name, address and email, not an anonymous company.",
+    "behindLink": "Who answers for this site"
   },
   "Jobs": {
     "title": "Job openings",
@@ -398,10 +400,11 @@
     },
     "consents": {
       "legend": "Permissions you give us",
-      "terms": "I have read and accept the <terms>Terms of Use and Privacy Policy</terms> of {brand}.",
-      "dataSharing": "I allow {brand} to show my profile to verified staffing agencies.",
-      "audio": "I allow verified agencies to listen to my English voice recording.",
-      "audioHint": "This is what lets an agency judge your English without asking for your documents yet. Optional, and you can withdraw it any time from your profile."
+      "terms": "I have read and accept the <terms>Terms of use</terms> and the <privacy>Privacy Policy</privacy> of {brand}.",
+      "dataSharing": "I authorise {brand} to show my profile to verified work agencies, in the way described in <dataSharing>How your profile is shared</dataSharing>.",
+      "audio": "I authorise verified agencies to listen to my voice recording in English, under the terms set out in <audio>Your recording in English</audio>.",
+      "audioHint": "This is what lets an agency judge your English without asking for your documents yet. Optional, and you can withdraw it any time from your profile.",
+      "openInNewTab": "Opens in a new tab, so you keep everything you have already typed."
     },
     "messages": {
       "confirmationResent": "Sent again. Check your email.",
@@ -633,6 +636,60 @@
     "back": "Back to home"
   },
   "Footer": {
-    "rights": "{brand} · Project under construction"
+    "rights": "{brand} · Project under construction",
+    "legalHeading": "Legal"
+  },
+  "Legal": {
+    "title": "Legal",
+    "backToIndex": "Back to Legal",
+    "version": "Version of {date}",
+    "noVersion": "Not a document you accept when signing up: it identifies who is behind the site.",
+    "authorship": "This text was written by the person responsible for the site, not by a lawyer, and it is not legal advice. It was written by reading what the code actually does, and it describes how the service really works as of the date of its version. If you find anything that does not match what you see, write to us and it gets fixed.",
+    "index": {
+      "title": "Legal",
+      "intro": "The five documents that govern this site, each with the date of its version. The ones accepted at sign-up stay as you accepted them: every version is stored with its date.",
+      "controllerHeading": "Who answers for this site",
+      "meta": {
+        "title": "Legal · {brand}",
+        "description": "Legal notice, privacy policy, terms of use and the two consents asked for at sign-up, with the date of each version."
+      }
+    },
+    "documents": {
+      "impressum": {
+        "title": "Legal notice (Impressum)",
+        "meta": {
+          "title": "Legal notice (Impressum) · {brand}",
+          "description": "Who is responsible for this site: name, address and direct contact, under §5 DDG."
+        }
+      },
+      "privacy": {
+        "title": "Privacy policy",
+        "meta": {
+          "title": "Privacy policy · {brand}",
+          "description": "What data is collected, what for, who can see it, where it is stored, how long it is kept and how to exercise your rights."
+        }
+      },
+      "terms": {
+        "title": "Terms of use",
+        "meta": {
+          "title": "Terms of use · {brand}",
+          "description": "What {brand} is and is not, why the candidate is never charged, and the rules for using the service."
+        }
+      },
+      "data_sharing": {
+        "title": "How your profile is shared",
+        "meta": {
+          "title": "How your profile is shared · {brand}",
+          "description": "Exactly what an agency sees about you, what it can never see, and how permission to open a document works."
+        }
+      },
+      "audio_sharing": {
+        "title": "Your recording in English",
+        "meta": {
+          "title": "Your recording in English · {brand}",
+          "description": "The optional audio consent: what it authorises, how it is played and how to withdraw it with a button."
+        }
+      }
+    }
   }
 }

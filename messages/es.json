@@ -34,7 +34,9 @@
     "subtitle": "{brand} conecta a candidatos hispanohablantes y lusófonos con agencias de trabajo temporal en Europa Central. Empezamos por Alemania.",
     "ctaJobs": "Ver ofertas",
     "ctaSignup": "Crear mi cuenta",
-    "note": "Ver ofertas siempre es libre y gratuito. Al candidato no se le cobra nunca."
+    "note": "Ver ofertas siempre es libre y gratuito. Al candidato no se le cobra nunca.",
+    "behind": "Detrás de {brand} hay una persona con nombre, domicilio y correo publicados, no una empresa anónima.",
+    "behindLink": "Quién responde de este sitio"
   },
   "Jobs": {
     "title": "Ofertas de trabajo",
@@ -398,10 +400,11 @@
     },
     "consents": {
       "legend": "Permisos que nos das",
-      "terms": "He leído y acepto los <terms>Términos de uso y la Política de Privacidad</terms> de {brand}.",
-      "dataSharing": "Autorizo a {brand} a mostrar mi perfil a agencias de trabajo verificadas.",
-      "audio": "Autorizo que mi grabación de voz en inglés sea escuchada por agencias verificadas.",
-      "audioHint": "Es lo que permite a una agencia valorar tu inglés sin pedirte todavía tus documentos. Opcional, y puedes retirarlo cuando quieras desde tu perfil."
+      "terms": "He leído y acepto los <terms>Términos de uso</terms> y la <privacy>Política de Privacidad</privacy> de {brand}.",
+      "dataSharing": "Autorizo a {brand} a mostrar mi perfil a agencias de trabajo verificadas, en la forma que explica <dataSharing>Cómo se comparte tu perfil</dataSharing>.",
+      "audio": "Autorizo que mi grabación de voz en inglés sea escuchada por agencias verificadas, en las condiciones de <audio>Tu grabación en inglés</audio>.",
+      "audioHint": "Es lo que permite a una agencia valorar tu inglés sin pedirte todavía tus documentos. Opcional, y puedes retirarlo cuando quieras desde tu perfil.",
+      "openInNewTab": "Se abre en una pestaña nueva y no pierdes lo que ya has escrito."
     },
     "messages": {
       "confirmationResent": "Te lo hemos enviado otra vez. Revisa tu correo.",
@@ -633,6 +636,60 @@
     "back": "Volver al inicio"
   },
   "Footer": {
-    "rights": "{brand} · Proyecto en construcción"
+    "rights": "{brand} · Proyecto en construcción",
+    "legalHeading": "Legal"
+  },
+  "Legal": {
+    "title": "Legal",
+    "backToIndex": "Volver a Legal",
+    "version": "Versión del {date}",
+    "noVersion": "No es un documento que se acepte al registrarse: identifica a quien hay detrás del sitio.",
+    "authorship": "Este texto lo ha redactado el responsable del sitio, no un abogado, y no es un dictamen jurídico. Está escrito leyendo lo que el código hace de verdad, y describe el funcionamiento real del servicio en la fecha de su versión. Si encuentras algo que no cuadra con lo que ves, escríbenos y se corrige.",
+    "index": {
+      "title": "Legal",
+      "intro": "Los cinco documentos que rigen este sitio, con la fecha de su versión. Los tres primeros que se aceptan al registrarse siguen siendo los mismos que aceptaste: cada versión queda guardada con su fecha.",
+      "controllerHeading": "Quién responde de este sitio",
+      "meta": {
+        "title": "Legal · {brand}",
+        "description": "Aviso legal, política de privacidad, términos de uso y los dos consentimientos que se piden al registrarse, con la fecha de cada versión."
+      }
+    },
+    "documents": {
+      "impressum": {
+        "title": "Aviso legal (Impressum)",
+        "meta": {
+          "title": "Aviso legal (Impressum) · {brand}",
+          "description": "Quién es responsable de este sitio: nombre, domicilio y contacto directo, conforme al §5 DDG."
+        }
+      },
+      "privacy": {
+        "title": "Política de privacidad",
+        "meta": {
+          "title": "Política de privacidad · {brand}",
+          "description": "Qué datos se recogen, para qué, quién puede verlos, dónde se guardan, cuánto duran y cómo ejercer tus derechos."
+        }
+      },
+      "terms": {
+        "title": "Términos de uso",
+        "meta": {
+          "title": "Términos de uso · {brand}",
+          "description": "Qué es {brand} y qué no es, por qué al candidato no se le cobra nunca, y las reglas de uso del servicio."
+        }
+      },
+      "data_sharing": {
+        "title": "Cómo se comparte tu perfil",
+        "meta": {
+          "title": "Cómo se comparte tu perfil · {brand}",
+          "description": "Qué ve exactamente una agencia sobre ti, qué no puede ver nunca, y cómo funciona el permiso para abrir un documento."
+        }
+      },
+      "audio_sharing": {
+        "title": "Tu grabación en inglés",
+        "meta": {
+          "title": "Tu grabación en inglés · {brand}",
+          "description": "El consentimiento opcional del audio: qué autoriza, cómo se reproduce y cómo se retira con un botón."
+        }
+      }
+    }
   }
 }

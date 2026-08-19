@@ -1,0 +1,396 @@
+{
+  "documents": {
+    "impressum": {
+      "summary": "Who is responsible for this site and how to reach them, under §5 of the German Digital Services Act (DDG).",
+      "sections": [
+        {
+          "heading": "Who runs this site",
+          "items": [
+            "{controllerName}",
+            "{controllerAddress}",
+            "Email: {controllerEmail}"
+          ],
+          "paragraphs": [
+            "{brand} is the project of a private individual, not a company. There is no registered company, so there is no commercial register number and no legal representative to publish: the person whose name and address appear above is the one who answers."
+          ]
+        },
+        {
+          "heading": "How to get in touch",
+          "paragraphs": [
+            "The email address above is the direct contact channel and is answered within two working days at most.",
+            "No phone number is published. This is a project run by one person, and a phone nobody picks up would be worse service than an inbox that is read every day."
+          ]
+        },
+        {
+          "heading": "Tax identification",
+          "paragraphs": [
+            "No VAT identification number (USt-IdNr.) is published, because none has been issued to the controller. One is not invented to fill the gap.",
+            "The controller's Spanish tax number (NIF) is {controllerTaxId}. It identifies him, and it is not a VAT number."
+          ]
+        },
+        {
+          "heading": "What this site is, and what it is not",
+          "paragraphs": [
+            "{brand} connects people looking for work in Central Europe with verified temporary work agencies. Germany is the only open market today.",
+            "{brand} is not a temporary work agency and not a placement agency: it employs nobody, hires out nobody, and is not a party to any employment contract. And it never charges the candidate."
+          ]
+        },
+        {
+          "heading": "Consumer dispute resolution",
+          "paragraphs": [
+            "The controller is not obliged to take part in dispute resolution proceedings before a consumer arbitration board, and does not do so voluntarily (§36 VSBG).",
+            "Before any of that: if something does not work or does not look right, write to {controllerEmail}. It is faster for both sides."
+          ]
+        },
+        {
+          "heading": "Liability for content and links",
+          "paragraphs": [
+            "The content of this site is put together as carefully as possible, and every figure published carries its date and its source. Even so, it is not guaranteed to be complete or permanently up to date.",
+            "This site links to third-party pages whose content is outside the controller's control. Whoever publishes that content is responsible for it. If a link leads somewhere it should not, tell us and it comes down."
+          ]
+        }
+      ]
+    },
+    "privacy": {
+      "summary": "What data {brand} collects, what it is used for, who can see it, where it is stored, how long it is kept and how to exercise your rights.",
+      "sections": [
+        {
+          "heading": "Who processes your data",
+          "items": [
+            "{controllerName}",
+            "Tax number {controllerTaxId}",
+            "{controllerAddress}",
+            "{controllerEmail}"
+          ],
+          "paragraphs": [
+            "This is the controller for the purposes of the General Data Protection Regulation. No data protection officer has been appointed: the project meets none of the conditions that would require one. For anything to do with your data, the address above is the place."
+          ]
+        },
+        {
+          "heading": "What data is collected",
+          "items": [
+            "When you create an account: your email address and a password. The password is not stored anywhere readable — the account system keeps a cryptographic digest of it, and nobody, the controller included, can read it back.",
+            "When you complete your profile: first and last name, date of birth, nationality, the country and city you live in, your English level, your work experience and the sectors it is in, whether you hold a driving licence, whether you have worked in Germany or the Netherlands before, and whether you need housing or transport.",
+            "The documents you upload: ID card or passport on both sides, CV, driving licence and tax identification documents.",
+            "Your voice recording in English, if you choose to record one.",
+            "Minimal technical data attached to facts that have to be provable: the IP address and browser you accepted each consent from, and the same details for whoever opens one of your documents."
+          ],
+          "paragraphs": [
+            "Today {brand} does not ask for or store your IBAN, your postal address or your phone number, and therefore does not have them. The system anticipates them for the hiring stage, which does not exist in the product yet; the day they are asked for, this document will say so before you are asked, the IBAN will be stored encrypted, and it will not be shared with any agency under any circumstances.",
+            "Nothing is collected by observation: there is no analytics, no cross-site tracking, no advertising profiling. What exists about you is what you have written or uploaded."
+          ]
+        },
+        {
+          "heading": "What it is used for, and on what legal basis",
+          "items": [
+            "Creating and maintaining your account and profile — performance of the contract between you and {brand}, which is the Terms of use (Art. 6.1(b) GDPR).",
+            "Showing your pseudonymised profile to verified agencies — your consent (Art. 6.1(a)), the box you ticked when you signed up, described in the document «How your profile is shared».",
+            "Checking your identity from the documents you upload — performance of the contract: without verification there is no profile an agency can take seriously (Art. 6.1(b)).",
+            "Letting an approved agency listen to your recording in English — your consent (Art. 6.1(a)), optional and withdrawable at any time.",
+            "Handing one of your documents to one specific agency — your explicit consent for that agency and those documents, never a generic one (Art. 6.1(a)).",
+            "Sending you the essential account emails: confirming your registration, recovering access, telling you whether your verification was approved or rejected — performance of the contract (Art. 6.1(b)).",
+            "Keeping proof of what you consented to and when, and of who opened which document — the obligation to be able to demonstrate consent (Art. 7.1) and the legitimate interest in being able to defend or rebut a claim (Art. 6.1(f)).",
+            "Keeping the service secure and preventing abuse — legitimate interest (Art. 6.1(f))."
+          ]
+        },
+        {
+          "heading": "Who can see your data",
+          "paragraphs": [
+            "This is the part that defines the product, so it goes in detail.",
+            "What an agency sees in the talent pool is pseudonymised: your first name and the initial of your surname («Carlos M.»), your age as a calculated number — never your date of birth —, your city, country and nationality, your experience and its sectors, your English level, your availability, whether you need housing or transport, and a set of seals that only say yes or no: identity verified, driving licence verified, tax identifier verified, whether there is a CV and whether there is a recording.",
+            "An agency does not see your full surname, your email, your phone, your address, your IBAN or any of your documents. And it is not that the screen hides them: the database gives it no door to those tables at all, not even partial read access. Its only window is the pseudonymised view. Pseudonymisation is applied inside the database, not by filtering in the browser, and that is the difference between a guarantee and a habit.",
+            "To see a document of yours, an agency has to ask you, stating which documents it wants. You grant or refuse. If you grant, the access lasts a limited window, you can revoke it before it ends, and the file is served through a signed link that expires within minutes.",
+            "Inside {brand}, the controller can see your data and open your documents in order to verify them: that is what makes the «identity verified» seal mean anything. Those openings are logged exactly like an agency's. There is no internal access that leaves no trace."
+          ]
+        },
+        {
+          "heading": "The access log",
+          "paragraphs": [
+            "Every time somebody opens a document of yours — an agency with your permission, or the controller reviewing it — a row is written recording which document was opened, by whom, when, from which IP address and with which browser.",
+            "That row cannot be written or deleted from the application: the server writes it in the same step in which it signs the link, and there is no way to open a document without leaving a trace. It exists so that what happened can be proven, and it is as much on your side as on ours.",
+            "You can ask for the access log of your own documents and you will get it."
+          ]
+        },
+        {
+          "heading": "Who else is involved, and where your data lives",
+          "items": [
+            "Supabase — the database, the storage of your files and the account system. The project is hosted in the eu-west-1 region, in Ireland.",
+            "Vercel — the hosting and execution of the site. The code that touches your data runs in Dublin (dub1), the same region as the database.",
+            "Resend — delivery of the account notification emails."
+          ],
+          "paragraphs": [
+            "Your data is processed inside the European Union: the database, the files and the code that reads them are in Ireland. When you upload a document, the file passes through the server before reaching storage, and that server is in the EU too.",
+            "Were any provider to process data outside the European Economic Area, the transfer relies on the standard contractual clauses approved by the European Commission.",
+            "Your data is not sold, not shared for advertising, and not used to train anything. There is no advertising on this site."
+          ]
+        },
+        {
+          "heading": "How long it is kept",
+          "items": [
+            "Your account, your profile and your documents: for as long as the account exists. When you ask for them to be deleted, they are deleted within 30 days at most.",
+            "The record of what you consented to and when, and the document access log: three years from the closure of the account. It is the proof that the processing was legitimate and of who opened what; deleting it along with the account would leave both sides with nothing to show. It is kept without the name of whoever no longer exists.",
+            "The log of emails sent: one year. It keeps the address it was sent to even after the profile is gone."
+          ],
+          "paragraphs": [
+            "These periods are enforced by hand: the project is small and does not yet have a scheduled deletion job that runs them on its own. That changes who enforces them, not the periods themselves. If you believe something of yours should already have been deleted, write and it gets fixed."
+          ]
+        },
+        {
+          "heading": "Your rights, and where you exercise them",
+          "items": [
+            "Access everything held about you.",
+            "Correct whatever is wrong.",
+            "Erase your data.",
+            "Restrict or object to a processing operation.",
+            "Receive your data in a readable file and take it elsewhere.",
+            "Withdraw a consent you have given.",
+            "Complain to a supervisory authority."
+          ],
+          "paragraphs": [
+            "Inside the product, right now and without writing to anybody: in «My account» you can correct your name, date of birth, city, English level and experience; withdraw the consent for the English recording with a button; pause your profile so it stops appearing in the pool without deleting anything; and re-upload a document that was rejected.",
+            "By email, to {controllerEmail}: full access, portability, deletion of the account, and withdrawal of the mandatory consents — which means closing the account, because without them there is no service left to provide. You get an answer within one month at most.",
+            "There is no button yet to delete your account from inside the product. It is pending, and this document will say so the day it exists; until then it is done by email and within the same deadline.",
+            "Withdrawing a consent does not make what was done while it was in force unlawful, and it does not delete the row proving you gave it: what is kept is that you granted it and that you withdrew it, with both dates.",
+            "You can complain to the data protection authority that covers you. The controller's is the Lower Saxony authority (Die Landesbeauftragte für den Datenschutz Niedersachsen). If you live in Spain, the Agencia Española de Protección de Datos."
+          ]
+        },
+        {
+          "heading": "Cookies",
+          "paragraphs": [
+            "{brand} uses no analytics, advertising or tracking cookies. That is why you will not see a cookie consent banner: there is nothing to consent to, and putting up a banner asking permission for something that does not happen would be theatre.",
+            "The only cookies set are your session cookies, and only once you log into your account: they are what keeps you logged in as you move between pages. Without them there can be no session at all, so they are strictly necessary in the sense of the law.",
+            "The public pages of this site set no cookies whatsoever. They are served from cache without ever checking whether you have a session, and they do not even store a language cookie: the language lives in the page address."
+          ]
+        },
+        {
+          "heading": "Automated decisions",
+          "paragraphs": [
+            "There are no automated decisions and no profiling within the meaning of Article 22 GDPR. Whether a document of yours is valid is decided by a person, and whether you get contacted is decided by an agency."
+          ]
+        },
+        {
+          "heading": "Minors",
+          "paragraphs": [
+            "This service is not aimed at minors and cannot be used before the age of 18."
+          ]
+        },
+        {
+          "heading": "When this text changes",
+          "paragraphs": [
+            "Every version of this document carries its date, the one shown at the top. When something changes that affects what you consented to, the version goes up and you are asked again.",
+            "Earlier versions are not deleted from the record: what is kept about you is not «accepted the policy», it is which text you accepted and when."
+          ]
+        }
+      ]
+    },
+    "terms": {
+      "summary": "The rules for using {brand}: what it is, what it is not, what is expected of you and what you can expect in return.",
+      "sections": [
+        {
+          "heading": "What {brand} is",
+          "paragraphs": [
+            "{brand} connects people looking for work in Central Europe with verified temporary work agencies. Germany is the only open market today.",
+            "{brand} is not a temporary work agency and not a placement agency. It employs nobody, hires out nobody, negotiates no salaries and is not a party to any contract you may end up signing. What it does is let a verified agency find you and ask your permission to see your documents, and let you decide.",
+            "The service and this site are run by {controllerName}. His full details are in the legal notice."
+          ]
+        },
+        {
+          "heading": "You are never charged",
+          "paragraphs": [
+            "Using {brand} is free for the candidate, always and in every part of it. There is no fee, no commission on your salary, no payment to feature your profile, and no heading under which you will ever be asked for money.",
+            "If somebody asks you for money in the name of {brand}, it is not {brand}. Tell us.",
+            "This is not a commercial promise that could be withdrawn tomorrow: charging a candidate for job placement is prohibited in the European Union, and this project is built on that rule. The agency is the one who pays."
+          ]
+        },
+        {
+          "heading": "Who can register",
+          "items": [
+            "People aged 18 or over.",
+            "With truthful details: the name you enter has to be yours, and to match the document you upload.",
+            "One account per person."
+          ]
+        },
+        {
+          "heading": "What is expected of you",
+          "items": [
+            "That what you say about your experience is true, and that you keep it current when it changes.",
+            "That the documents you upload are your own. Uploading somebody else's document means immediate closure of the account, and may be a criminal offence.",
+            "That you use the site to look for work and not for anything else.",
+            "That you look after your password. If you think somebody has got into your account, write to us."
+          ]
+        },
+        {
+          "heading": "What is not guaranteed",
+          "paragraphs": [
+            "Nobody guarantees you a job. {brand} does not promise that an agency will contact you, nor when, nor on what terms.",
+            "The conditions published on the public pages describe what was observed at a specific moment, carry their date and their source, and are neither a job offer nor a commitment. A concrete offer comes from a company, not from this site."
+          ]
+        },
+        {
+          "heading": "The agencies",
+          "paragraphs": [
+            "An agency does not get to see the talent pool just by registering: it goes through prior approval, and its access can be suspended.",
+            "Suspending an agency cuts its access for real, not just on screen: it is the database itself that stops answering it. And no agency can approve or reinstate itself."
+          ]
+        },
+        {
+          "heading": "Suspension and leaving",
+          "paragraphs": [
+            "You can leave whenever you want and ask for your account to be deleted, by writing to {controllerEmail}. How that is done and what is kept afterwards is in the privacy policy.",
+            "On our side, an account can be suspended or closed if the above is broken — false details, somebody else's documents, misuse of the site. When that happens, you will be told why."
+          ]
+        },
+        {
+          "heading": "Availability of the service",
+          "paragraphs": [
+            "This is a project under development. There may be interruptions, and there are features that will appear or change. Uninterrupted availability is not guaranteed, and it is not charged for."
+          ]
+        },
+        {
+          "heading": "Liability",
+          "paragraphs": [
+            "The controller is liable without limitation for damage caused intentionally or by gross negligence, and for damage to life, body or health.",
+            "In cases of slight negligence, liability arises only from the breach of essential contractual obligations — those without which the service cannot be provided and on whose fulfilment it is reasonable to rely — and is limited to the foreseeable damage typical of this kind of contract.",
+            "{brand} is not liable for what happens in the employment relationship you may enter into with a company, which is a contract between that company and you, nor for the content of third-party sites it links to."
+          ]
+        },
+        {
+          "heading": "Applicable law",
+          "paragraphs": [
+            "German law applies.",
+            "If you are a consumer resident in another European Union country, this does not deprive you of the protection of the mandatory rules of your country of residence: they still cover you."
+          ]
+        },
+        {
+          "heading": "When this text changes",
+          "paragraphs": [
+            "This document carries a dated version. If it changes in a way that affects what you accepted, the version goes up and you are asked again; the record keeps which version each person accepted."
+          ]
+        }
+      ]
+    },
+    "data_sharing": {
+      "summary": "Exactly what an agency sees about you, what it can never see, and how the permission you give it to open a document works.",
+      "sections": [
+        {
+          "heading": "The consent you gave",
+          "paragraphs": [
+            "When you signed up you ticked a box of its own, separate from the Terms of use, authorising {brand} to show your profile to verified work agencies. It is what makes you exist in the talent pool: without it there is nothing to show and no service to provide.",
+            "That is why it is a mandatory consent rather than an optional one: withdrawing it amounts to closing the account. It is done by writing to {controllerEmail}.",
+            "This permission is for being seen. It is not a permission to open your documents: that one is separate, agency by agency, and is described further down."
+          ]
+        },
+        {
+          "heading": "What an agency sees about you",
+          "items": [
+            "Your first name and the initial of your surname, in the form «Carlos M.».",
+            "Your age, as a calculated number. Never your date of birth.",
+            "Your city and country of residence, and your nationality.",
+            "Your work experience as you wrote it, and the sectors it is in with their months.",
+            "Your English level.",
+            "Whether you are available, and whether you need housing or transport.",
+            "Seals that only say yes or no: identity verified, driving licence verified, tax identifier verified, whether there is a CV and whether there is a recording in English."
+          ],
+          "paragraphs": [
+            "There is also an «IBAN on file» seal, which today always says no, because {brand} does not ask anybody for an IBAN yet.",
+            "That there is a CV and that there is a recording are announced as a yes or a no. The file itself is not there: the CV only opens with your permission, and the recording depends on a consent of its own that you can withdraw."
+          ]
+        },
+        {
+          "heading": "What it never sees without your permission",
+          "items": [
+            "Your full surname.",
+            "Your email address and your phone number.",
+            "Your postal address.",
+            "Your exact date of birth.",
+            "Your IBAN.",
+            "Any of your documents: ID card, passport, CV, licence, tax identification."
+          ],
+          "paragraphs": [
+            "And it does not see them because it has no door to look through: an agency has no read permission on the tables where that data lives, not even partial, not even through an indirect query. Its only window is the pseudonymised view from the previous section.",
+            "That is enforced in the database and not on the screen. It is the difference between a guarantee and a habit: nothing here depends on somebody remembering to filter out a column."
+          ]
+        },
+        {
+          "heading": "How it asks you for a document",
+          "paragraphs": [
+            "An agency that wants to see documents of yours has to request it, stating which ones it wants, and it can add a message. That request reaches you and you are the one who decides.",
+            "You have a deadline to answer. If you do not answer, the request expires by itself: silence grants nothing.",
+            "If you grant it, a window of time opens during which that agency — only that one — can open those documents — only those. They are two different clocks: one is your deadline to answer, the other is how long the granted access lasts.",
+            "An agency cannot have two live requests with you at the same time, so that nobody can keep pressing you until you give in.",
+            "Granting, refusing and revoking are your acts. An agency cannot change the state of its own request, and that is prevented in the database, not just in the interface."
+          ]
+        },
+        {
+          "heading": "How the file is opened, and what remains",
+          "paragraphs": [
+            "When an agency with permission opens a document of yours, the server first checks that the permission is still alive and only then issues a signed link that expires within minutes. The files sit in private storage: there is no public address that leads to them.",
+            "In that same step the access log row is written: which document, who, when, from which IP and with which browser. There is no way to open a document without it being recorded.",
+            "The fact that the server checks on every single opening is what makes revoking take effect immediately."
+          ]
+        },
+        {
+          "heading": "Revoking",
+          "paragraphs": [
+            "You can revoke a granted access before its window ends. From that moment on, the next opening is no longer authorised.",
+            "What is not deleted is the record that there was consent and of what was opened while it lasted. That is the point of it."
+          ]
+        },
+        {
+          "heading": "Your IBAN and address are never shared",
+          "paragraphs": [
+            "Not even with consent. An agency does not need your IBAN or your address to decide whether it wants to hire you: those belong to the hiring stage, which happens outside this platform.",
+            "Today, on top of that, {brand} does not even ask you for them."
+          ]
+        },
+        {
+          "heading": "Your recording in English is separate",
+          "paragraphs": [
+            "The recording has a consent of its own, optional and withdrawable with a button from your account. It is explained in its own document."
+          ]
+        }
+      ]
+    },
+    "audio_sharing": {
+      "summary": "The one consent you can grant and withdraw whenever you like, from your own account and without writing to anybody.",
+      "sections": [
+        {
+          "heading": "What you are authorising",
+          "paragraphs": [
+            "That your voice recording in English can be played by an approved work agency while it browses the talent pool.",
+            "It is always played next to your pseudonymised name — «Carlos M.» — and never next to your full identity. A voice with no surname, no email and no address identifies very little, and that is deliberate."
+          ]
+        },
+        {
+          "heading": "Why it exists, and why it is optional",
+          "paragraphs": [
+            "It is what lets an agency form an idea of your English without asking you for your documents yet. Without a recording, your profile is a list of green ticks and the first thing any agency does is ask for your ID.",
+            "It is genuinely optional: if you do not grant it, your profile still exists and still appears in the pool, only nobody can listen to you. You are not penalised for withholding it, and the box does not come pre-ticked."
+          ]
+        },
+        {
+          "heading": "How it is played",
+          "paragraphs": [
+            "It is not downloaded. The server checks that your consent is still alive and issues a very short-lived signed link — five minutes at most — to play it.",
+            "Every listen is logged just like the opening of a document: who, when, from which IP and with which browser.",
+            "The file lives in private storage. There is no public address from which it can be heard."
+          ]
+        },
+        {
+          "heading": "How to withdraw it",
+          "paragraphs": [
+            "In «My account», with a button. There is nobody to write to and nothing to wait for: from that moment it stops being audible.",
+            "The consent row is not deleted when you withdraw it: it gets a withdrawal date. It is the proof that you gave it for a period, and that proof protects you as much as it protects us. If you grant it again, a new row is written with its own date and version."
+          ]
+        },
+        {
+          "heading": "The recording is still yours",
+          "paragraphs": [
+            "Withdrawing the consent makes your recording inaudible to agencies, but it does not delete the file.",
+            "If you want it deleted, ask at {controllerEmail} and it is deleted."
+          ]
+        }
+      ]
+    }
+  }
+}

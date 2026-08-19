@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 
 import { Button } from '@/components/ui/button';
+import { legalLink } from '@/config/legal';
 import { siteConfig } from '@/config/site';
 import { Link } from '@/i18n/navigation';
 import type { Locale } from '@/i18n/routing';
@@ -26,7 +27,7 @@ export async function generateMetadata({
 export default async function HomePage({
   params,
 }: {
-  params: Promise<{ locale: string }>;
+  params: Promise<{ locale: Locale }>;
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
@@ -57,6 +58,20 @@ export default async function HomePage({
       </div>
 
       <p className="border-t pt-6 text-sm text-muted-foreground">{t('note')}</p>
+
+      {/* El Impressum, también desde la home y no solo desde el pie: es la
+          prueba de existencia más barata que puede dar un proyecto nuevo, y
+          quien se plantea subir su DNI a un dominio que no conoce la busca
+          antes de bajar hasta el final de la página. */}
+      <p className="text-sm text-muted-foreground">
+        {t('behind', { brand: siteConfig.name })}{' '}
+        <Link
+          href={legalLink('impressum', locale)}
+          className="underline underline-offset-4"
+        >
+          {t('behindLink')}
+        </Link>
+      </p>
     </div>
   );
 }

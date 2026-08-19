@@ -1,0 +1,396 @@
+{
+  "documents": {
+    "impressum": {
+      "summary": "Quién es responsable de este sitio y cómo contactar con él, conforme al §5 de la ley alemana de servicios digitales (DDG).",
+      "sections": [
+        {
+          "heading": "Responsable del sitio",
+          "items": [
+            "{controllerName}",
+            "{controllerAddress}",
+            "Correo electrónico: {controllerEmail}"
+          ],
+          "paragraphs": [
+            "{brand} es el proyecto de una persona física, no de una sociedad. No hay sociedad inscrita, así que no hay número de registro mercantil ni representante legal que publicar: responde la persona cuyo nombre y domicilio están arriba."
+          ]
+        },
+        {
+          "heading": "Cómo contactar",
+          "paragraphs": [
+            "El correo de arriba es la vía de contacto directa y se atiende en un plazo máximo de dos días laborables.",
+            "No hay un número de teléfono publicado. Es un proyecto llevado por una sola persona, y un teléfono que nadie descuelga daría menos servicio que un correo que se lee todos los días."
+          ]
+        },
+        {
+          "heading": "Identificación fiscal",
+          "paragraphs": [
+            "No se publica un número de identificación a efectos del IVA (USt-IdNr.) porque el responsable no tiene ninguno asignado. No se inventa uno para rellenar el hueco.",
+            "El NIF español del responsable es {controllerTaxId}. Sirve para identificarle, y no es un número de IVA."
+          ]
+        },
+        {
+          "heading": "Qué es este sitio, y qué no es",
+          "paragraphs": [
+            "{brand} pone en contacto a personas que buscan trabajo en Europa Central con empresas de trabajo temporal verificadas. Hoy el único mercado abierto es Alemania.",
+            "{brand} no es una empresa de trabajo temporal ni una agencia de colocación: no contrata a nadie, no cede trabajadores y no es parte de ningún contrato de trabajo. Y no cobra nunca al candidato."
+          ]
+        },
+        {
+          "heading": "Resolución de litigios de consumo",
+          "paragraphs": [
+            "El responsable no está obligado a participar en un procedimiento de resolución de litigios ante una junta de arbitraje de consumo, y tampoco participa voluntariamente (§36 VSBG).",
+            "Antes de eso: si algo no funciona o no te parece correcto, escribe a {controllerEmail}. Es más rápido para los dos."
+          ]
+        },
+        {
+          "heading": "Responsabilidad por contenidos y enlaces",
+          "paragraphs": [
+            "Los contenidos de este sitio se elaboran con el mayor cuidado posible, y las cifras que se publican llevan su fecha y su origen. Aun así, no se garantiza que estén completos ni permanentemente actualizados.",
+            "Este sitio contiene enlaces a páginas de terceros sobre cuyo contenido el responsable no tiene control. De esos contenidos responde siempre quien los publica. Si un enlace lleva a algo indebido, avísanos y se retira."
+          ]
+        }
+      ]
+    },
+    "privacy": {
+      "summary": "Qué datos recoge {brand}, para qué los usa, quién puede verlos, dónde se guardan, cuánto duran y cómo ejercer tus derechos.",
+      "sections": [
+        {
+          "heading": "Quién trata tus datos",
+          "items": [
+            "{controllerName}",
+            "NIF {controllerTaxId}",
+            "{controllerAddress}",
+            "{controllerEmail}"
+          ],
+          "paragraphs": [
+            "Es el responsable del tratamiento a efectos del Reglamento General de Protección de Datos. No hay delegado de protección de datos designado: el proyecto no alcanza ninguno de los supuestos que lo exigen. Para cualquier cosa relacionada con tus datos, la dirección de arriba es el sitio."
+          ]
+        },
+        {
+          "heading": "Qué datos se recogen",
+          "items": [
+            "Al crear la cuenta: tu correo electrónico y una contraseña. La contraseña no se guarda en ningún sitio legible: la custodia el sistema de cuentas en forma de resumen criptográfico, y nadie, tampoco el responsable, puede leerla.",
+            "Al completar tu perfil: nombre y apellidos, fecha de nacimiento, nacionalidad, país y ciudad en los que vives, nivel de inglés, tu experiencia laboral y los sectores en los que la tienes, si tienes carné de conducir, si has trabajado antes en Alemania o Países Bajos, y si necesitas alojamiento o transporte.",
+            "Los documentos que subas: DNI o pasaporte por sus dos caras, CV, carné de conducir y documentos de identificación fiscal.",
+            "Tu grabación de voz en inglés, si decides grabarla.",
+            "Datos técnicos mínimos asociados a hechos que hay que poder probar: la dirección IP y el navegador desde los que aceptaste cada consentimiento, y los mismos datos de quien abre uno de tus documentos."
+          ],
+          "paragraphs": [
+            "Hoy {brand} no te pide ni guarda tu IBAN, tu dirección postal ni tu número de teléfono, y por tanto no los tiene. El sistema los prevé para la fase de contratación, que todavía no existe en el producto; el día que se pidan, este documento lo dirá antes de pedírtelos, el IBAN se guardará cifrado y no se compartirá con ninguna agencia en ningún caso.",
+            "No se recoge nada por observación: no hay analítica, ni seguimiento entre sitios, ni perfilado publicitario. Lo que hay sobre ti es lo que tú has escrito o subido."
+          ]
+        },
+        {
+          "heading": "Para qué se usan, y con qué base jurídica",
+          "items": [
+            "Crear y mantener tu cuenta y tu perfil — ejecución del contrato entre tú y {brand}, que son los Términos de uso (art. 6.1.b RGPD).",
+            "Mostrar tu perfil seudonimizado a agencias verificadas — tu consentimiento (art. 6.1.a), el de la casilla que marcaste al registrarte y que describe el documento «Cómo se comparte tu perfil».",
+            "Comprobar tu identidad a partir de los documentos que subes — ejecución del contrato: sin verificación no hay perfil que una agencia pueda tomarse en serio (art. 6.1.b).",
+            "Que una agencia aprobada pueda escuchar tu grabación en inglés — tu consentimiento (art. 6.1.a), opcional y retirable en cualquier momento.",
+            "Entregar un documento tuyo a una agencia concreta — tu consentimiento explícito para esa agencia y esos documentos, nunca uno genérico (art. 6.1.a).",
+            "Enviarte los correos imprescindibles de la cuenta: confirmar el registro, recuperar el acceso, avisarte de si tu verificación se aprueba o se rechaza — ejecución del contrato (art. 6.1.b).",
+            "Guardar la prueba de qué consentiste, cuándo, y de quién abrió qué documento — la obligación de poder demostrar el consentimiento (art. 7.1) y el interés legítimo en poder defender o rebatir una reclamación (art. 6.1.f).",
+            "Mantener el servicio seguro y prevenir el abuso — interés legítimo (art. 6.1.f)."
+          ]
+        },
+        {
+          "heading": "Quién puede ver tus datos",
+          "paragraphs": [
+            "Esta es la parte que define el producto, así que va con detalle.",
+            "Lo que una agencia ve en la bolsa está seudonimizado: tu nombre de pila y la inicial de tu apellido («Carlos M.»), tu edad calculada —nunca tu fecha de nacimiento—, tu ciudad, tu país y tu nacionalidad, tu experiencia y sus sectores, tu nivel de inglés, tu disponibilidad, si necesitas alojamiento o transporte, y unos sellos que dicen sí o no: identidad verificada, carné verificado, identificador fiscal verificado, si hay CV y si hay audio.",
+            "Una agencia no ve tus apellidos completos, ni tu correo, ni tu teléfono, ni tu dirección, ni tu IBAN, ni ninguno de tus documentos. Y no es que la pantalla no se los enseñe: es que la base de datos no le da ninguna puerta a esas tablas, ni siquiera de lectura parcial. Su única ventana es la vista seudonimizada. La seudonimización se aplica dentro de la base, no filtrando en el navegador, que es la diferencia entre una garantía y una costumbre.",
+            "Para ver un documento tuyo, una agencia tiene que pedírtelo diciendo qué documentos quiere. Tú concedes o deniegas. Si concedes, el acceso dura una ventana limitada, puedes revocarlo antes de que termine, y el archivo se sirve con un enlace firmado que caduca en minutos.",
+            "Dentro de {brand}, el responsable puede ver tus datos y abrir tus documentos para verificarlos: es lo que hace que el sello de «identidad verificada» signifique algo. Esas aperturas se registran exactamente igual que las de una agencia. No hay un acceso interno que no deje rastro."
+          ]
+        },
+        {
+          "heading": "El registro de aperturas",
+          "paragraphs": [
+            "Cada vez que alguien abre un documento tuyo —una agencia con tu permiso, o el responsable revisándolo— se guarda una fila con qué documento se abrió, quién lo abrió, cuándo, desde qué dirección IP y con qué navegador.",
+            "Esa fila no se puede escribir ni borrar desde la aplicación: la escribe el servidor en el mismo paso en el que firma el enlace, y no hay ninguna forma de abrir un documento sin dejar rastro. Existe para que se pueda demostrar qué pasó, y está tanto de tu lado como del nuestro.",
+            "Puedes pedir el registro de aperturas de tus documentos y se te entrega."
+          ]
+        },
+        {
+          "heading": "Quién más interviene, y dónde están tus datos",
+          "items": [
+            "Supabase — la base de datos, el almacenamiento de tus archivos y el sistema de cuentas. El proyecto está alojado en la región eu-west-1, en Irlanda.",
+            "Vercel — el alojamiento y la ejecución del sitio. El código que toca tus datos se ejecuta en Dublín (dub1), la misma región que la base de datos.",
+            "Resend — el envío de los correos de aviso de la cuenta."
+          ],
+          "paragraphs": [
+            "Tus datos se tratan dentro de la Unión Europea: la base de datos, los archivos y el código que los lee están en Irlanda. Cuando subes un documento, el archivo pasa por el servidor antes de llegar al almacenamiento, y ese servidor también está en la UE.",
+            "Si algún proveedor tratara datos fuera del Espacio Económico Europeo, la transferencia se ampara en las cláusulas contractuales tipo aprobadas por la Comisión Europea.",
+            "Tus datos no se venden, ni se ceden con fines publicitarios, ni se usan para entrenar nada. No hay publicidad en este sitio."
+          ]
+        },
+        {
+          "heading": "Cuánto tiempo se conservan",
+          "items": [
+            "Tu cuenta, tu perfil y tus documentos: mientras la cuenta exista. Cuando pides que se borre, se borran en un plazo máximo de 30 días.",
+            "El registro de qué consentiste y cuándo, y el de aperturas de documentos: tres años desde el cierre de la cuenta. Es la prueba de que el tratamiento fue legítimo y de quién abrió qué; borrarla junto con la cuenta dejaría a los dos lados sin nada que enseñar. Se conserva sin el nombre de quien ya no existe.",
+            "El registro de correos enviados: un año. Guarda la dirección a la que se envió aunque el perfil ya no exista."
+          ],
+          "paragraphs": [
+            "Estos plazos se cumplen a mano: el proyecto es pequeño y todavía no tiene un borrado programado que los ejecute solo. Eso cambia quién los cumple, no los plazos. Si crees que algo tuyo debería haberse borrado ya, escribe y se corrige."
+          ]
+        },
+        {
+          "heading": "Tus derechos, y desde dónde se ejercen",
+          "items": [
+            "Acceder a todo lo que hay sobre ti.",
+            "Rectificar lo que esté mal.",
+            "Suprimir tus datos.",
+            "Limitar u oponerte a un tratamiento.",
+            "Recibir tus datos en un fichero legible y llevártelos.",
+            "Retirar un consentimiento que hayas dado.",
+            "Reclamar ante una autoridad de control."
+          ],
+          "paragraphs": [
+            "Dentro del producto, hoy mismo y sin escribir a nadie: en «Mi cuenta» puedes corregir tu nombre, tu fecha de nacimiento, tu ciudad, tu nivel de inglés y tu experiencia; retirar con un botón el consentimiento de la grabación en inglés; pausar tu perfil para dejar de aparecer en la bolsa sin borrar nada; y volver a subir un documento que se haya rechazado.",
+            "Por correo, a {controllerEmail}: el acceso completo, la portabilidad, la supresión de la cuenta, y la retirada de los consentimientos obligatorios —que implica cerrar la cuenta, porque sin ellos no queda servicio que prestar—. Se responde en un mes como máximo.",
+            "Todavía no hay un botón para borrar la cuenta desde dentro del producto. Está pendiente, y este documento lo dirá el día que exista; mientras tanto se hace por correo y en el mismo plazo.",
+            "Retirar un consentimiento no hace ilegal lo que se hizo mientras estaba dado, y no borra la fila que prueba que lo diste: lo que se guarda es que lo concediste y que lo retiraste, con sus fechas.",
+            "Puedes reclamar ante la autoridad de protección de datos que te corresponda. La del responsable es la de Baja Sajonia (Die Landesbeauftragte für den Datenschutz Niedersachsen). Si vives en España, la Agencia Española de Protección de Datos."
+          ]
+        },
+        {
+          "heading": "Cookies",
+          "paragraphs": [
+            "{brand} no usa cookies de analítica, de publicidad ni de seguimiento. Por eso no verás un panel de consentimiento de cookies: no hay nada que consentir, y montar un panel para pedir permiso sobre algo que no ocurre sería teatro.",
+            "Las únicas cookies que se ponen son las de tu sesión, y solo cuando entras en tu cuenta: son las que hacen que sigas dentro al pasar de página. Sin ellas no hay sesión posible, así que son estrictamente necesarias en el sentido de la norma.",
+            "Las páginas públicas de este sitio no ponen ninguna cookie. Se sirven desde la caché sin llegar a mirar si tienes sesión, y ni siquiera guardan una cookie de idioma: el idioma va en la dirección de la página."
+          ]
+        },
+        {
+          "heading": "Decisiones automatizadas",
+          "paragraphs": [
+            "No hay decisiones automatizadas ni elaboración de perfiles en el sentido del artículo 22 del RGPD. Quien decide si un documento tuyo vale es una persona, y quien decide si te contacta es una agencia."
+          ]
+        },
+        {
+          "heading": "Menores",
+          "paragraphs": [
+            "Este servicio no está dirigido a menores de edad y no se puede usar sin haber cumplido 18 años."
+          ]
+        },
+        {
+          "heading": "Cuando este texto cambie",
+          "paragraphs": [
+            "Cada versión de este documento lleva su fecha, la que aparece al principio. Cuando cambie algo que afecte a lo que consentiste, se sube la versión y se te vuelve a pedir.",
+            "Las versiones anteriores no se borran del registro: lo que se guarda de ti no es «aceptó la política», es qué texto aceptaste y cuándo."
+          ]
+        }
+      ]
+    },
+    "terms": {
+      "summary": "Las reglas de uso de {brand}: qué es, qué no es, qué se espera de ti y qué puedes esperar a cambio.",
+      "sections": [
+        {
+          "heading": "Qué es {brand}",
+          "paragraphs": [
+            "{brand} pone en contacto a personas que buscan trabajo en Europa Central con empresas de trabajo temporal verificadas. Hoy el único mercado abierto es Alemania.",
+            "{brand} no es una empresa de trabajo temporal ni una agencia de colocación. No contrata a nadie, no cede trabajadores, no negocia salarios y no es parte del contrato que llegues a firmar. Lo que hace es que una agencia verificada pueda encontrarte y pedirte permiso para ver tus documentos, y que tú decidas.",
+            "El titular del servicio y responsable de este sitio es {controllerName}. Sus datos completos están en el aviso legal."
+          ]
+        },
+        {
+          "heading": "A ti no se te cobra nunca",
+          "paragraphs": [
+            "El uso de {brand} es gratuito para el candidato, siempre y en todas sus partes. No hay cuota, ni comisión sobre tu salario, ni pago por destacar tu perfil, ni ningún concepto por el que se te vaya a pedir dinero en ningún momento.",
+            "Si alguien te pide dinero en nombre de {brand}, no es {brand}. Avísanos.",
+            "No es una promesa comercial que podamos retirar mañana: cobrar al candidato por intermediación laboral está prohibido en la Unión Europea, y este proyecto está construido sobre esa regla. Quien paga es la agencia."
+          ]
+        },
+        {
+          "heading": "Quién puede registrarse",
+          "items": [
+            "Personas de 18 años o más.",
+            "Con datos veraces: el nombre que pongas tiene que ser el tuyo, y coincidir con el documento que subas.",
+            "Una cuenta por persona."
+          ]
+        },
+        {
+          "heading": "Qué se espera de ti",
+          "items": [
+            "Que lo que cuentes de tu experiencia sea cierto, y que lo mantengas al día cuando cambie.",
+            "Que los documentos que subas sean tuyos. Subir el documento de otra persona es motivo de cierre inmediato de la cuenta, y puede ser un delito.",
+            "Que uses el sitio para buscar trabajo y no para otra cosa.",
+            "Que cuides tu contraseña. Si crees que alguien ha entrado en tu cuenta, escríbenos."
+          ]
+        },
+        {
+          "heading": "Qué no se te garantiza",
+          "paragraphs": [
+            "Nadie te garantiza un empleo. {brand} no promete que una agencia vaya a contactarte, ni cuándo, ni en qué condiciones.",
+            "Las condiciones que se publican en las páginas públicas describen lo observado en un momento concreto, llevan su fecha y su origen, y no son una oferta de trabajo ni un compromiso. Una oferta concreta te la hace una empresa, no este sitio."
+          ]
+        },
+        {
+          "heading": "Las agencias",
+          "paragraphs": [
+            "Una agencia no ve la bolsa por el hecho de registrarse: pasa por una aprobación previa, y su acceso puede suspenderse.",
+            "Suspender una agencia le corta el acceso de verdad, no solo en la pantalla: es la propia base de datos la que deja de responderle. Y ninguna agencia puede aprobarse ni reactivarse a sí misma."
+          ]
+        },
+        {
+          "heading": "Suspensión y baja",
+          "paragraphs": [
+            "Puedes irte cuando quieras y pedir que se borre tu cuenta, escribiendo a {controllerEmail}. Cómo se hace y qué se conserva después está en la política de privacidad.",
+            "Por nuestra parte, una cuenta puede suspenderse o cerrarse si se incumple lo de arriba —datos falsos, documentos ajenos, uso indebido del sitio—. Cuando ocurra, se te dirá por qué."
+          ]
+        },
+        {
+          "heading": "Disponibilidad del servicio",
+          "paragraphs": [
+            "Es un proyecto en desarrollo. Puede haber interrupciones, y hay funciones que aparecerán o cambiarán. No se garantiza una disponibilidad ininterrumpida, y no se cobra por ella."
+          ]
+        },
+        {
+          "heading": "Responsabilidad",
+          "paragraphs": [
+            "El responsable responde sin limitación de los daños causados por dolo o negligencia grave, y de los daños a la vida, el cuerpo o la salud.",
+            "En caso de negligencia leve, responde solo del incumplimiento de las obligaciones esenciales del servicio —aquellas sin las cuales no se puede prestar y en cuyo cumplimiento es razonable confiar— y hasta el daño previsible y típico de este tipo de contrato.",
+            "{brand} no responde de lo que ocurra en la relación laboral que llegues a tener con una empresa, que es un contrato entre esa empresa y tú, ni de los contenidos de sitios de terceros a los que se enlace."
+          ]
+        },
+        {
+          "heading": "Ley aplicable",
+          "paragraphs": [
+            "Se aplica el Derecho alemán.",
+            "Si eres consumidor y resides en otro país de la Unión Europea, esto no te quita la protección de las normas imperativas de tu país de residencia: te siguen amparando."
+          ]
+        },
+        {
+          "heading": "Cuando este texto cambie",
+          "paragraphs": [
+            "Este documento lleva su versión con fecha. Si cambia de forma que afecte a lo que aceptaste, se sube la versión y se te vuelve a pedir; el registro guarda qué versión aceptó cada persona."
+          ]
+        }
+      ]
+    },
+    "data_sharing": {
+      "summary": "Qué ve exactamente una agencia sobre ti, qué no puede ver nunca, y cómo funciona el permiso que le das para abrir un documento.",
+      "sections": [
+        {
+          "heading": "El consentimiento que diste",
+          "paragraphs": [
+            "Al registrarte marcaste una casilla propia, separada de los Términos de uso, autorizando a {brand} a mostrar tu perfil a agencias de trabajo verificadas. Es la que hace que existas en la bolsa: sin ella no hay nada que enseñar y no hay servicio que prestar.",
+            "Por eso es un consentimiento obligatorio y no uno opcional: retirarlo equivale a cerrar la cuenta. Se hace escribiendo a {controllerEmail}.",
+            "Este permiso es para que te vean. No es un permiso para abrir tus documentos: ese va aparte, agencia por agencia, y lo describe el apartado de más abajo."
+          ]
+        },
+        {
+          "heading": "Qué ve una agencia de ti",
+          "items": [
+            "Tu nombre de pila y la inicial de tu apellido, en la forma «Carlos M.».",
+            "Tu edad, calculada. Nunca tu fecha de nacimiento.",
+            "Tu ciudad y tu país de residencia, y tu nacionalidad.",
+            "Tu experiencia laboral tal y como la hayas escrito, y los sectores en los que la tienes con sus meses.",
+            "Tu nivel de inglés.",
+            "Si estás disponible, y si necesitas alojamiento o transporte.",
+            "Sellos que solo dicen sí o no: identidad verificada, carné de conducir verificado, identificador fiscal verificado, si hay un CV y si hay una grabación en inglés."
+          ],
+          "paragraphs": [
+            "Hay además un sello de «IBAN en archivo» que hoy es siempre «no», porque {brand} todavía no pide IBAN a nadie.",
+            "Que haya un CV y que haya un audio se anuncian como un sí o un no. El archivo en sí no va ahí: el CV solo se abre con tu permiso, y el audio depende de un consentimiento propio que puedes retirar."
+          ]
+        },
+        {
+          "heading": "Qué no ve nunca sin tu permiso",
+          "items": [
+            "Tus apellidos completos.",
+            "Tu correo electrónico y tu teléfono.",
+            "Tu dirección postal.",
+            "Tu fecha de nacimiento exacta.",
+            "Tu IBAN.",
+            "Cualquiera de tus documentos: DNI, pasaporte, CV, carné, identificación fiscal."
+          ],
+          "paragraphs": [
+            "Y no lo ve porque no tiene ninguna puerta por la que mirar: una agencia no tiene permiso de lectura sobre las tablas donde viven esos datos, ni siquiera parcial, ni a través de una consulta indirecta. Su única ventana es la vista seudonimizada del apartado anterior.",
+            "Eso está impuesto en la base de datos y no en la pantalla. Es la diferencia entre una garantía y una costumbre: aquí no depende de que alguien se acuerde de filtrar una columna."
+          ]
+        },
+        {
+          "heading": "Cómo te pide un documento",
+          "paragraphs": [
+            "Una agencia que quiera ver documentos tuyos tiene que solicitarlo, diciendo cuáles quiere, y puedes acompañarlo de un mensaje. Esa solicitud te llega y decides tú.",
+            "Tienes un plazo para responder. Si no respondes, la solicitud caduca sola: el silencio no concede nada.",
+            "Si concedes, se abre una ventana de tiempo durante la cual esa agencia —solo esa— puede abrir esos documentos —solo esos—. Son dos relojes distintos: uno es tu plazo para contestar y otro es cuánto dura el acceso concedido.",
+            "Una agencia no puede tener dos solicitudes vivas contigo a la vez, para que nadie pueda insistirte hasta que cedas.",
+            "Conceder, denegar y revocar son actos tuyos. Una agencia no puede modificar el estado de su propia solicitud, y eso está impedido en la base de datos, no solo en la interfaz."
+          ]
+        },
+        {
+          "heading": "Cómo se abre el archivo, y qué queda",
+          "paragraphs": [
+            "Cuando una agencia con permiso abre un documento tuyo, el servidor comprueba primero que el permiso sigue vivo y solo entonces emite un enlace firmado que caduca en minutos. Los archivos están en almacenamiento privado: no hay ninguna dirección pública que lleve a ellos.",
+            "En ese mismo paso se guarda la fila del registro de aperturas: qué documento, quién, cuándo, desde qué IP y con qué navegador. No hay forma de abrir un documento sin que quede.",
+            "Que la comprobación la haga el servidor en cada apertura es lo que hace que revocar sea inmediato de verdad."
+          ]
+        },
+        {
+          "heading": "Revocar",
+          "paragraphs": [
+            "Puedes revocar un acceso concedido antes de que su ventana termine. Desde ese momento, la siguiente apertura ya no se autoriza.",
+            "Lo que no se borra es el registro de que hubo consentimiento y de lo que se abrió mientras lo hubo. Esa es su función."
+          ]
+        },
+        {
+          "heading": "El IBAN y la dirección no se comparten nunca",
+          "paragraphs": [
+            "Ni con consentimiento. Una agencia no necesita tu IBAN ni tu dirección para decidir si te quiere contratar: son datos de la fase de contratación, que ocurre fuera de esta plataforma.",
+            "Hoy, además, {brand} no te los pide siquiera."
+          ]
+        },
+        {
+          "heading": "Tu grabación en inglés va aparte",
+          "paragraphs": [
+            "El audio tiene su propio consentimiento, opcional y retirable con un botón desde tu cuenta. Está explicado en su propio documento."
+          ]
+        }
+      ]
+    },
+    "audio_sharing": {
+      "summary": "El único consentimiento que puedes conceder y retirar cuando quieras, desde tu cuenta y sin escribir a nadie.",
+      "sections": [
+        {
+          "heading": "Qué autorizas",
+          "paragraphs": [
+            "Que tu grabación de voz en inglés sea reproducible por una agencia de trabajo aprobada mientras navega por la bolsa.",
+            "Se reproduce siempre junto a tu nombre seudonimizado —«Carlos M.»— y nunca junto a tu identidad completa. Una voz sin apellido, sin correo y sin dirección identifica muy poco, y eso es deliberado."
+          ]
+        },
+        {
+          "heading": "Por qué existe, y por qué es opcional",
+          "paragraphs": [
+            "Es lo que permite a una agencia hacerse una idea de tu inglés sin pedirte todavía tus documentos. Sin audio, tu perfil es una lista de casillas verdes y el primer paso de cualquier agencia es pedirte el DNI.",
+            "Es opcional de verdad: si no lo concedes, tu perfil sigue existiendo y apareciendo en la bolsa, solo que nadie puede escucharte. No se te penaliza por no darlo, y la casilla no viene marcada."
+          ]
+        },
+        {
+          "heading": "Cómo se reproduce",
+          "paragraphs": [
+            "No se descarga. El servidor comprueba que tu consentimiento sigue vivo y emite un enlace firmado de vida muy corta —cinco minutos como máximo— para reproducirlo.",
+            "Cada escucha queda registrada igual que la apertura de un documento: quién, cuándo, desde qué IP y con qué navegador.",
+            "El archivo vive en almacenamiento privado. No hay ninguna dirección pública desde la que se pueda oír."
+          ]
+        },
+        {
+          "heading": "Cómo se retira",
+          "paragraphs": [
+            "En «Mi cuenta», con un botón. No hay que escribir a nadie ni esperar a que alguien lo tramite: desde ese momento deja de ser audible.",
+            "La fila del consentimiento no se borra al retirarlo: se le marca la fecha de retirada. Es la prueba de que lo diste durante un periodo, y esa prueba te protege a ti tanto como a nosotros. Si vuelves a concederlo, se escribe una fila nueva con su fecha y su versión."
+          ]
+        },
+        {
+          "heading": "La grabación sigue siendo tuya",
+          "paragraphs": [
+            "Retirar el consentimiento deja tu grabación inaudible para las agencias, pero no borra el archivo.",
+            "Si quieres que se borre, pídelo a {controllerEmail} y se borra."
+          ]
+        }
+      ]
+    }
+  }
+}
