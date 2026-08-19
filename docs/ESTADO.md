@@ -178,10 +178,11 @@
 > cierto—, pero **no llevan ninguna fórmula de «pendiente de revisión»**. El PM
 > planteó el riesgo; Ulises lo asumió y pidió no volver sobre ello.
 >
-> ⚠️ **Dependencia con el punto 4, que sigue viva:** mientras las funciones se
-> ejecuten en `iad1`, la política de privacidad **no puede escribir que los
-> datos no salen de la UE**. El punto que se ejecute primero condiciona al otro,
-> y arreglar la región antes ahorra reescribir la política.
+> ✅ **La dependencia con la región queda resuelta antes** — decisión de Ulises
+> del 2026-08-19: primero la región, luego los legales. Ver el bloque de
+> `vercel.json` más abajo. En cuanto ese despliegue esté vivo, la política de
+> privacidad **sí puede afirmar que el tratamiento ocurre en la UE**; hasta
+> entonces, no.
 
 > ### 🗓️ Tarea con fecha: **2026-09-01**
 >
@@ -200,6 +201,37 @@
 > - La excepción de alojamiento y transporte (arriba) es buen momento para
 >   revisarla también.
 >
+> ### 🔴 La región: arreglada en el repositorio, **pendiente de un despliegue**
+>
+> Hallazgo 4 de la auditoría: `x-vercel-id` de `/es/cuenta` empezaba por
+> **`fra1::iad1::`** —borde en Fráncfort, **función en Washington**— contra una
+> base de datos en Irlanda. Con ADR-29 el archivo del candidato pasa por el
+> servidor, así que un DNI transitaba por Estados Unidos, contra ADR-09.
+>
+> **Hecho el 2026-08-19:** `vercel.json` con `"regions": ["dub1"]`, y **ADR-32**
+> que lo razona. Dublín es `eu-west-1`, **la misma región de AWS donde está
+> Supabase**: lo que domina la latencia de una ruta privada son las idas y
+> venidas función↔base, no la distancia al candidato, porque las páginas
+> públicas las sirve el borde y son estáticas.
+>
+> ❗ **Falta el despliegue, y lo tiene que lanzar Ulises**: el clasificador de
+> permisos denegó `vercel --prod` a la sesión.
+>
+> ```bash
+> ! npx vercel --prod --yes
+> ```
+>
+> **Y verificarlo después — sin esto no está hecho:**
+>
+> ```bash
+> curl -sS -D - -o /dev/null https://talpass.eu/es/cuenta | grep -i x-vercel-id
+> ```
+>
+> Tiene que empezar por **`dub1::`** o traer `dub1` como región de función. Si
+> sigue diciendo `iad1`, el despliegue no ha tomado la configuración y **no se
+> pasa a los legales**. Antes del cambio decía:
+> `x-vercel-id: fra1::iad1::mm24x-1787150590812-e375026b0466`.
+
 > ### El orden acordado — nada de diseño hasta que esto esté
 >
 > 1. ~~`git push`~~ ✅ hecho el 2026-08-18.

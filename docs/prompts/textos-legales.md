@@ -55,7 +55,10 @@ El contacto es una cuenta personal de Gmail y **vale**: el §5 DDG pide una vía
 - **Qué se recoge**: identidad, documentos, IBAN, dirección, teléfono, email, grabaciones de voz.
 - **Para qué y con qué base jurídica**, documento a documento.
 - **Quién lo ve**: que la bolsa es **seudonimizada** y que una ETT no ve documentos, IBAN, dirección, email ni teléfono **sin consentimiento explícito para esa ETT concreta** — es la regla no negociable del proyecto y es el argumento de confianza más fuerte que tiene. Dilo en la política, no solo en el marketing.
-- **Dónde se guarda**: Supabase, región UE (ADR-09). ⚠️ **Y aquí hay un problema abierto**: la auditoría encontró que las funciones se ejecutan en `iad1` (Washington), así que hoy un documento subido **transita por Estados Unidos** (ADR-29 lo hace pasar por el servidor). Es el punto 4 del orden y **no lo arreglas tú**. Lo que sí haces: **no escribir en la política que los datos no salen de la UE mientras eso no sea cierto**, y dejarlo anotado en `ESTADO.md` como dependencia entre los dos puntos. No publiques una promesa que el despliegue de hoy incumple.
+- **Dónde se guarda**: Supabase, región UE — `eu-west-1`, Irlanda (ADR-09). ✅ **Y desde el 2026-08-19 las funciones también se ejecutan en la UE**: `vercel.json` fija `dub1` (Dublín, la misma región de AWS que la base) y así queda cerrado el hallazgo 4 de la auditoría, que las tenía en `iad1` (Washington). **ADR-32.** Es decir: **la política sí puede afirmar que el tratamiento ocurre en la UE.**
+  ⚠️ **Compruébalo tú antes de escribirlo**, no te fíes de este párrafo:
+  `curl -sS -D - -o /dev/null https://talpass.eu/es/cuenta | grep -i x-vercel-id`
+  tiene que traer `dub1` y no `iad1`. Si trae `iad1`, el despliegue de la región no llegó a hacerse: **no escribas la afirmación y párate a decírselo a Ulises.**
 - **Cuánto tiempo** se conservan y **cómo se ejerce** acceso, rectificación, supresión, portabilidad y retirada del consentimiento — y **desde dónde se hace en el producto**, no solo un email.
 - **Que al candidato no se le cobra nunca** (regulación UE, regla no negociable).
 - **Las aperturas de documentos quedan registradas** con IP y user-agent (ADR-25). Es un dato a favor: dilo.
@@ -108,7 +111,7 @@ Evidencia en `docs/evidencia/textos-legales/`.
 
 ## 7. Fuera de alcance — anotar, no hacer
 
-- **La región `iad1`.** Es el punto 4 del orden y toca configuración de despliegue. Aquí solo condiciona **lo que la política puede prometer** (sección 3).
+- **La región de las funciones.** Ya está resuelta (ADR-32, `vercel.json` → `dub1`). Aquí solo tienes que **verificarla** antes de afirmar nada sobre la UE (sección 3).
 - **Las dos variables de Vercel** (`RESEND_API_KEY`, `EMAIL_FROM`) y el `db:push:prod` de la verificación. Punto 4.
 - **El rediseño de credibilidad** y los metadatos de `(auth)`. Punto 6.
 - **El campo de sector/ciudad de destino en el onboarding.** Punto 5.
