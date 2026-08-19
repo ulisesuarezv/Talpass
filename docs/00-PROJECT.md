@@ -115,17 +115,7 @@ Supabase en región europea y despliegue en Vercel. Datos personales de ciudadan
 
 _Precisión (fase 1):_ el proyecto real está en **`eu-west-1` (Irlanda)**, no en Fráncfort como decía la versión anterior de este ADR. Se corrige el texto, no la región: lo que exige la decisión es territorio UE, e Irlanda lo es. La latencia desde Alemania es equivalente a efectos prácticos.
 
-### ADR-32 · Las funciones se ejecutan en Dublín, junto a la base de datos
-
-_(2026-08-19, a raíz del hallazgo 4 de la auditoría del 2026-08-18.)_
-
-**`vercel.json` fija `"regions": ["dub1"]`.** Sin esa línea, Vercel colocaba las funciones en su región por defecto, `iad1` (Washington): la cabecera `x-vercel-id` de una ruta privada empezaba por `fra1::iad1::`, con el borde en Fráncfort y la función en Estados Unidos, contra una base de datos en Irlanda.
-
-**Por qué era un problema y no una curiosidad.** ADR-29 hace que el archivo del candidato **pase por el servidor**, así que un DNI fotografiado viajaba a Washington antes de llegar a Irlanda. ADR-09 dice que los datos personales de ciudadanos UE no salen de la UE, y no salía por ningún ADR: salía por un valor por defecto que nadie había mirado.
-
-**Por qué Dublín y no Fráncfort.** `dub1` es `eu-west-1`, **la misma región de AWS donde está el proyecto de Supabase** (precisión de ADR-09). Lo que domina la latencia de una ruta privada no es la distancia al candidato —las páginas públicas las sirve el borde y son estáticas (ADR-11, ADR-13)— sino las idas y venidas entre la función y la base: sesión, RLS, URLs firmadas, y el archivo de ADR-29. Colocarlas juntas las hace locales. Fráncfort estaría más cerca del candidato y más lejos de todo lo que la función necesita.
-
-**Consecuencia para los textos legales**: con esto desplegado, la política de privacidad **ya puede afirmar que el tratamiento ocurre en la UE**. Mientras no lo esté, no puede.
+> **Ver también ADR-32**, que coloca las funciones en Dublín (`dub1`) para que el código que trata esos datos esté también en la UE y junto a la base.
 
 ### ADR-10 · Acabado visual: sobrio, profesional, mobile-first
 
@@ -661,6 +651,18 @@ publicado hoy es una excepción consciente y temporal, no una regla, y por eso
 vive fechada en `docs/ESTADO.md` y anotada junto al código, no aquí.
 
 ---
+
+### ADR-32 · Las funciones se ejecutan en Dublín, junto a la base de datos
+
+_(2026-08-19, a raíz del hallazgo 4 de la auditoría del 2026-08-18.)_
+
+**`vercel.json` fija `"regions": ["dub1"]`.** Sin esa línea, Vercel colocaba las funciones en su región por defecto, `iad1` (Washington): la cabecera `x-vercel-id` de una ruta privada empezaba por `fra1::iad1::`, con el borde en Fráncfort y la función en Estados Unidos, contra una base de datos en Irlanda.
+
+**Por qué era un problema y no una curiosidad.** ADR-29 hace que el archivo del candidato **pase por el servidor**, así que un DNI fotografiado viajaba a Washington antes de llegar a Irlanda. ADR-09 dice que los datos personales de ciudadanos UE no salen de la UE, y no salía por ningún ADR: salía por un valor por defecto que nadie había mirado.
+
+**Por qué Dublín y no Fráncfort.** `dub1` es `eu-west-1`, **la misma región de AWS donde está el proyecto de Supabase** (precisión de ADR-09). Lo que domina la latencia de una ruta privada no es la distancia al candidato —las páginas públicas las sirve el borde y son estáticas (ADR-11, ADR-13)— sino las idas y venidas entre la función y la base: sesión, RLS, URLs firmadas, y el archivo de ADR-29. Colocarlas juntas las hace locales. Fráncfort estaría más cerca del candidato y más lejos de todo lo que la función necesita.
+
+**Consecuencia para los textos legales**: con esto desplegado, la política de privacidad **ya puede afirmar que el tratamiento ocurre en la UE**. Mientras no lo esté, no puede.
 
 ### ADR-33 · Los textos legales son una ruta pública con parámetro, y su cuerpo no vive en `messages/`
 

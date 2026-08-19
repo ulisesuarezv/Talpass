@@ -190,6 +190,16 @@ Listado con filtros (país, sector, idioma, alojamiento, transporte, carnet, tur
 
 ### 🟡 Construida y verificada en local — NO cerrada
 
+> ⚠️ **Y «en local» es literal: en producción no hay ni una landing.** Las 16
+> landings y las 6 vacantes de la tabla de abajo se midieron en local con datos
+> de prueba. Como las landings derivan de las vacantes vivas (ADR-23) y hoy hay
+> **cero vacantes publicadas**, `/es/trabajo/**` responde **404 entero** en
+> `https://talpass.eu` — recomprobado el 2026-08-19. Funciona como está
+> diseñado, pero **no leas esta ficha como si esas páginas estuvieran servidas**:
+> la superficie indexable real de producción son 13 URLs (7 hasta los legales),
+> ninguna de ellas una landing. Era el hallazgo 5 de la auditoría del 2026-08-18.
+> El día que haya vacantes reales, vuelven solas con el redespliegue.
+
 > **Corrección del PM, 2026-08-15.** La sesión marcó esta fase ✅ y a la vez
 > informó, con toda honestidad, de que no pudo comprobar los dos criterios de
 > "hecho cuando" que dependen de producción: la validación en el **Google Rich

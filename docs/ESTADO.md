@@ -191,13 +191,23 @@
 >
 > ### Lo que la auditoría encontró, por orden de gravedad
 >
+> **Estado al 2026-08-19, recomprobado contra producción:** resueltos 1, 2 (cuatro
+> de cinco), 3 y 4. **Siguen vivos 5, 6, 7 y 8**, los cuatro verificados hoy:
+> `/es/trabajo/alemania` da 404, `vercel env ls` no trae `RESEND_API_KEY` ni
+> `EMAIL_FROM`, `/es/registro` sigue sirviendo el título de la home sin canónica,
+> y `ettrecruiter.vercel.app` sigue a 200.
+>
 > 1. ~~**La fase 4b no existía fuera del portátil.**~~ **✅ RESUELTO HOY.**
 >    `origin/main` iba 4 commits por detrás y **no tenía ni uno de los 6 ficheros
 >    de `opportunities`**: el sitio que Google está indexando existía solo en
 >    local. Hecho `git push`; `origin/main` = `a71fba5` y verificado que los 6
 >    ficheros están. La frase "Git y producción quedan sincronizados" que este
 >    documento tenía escrita **era falsa** y la escribió el PM.
-> 2. 🔴 **Cinco atribuciones falsas siguen vivas en producción.** La peor: los
+> 2. ~~**Cinco atribuciones falsas vivas en producción.**~~ ✅ **CUATRO
+>    RESUELTAS el 2026-08-19** (ADR-31, `docs/evidencia/correccion-copy/`). **La
+>    quinta —el alojamiento y el transporte— sigue publicada a propósito**: es
+>    la excepción consciente de Ulises, ver «La decisión de las cifras». El texto
+>    original se conserva porque describe la fuente: La peor: los
 >    perfiles de **almacén, logística y producción** publican "Alojamiento / En
 >    algunas ofertas" y "Transporte / En algunas ofertas" sobre una investigación
 >    cuyo dato es **0 de 14 lo ofrecen y 14 de 14 callan**. No es una etiqueta mal
@@ -207,12 +217,17 @@
 >    redacción** del informe (18,00 en almacén y 17,00 en producción; nunca se
 >    observaron) y dos frases de la ficha de almacén que contradicen a la de
 >    producción. Detalle en `04-superficie-copy.md` §B.1.
-> 3. 🔴 **El registro pide aceptar unos Términos que no existen.** No hay ninguna
+> 3. ~~**El registro pide aceptar unos Términos que no existen.**~~ ✅
+>    **RESUELTO el 2026-08-19** (ADR-33 y ADR-34,
+>    `docs/evidencia/textos-legales/`): 12 rutas legales vivas, enlaces reales en
+>    el registro y `CONSENT_VERSIONS` en `2026-08-19`. Era: No hay ninguna
 >    ruta legal (`/es/privacidad`, `/es/terminos`, `/es/legal` son 404), la
 >    casilla obligatoria pone los Términos **en negrita en vez de enlazarlos**
 >    (`<terms>` → `<strong>`), y `src/config/legal.ts` versiona con fecha
 >    `2026-08-14` cuatro documentos que no están en el repositorio.
-> 4. 🔴 **Las funciones se ejecutan en Estados Unidos.** La cabecera
+> 4. ~~**Las funciones se ejecutan en Estados Unidos.**~~ ✅ **RESUELTO el
+>    2026-08-19** (ADR-32, `vercel.json` → `dub1`), verificado ruta por ruta.
+>    Era: La cabecera
 >    `x-vercel-id` de una ruta privada empieza por `fra1::iad1::`: el borde está
 >    en Fráncfort y **la función en Washington**,
 >    contra una base de datos en Irlanda. Con ADR-29 la subida de documentos
@@ -224,7 +239,8 @@
 > 5. 🔴 **`/es/trabajo/**` es 404 entero en producción** (0 vacantes ⇒ 0
 >    landings, ADR-23). Funciona como está diseñado, pero **ningún documento lo
 >    decía** y el roadmap sigue presentando las landings como entregadas. La
->    superficie indexable real de producción son **7 URLs**, y el "landing 97"
+>    superficie indexable real de producción eran **7 URLs** (hoy **13**, tras los
+>    legales), y el "landing 97"
 >    del roadmap **no se puede reproducir donde se sirve**: el rediseño mide en
 >    local para tener las seis páginas.
 > 6. 🟡 **Faltan DOS variables en Vercel, no tres.** `SUPABASE_SERVICE_ROLE_KEY`
@@ -380,15 +396,27 @@ PRERENDER` y **sin** cabecera de sesión ni `Set-Cookie` (ADR-11, ADR-13).
 >    no después: pedírselo a 30 personas ya captadas es hacerlas volver.
 > 6. **El pase de credibilidad**, y su auditoría posterior contra la tabla.
 >
-> ### Lo siguiente — ~~el prompt del punto 2~~ **ejecutado el 2026-08-19**
+> ### Lo siguiente — **el punto 4, y es de Ulises**
 >
-> `docs/prompts/correccion-copy.md` ya está ejecutado y desplegado: ver el
-> bloque del 2026-08-19, arriba del todo. **El PM verifica su cierre contra
-> producción, no contra el resumen de la sesión.**
+> Los puntos 2, 3 y 3.5 están hechos, desplegados y verificados. **Lo que toca es
+> el punto 4: desbloquear la verificación en producción.** No lleva prompt de
+> código: son escrituras y llaves, y las lanza Ulises.
 >
-> Le toca ahora el **prompt del punto 3, los textos legales**, que arrastra
-> además el `<terms>` en negrita del registro y las cuatro fechas de
-> `src/config/legal.ts` que hoy versionan documentos que no existen.
+> ```bash
+> ! printf 'produccion\nY\n' | pnpm db:push:prod   # 20260816120000_verification.sql
+> ```
+>
+> más `RESEND_API_KEY` y `EMAIL_FROM` en Vercel, y **redesplegar después**
+> (`EMAIL_FROM` no es `NEXT_PUBLIC_`, pero el despliegue es lo que hace que la
+> función las lea). **Comprobado el 2026-08-19 con `vercel env ls production`:
+> las dos siguen faltando.** El PM verifica con `supabase migration list
+--linked` y `vercel env ls` al terminar, no con el mensaje del script.
+>
+> Ese punto es además donde se ejercita el **alta real contra producción**, que
+> los legales dejaron probada solo en local.
+>
+> Después van el punto 5 (sector/ciudad de destino en el onboarding) y el 6 (el
+> pase de credibilidad y su auditoría contra la tabla de 40 cifras).
 
 > ## ✅ Fase 4b cerrada, 2026-08-17 — el sitio ya está abierto a Google
 >
@@ -462,8 +490,10 @@ que se cierra esa ETT.
 | 3 · Vacantes + SEO     | 🟡 **bloqueada hasta que haya ETT** — Rich Results Test sobre vacante real |
 | 4 · Verificación       | 🟡 **bloqueada hasta que haya ETT** — publicar una vacante real            |
 | **4b · Oportunidades** | **✅ cerrada 2026-08-17 — 5 perfiles vivos y el sitio abierto a Google**   |
-| **5 · Aplicaciones**   | **⬜ siguiente fase de código** — su prompt sigue sin escribirse           |
-| 6–10                   | ⬜                                                                         |
+| **Vía B (sin número)** | **🟢 es donde se trabaja hoy** — ver «El orden acordado», arriba           |
+| **5 · Aplicaciones**   | **⬜ congelada en la vía A** — su prompt sigue sin escribirse, a propósito |
+| 6, 7, 8, 10            | ⬜ vía A, congeladas hasta que haya ETT                                    |
+| **9 · GDPR y legal**   | **🟡 los textos legales salieron de aquí y están vivos** (ADR-33, ADR-34)  |
 
 ### Lo que dejó la fase 4 (2026-08-16, verificado contra la base local)
 
