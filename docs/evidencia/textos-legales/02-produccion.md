@@ -3,6 +3,24 @@
 > Sesión del 2026-08-19, punto 3 del orden acordado. **Vivo en
 > `https://talpass.eu`.**
 
+> ⚠️ **Nota del PM, 2026-08-20 — este fichero es una foto, y su despliegue ya
+> no es el vivo.** Todo lo que se mide aquí se midió contra
+> `dpl_2vHfuQdbqKGdAJwxjjcZ41CMJbSd` y era cierto. Quince minutos después, a las
+> 19:47, un redespliegue puso `talpass.eu` sobre
+> **`dpl_DR9SqRyoQtNsAQBFgPFfmGn4sc9g`**, que es el que sirve hoy.
+> **Ninguna medición de las de abajo cambia**, y por eso no se reescribe una
+> sola cifra: es el mismo código —el último commit que toca `src`, `messages` o
+> `vercel.json` es `79e6291`, de las 17:18— y se ha recomprobado hoy contra el
+> despliegue vivo (12 rutas legales a 200, cuatro enlaces reales en el registro,
+> funciones en `dub1`).
+>
+> Lo que sí falla es la fila «ID del despliegue» de la tabla de cierre: acredita
+> un identificador que dejó de ser el servido. **La lección, y va para la
+> próxima sesión que cierre algo:** el `dpl_` que vale se lee de
+> `vercel inspect talpass.eu` **al terminar de verificar**, no del que devolvió
+> el propio despliegue. Son dos hechos distintos, igual que «desplegado» y
+> «subido».
+
 ## El despliegue, y de qué despliegue hablamos
 
 | Despliegue                         | Qué publica                                         |

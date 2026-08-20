@@ -47,6 +47,21 @@
 > **`dpl_2vHfuQdbqKGdAJwxjjcZ41CMJbSd`**, aliased a `talpass.eu` y confirmado
 > con `vercel inspect` **antes** de leer ninguna cabecera.
 >
+> ⚠️ **Ese ya no es el despliegue vivo, corregido el 2026-08-20 por el PM.** El
+> que sirve `talpass.eu` hoy es **`dpl_DR9SqRyoQtNsAQBFgPFfmGn4sc9g`**, de las
+> 19:47 — quince minutos después del que esta sección acredita. **Es el mismo
+> código**: el último commit que toca `src`, `messages` o `vercel.json` es
+> `79e6291`, de las 17:18, y después no se tocó ni un fichero de código
+> (`git log --since --name-only` sobre esas rutas sale vacío). Así que lo
+> verificado abajo sigue siendo cierto —recomprobado hoy contra el despliegue
+> vivo: 12 rutas legales a 200, los cuatro enlaces del registro, `dub1` en las
+> funciones—, pero **el identificador que constaba como evidencia no era el que
+> se estaba sirviendo**. Se deja escrito en vez de sustituirlo porque el fallo
+> es la lección: en este proyecto **el `dpl_` que vale es el que devuelve
+> `vercel inspect talpass.eu` al terminar de verificar**, no el que devolvió el
+> despliegue. Son dos hechos distintos, y el segundo se queda atrás en cuanto
+> alguien vuelve a desplegar.
+>
 > - **Las doce rutas a 200** en `es` y `en`, legibles sin ejecutar JavaScript.
 > - `x-vercel-cache: HIT` + `x-nextjs-prerender: 1`, **sin**
 >   `x-ett-session-checked` y **sin** `Set-Cookie`. Su `x-vercel-id` es `fra1::`
@@ -382,7 +397,9 @@ PRERENDER` y **sin** cabecera de sesión ni `Set-Cookie` (ADR-11, ADR-13).
 >    con `docs/prompts/correccion-copy.md`, desplegado y verificado contra
 >    producción. Ver el bloque de arriba y `docs/evidencia/correccion-copy/`.
 > 3. ~~**Los textos legales y su ruta.**~~ ✅ **hecho el 2026-08-19** (ADR-33 y
->    ADR-34, `dpl_2vHfuQdbqKGdAJwxjjcZ41CMJbSd`), desplegado y verificado contra
+>    ADR-34; vivo hoy en `dpl_DR9SqRyoQtNsAQBFgPFfmGn4sc9g`, un redespliegue del
+>    mismo código que el `dpl_2vHfuQ…` que acredita la evidencia — ver el aviso
+>    del bloque de arriba), desplegado y verificado contra
 >    producción. Ver el bloque de arriba y `docs/evidencia/textos-legales/`.
 >    **Lo siguiente es el punto 4: desbloquear la verificación en producción** —
 >    las dos variables de Vercel (`RESEND_API_KEY`, `EMAIL_FROM`) y el
