@@ -18,7 +18,7 @@ export function MarketDisclosure() {
   return (
     <aside className="flex flex-col gap-2 rounded-lg border border-dashed bg-muted/30 p-4">
       <p className="text-sm font-semibold tracking-tight">{t('title')}</p>
-      <p className="text-sm text-muted-foreground">{t('body')}</p>
+      <p className="type-body text-muted-foreground">{t('body')}</p>
       <p className="text-xs text-muted-foreground">
         {t('source', {
           date: format.dateTime(new Date(OPPORTUNITY_SOURCE_DATE), {
@@ -41,8 +41,8 @@ export function AgreementFloor() {
 
   return (
     <section className="flex flex-col gap-2 rounded-lg border p-4">
-      <h2 className="text-base font-semibold tracking-tight">{t('title')}</h2>
-      <p className="text-sm text-muted-foreground">
+      <h2 className="type-h3">{t('title')}</h2>
+      <p className="type-body text-muted-foreground">
         {t('body', {
           amount: format.number(AGREEMENT_FLOOR.amount, {
             style: 'currency',

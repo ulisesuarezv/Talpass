@@ -144,18 +144,14 @@ export default async function OpportunityPage({
   return (
     <div className="mx-auto flex max-w-3xl flex-col gap-8 px-4 py-10 sm:py-16">
       <header className="flex flex-col gap-3">
-        <p className="text-xs tracking-wide text-muted-foreground uppercase">
-          {t('detail.eyebrow')}
-        </p>
-        <h1 className="text-2xl font-semibold tracking-tight text-balance sm:text-3xl">
-          {t(`${profile}.title`)}
-        </h1>
+        <p className="type-eyebrow">{t('detail.eyebrow')}</p>
+        <h1 className="type-h1">{t(`${profile}.title`)}</h1>
         <p className="text-muted-foreground">
           {[t(`${profile}.region`), opportunity.countryName]
             .filter(Boolean)
             .join(' · ')}
         </p>
-        <p className="text-lg font-semibold">
+        <p className="text-xl font-semibold tracking-tight text-primary sm:text-2xl">
           {formatMarketSalary(opportunity, t, tJobs, format)}
         </p>
         <p className="text-xs text-muted-foreground">
@@ -167,7 +163,7 @@ export default async function OpportunityPage({
 
       <MarketDisclosure />
 
-      <dl className="grid grid-cols-2 gap-4 rounded-lg border p-4 text-sm sm:grid-cols-3">
+      <dl className="grid grid-cols-2 gap-4 rounded-lg border bg-card p-4 text-sm sm:grid-cols-3">
         <Fact label={t('facts.weeklyHoursLabel')}>
           {opportunity.weeklyHours === null
             ? t('facts.unknown')
@@ -215,18 +211,16 @@ export default async function OpportunityPage({
       </dl>
 
       <section className="flex flex-col gap-2">
-        <h2 className="text-lg font-semibold tracking-tight">
-          {t('detail.sections.intro')}
-        </h2>
-        <p className="text-sm text-muted-foreground">{t(`${profile}.intro`)}</p>
+        <h2 className="type-h2">{t('detail.sections.intro')}</h2>
+        <p className="type-body text-muted-foreground">
+          {t(`${profile}.intro`)}
+        </p>
       </section>
 
       {sections.map((section) => (
         <section key={section.key} className="flex flex-col gap-2">
-          <h2 className="text-lg font-semibold tracking-tight">
-            {t(`detail.sections.${section.key}`)}
-          </h2>
-          <ul className="flex list-disc flex-col gap-1.5 pl-5 text-sm text-muted-foreground">
+          <h2 className="type-h2">{t(`detail.sections.${section.key}`)}</h2>
+          <ul className="flex list-disc flex-col gap-1.5 pl-5 type-body text-muted-foreground">
             {section.items.map((item) => (
               <li key={item}>{item}</li>
             ))}
@@ -235,10 +229,8 @@ export default async function OpportunityPage({
       ))}
 
       <section className="flex flex-col gap-2">
-        <h2 className="text-lg font-semibold tracking-tight">
-          {t('detail.sections.conditions')}
-        </h2>
-        <ul className="flex list-disc flex-col gap-1.5 pl-5 text-sm text-muted-foreground">
+        <h2 className="type-h2">{t('detail.sections.conditions')}</h2>
+        <ul className="flex list-disc flex-col gap-1.5 pl-5 type-body text-muted-foreground">
           {(t.raw(`${profile}.conditions`) as string[]).map((item) => (
             <li key={item}>{fill(item, conditionValues)}</li>
           ))}
@@ -251,8 +243,8 @@ export default async function OpportunityPage({
 
       <Separator />
 
-      <p className="text-sm">
-        <Link href="/opportunities" className="underline underline-offset-4">
+      <p className="type-body">
+        <Link href="/opportunities" className="type-link">
           {t('detail.back')}
         </Link>
       </p>

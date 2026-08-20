@@ -44,9 +44,7 @@ export default async function ForgotPasswordPage({
 
   return (
     <>
-      <h1 className="mb-2 text-2xl font-semibold tracking-tight">
-        {t('forgot.title')}
-      </h1>
+      <h1 className="mb-2 type-h1">{t('forgot.title')}</h1>
       <p className="mb-8 text-sm text-muted-foreground">
         {t('forgot.subtitle')}
       </p>

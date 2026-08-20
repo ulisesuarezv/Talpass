@@ -106,7 +106,7 @@ function DocumentActions({
         href={`/api/documents/${documentId}`}
         target="_blank"
         rel="noreferrer"
-        className="text-sm underline underline-offset-4"
+        className="text-sm type-link"
       >
         {t('view')}
       </a>

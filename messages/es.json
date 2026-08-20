@@ -17,7 +17,17 @@
   },
   "Common": {
     "yes": "Sí",
-    "no": "No"
+    "no": "No",
+    "loading": {
+      "label": "Cargando…"
+    },
+    "error": {
+      "title": "Algo ha fallado al cargar esta página",
+      "description": "No es culpa tuya y tus datos no se han perdido. Suele arreglarse volviendo a intentarlo; si sigue pasando, vuelve dentro de un rato.",
+      "retry": "Volver a intentarlo",
+      "home": "Ir al inicio",
+      "reference": "Referencia del fallo: {digest}"
+    }
   },
   "EnglishLevels": {
     "a1": "A1 — Muy básico",

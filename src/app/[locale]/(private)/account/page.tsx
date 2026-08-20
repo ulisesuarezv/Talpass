@@ -42,7 +42,7 @@ export default async function AccountPage({
   return (
     <div className="mx-auto flex w-full max-w-2xl flex-col gap-8 px-4 py-8">
       <header className="flex flex-col gap-3">
-        <h1 className="text-2xl font-semibold tracking-tight">
+        <h1 className="type-h1">
           {t('title', {
             name: candidate.first_name,
           })}

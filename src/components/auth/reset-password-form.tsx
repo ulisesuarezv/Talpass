@@ -74,10 +74,7 @@ export function ResetPasswordForm() {
 
       <SubmitButton label={t('reset.submit')} pendingLabel={t('pending')} />
 
-      <Link
-        href="/forgot-password"
-        className="text-sm underline underline-offset-4"
-      >
+      <Link href="/forgot-password" className="text-sm type-link">
         {t('reset.requestAnother')}
       </Link>
     </form>

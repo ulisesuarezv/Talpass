@@ -84,7 +84,7 @@ export async function DocumentsStatus({
                   href={`/api/documents/${row.documentId}`}
                   target="_blank"
                   rel="noreferrer"
-                  className="text-sm underline underline-offset-4"
+                  className="text-sm type-link"
                 >
                   {t('view')}
                 </a>

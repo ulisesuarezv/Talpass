@@ -44,9 +44,7 @@ export default async function SignupPage({
 
   return (
     <>
-      <h1 className="mb-2 text-2xl font-semibold tracking-tight">
-        {t('signup.title')}
-      </h1>
+      <h1 className="mb-2 type-h1">{t('signup.title')}</h1>
       <p className="mb-8 text-sm text-muted-foreground">
         {t('signup.subtitle')}
       </p>

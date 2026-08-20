@@ -900,6 +900,153 @@ _Lo que sigue sin resolverse:_ acotar qué namespaces se serializan **en general
 Hoy el backoffice y las plantillas de correo siguen viajando al HTML de la home.
 Sigue siendo una tarea propia y sigue sin hacerse.
 
+### ADR-38 · El sistema visual vive en los tokens, y el reparto de papeles lo decide el contraste medido
+
+Decidido en la fase C2, el 2026-08-20. Aplica la paleta que eligió Ulises
+—primario `#0D9488`, primario dark `#134E4A`, acento `#F97316`— sin cambiarla y
+**cambiando a quién le toca cada papel**, porque los ratios no dan para el
+reparto obvio.
+
+**Lo medido, con `pnpm check:contrast` sobre los 40 pares que pinta de verdad la
+aplicación** (`docs/evidencia/fase-c2/01-contraste.md`):
+
+- `#F97316` sobre blanco da **2,80**, y el ratio de contraste **es simétrico**:
+  el naranja no vale como texto, ni como texto grande, ni como elemento de
+  interfaz, en ningún sentido. Solo como superficie con tinta encima (**6,37**)
+  o como adorno sin información. Texto naranja = `#C2410C` (**4,95**).
+- `#0D9488` sobre el fondo da **3,58**: iconos, bordes y titulares grandes sí;
+  texto normal no.
+- El que aguanta cualquier cosa es `#134E4A` (**9,06**), y por eso **es él quien
+  ocupa `--primary`**: `--primary` es sobre todo fondo de botón con blanco
+  encima, y ahí el teal-600 se queda en 3,74.
+
+**Y `--accent` NO lleva el naranja, aunque el roadmap lo nombrara.** En shadcn
+`--accent` no es un color de marca: es la superficie de hover y foco de los
+componentes. Hoy la usa `select.tsx`, y **todo componente que añada la CLI en el
+futuro la usará igual**. Ponerle el naranja teñiría cada hover del backoffice y
+rompería el contraste de pantallas que nadie ha mirado, sin que salte nada. El
+acento de marca vive en `--brand-accent*`, que es explícito y no lo pisa nadie.
+La regla del roadmap —«el color vive en los tokens, ni un color en el JSX»— se
+cumple entera; lo que cambia es **qué token**, no dónde vive.
+
+**Tres cosas que el comprobador cazó y a ojo no se ven.** `--input` daba
+**1,35** —el borde de un campo, que es lo único que dice dónde se escribe—;
+`--ring` daba **1,9** y no señalaba el foco; y `--destructive` falló **dos
+veces**: con red-600 sobre el fondo, y luego con red-700 en el hover del botón
+destructivo, que pinta el rojo sobre sí mismo al 20 % y daba **4,39**. Ese
+último es el que justifica que esto sea un script y no una tabla: nadie iba a
+calcular a mano el contraste de un color contra una mezcla de sí mismo.
+
+_La escala tipográfica._ Trece combinaciones de tamaño, peso y `tracking` para
+seis niveles de encabezado pasan a **una clase por papel** (`.type-display`,
+`.type-h1`…`.type-h4`, `.type-lead`, `.type-body`, `.type-meta`, `.type-eyebrow`,
+`.type-link`) en `globals.css`. El texto de lectura sube de 14 a **15 px**: el
+`text-sm` de shadcn es medida de interfaz densa de escritorio, y aquí lo que se
+lee son párrafos que explican a alguien por qué debería subir su DNI a un sitio
+que no conoce. El cromo se queda en 14.
+
+_Las alturas de `ui/button` se desvían de la versión de serie_, que es lo que
+`CONVENTIONS.md` permite «salvo necesidad»: de serie `lg` mide 36 px y la guía
+táctil pide 44. Se aplica **una vez** en el componente, no pantalla por
+pantalla, que era justo el problema.
+
+_Modo oscuro: fuera de alcance, y el bloque `.dark` se retira._ Era inalcanzable
+—no hay `ThemeProvider` ni se aplica la clase en ningún sitio— y dejarlo en
+grises junto a un `:root` con la paleta nueva creaba un medio-estado que
+aparecería roto el día que alguien añadiese un interruptor. El motivo de fondo
+es que **los 40 ratios son contra fondo claro y no valen para el oscuro**: un
+tema oscuro obliga a rehacer la tabla entera, no a invertirla. Es una fase, no
+un bloque CSS. Y ojo, ADR-11 y ADR-13: un interruptor de tema en la cabecera
+volvería dinámicas todas las públicas.
+
+### ADR-39 · General Sans va autoalojada, **sin subsetear** y **con un solo corte**
+
+Decidido en la fase C2, el 2026-08-20, y las dos mitades del título salen de
+sitios distintos: la primera de la licencia, la segunda de medir.
+
+**Sin subsetear, porque la licencia lo prohíbe.** La ficha de la fase pedía
+«subsetear a `latin`». No se puede: la ITF Free Font License v2.0 §02 prohíbe
+expresamente _«modifying or replacing glyphs, **subsetting, format conversion**,
+or altering font names»_ sin permiso escrito, y §05 lo califica de obra
+derivada. Lo que sí permite, con todas las letras, es el autoalojamiento:
+_«Self-hosting by end users is permitted and recommended for greater control,
+reliability and performance.»_ Texto íntegro en
+`src/app/fonts/LICENSE-FFL.txt`; la lectura, en `src/app/fonts/README.md`.
+
+**Con un solo corte, porque los demás no caben en el presupuesto.** Se midieron
+**seis configuraciones**, mediana de 5 pasadas cada una, misma máquina y mismo
+día:
+
+| Configuración                            | Ruta crítica | Home            | Registro        |
+| ---------------------------------------- | ------------ | --------------- | --------------- |
+| Geist `latin` (lo que había)             | 29,3 KB      | 97 · 2,63 s     | 96 · 2,77 s     |
+| **General Sans Regular** ← lo que va     | **23,9 KB**  | **97 · 2,62 s** | **96 · 2,77 s** |
+| General Sans Variable (200–700)          | 38,4 KB      | 93 · 2,78 s     | 92 · 2,93 s     |
+| Regular + Semibold, las dos preacargadas | 48,2 KB      | 93 · 2,78 s     | 92 · 2,92 s     |
+| Regular preacargada + Semibold diferida  | 23,9 + 24,3  | 96 · 2,77 s     | 95 · 2,93 s     |
+| Variable sin preacargar                  | —            | 93 · 2,77 s     | **86** · 2,93 s |
+
+**Lo que enseña la tabla, y no es lo que uno supone:** lo que cuesta puntos no
+es el número de peticiones, son **los bytes en la ruta crítica**. Un fichero
+variable de 38 KB cuesta exactamente lo mismo que dos ficheros de 48 KB, y el
+umbral cae **entre los 29 KB de Geist y los 38 del variable**. Y quitar el
+`preload` no ayuda: lo empeora, porque la fuente se descubre tarde.
+
+La Regular sola pesa **5,4 KB menos que el Geist que había**, así que la
+tipografía de marca entra **abaratando** la ruta crítica. Es la única
+configuración que no toca el LCP, y ADR-10 es puerta dura.
+
+**El precio asumido, escrito para que sea decisión y no sorpresa:** los
+`font-semibold` los emboldece el navegador a partir de la Regular. No es la
+Semibold de verdad, y en un titular grande se nota al comparar. Comprarla cuesta
+**de 1 a 4 puntos de Lighthouse y 0,15–0,16 s de LCP**, sobre un sitio que ya
+está en 2,6–2,8 s con el umbral «bueno» en 2,5. **Es una decisión de Ulises, no
+técnica**, y el fichero está a un `cp` del paquete de Fontshare.
+
+`display: 'swap'` y `adjustFontFallback: 'Arial'`: el texto pinta con la fuente
+del sistema ajustada por métricas mientras baja el WOFF2, así que el LCP no
+espera a la fuente y el CLS no se mueve.
+
+### ADR-40 · Un fichero de convención de Next entra en el paquete de TODAS las páginas, y hay que tratarlo como tal
+
+Descubierto y decidido en la fase C2, el 2026-08-20, midiendo el build y el LCP.
+La fase añadió `loading.tsx` y `error.tsx` en el árbol `[locale]`, y **las dos
+versiones que parecían obvias costaron algo caro. Las dos.**
+
+**Primera trampa: traducir en servidor vuelve dinámico el sitio entero.**
+`PageLoading` se escribió como Server Component con `getTranslations('Common')`.
+El build pasó de **26 rutas prerenderizadas a 0**: todo `[locale]` se volvió
+dinámico, y con él se fueron el ISR, el caché del CDN y el SEO que protegen
+ADR-11 y ADR-13. El motivo: un `loading.tsx` **no recibe `params`**, así que no
+puede llamar a `setRequestLocale(locale)`; sin eso `getTranslations` deduce el
+idioma leyendo cabeceras, y leer cabeceras ahí arrastra a dinámicas a todas sus
+páginas.
+
+**Segunda trampa: traducir en cliente salva el estático y cuesta LCP.** Con
+`useTranslations` desde un Client Component vuelven las 26 rutas, pero el
+fichero se lleva un `chunk` propio al paquete de **todas** las páginas:
+**+4,1 KB en dos peticiones más**, medido en la home, que costaban **un punto de
+Lighthouse y 0,14 s de LCP**. Un `loading.tsx` no se paga cuando se ve: se paga
+en cada página del sitio, la vea alguien o no.
+
+**La salida, y es la regla que queda:** en un fichero de convención que no recibe
+`params`, **no se traduce**. El nombre accesible se toma con `aria-labelledby`
+de una etiqueta que pinta el layout —que sí tiene el idioma— y el componente se
+queda como Server Component sin una línea de JavaScript. El lector de pantalla
+dice «Cargando…» igual, en su idioma, y la home vuelve a **97 · 2,62 s**, que es
+exactamente la línea base.
+
+Por lo mismo, `error.tsx` —que **sí** tiene que ser Client Component, es el
+contrato de Next— dejó de importar el `Link` de `@/i18n/navigation` y usa un
+`<a>` pelado. Es además lo correcto en una pantalla de error: navegar por
+cliente reutiliza el mismo árbol de React que acaba de romperse.
+
+👉 **Esto no lo habría cazado ninguna prueba, y la primera trampa tampoco la
+habría cazado el LCP.** La primera se ve mirando la tabla de rutas del build y
+encontrando `ƒ` donde había `●`; la segunda solo aparece midiendo. Merece la
+pena hacer las dos cosas en toda fase que añada un `loading`, `error`,
+`template` o `default`.
+
 ---
 
 ## 5. Reglas de negocio

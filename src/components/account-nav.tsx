@@ -63,7 +63,10 @@ export function AccountNav() {
         {t('account')}
       </Link>
 
-      <form action={signOutAction}>
+      {/* `flex` en el formulario: un `<form>` es bloque, y sin esto el botón
+          «Salir» caía media línea por debajo de los demás enlaces de la
+          cabecera. Se veía a 1280 en la captura de esta fase. */}
+      <form action={signOutAction} className="flex items-center">
         <input type="hidden" name="locale" value={locale} />
         <button
           type="submit"

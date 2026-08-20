@@ -138,7 +138,7 @@ export function SignupForm() {
 
       <p className="text-sm text-muted-foreground">
         {t('signup.haveAccount')}{' '}
-        <Link href="/login" className="underline underline-offset-4">
+        <Link href="/login" className="type-link">
           {t('signup.loginLink')}
         </Link>
       </p>
@@ -167,7 +167,7 @@ function LegalLink({
       href={legalLink(document, locale)}
       target="_blank"
       rel="noopener noreferrer"
-      className="underline underline-offset-4"
+      className="type-link"
     >
       {children}
     </Link>

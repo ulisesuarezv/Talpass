@@ -53,9 +53,7 @@ export default async function OpportunitiesPage({
   return (
     <div className="mx-auto flex max-w-3xl flex-col gap-8 px-4 py-10 sm:py-16">
       <header className="flex flex-col gap-2">
-        <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">
-          {t('title')}
-        </h1>
+        <h1 className="type-h1">{t('title')}</h1>
         <p className="text-muted-foreground">{t('subtitle')}</p>
       </header>
 
@@ -70,19 +68,17 @@ export default async function OpportunitiesPage({
       <AgreementFloor />
 
       <section className="flex flex-col gap-3">
-        <h2 className="text-lg font-semibold tracking-tight">
-          {t('ask.title')}
-        </h2>
-        <p className="text-sm text-muted-foreground">{t('ask.intro')}</p>
-        <ul className="flex list-disc flex-col gap-2 pl-5 text-sm text-muted-foreground">
+        <h2 className="type-h2">{t('ask.title')}</h2>
+        <p className="type-body text-muted-foreground">{t('ask.intro')}</p>
+        <ul className="flex list-disc flex-col gap-2 pl-5 type-body text-muted-foreground">
           {(t.raw('ask.items') as string[]).map((item) => (
             <li key={item}>{item}</li>
           ))}
         </ul>
       </section>
 
-      <p className="text-sm">
-        <Link href="/jobs" className="underline underline-offset-4">
+      <p className="type-body">
+        <Link href="/jobs" className="type-link">
           {t('disclosure.jobs')}
         </Link>
       </p>

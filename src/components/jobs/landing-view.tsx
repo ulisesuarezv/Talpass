@@ -38,9 +38,7 @@ export async function LandingView({
   return (
     <div className="mx-auto flex max-w-3xl flex-col gap-8 px-4 py-10 sm:py-16">
       <header className="flex flex-col gap-3">
-        <h1 className="text-2xl font-semibold tracking-tight text-balance sm:text-3xl">
-          {t(`${landing.kind}.title`, values)}
-        </h1>
+        <h1 className="type-h1">{t(`${landing.kind}.title`, values)}</h1>
         <p className="text-muted-foreground">
           {t(`${landing.kind}.intro`, { ...values, count: jobs.length })}
         </p>
@@ -58,7 +56,7 @@ export async function LandingView({
         <>
           <Separator />
           <nav aria-label={t('related')} className="flex flex-col gap-3">
-            <h2 className="text-sm font-medium">{t('related')}</h2>
+            <h2 className="type-h4">{t('related')}</h2>
             <ul className="flex flex-wrap gap-2">
               {siblings.map((sibling) => (
                 <li key={key(sibling, locale)}>

@@ -28,8 +28,8 @@ export function SignupCta({
 
   return (
     <aside className="flex flex-col gap-3 rounded-lg border bg-muted/40 p-6">
-      <h2 className="text-lg font-semibold tracking-tight">{t('title')}</h2>
-      <p className="text-sm text-muted-foreground">
+      <h2 className="type-h2">{t('title')}</h2>
+      <p className="type-body text-muted-foreground">
         {t('body', { brand: siteConfig.name })}
       </p>
 

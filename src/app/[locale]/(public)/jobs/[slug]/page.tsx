@@ -98,19 +98,17 @@ export default async function JobDetailPage({
       />
 
       <header className="flex flex-col gap-3">
-        <h1 className="text-2xl font-semibold tracking-tight text-balance sm:text-3xl">
-          {job.title}
-        </h1>
+        <h1 className="type-h1">{job.title}</h1>
         <p className="text-muted-foreground">
           {place} · {job.sectorName}
         </p>
-        <p className="text-sm text-muted-foreground">
+        <p className="type-body text-muted-foreground">
           {t('detail.postedBy', { organization: job.hiringOrganization })}
         </p>
         {salary ? <p className="text-lg font-semibold">{salary}</p> : null}
       </header>
 
-      <dl className="grid grid-cols-2 gap-4 rounded-lg border p-4 text-sm sm:grid-cols-3">
+      <dl className="grid grid-cols-2 gap-4 rounded-lg border bg-card p-4 text-sm sm:grid-cols-3">
         <Fact label={t('facts.housingLabel')}>
           {job.housingProvided
             ? job.housingPrice !== null && job.housingCurrency
@@ -175,10 +173,8 @@ export default async function JobDetailPage({
 
       {sections.map((section) => (
         <section key={section.key} className="flex flex-col gap-2">
-          <h2 className="text-lg font-semibold tracking-tight">
-            {t(`detail.sections.${section.key}`)}
-          </h2>
-          <p className="text-sm whitespace-pre-line text-muted-foreground">
+          <h2 className="type-h2">{t(`detail.sections.${section.key}`)}</h2>
+          <p className="type-body whitespace-pre-line text-muted-foreground">
             {section.value}
           </p>
         </section>

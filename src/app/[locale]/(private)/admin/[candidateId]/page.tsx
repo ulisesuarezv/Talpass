@@ -34,12 +34,12 @@ export default async function AdminCandidatePage({
 
   return (
     <div className="mx-auto flex w-full max-w-3xl flex-col gap-6 px-4 py-8">
-      <Link href="/admin" className="text-sm underline underline-offset-4">
+      <Link href="/admin" className="text-sm type-link">
         {t('candidate.back')}
       </Link>
 
       <header className="flex flex-col gap-3">
-        <h1 className="text-2xl font-semibold tracking-tight">
+        <h1 className="type-h1">
           {file.firstName} {file.lastName}
         </h1>
 

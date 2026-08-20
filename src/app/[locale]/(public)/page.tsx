@@ -65,15 +65,11 @@ export default async function HomePage({
   return (
     <div className="mx-auto flex max-w-2xl flex-col gap-12 px-4 py-12 sm:py-20">
       <section className="flex flex-col gap-6">
-        <p className="text-sm font-medium tracking-wide text-muted-foreground uppercase">
-          {t('eyebrow')}
-        </p>
+        <p className="type-eyebrow">{t('eyebrow')}</p>
 
-        <h1 className="text-3xl font-semibold tracking-tight text-balance sm:text-5xl">
-          {t('title')}
-        </h1>
+        <h1 className="type-display">{t('title')}</h1>
 
-        <p className="text-base text-pretty text-muted-foreground sm:text-lg">
+        <p className="type-lead text-muted-foreground">
           {t('subtitle', { brand })}
         </p>
 
@@ -95,22 +91,27 @@ export default async function HomePage({
           </Button>
         </div>
 
-        <p className="border-t pt-6 text-sm text-muted-foreground">
+        {/* El único sitio de la home donde entra el naranja de la marca, y es
+            deliberado: es el hecho que más pesa para alguien que ya ha sido
+            estafado —«al candidato no se le cobra nunca»— y hasta ahora era
+            gris pequeño debajo de dos botones. El naranja va de superficie y de
+            regla, nunca de texto: `#F97316` sobre blanco da 2,80 y no llega ni
+            para texto grande. Encima va tinta, que da 16,81 sobre esta
+            superficie (ADR-38). */}
+        <p className="rounded-lg border border-l-4 border-brand-accent/35 border-l-brand-accent bg-brand-accent-soft px-4 py-3 type-body text-foreground">
           {t('note')}
         </p>
       </section>
 
       <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">
-          {t('how.title')}
-        </h2>
+        <h2 className="type-h2">{t('how.title')}</h2>
         <ol className="flex flex-col gap-4">
           {HOW_STEPS.map((step, index) => (
             <li key={step} className="flex flex-col gap-1">
-              <h3 className="font-medium">
+              <h3 className="type-h3">
                 {index + 1}. {t(`how.steps.${step}.title`)}
               </h3>
-              <p className="text-sm text-muted-foreground">
+              <p className="type-body text-muted-foreground">
                 {t(`how.steps.${step}.body`)}
               </p>
             </li>
@@ -124,15 +125,13 @@ export default async function HomePage({
         completo, no duplicado: el que manda es `/legal/datos-y-agencias`.
       */}
       <section className="flex flex-col gap-4">
-        <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">
-          {t('privacy.title')}
-        </h2>
-        <p className="text-sm text-muted-foreground">{t('privacy.intro')}</p>
+        <h2 className="type-h2">{t('privacy.title')}</h2>
+        <p className="type-body text-muted-foreground">{t('privacy.intro')}</p>
 
-        <div className="flex flex-col gap-6 rounded-lg border bg-muted/40 p-5 sm:flex-row sm:gap-8">
+        <div className="flex flex-col gap-6 rounded-lg border border-brand/25 bg-brand-soft p-5 sm:flex-row sm:gap-8">
           <div className="flex flex-1 flex-col gap-2">
-            <h3 className="text-sm font-semibold">{t('privacy.seesTitle')}</h3>
-            <ul className="flex list-disc flex-col gap-2 pl-5 text-sm text-muted-foreground">
+            <h3 className="type-h4">{t('privacy.seesTitle')}</h3>
+            <ul className="flex list-disc flex-col gap-2 pl-5 type-body text-muted-foreground">
               {(t.raw('privacy.sees') as string[]).map((item) => (
                 <li key={item}>{item}</li>
               ))}
@@ -140,8 +139,8 @@ export default async function HomePage({
           </div>
 
           <div className="flex flex-1 flex-col gap-2">
-            <h3 className="text-sm font-semibold">{t('privacy.neverTitle')}</h3>
-            <ul className="flex list-disc flex-col gap-2 pl-5 text-sm text-muted-foreground">
+            <h3 className="type-h4">{t('privacy.neverTitle')}</h3>
+            <ul className="flex list-disc flex-col gap-2 pl-5 type-body text-muted-foreground">
               {(t.raw('privacy.never') as string[]).map((item) => (
                 <li key={item}>{item}</li>
               ))}
@@ -149,52 +148,47 @@ export default async function HomePage({
           </div>
         </div>
 
-        <p className="text-sm text-muted-foreground">
+        <p className="type-body text-muted-foreground">
           {t('privacy.nothingAsked', { brand })}
         </p>
 
-        <p className="text-sm">
-          <Link
-            href={legalLink('data_sharing', locale)}
-            className="underline underline-offset-4"
-          >
+        <p className="type-body">
+          <Link href={legalLink('data_sharing', locale)} className="type-link">
             {t('privacy.link')}
           </Link>
         </p>
       </section>
 
       <section className="flex flex-col gap-3">
-        <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">
-          {t('cost.title')}
-        </h2>
-        <p className="text-sm text-muted-foreground">{t('cost.body')}</p>
-        <p className="text-sm text-muted-foreground">
+        <h2 className="type-h2">{t('cost.title')}</h2>
+        <p className="type-body text-muted-foreground">{t('cost.body')}</p>
+        <p className="type-body text-muted-foreground">
           {t('cost.who', { brand })}
         </p>
       </section>
 
       <section className="flex flex-col gap-3">
-        <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">
-          {t('status.title')}
-        </h2>
-        <p className="text-sm text-muted-foreground">
+        <h2 className="type-h2">{t('status.title')}</h2>
+        <p className="type-body text-muted-foreground">
           {hasJobs
             ? t('status.open', { brand, count: jobs.length })
             : t('status.empty', { brand })}
         </p>
-        <p className="text-sm text-muted-foreground">{t('status.meanwhile')}</p>
+        <p className="type-body text-muted-foreground">
+          {t('status.meanwhile')}
+        </p>
         {/*
           El enlace al listado de vacantes solo aparece cuando hay alguna.
           Invitar a ver «las ofertas publicadas» en el párrafo que acaba de
           decir que no hay ninguna es la contradicción que esta fase viene a
           quitar, no una que valga la pena añadir.
         */}
-        <p className="flex flex-col gap-2 text-sm sm:flex-row sm:gap-5">
-          <Link href="/opportunities" className="underline underline-offset-4">
+        <p className="flex flex-col gap-2 type-body sm:flex-row sm:gap-5">
+          <Link href="/opportunities" className="type-link">
             {t('status.opportunitiesLink')}
           </Link>
           {hasJobs ? (
-            <Link href="/jobs" className="underline underline-offset-4">
+            <Link href="/jobs" className="type-link">
               {t('status.jobsLink')}
             </Link>
           ) : null}
@@ -207,22 +201,17 @@ export default async function HomePage({
           antes de bajar hasta el final de la página. El nombre y la ciudad
           salen de `config/controller`, no del copy (ADR-12). */}
       <section className="flex flex-col gap-3 border-t pt-8">
-        <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">
-          {t('behind.title')}
-        </h2>
-        <p className="text-sm text-muted-foreground">
+        <h2 className="type-h2">{t('behind.title')}</h2>
+        <p className="type-body text-muted-foreground">
           {t('behind.body', {
             brand,
             name: controller.name,
             city: controller.address.city,
           })}
         </p>
-        <p className="text-sm text-muted-foreground">{t('behind.detail')}</p>
-        <p className="text-sm">
-          <Link
-            href={legalLink('impressum', locale)}
-            className="underline underline-offset-4"
-          >
+        <p className="type-body text-muted-foreground">{t('behind.detail')}</p>
+        <p className="type-body">
+          <Link href={legalLink('impressum', locale)} className="type-link">
             {t('behind.link')}
           </Link>
         </p>

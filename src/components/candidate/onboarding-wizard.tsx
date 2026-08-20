@@ -41,7 +41,7 @@ export function OnboardingWizard({
   return (
     <div className="mx-auto flex w-full max-w-md flex-col gap-6 px-4 py-8">
       <div className="flex flex-col gap-2">
-        <p className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
+        <p className="type-eyebrow">
           {t('progress', { step, total: LAST_STEP })}
         </p>
         <div
@@ -121,7 +121,7 @@ function StepForm({
       {step > 1 ? (
         <Link
           href={{ pathname: '/onboarding', query: { step: String(step - 1) } }}
-          className="text-center text-sm underline underline-offset-4"
+          className="text-center text-sm type-link"
         >
           {t('back')}
         </Link>
@@ -450,7 +450,7 @@ function ReviewStep({
 
       <Link
         href={{ pathname: '/onboarding', query: { step: '1' } }}
-        className="text-center text-sm underline underline-offset-4"
+        className="text-center text-sm type-link"
       >
         {t('editFromStart')}
       </Link>

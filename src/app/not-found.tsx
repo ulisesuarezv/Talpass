@@ -19,9 +19,7 @@ export default async function GlobalNotFound() {
     <html lang={routing.defaultLocale} className="h-full antialiased">
       <body className="flex min-h-full flex-col">
         <main className="mx-auto flex max-w-2xl flex-col items-start gap-4 px-4 py-24">
-          <h1 className="text-2xl font-semibold tracking-tight">
-            {t('title')}
-          </h1>
+          <h1 className="type-h1">{t('title')}</h1>
           <p className="text-muted-foreground">{t('description')}</p>
           <a href={`/${routing.defaultLocale}`} className="text-sm underline">
             {t('back')}

@@ -24,7 +24,7 @@ export function RelatedLandings({
 
   return (
     <nav aria-label={t('related.title')} className="flex flex-col gap-3">
-      <h2 className="text-sm font-medium">{t('related.title')}</h2>
+      <h2 className="type-h4">{t('related.title')}</h2>
 
       <ul className="flex flex-wrap gap-2">
         <li>

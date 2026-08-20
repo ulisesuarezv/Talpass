@@ -23,7 +23,7 @@ export function JobCard({ job }: { job: JobSummary }) {
 
   return (
     <article className="relative rounded-lg border p-4 transition-colors hover:bg-muted/40">
-      <h3 className="text-base font-semibold tracking-tight text-pretty">
+      <h3 className="type-h3">
         <Link
           href={{ pathname: '/jobs/[slug]', params: { slug: job.slug } }}
           className="after:absolute after:inset-0 focus-visible:underline"

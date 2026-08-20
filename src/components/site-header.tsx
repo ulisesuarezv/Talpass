@@ -15,7 +15,7 @@ export async function SiteHeader() {
   const t = await getTranslations('Nav');
 
   return (
-    <header className="sticky top-0 z-40 border-b bg-background/80 backdrop-blur-sm">
+    <header className="sticky top-0 z-40 border-b border-b-brand/30 bg-background/85 backdrop-blur-sm">
       <a
         href="#content"
         className="sr-only bg-background focus:not-sr-only focus:absolute focus:left-4 focus:z-50 focus:rounded-md focus:px-3 focus:py-2 focus:ring-2 focus:ring-ring"
@@ -34,7 +34,10 @@ export async function SiteHeader() {
         propósito (ADR-11).
       */}
       <div className="mx-auto flex min-h-14 max-w-5xl flex-wrap items-center justify-between gap-x-2 gap-y-1 px-4 py-2 sm:gap-x-4">
-        <Link href="/" className="font-semibold tracking-tight">
+        <Link
+          href="/"
+          className="text-base font-semibold tracking-tight text-primary"
+        >
           {siteConfig.name}
         </Link>
 

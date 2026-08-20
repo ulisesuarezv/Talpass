@@ -46,9 +46,7 @@ export default async function CheckEmailPage({
 
   return (
     <>
-      <h1 className="mb-2 text-2xl font-semibold tracking-tight">
-        {t('checkEmail.title')}
-      </h1>
+      <h1 className="mb-2 type-h1">{t('checkEmail.title')}</h1>
       <p className="mb-2 text-sm text-muted-foreground">
         {t('checkEmail.body')}
       </p>
@@ -62,7 +60,7 @@ export default async function CheckEmailPage({
         <ResendConfirmationForm />
       </Suspense>
 
-      <Link href="/login" className="mt-6 text-sm underline underline-offset-4">
+      <Link href="/login" className="mt-6 text-sm type-link">
         {t('backToLogin')}
       </Link>
     </>

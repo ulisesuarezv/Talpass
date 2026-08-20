@@ -17,7 +17,17 @@
   },
   "Common": {
     "yes": "Yes",
-    "no": "No"
+    "no": "No",
+    "loading": {
+      "label": "Loading…"
+    },
+    "error": {
+      "title": "Something went wrong loading this page",
+      "description": "This is not your fault and none of your data has been lost. Trying again usually fixes it; if it keeps happening, come back in a little while.",
+      "retry": "Try again",
+      "home": "Go to the home page",
+      "reference": "Error reference: {digest}"
+    }
   },
   "EnglishLevels": {
     "a1": "A1 — Very basic",

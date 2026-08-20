@@ -30,7 +30,7 @@ export default async function AdminPage({
   return (
     <div className="mx-auto flex w-full max-w-3xl flex-col gap-6 px-4 py-8">
       <header className="flex flex-col gap-2">
-        <h1 className="text-2xl font-semibold tracking-tight">{t('title')}</h1>
+        <h1 className="type-h1">{t('title')}</h1>
         <p className="text-sm text-muted-foreground">{t('queue.explainer')}</p>
       </header>
 

@@ -30,7 +30,7 @@ export async function SiteFooter() {
               <li key={document}>
                 <Link
                   href={legalLink(document, locale as Locale)}
-                  className="underline-offset-4 transition-colors hover:text-foreground hover:underline"
+                  className="text-primary underline-offset-4 transition-colors hover:underline"
                 >
                   {t(`documents.${document}.title`)}
                 </Link>

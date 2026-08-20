@@ -26,7 +26,7 @@ export function OpportunityCard({ opportunity }: { opportunity: Opportunity }) {
 
   return (
     <article className="relative rounded-lg border p-4 transition-colors hover:bg-muted/40">
-      <h3 className="text-base font-semibold tracking-tight text-pretty">
+      <h3 className="type-h3">
         <Link
           href={{
             pathname: '/opportunities/[country]/[sector]',

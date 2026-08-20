@@ -58,9 +58,7 @@ export default async function LegalIndexPage({
   return (
     <div className="mx-auto flex max-w-2xl flex-col gap-8 px-4 py-10 sm:py-16">
       <header className="flex flex-col gap-2">
-        <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">
-          {t('index.title')}
-        </h1>
+        <h1 className="type-h1">{t('index.title')}</h1>
         <p className="text-pretty text-muted-foreground">{t('index.intro')}</p>
       </header>
 
@@ -72,11 +70,11 @@ export default async function LegalIndexPage({
             <li key={document} className="flex flex-col gap-1 border-b pb-4">
               <Link
                 href={legalLink(document, locale)}
-                className="font-medium underline underline-offset-4"
+                className="font-medium type-link"
               >
                 {t(`documents.${document}.title`)}
               </Link>
-              <p className="text-sm text-muted-foreground">
+              <p className="type-body text-muted-foreground">
                 {t(`documents.${document}.meta.description`, {
                   brand: siteConfig.name,
                 })}
@@ -99,24 +97,19 @@ export default async function LegalIndexPage({
           llega a `/legal` buscando quién hay detrás no debería tener que
           adivinar en cuál de los cinco documentos está. */}
       <section className="flex flex-col gap-2">
-        <h2 className="text-lg font-semibold tracking-tight">
-          {t('index.controllerHeading')}
-        </h2>
-        <address className="text-sm text-muted-foreground not-italic">
+        <h2 className="type-h2">{t('index.controllerHeading')}</h2>
+        <address className="type-body text-muted-foreground not-italic">
           {controller.name}
           <br />
           {controllerAddressLine(locale)}
           <br />
-          <a
-            href={`mailto:${controller.email}`}
-            className="underline underline-offset-4"
-          >
+          <a href={`mailto:${controller.email}`} className="type-link">
             {controller.email}
           </a>
         </address>
       </section>
 
-      <aside className="rounded-lg border bg-muted/40 p-4 text-sm text-muted-foreground">
+      <aside className="rounded-lg border bg-muted/40 p-4 type-body text-muted-foreground">
         {t('authorship')}
       </aside>
     </div>

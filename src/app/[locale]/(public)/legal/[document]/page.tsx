@@ -95,21 +95,19 @@ export default async function LegalDocumentPage({
   return (
     <article className="mx-auto flex max-w-2xl flex-col gap-8 px-4 py-10 sm:py-16">
       <header className="flex flex-col gap-3">
-        <p className="text-sm text-muted-foreground">
-          <Link href="/legal" className="underline underline-offset-4">
+        <p className="type-body text-muted-foreground">
+          <Link href="/legal" className="type-link">
             {t('backToIndex')}
           </Link>
         </p>
 
-        <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">
-          {t(`documents.${document}.title`)}
-        </h1>
+        <h1 className="type-h1">{t(`documents.${document}.title`)}</h1>
 
         {/* Cada documento abre diciendo de qué fecha es su versión, y esa fecha
             es la de `CONSENT_VERSIONS`: es lo que hace comprobable qué texto
             aceptó una persona. El Impressum no se consiente, así que no tiene
             versión y lo dice en vez de inventarse una. */}
-        <p className="text-sm text-muted-foreground">
+        <p className="type-body text-muted-foreground">
           {version
             ? t('version', {
                 date: format.dateTime(new Date(version), { dateStyle: 'long' }),
@@ -122,9 +120,7 @@ export default async function LegalDocumentPage({
 
       {body.sections.map((section) => (
         <section key={section.heading} className="flex flex-col gap-3">
-          <h2 className="text-lg font-semibold tracking-tight">
-            {section.heading}
-          </h2>
+          <h2 className="type-h2">{section.heading}</h2>
 
           {/* La lista antes que los párrafos, y no al revés: en estos
               documentos `items` es siempre la enumeración —quién es el
@@ -153,13 +149,13 @@ export default async function LegalDocumentPage({
       {/* Visible y no en letra pequeña: estos textos los redacta el responsable
           y no son un dictamen jurídico. Es cierto, y un proyecto que vende
           transparencia no puede fingir un sello que no tiene. */}
-      <aside className="rounded-lg border bg-muted/40 p-4 text-sm text-muted-foreground">
+      <aside className="rounded-lg border bg-muted/40 p-4 type-body text-muted-foreground">
         {t('authorship')}
       </aside>
 
       <nav
         aria-label={t('title')}
-        className="flex flex-col gap-2 border-t pt-6 text-sm"
+        className="flex flex-col gap-2 border-t pt-6 type-body"
       >
         {LEGAL_DOCUMENTS.filter((other) => other !== document).map((other) => (
           <OtherDocument
@@ -184,10 +180,7 @@ function OtherDocument({
   label: string;
 }) {
   return (
-    <Link
-      href={legalLink(document, locale)}
-      className="text-muted-foreground underline underline-offset-4 hover:text-foreground"
-    >
+    <Link href={legalLink(document, locale)} className="type-link">
       {label}
     </Link>
   );

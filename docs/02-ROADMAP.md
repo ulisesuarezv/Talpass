@@ -14,7 +14,7 @@
 | 4   | Verificación + backoffice         | Documento subido → aprobado por admin      | 🟡     |
 | 4b  | Oportunidades de mercado          | Gancho publicado y sitio indexado sin ETT  | ✅     |
 | C1  | Credibilidad (vía B)              | La home deja de poder parecer un fraude    | ✅     |
-| C2  | Sistema visual (vía B)            | Consistencia demostrada con capturas       | ⬜     |
+| C2  | Sistema visual (vía B)            | Consistencia demostrada con capturas       | ✅     |
 | 5   | Aplicaciones                      | Candidato verificado aplica y ve su estado | ⬜     |
 | 6   | Portal ETT                        | ETT gestiona vacantes y aplicaciones       | ⬜     |
 | 7   | Bolsa + consentimiento documental | Flujo completo de desbloqueo con log       | ⬜     |
@@ -685,6 +685,39 @@ consistentes a **390 y 1280 px** con capturas de `visual-qa` que lo demuestren,
 los tres estados (carga, error, vacío) tienen tratamiento explícito, **ninguna
 combinación de texto baja de 4,5:1** (y ninguna de interfaz de 3:1),
 **Lighthouse no baja** y no hay regresión en las cabeceras públicas.
+
+### ✅ Cerrada el 2026-08-20 — con dos criterios cumplidos a un precio que hay que leer
+
+Evidencia completa en `docs/evidencia/fase-c2/`. ADR-38, ADR-39 y ADR-40.
+
+| Criterio                             | Estado                                                                                    |
+| ------------------------------------ | ----------------------------------------------------------------------------------------- |
+| Contraste: texto ≥4,5:1, interfaz ≥3 | ✅ **40 pares**, con script (`pnpm check:contrast`) sobre los pares reales, no a ojo      |
+| El LCP no empeora en ninguna página  | ✅ mediana de 5 pasadas; ninguna página pierde nota ni LCP frente al árbol de justo antes |
+| 390 y 1280 px sin desbordamiento     | ✅ **30 rutas medidas** en los dos anchos, `es` y `en`; ninguna desborda                  |
+| Carga y error con tratamiento        | ✅ demostrados con captura, provocando un fallo y una espera reales                       |
+| Fuente autoalojada y preacargada     | ✅ comprobado en el HTML servido · licencia leída y escrita (**ADR-39**)                  |
+| Modo oscuro: decisión tomada         | ✅ **aplazado y razonado**; el bloque `.dark` se retira en vez de quedar a medias         |
+| Sin regresión de caché ni de sesión  | ✅ 26 rutas prerenderizadas, las mismas que antes                                         |
+| Calidad                              | ✅ `typecheck`, `lint`, `format:check` · `test:security` 64/64 · `drill` verde · paridad  |
+
+**🔴 Y el precio, que no es una nota al pie.** La tipografía entra **solo con el
+corte Regular**: cualquier segundo corte —el variable, dos estáticas, o la
+Semibold diferida— cuesta entre 1 y 4 puntos de Lighthouse y 0,15 s de LCP, y el
+presupuesto de velocidad es puerta dura (ADR-10). **Los `font-semibold` los
+emboldece el navegador**, no son la Semibold de verdad. Comprarla es una
+decisión de Ulises con precio medido en ADR-39.
+
+### Lo que esta fase dejó anotado y no hizo
+
+- **El modo oscuro.** Aplazado a propósito (ADR-38). No es invertir la paleta:
+  los 40 ratios están medidos contra fondo claro y hay que rehacerlos enteros.
+  Y ojo, un interruptor en la cabecera volvería dinámicas todas las públicas
+  (ADR-11, ADR-13).
+- **La Semibold de General Sans**, con su precio en ADR-39.
+- **`messages/<locale>.json` sigue pesando 37 KB** y viaja entero a todas las
+  páginas. ADR-37 lo resolvió para la home y ADR-33 para los legales; el resto
+  sigue igual. Sigue siendo una tarea propia.
 
 ---
 

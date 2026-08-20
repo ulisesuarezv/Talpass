@@ -51,12 +51,12 @@ export function LoginForm() {
       <SubmitButton label={t('login.submit')} pendingLabel={t('pending')} />
 
       <div className="flex flex-col gap-2 text-sm">
-        <Link href="/forgot-password" className="underline underline-offset-4">
+        <Link href="/forgot-password" className="type-link">
           {t('login.forgot')}
         </Link>
         <p className="text-muted-foreground">
           {t('login.noAccount')}{' '}
-          <Link href="/signup" className="underline underline-offset-4">
+          <Link href="/signup" className="type-link">
             {t('login.signupLink')}
           </Link>
         </p>

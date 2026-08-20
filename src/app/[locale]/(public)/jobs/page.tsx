@@ -75,9 +75,7 @@ export default async function JobsPage({
   return (
     <div className="mx-auto flex max-w-3xl flex-col gap-8 px-4 py-10 sm:py-16">
       <header className="flex flex-col gap-2">
-        <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">
-          {t('title')}
-        </h1>
+        <h1 className="type-h1">{t('title')}</h1>
         <p className="text-muted-foreground">{t('subtitle')}</p>
       </header>
 
@@ -86,10 +84,8 @@ export default async function JobsPage({
         // único útil que puede hacer es no ser un callejón sin salida: se manda
         // al candidato a los perfiles de mercado, que sí tienen contenido.
         <section className="flex flex-col gap-3 rounded-lg border bg-muted/40 p-6">
-          <h2 className="text-lg font-semibold tracking-tight">
-            {t('emptyTitle')}
-          </h2>
-          <p className="text-sm text-muted-foreground">{t('emptyBody')}</p>
+          <h2 className="type-h2">{t('emptyTitle')}</h2>
+          <p className="type-body text-muted-foreground">{t('emptyBody')}</p>
           <div>
             <Button asChild>
               <Link href="/opportunities">{t('emptyCta')}</Link>

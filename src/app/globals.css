@@ -12,6 +12,15 @@
      se usa `font-mono`, en vez de descargar 29 KB que nadie pinta. */
   --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
   --font-heading: var(--font-sans);
+  /* Marca. Ver el bloque «LA PALETA» de `:root`: estos son los papeles que
+     `--primary` y `--accent` de shadcn no pueden asumir sin romper algo. */
+  --color-brand: var(--brand);
+  --color-brand-strong: var(--brand-strong);
+  --color-brand-soft: var(--brand-soft);
+  --color-brand-accent: var(--brand-accent);
+  --color-brand-accent-ink: var(--brand-accent-ink);
+  --color-brand-accent-strong: var(--brand-accent-strong);
+  --color-brand-accent-soft: var(--brand-accent-soft);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -50,74 +59,141 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
+/* ==========================================================================
+   LA PALETA — fase C2, 2026-08-20. ADR-38.
+   ==========================================================================
+
+   Elegida por Ulises: primario `#0D9488` (teal-600), primario dark `#134E4A`
+   (teal-900), acento `#F97316` (orange-500), y de neutros tinta muy oscura,
+   gris azulado y blanco roto.
+
+   🔴 **El reparto de papeles no es el obvio, y está medido.** El contraste se
+   comprueba con `pnpm check:contrast`, que recorre los pares reales que pinta
+   la aplicación y falla si alguno baja de 4,5:1 en texto o de 3:1 en interfaz.
+   La salida vive en `docs/evidencia/fase-c2/01-contraste.md`. Los tres hechos
+   que explican todo lo raro de abajo:
+
+   1. `#F97316` sobre blanco da **2,80** — y el ratio es simétrico, así que el
+      naranja **no vale ni para texto grande ni para un elemento de interfaz**,
+      en ningún sentido. Solo sirve de superficie con tinta encima (6,37) o de
+      adorno sin información. Para texto naranja está `#C2410C` (4,95).
+   2. `#0D9488` sobre el fondo da **3,58**: iconos, bordes y titulares grandes
+      sí; texto normal no. Para eso está `#0F766E` (5,23) o el `#134E4A`.
+   3. El que aguanta cualquier cosa es `#134E4A` (9,06), y por eso **es él, y no
+      el teal-600, quien ocupa `--primary`**: `--primary` es sobre todo fondo de
+      botón con `--primary-foreground` blanco encima, y ahí 3,74 no basta.
+
+   El motivo de fondo no es la norma, es el encargo: un botón que no se lee a
+   pleno sol en un móvil barato no parece profesional, parece descuidado, y el
+   candidato de este producto mira la pantalla en la calle.
+
+   ⚠️ **`--accent` NO es el naranja de la marca, a propósito.** En shadcn
+   `--accent` es la superficie de hover/foco de los componentes, no un color de
+   marca: hoy la usa `select.tsx` para la fila enfocada, y todo componente que
+   añada la CLI en el futuro la usará igual. Ponerle el naranja teñiría cada
+   hover del backoffice y rompería el contraste de sitios que nadie ha mirado.
+   El acento de marca vive en `--brand-accent*`, que es explícito y no lo pisa
+   nadie. Razonado en ADR-38.
+
+   ⚠️ **Modo oscuro: fuera de alcance.** Ver el comentario donde estaba `.dark`.
+   Los ratios de arriba son contra fondo claro y **no valen** para el oscuro. */
+
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
+  /* Neutros — blanco roto de página, tarjetas en blanco puro, tinta y gris
+     azulado. La escala es la de Tailwind slate, que ya es azulada. */
+  --background: oklch(0.9842 0.0034 247.86); /* #F8FAFC — blanco roto */
+  --foreground: oklch(0.2077 0.0398 265.75); /* #0F172A — tinta */
+  --card: oklch(1 0 0); /* #FFFFFF */
+  --card-foreground: oklch(0.2077 0.0398 265.75);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
+  --popover-foreground: oklch(0.2077 0.0398 265.75);
+
+  /* Primario = teal-900, porque es fondo de botón. Ver punto 3 de arriba. */
+  --primary: oklch(0.3861 0.059 188.42); /* #134E4A — 9,48 con blanco */
+  --primary-foreground: oklch(1 0 0);
+
+  --secondary: oklch(0.9683 0.0069 247.9); /* #F1F5F9 */
+  --secondary-foreground: oklch(0.2077 0.0398 265.75);
+  --muted: oklch(0.9683 0.0069 247.9); /* #F1F5F9 */
+  /* Antes `oklch(0.556 0 0)` ≈ #737373, que daba 4,74 sobre blanco y se
+     quedaba en 4,5 raspado sobre cualquier superficie teñida. Con 114 usos de
+     `text-muted-foreground` en el proyecto, ese era el par que más veces se
+     pinta en todo el sitio; ahora da 7,24. */
+  --muted-foreground: oklch(0.4455 0.0374 257.28); /* #475569 */
+
+  /* Superficie de hover/foco de shadcn. NEUTRA a propósito — ver el aviso. */
+  --accent: oklch(0.9683 0.0069 247.9); /* #F1F5F9 */
+  --accent-foreground: oklch(0.2077 0.0398 265.75);
+
+  /* red-800, y hubo que bajar dos escalones, no uno. El `oklch(0.577 …)`
+     anterior (≈ red-600) daba 4,54 sobre blanco y no llegaba a 4,5 sobre
+     `--background`. Con red-700 el comprobador siguió fallando en un par que a
+     mano no se mira nunca: el botón destructivo pinta `text-destructive` sobre
+     `bg-destructive/20` **en hover**, o sea el rojo sobre sí mismo al 20 %, y
+     ahí daba 4,39. Con red-800 son 5,54. Este token pinta los errores de
+     formulario, que es donde peor sienta no leerse. */
+  --destructive: oklch(0.4437 0.1613 26.9); /* #991B1B — 7,94 */
+
+  --border: oklch(0.9288 0.0126 255.51); /* #E2E8F0 — separadores */
+  /* El borde de un campo es lo único que dice dónde se escribe: WCAG 1.4.11 le
+     exige 3:1 y el `oklch(0.922 0 0)` anterior daba 1,35. Este da 3,68. */
+  --input: oklch(0.6057 0.0379 257.87); /* #748399 */
+  /* Indicador de foco. `oklch(0.708 0 0)` daba 1,9 y no señalaba nada. */
+  --ring: oklch(0.5109 0.0861 186.39); /* #0F766E — 5,23 */
+
+  /* --- Marca -------------------------------------------------------------
+     Lo que `--primary` y `--accent` no pueden ser sin romper shadcn. */
+  --brand: oklch(0.6002 0.1038 184.7); /* #0D9488 teal-600 · 3,58 → interfaz */
+  --brand-strong: oklch(0.5109 0.0861 186.39); /* #0F766E · 5,23 → texto */
+  --brand-soft: oklch(0.9836 0.0142 180.72); /* #F0FDFA → superficie */
+  --brand-accent: oklch(0.7049 0.1867 47.6); /* #F97316 · SOLO superficie */
+  --brand-accent-ink: oklch(0.2077 0.0398 265.75); /* #0F172A · 6,37 encima */
+  --brand-accent-strong: oklch(0.5534 0.1739 38.4); /* #C2410C · 4,95 → texto */
+  --brand-accent-soft: oklch(0.9796 0.0158 73.68); /* #FFF7ED → superficie */
+
+  /* Sin gráficos en ninguna pantalla todavía; se dejan alineados con la marca
+     para que el día que entren no vuelvan a ser una escala de grises. */
+  --chart-1: oklch(0.3861 0.059 188.42);
+  --chart-2: oklch(0.6002 0.1038 184.7);
+  --chart-3: oklch(0.5534 0.1739 38.4);
+  --chart-4: oklch(0.5544 0.0407 257.42);
+  --chart-5: oklch(0.3717 0.0392 257.29);
+
   --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+
+  --sidebar: oklch(1 0 0);
+  --sidebar-foreground: oklch(0.2077 0.0398 265.75);
+  --sidebar-primary: oklch(0.3861 0.059 188.42);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.9683 0.0069 247.9);
+  --sidebar-accent-foreground: oklch(0.2077 0.0398 265.75);
+  --sidebar-border: oklch(0.9288 0.0126 255.51);
+  --sidebar-ring: oklch(0.5109 0.0861 186.39);
 }
 
-.dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
-}
+/* ==========================================================================
+   MODO OSCURO — fuera de alcance de la fase C2, y es una decisión, no un olvido.
+   ==========================================================================
+
+   Aquí había un bloque `.dark` completo con la escala de grises de shadcn, y
+   era **inalcanzable**: no hay `ThemeProvider`, no está `next-themes`, y no hay
+   un solo sitio del proyecto donde se ponga la clase `dark`. Los usos de
+   `dark:` que quedan en `src/` están todos dentro de los componentes de serie
+   de shadcn, ninguno en una pantalla de este producto.
+
+   Se borra en vez de dejarlo con los valores viejos porque un `.dark` en grises
+   junto a un `:root` con la paleta nueva es un medio-estado incoherente: hoy no
+   lo ve nadie y aparecería roto el día que alguien añada un interruptor.
+
+   **Y hay un motivo que pesa más que el orden:** el presupuesto de contraste ya
+   está justo. Los ratios que acredita `pnpm check:contrast` están medidos
+   **contra fondo claro y no valen para el oscuro** — un tema oscuro obliga a
+   rehacer la tabla entera, no a invertirla. Eso es una fase, no un bloque CSS.
+
+   👉 Quien lo retome: hace falta el interruptor (y ojo, ADR-11 y ADR-13 — un
+   estado en la cabecera volvería dinámicas TODAS las públicas y mataría el
+   ISR), los tokens, y una pasada nueva del comprobador de contraste con
+   `--background` oscuro. Anotado como fuera de alcance en `02-ROADMAP.md`. */
 
 @layer base {
   * {
@@ -129,4 +205,78 @@
   html {
     @apply font-sans;
   }
+}
+
+/* ==========================================================================
+   LA ESCALA TIPOGRÁFICA — fase C2. ADR-38.
+   ==========================================================================
+
+   Antes de esta fase cada pantalla elegía sus clases a mano y había trece
+   combinaciones distintas de tamaño, peso y `tracking` para seis niveles de
+   encabezado. No era inconsistencia visible a simple vista —la C1 fue
+   disciplinada— pero sí trece sitios donde cambiar una decisión.
+
+   Aquí hay **una clase por papel**, no por tamaño. `.type-h2` significa
+   «segundo nivel de una pantalla», y lo que mida es asunto de este fichero.
+
+   Dos decisiones que no son cosméticas:
+
+   - **El texto de lectura sube de 14 a 15 px** (`.type-body`). El `text-sm` de
+     shadcn está pensado para interfaz de escritorio densa; aquí lo que se lee
+     son párrafos que explican a alguien por qué debería subir su DNI a un sitio
+     que no conoce, en un móvil y a veces en la calle. Los 14 px se quedan en el
+     cromo —etiquetas, metadatos, navegación—, que es para lo que sirven.
+   - **`text-balance` y `text-pretty` en los titulares**, que a 390 px es la
+     diferencia entre un `h1` con una palabra huérfana en la última línea y uno
+     que no la tiene. Cuesta cero bytes. */
+
+@utility type-display {
+  @apply text-3xl leading-[1.1] font-semibold tracking-tight text-balance sm:text-5xl;
+}
+
+/* `h1` de una pantalla que no es la home. La home usa `.type-display`, y esa
+   diferencia es deliberada: es la única pantalla cuyo titular tiene que parar a
+   alguien que acaba de llegar de Google. */
+@utility type-h1 {
+  @apply text-2xl leading-tight font-semibold tracking-tight text-balance sm:text-3xl;
+}
+
+@utility type-h2 {
+  @apply text-xl leading-snug font-semibold tracking-tight text-balance sm:text-2xl;
+}
+
+@utility type-h3 {
+  @apply text-base leading-snug font-semibold tracking-tight text-pretty;
+}
+
+@utility type-h4 {
+  @apply text-sm leading-snug font-semibold tracking-tight;
+}
+
+/* Entradilla: el párrafo que va pegado a un `h1` o a un `h2` y lo desarrolla. */
+@utility type-lead {
+  @apply text-base leading-relaxed text-pretty sm:text-lg;
+}
+
+/* Texto de lectura. Los 15 px de arriba. */
+@utility type-body {
+  @apply text-[0.9375rem] leading-relaxed text-pretty;
+}
+
+/* Cromo: etiquetas, metadatos, pies de tabla, ayuda de formulario. */
+@utility type-meta {
+  @apply text-sm leading-normal;
+}
+
+/* Antetítulo. `--brand-strong` y no `--brand`: 5,23 frente a 3,58, y esto es
+   texto pequeño. */
+@utility type-eyebrow {
+  @apply text-xs font-semibold tracking-[0.12em] text-brand-strong uppercase;
+}
+
+/* Enlace dentro de un párrafo. Subrayado siempre: el color por sí solo no
+   puede ser el único indicador (WCAG 1.4.1), y aquí menos, porque el enlace y
+   el texto que lo rodea comparten familia de color. */
+@utility type-link {
+  @apply text-primary underline decoration-primary/40 underline-offset-4 transition-colors hover:decoration-primary;
 }

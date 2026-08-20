@@ -23,7 +23,7 @@ export function ForgotPasswordForm() {
     return (
       <div className="flex flex-col gap-5">
         <FormAlert tone="success">{t(`messages.${state.message}`)}</FormAlert>
-        <Link href="/login" className="text-sm underline underline-offset-4">
+        <Link href="/login" className="text-sm type-link">
           {t('backToLogin')}
         </Link>
       </div>
@@ -62,7 +62,7 @@ export function ForgotPasswordForm() {
 
       <SubmitButton label={t('forgot.submit')} pendingLabel={t('pending')} />
 
-      <Link href="/login" className="text-sm underline underline-offset-4">
+      <Link href="/login" className="text-sm type-link">
         {t('backToLogin')}
       </Link>
     </form>
