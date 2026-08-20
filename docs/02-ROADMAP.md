@@ -593,9 +593,9 @@ se cierra.
 | Calidad y cabeceras                 | ✅ 64/64, drill verde, 15/15 públicas sin sesión ni cookie, `/es/cuenta` en 307 desde `dub1` |
 | `JobPosting` en oportunidades       | ✅ **0** en las 10 páginas de producción — ADR-30 intacto                                    |
 
-**Lo que queda pendiente y no es de esta fase:** los commits están **sin subir**
-a `origin/main` (fila 19). `git push` no despliega nada en este proyecto, así
-que subir y desplegar son dos actos y solo el segundo está hecho.
+**Subido y desplegado.** `origin/main` está en `4d3c30d` y la fila 19 pasa a
+**0 commits sin subir**. Conviene no leerlo como una sola cosa: en este proyecto
+`git push` no despliega nada, así que son dos actos y hubo que hacer los dos.
 
 ### 🔴 Dos reglas de método que la C2 hereda
 

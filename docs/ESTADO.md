@@ -13,9 +13,9 @@
 > sirve hoy**: en cuanto alguien redespliegue, el alias se mueve. Para saber
 > cuál está vivo se ejecuta el comando.
 >
-> ⚠️ **Los commits están sin subir.** `origin/main` va tres por detrás, y en
-> este proyecto **`git push` no despliega nada**: subir y desplegar son dos
-> actos distintos, y solo el segundo está hecho.
+> **Subido y desplegado, que en este proyecto son dos actos distintos y ninguno
+> implica al otro.** `origin/main` está en `4d3c30d`, al día: el hallazgo 1 de
+> la auditoría —«la fase 4b no existe fuera del portátil»— sigue cerrado.
 >
 > Evidencia completa en `docs/evidencia/fase-c1/`: la tabla de 40 cifras
 > rellenada entera, el detalle local, el de producción, el de rendimiento y las
