@@ -13,7 +13,7 @@
 | 3   | Vacantes públicas + SEO           | Vacante indexable en Google Jobs           | 🟡     |
 | 4   | Verificación + backoffice         | Documento subido → aprobado por admin      | 🟡     |
 | 4b  | Oportunidades de mercado          | Gancho publicado y sitio indexado sin ETT  | ✅     |
-| C1  | Credibilidad (vía B)              | La home deja de poder parecer un fraude    | ⬜     |
+| C1  | Credibilidad (vía B)              | La home deja de poder parecer un fraude    | ✅     |
 | C2  | Sistema visual (vía B)            | Consistencia demostrada con capturas       | ⬜     |
 | 5   | Aplicaciones                      | Candidato verificado aplica y ve su estado | ⬜     |
 | 6   | Portal ETT                        | ETT gestiona vacantes y aplicaciones       | ⬜     |

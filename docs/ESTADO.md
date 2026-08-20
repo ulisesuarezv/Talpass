@@ -764,20 +764,20 @@ que exista una ETT** — una vacante real es de una agencia real. Por eso las do
 están bloqueadas y por eso existe la 4b: para conseguir los candidatos con los
 que se cierra esa ETT.
 
-| Fase                    | Estado                                                                             |
-| ----------------------- | ---------------------------------------------------------------------------------- |
-| 0 · Fundaciones         | ✅ desplegada en producción                                                        |
-| 1 · Datos y seguridad   | ✅ 36 tablas, RLS probada                                                          |
-| 2 · Auth y onboarding   | ✅ registro real end-to-end                                                        |
-| 3 · Vacantes + SEO      | 🟡 **bloqueada hasta que haya ETT** — Rich Results Test sobre vacante real         |
-| 4 · Verificación        | 🟡 **bloqueada hasta que haya ETT** — publicar una vacante real                    |
-| **4b · Oportunidades**  | **✅ cerrada 2026-08-17 — 5 perfiles vivos y el sitio abierto a Google**           |
-| **Vía B**               | **🟢 es donde se trabaja hoy** — ver «El orden acordado», arriba                   |
-| **C1 · Credibilidad**   | **⬜ vía B** — prompt listo en `docs/prompts/fase-c1.md`; **no espera al punto 4** |
-| **C2 · Sistema visual** | **⬜ vía B** — después de C1; paleta y tipografía ya elegidas                      |
-| **5 · Aplicaciones**    | **⬜ congelada en la vía A** — su prompt sigue sin escribirse, a propósito         |
-| 6, 7, 8, 10             | ⬜ vía A, congeladas hasta que haya ETT                                            |
-| **9 · GDPR y legal**    | **🟡 los textos legales salieron de aquí y están vivos** (ADR-33, ADR-34)          |
+| Fase                    | Estado                                                                                  |
+| ----------------------- | --------------------------------------------------------------------------------------- |
+| 0 · Fundaciones         | ✅ desplegada en producción                                                             |
+| 1 · Datos y seguridad   | ✅ 36 tablas, RLS probada                                                               |
+| 2 · Auth y onboarding   | ✅ registro real end-to-end                                                             |
+| 3 · Vacantes + SEO      | 🟡 **bloqueada hasta que haya ETT** — Rich Results Test sobre vacante real              |
+| 4 · Verificación        | 🟡 **bloqueada hasta que haya ETT** — publicar una vacante real                         |
+| **4b · Oportunidades**  | **✅ cerrada 2026-08-17 — 5 perfiles vivos y el sitio abierto a Google**                |
+| **Vía B**               | **🟢 es donde se trabaja hoy** — ver «El orden acordado», arriba                        |
+| **C1 · Credibilidad**   | **✅ cerrada 2026-08-20** — desplegada y verificada; ADR-35, 36, 37 y ADR-10 precisada  |
+| **C2 · Sistema visual** | **⬜ vía B, y es lo siguiente** — paleta y tipografía elegidas; ojo al LCP en 2,4–2,8 s |
+| **5 · Aplicaciones**    | **⬜ congelada en la vía A** — su prompt sigue sin escribirse, a propósito              |
+| 6, 7, 8, 10             | ⬜ vía A, congeladas hasta que haya ETT                                                 |
+| **9 · GDPR y legal**    | **🟡 los textos legales salieron de aquí y están vivos** (ADR-33, ADR-34)               |
 
 ### Lo que dejó la fase 4 (2026-08-16, verificado contra la base local)
 
