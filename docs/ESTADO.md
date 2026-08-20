@@ -1,5 +1,72 @@
 # Estado del proyecto — punto de retomada
 
+> ## 🎨 2026-08-20 — el diseño se parte en dos fases, y con qué se hace
+>
+> **Decisión de Ulises.** El punto 6 («el pase de credibilidad», decidido el
+> 2026-08-18) deja de ser una fase y pasa a ser dos: **C1 · Credibilidad** y
+> **C2 · Sistema visual**, escritas con su alcance y su «hecho cuando» en
+> `docs/02-ROADMAP.md`.
+>
+> **Por qué dos y no una:** C1 se cierra contra hechos medibles —la tabla de 40
+> cifras de la auditoría— y C2 se juzga a ojo. Juntas, lo subjetivo contamina lo
+> auditable, y aquí lo que no se mide no se cierra.
+>
+> **Y siguen después del punto 4.** Captar treinta personas hacia un embudo que
+> se para en el paso 6 es quemar la captación: hoy faltan todavía
+> `RESEND_API_KEY` y `EMAIL_FROM`, así que nadie recibe aviso de nada.
+>
+> ### Los agentes: cuáles sí y cuáles no — reafirmado el 2026-08-20
+>
+> | Agente                                                       | Veredicto                                                                                      |
+> | ------------------------------------------------------------ | ---------------------------------------------------------------------------------------------- |
+> | `layout-disruptivo` (anti-grid, Awwwards)                    | ❌ un layout roto empeora justo lo que se viene a arreglar                                     |
+> | `gsap-senior-animator`, `r3f-scene-builder`, `shader-artist` | ❌ excluidos el 2026-08-18 y por ADR-10. El candidato entra con 4G                             |
+> | `ui-polish`                                                  | ✅ tipografía responsive, jerarquía, estados. **En C2**                                        |
+> | `visual-qa`                                                  | ✅ **el importante**: capturas, 390 px real, Lighthouse. Es lo que permite cerrar con medición |
+> | `nextjs-app-router`                                          | ✅ para los metadatos de `(auth)`, que es el hallazgo 7                                        |
+>
+> **El razonamiento, para que nadie lo reabra por gusto:** «profesional» para un
+> peón no es lo mismo que «profesional» para un diseñador. Lo que da seguridad a
+> quien ya ha sido estafado por WhatsApp es un nombre real con domicilio, cifras
+> con fuente y un «a ti no te cobramos nunca». No es movimiento. Y **Lighthouse
+> 97–99 es un activo medido**: es lo primero que se pierde si entra la trilogía.
+>
+> ### Lo que se midió ese día y define el alcance de C1
+>
+> - La home: **1 `<h1>`, cero `<h2>`**, 546 bytes de copy.
+> - 🔴 **El CTA principal lleva al vacío.** «Ver ofertas» aparece **dos veces** y
+>   `/es/ofertas` responde «No hay / Sin resultados», con cero enlaces de
+>   vacante. Es lo que más confianza destruye hoy, y **no es un problema de
+>   diseño**.
+> - 🔴 El eyebrow de la home dice **«Fase de construcción»**.
+> - 🔴 Hallazgo 7 vivo: `/es/registro` sirve el título de la home y **sin
+>   canónica** (recomprobado el 2026-08-20).
+> - 🔴 La cabecera desborda a 390 px: el documento mide **453**.
+> - ✅ Ya resuelto por los legales: la home dice quién responde y enlaza al
+>   Impressum.
+>
+> ### La paleta y la tipografía, elegidas el 2026-08-20
+>
+> Primario `#0D9488`, primario dark `#134E4A`, acento `#F97316`, neutros, y
+> **General Sans** (Fontshare — no está en Google Fonts, va local con
+> `next/font/local`). Van a los tokens de `globals.css`, que ya existen; **no se
+> escribe un color en el JSX**. Ficha completa en la C2 del roadmap.
+>
+> ⚠️ **Un aviso medido, y no cambia la paleta sino el reparto de papeles:**
+> blanco sobre el acento `#F97316` da **2,80:1** y falla WCAG AA **incluso para
+> texto grande**; blanco sobre el primario `#0D9488` da **3,74** y solo vale
+> para texto grande e interfaz. El que aguanta texto es el primario dark
+> `#134E4A` (**9,48**). Las salidas están calculadas en el roadmap: botón
+> `#134E4A` con blanco, o naranja con **tinta encima** (6,37); naranja para
+> texto solo en `#C2410C` (5,18). **Un botón que no se lee a pleno sol en un
+> móvil barato no parece profesional, parece descuidado**, y esta fase existe
+> justo para lo contrario.
+>
+> **Pendiente de decisión de Ulises, y sigue abierta desde el 2026-08-18:**
+> precisar **ADR-10** para que «sobrio y profesional» quede definido como
+> **creíble** y no como vacío, y para que la política de agentes de arriba viva
+> en un ADR y no solo aquí. Es una enmienda de un párrafo, no una sustitución.
+
 > ## ✅ 2026-08-19 — los textos legales, publicados y vivos
 >
 > **Punto 3 del orden acordado: hecho, desplegado y verificado contra
@@ -413,7 +480,12 @@
 >    variables + redespliegue + el alta real. **Sigue abierto.**
 > 5. **El campo de sector/ciudad de destino en el onboarding** — antes de captar,
 >    no después: pedírselo a 30 personas ya captadas es hacerlas volver.
-> 6. **El pase de credibilidad**, y su auditoría posterior contra la tabla.
+> 6. **El pase de credibilidad** — **partido en dos fases el 2026-08-20**:
+>    **C1 · Credibilidad** (lo que destruye confianza, auditable contra la tabla
+>    de 40 cifras) y **C2 · Sistema visual** (tipografía, color, escala,
+>    estados). Fichas completas con su «hecho cuando» en `docs/02-ROADMAP.md`.
+>    Van **después del punto 4**: captar hacia un embudo que se para es quemar
+>    la captación.
 >
 > ### Lo siguiente — **el punto 4, y es de Ulises**
 >

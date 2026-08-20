@@ -13,6 +13,8 @@
 | 3   | Vacantes públicas + SEO           | Vacante indexable en Google Jobs           | 🟡     |
 | 4   | Verificación + backoffice         | Documento subido → aprobado por admin      | 🟡     |
 | 4b  | Oportunidades de mercado          | Gancho publicado y sitio indexado sin ETT  | ✅     |
+| C1  | Credibilidad (vía B)              | La home deja de poder parecer un fraude    | ⬜     |
+| C2  | Sistema visual (vía B)            | Consistencia demostrada con capturas       | ⬜     |
 | 5   | Aplicaciones                      | Candidato verificado aplica y ve su estado | ⬜     |
 | 6   | Portal ETT                        | ETT gestiona vacantes y aplicaciones       | ⬜     |
 | 7   | Bolsa + consentimiento documental | Flujo completo de desbloqueo con log       | ⬜     |
@@ -501,6 +503,150 @@ gancho va primero.
 
 Cuando toquen, se apoyan en la misma enmienda a ADR-23 que hace esta fase, así
 que el trabajo no se repite.
+
+---
+
+## Fase C1 · Credibilidad
+
+> **Fase nueva, decidida el 2026-08-20.** Se numera `C1` y no `11` a propósito,
+> con el precedente de la 4b: es **vía B**, y la numeración de la vía A está
+> congelada esperando a que haya una ETT. Renumerar arrastraría referencias
+> cruzadas por toda la documentación para no ganar nada.
+
+**El problema, y no es que esté feo.** Un peón que se plantea subir su DNI y su
+IBAN a un dominio que no conoce, en un sector lleno de estafas, **no tiene con
+qué decidir que esto no es un fraude**. Planteado como «está genérico» se
+discute de gustos; planteado como credibilidad se mide. Esta fase existe para lo
+segundo.
+
+**Lo medido el 2026-08-20 contra producción, que es de dónde sale el alcance:**
+
+| Qué                   | Estado hoy                                                                                      |
+| --------------------- | ----------------------------------------------------------------------------------------------- |
+| Estructura de la home | **1 `<h1>` y cero `<h2>`**; 546 bytes de copy. Es un hero y se acaba                            |
+| El CTA principal      | 🔴 «Ver ofertas», **dos veces**, lleva a una página que responde «No hay / Sin resultados»      |
+| Lo primero que se lee | 🔴 el eyebrow dice **«Fase de construcción»**                                                   |
+| Metadatos de `(auth)` | 🔴 `/es/registro` sirve el título de la home, **sin canónica** (hallazgo 7 de la auditoría)     |
+| Ancho a 390 px        | 🔴 el documento mide **453 px** por la cabecera, no por el contenido (encontrado el 2026-08-19) |
+| Quién hay detrás      | ✅ ya está: la home lo dice y enlaza al Impressum, desde los legales del 2026-08-19             |
+| Rendimiento móvil     | ✅ Lighthouse **97–99**. Es un activo, y es el techo a defender                                 |
+
+**El CTA vacío es el más grave y no es un problema de diseño.** Quien pulsa el
+botón grande y aterriza en la nada concluye una de dos: que esto está abandonado
+o que le están mintiendo. Se decide en esta fase si el botón principal pasa a
+`/oportunidades` —que sí tiene contenido— o si `/es/ofertas` deja de ofrecerse
+hasta que haya vacantes. **No se resuelve inventando vacantes** (ADR-30).
+
+### Las reglas que la acotan
+
+1. **El presupuesto de velocidad no se toca.** Lighthouse móvil **no baja de lo
+   medido** (fila 32 y 33 de la tabla de la auditoría). Es puerta dura, no
+   aspiración: el candidato entra con 4G desde el móvil (ADR-10).
+2. **Nada de GSAP, R3F, shaders ni layout disruptivo.** Decisión de Ulises del
+   2026-08-18, reafirmada el 2026-08-20. Hay agentes instalados para eso y en
+   este proyecto **restan**: un layout roto en un sitio cuyo problema es que
+   podría parecer una estafa empeora justo lo que se viene a arreglar. Los que
+   sí se usan son **`ui-polish`** y **`visual-qa`** — este último es el que
+   permite cerrar la fase con capturas y medición en vez de con criterio.
+3. **Las rutas públicas siguen sin tocar la sesión** (ADR-11, ADR-13). Si una
+   página deja de servirse con `HIT` y sin `Set-Cookie`, la fase ha roto algo.
+4. **Cero texto en el JSX** y paridad `es`/`en`, como siempre (ADR-01).
+5. **No toca la base de datos.** Ni migración, ni tabla, ni política.
+
+### Lo que NO es de esta fase
+
+El sistema visual —tipografía, color, escala, componentes— es la **C2**. Aquí se
+arregla lo que destruye confianza, no lo que se juzga a ojo. Mezclarlas haría
+que lo subjetivo contaminase lo auditable, y en esta casa lo que no se mide no
+se cierra.
+
+**Hecho cuando** — y todo esto se comprueba, no se opina:
+
+- **La tabla de 40 cifras de `docs/evidencia/auditoria-previa/00-resumen.md`
+  vuelve a rellenarse columna a columna**, con los mismos comandos. Es el
+  contrato de la fase. **No se reinventa: se rellena.**
+- **Ningún CTA de la superficie pública lleva a una página vacía.**
+- Una persona ajena al proyecto responde, **leyendo solo la home y sin ejecutar
+  JavaScript**: quién responde de este sitio, qué hace Talpass, si le van a
+  cobrar, qué pasa con sus documentos y a dónde lleva cada botón.
+- **390×844 sin desbordamiento horizontal** en la home, el registro y una
+  oportunidad, con captura de `visual-qa`.
+- Las páginas de `(auth)` tienen **metadatos propios y canónica**.
+- Lighthouse móvil **igual o mejor** que la línea base, página por página.
+- `typecheck`, `lint`, `format:check` limpios · `test:security` en verde ·
+  cabeceras públicas sin regresión.
+
+---
+
+## Fase C2 · Sistema visual
+
+> **Fase nueva, decidida el 2026-08-20**, hermana de la C1 y **después** de ella.
+
+Lo que la C1 deja fuera a propósito: tipografía y su escala, color, espaciado,
+los componentes de shadcn usados de forma coherente, y los estados que hoy no
+tienen tratamiento —carga, error, vacío—. Es la capa que hace que algo **se lea**
+como profesional, una vez que ya es creíble.
+
+**Aquí sí entra `ui-polish`**, y sigue fuera todo lo demás de la regla 2 de la
+C1. El presupuesto de velocidad sigue siendo puerta dura.
+
+**Por qué va después y no antes:** un sistema visual sobre una home que manda al
+vacío es maquillaje. El orden importa.
+
+### La paleta y la tipografía — elegidas por Ulises el 2026-08-20
+
+| Papel         | Color                                        | Nota       |
+| ------------- | -------------------------------------------- | ---------- |
+| Primario      | `#0D9488`                                    | teal-600   |
+| Primario dark | `#134E4A`                                    | teal-900   |
+| Acento        | `#F97316`                                    | orange-500 |
+| Neutros       | tinta muy oscura, gris azulado y blanco roto |            |
+
+**Tipografía: General Sans** (Fontshare / ITF). Hoy el proyecto carga `Geist`
+por `next/font/google`; General Sans **no está en Google Fonts**, así que se
+sirve **local con `next/font/local`** y los ficheros en el repositorio. Se
+subsetea a `latin` y se cargan solo los pesos que se usen: cada peso extra es
+carga en la ruta crítica, y el presupuesto de velocidad es puerta dura.
+
+**Dónde vive:** en los tokens de `src/app/globals.css` —`--primary`, `--accent`,
+`--font-sans`, `--font-heading`—, que ya existen. **No se escribe un color ni una
+fuente en el JSX**, igual que la marca sale de `src/config/site.ts` (ADR-12).
+
+#### El contraste, medido — y no es opcional
+
+Calculado el 2026-08-20 (WCAG 2.1; AA exige **4,5:1** en texto normal y **3:1**
+en texto grande y en elementos de interfaz):
+
+| Combinación                          | Ratio     | Veredicto                        |
+| ------------------------------------ | --------- | -------------------------------- |
+| Blanco sobre acento `#F97316`        | **2,80**  | 🔴 **falla incluso para grande** |
+| Blanco sobre primario `#0D9488`      | **3,74**  | 🟡 solo texto grande e interfaz  |
+| Blanco sobre primario dark `#134E4A` | **9,48**  | ✅                               |
+| Tinta `#0F172A` sobre blanco         | **17,85** | ✅                               |
+
+**Esto no cambia la paleta: cambia el reparto de papeles.** Un botón naranja con
+texto blanco encima **no se puede leer** a pleno sol en un móvil barato, que es
+exactamente el escenario del candidato. Las salidas, ya calculadas:
+
+- **Botón principal:** fondo `#134E4A` con texto blanco (9,48) — o fondo acento
+  `#F97316` con **tinta `#0F172A`** encima, que da **6,37** y conserva el
+  naranja.
+- **Texto o enlace en naranja sobre blanco:** `#C2410C` (orange-700), **5,18**.
+  El `#F97316` no vale para texto.
+- **Si hace falta blanco sobre verde:** `#0F766E` (teal-700), **5,47**.
+- **El `#0D9488` y el `#F97316` se quedan** para superficies, bordes, iconos,
+  gráficos y titulares grandes, que es donde cumplen.
+
+> **Y hay un motivo de fondo, no solo de norma.** Esta fase existe para dar
+> credibilidad. Un sitio que no se lee al sol no parece profesional: parece
+> descuidado. El contraste aquí es parte del encargo, no una casilla de
+> accesibilidad.
+
+**Hecho cuando:** las pantallas de la superficie pública y del onboarding se ven
+consistentes a **390 y 1280 px** con capturas de `visual-qa` que lo demuestren,
+los tres estados (carga, error, vacío) tienen tratamiento explícito, **ninguna
+combinación de texto baja de 4,5:1** (y ninguna de interfaz de 3:1),
+**Lighthouse no baja** y no hay regresión en las cabeceras públicas.
 
 ---
 
