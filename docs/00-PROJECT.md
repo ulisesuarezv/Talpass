@@ -123,6 +123,30 @@ Tailwind + shadcn/ui, sistema de diseño consistente. El candidato entra desde m
 
 _Concreción (fase 0):_ shadcn/ui con preset Nova sobre Radix, base de color `neutral` (escala de grises pura, sin acento) y tipografía Geist. Sin librería de animación.
 
+_Enmienda (fase C1, 2026-08-20). Pendiente desde el 2026-08-18._ «Sobrio y
+profesional» se estaba leyendo como **vacío**, y una home vacía no es sobria: es
+indistinguible de una estafa montada en una tarde. Un peón que se plantea subir
+su DNI y su IBAN a un dominio que no conoce no busca elegancia, busca **con qué
+decidir que esto no es un fraude**: un nombre real con domicilio publicado,
+cifras con su fuente, y que le digan sin rodeos qué ve una agencia de él y qué
+no. Así que el acabado visual se define como **creíble**, y lo creíble tiene
+contenido.
+
+Lo que **no** cambia es el presupuesto: sigue siendo velocidad por encima del
+espectáculo, y sigue siendo puerta dura y no aspiración. La C1 añadió 13 KB de
+HTML a la home sin perder un punto de Lighthouse, y la forma de conseguirlo fue
+sacar el copy del payload del cliente (ADR-37), no recortar lo que había que
+decir. Si una decisión de diseño cuesta puntos, la decisión está mal.
+
+_Los agentes, y esto es política, no gusto._ En esta máquina hay agentes de
+GSAP, React Three Fiber, shaders y layout disruptivo. **En este proyecto no se
+invocan.** Un layout roto en un sitio cuyo problema es que podría parecer una
+estafa empeora justo lo que se viene a arreglar, y una animación es lo primero
+que se lleva por delante los 97–99 de Lighthouse, que son un activo medido. Los
+que sí se usan: `visual-qa` —capturas, 390 px real, Lighthouse— y
+`nextjs-app-router` para metadatos y rutas; `ui-polish` entra en la C2. Decisión
+de Ulises del 2026-08-18, reafirmada el 2026-08-20.
+
 ### ADR-11 · Un solo dominio, con el middleware acotado
 
 Sitio público, portal ETT y backoffice conviven en un dominio: `/[locale]/...` público, `/agency`, `/admin` privados con `noindex`.
@@ -768,6 +792,113 @@ flujo de reconsentimiento **no se construye en esta sesión**: queda anotado en
 `docs/ESTADO.md` como tarea, junto al aviso de comprobar antes cuántas cuentas
 reales hay en producción — si son las de prueba, el arreglo es borrarlas y no
 construir nada.
+
+---
+
+### ADR-35 · La home lee vacantes, y por eso no tiene copy que envejezca solo
+
+Decidido en la fase C1, el 2026-08-20.
+
+La home dice en qué punto está el proyecto —«hoy no hay ninguna vacante
+publicada»— y su botón principal apunta a un sitio u otro según eso. Las dos
+cosas dependen de un hecho que **cambia solo** el día que una ETT publique.
+
+_Lo descartado:_ escribirlo en el copy. Una frase así es verdad el día que se
+escribe y mentira el día que deja de serlo, sin que nadie se entere. Este
+proyecto ya se ha comido esa factura una vez (ADR-31 y la corrección del
+2026-08-19), y la fase que arregla la credibilidad no puede introducir la misma
+clase de defecto que viene a quitar.
+
+_Lo decidido:_ la home consulta `listPublishedJobs` y elige. **La condición es
+el contenido, no una bandera**, exactamente como `jobs/page.tsx` decide su
+`noindex`. En cuanto se publique una vacante, la home se corrige sola.
+
+_El coste, medido:_ ninguno. La lectura va por `lib/supabase/public`, que no toca
+cookies, así que la home sigue siendo estática con `revalidate = 3600` y se
+sirve desde el CDN (ADR-11, ADR-13). Comprobado: `x-nextjs-cache: HIT`, sin
+`Set-Cookie` y sin `x-ett-session-checked`.
+
+---
+
+### ADR-36 · El botón más llamativo lleva a lo que tiene contenido, y lo decide la base de datos
+
+Decidido en la fase C1, el 2026-08-20. Es **la decisión de producto** de esa
+fase, y está escrita aquí para que quien la discuta sepa qué se sopesó.
+
+_El problema._ El botón primario de la home era «Ver ofertas» → `/jobs`, y en
+producción `/es/ofertas` no tiene ni una vacante. Quien pulsa el botón grande y
+aterriza donde no hay nada concluye una de dos: que esto está abandonado, o que
+le han mentido. Y `/oportunidades` —cinco perfiles de mercado con cifras, fuente
+y fecha, que es el contenido más sólido que tiene el sitio— era el enlace
+secundario. El orden estaba invertido.
+
+_Lo que NO era el problema._ La página de ofertas vacía **no es un callejón sin
+salida**: tiene un estado vacío honesto que dice que se están cerrando los
+primeros acuerdos y ofrece un botón a las oportunidades (`jobs/page.tsx:84-97`),
+y es `noindex` mientras no haya vacantes. Está bien hecha y no se ha tocado.
+
+_Las tres salidas que se sopesaron:_
+
+1. **Retirar `/ofertas` de la superficie pública** hasta que haya vacantes.
+   Descartada: destruye la ruta que el día que haya una ETT es la principal, se
+   lleva por delante su SEO acumulado, y esconder que hoy no hay ofertas es
+   justo la clase de opacidad que esta fase viene a quitar.
+2. **Dejarlo como estaba y arreglarlo con copy.** Descartada: el problema no es
+   que la página vacía se explique mal —se explica bien—, es que el sitio grita
+   «entra aquí» señalando al único sitio donde no hay nada.
+3. **Que el destino del botón lo decida el contenido.** ✅ Elegida.
+
+_Lo decidido._ Sin vacantes, el primario lleva a `/opportunities` y el listado de
+ofertas queda enlazado desde la cabecera, con su rótulo de siempre. Con al menos
+una vacante, el primario pasa a ser `/jobs` sin que nadie tenga que acordarse de
+cambiarlo (ADR-35). El secundario es siempre «Crear mi cuenta».
+
+Y en la sección que cuenta el estado del proyecto, **el enlace a las ofertas solo
+aparece si hay alguna**: invitar a ver «las ofertas publicadas» en el párrafo que
+acaba de decir que no hay ninguna es la contradicción que se venía a quitar.
+
+_Lo que esta decisión NO hace, y es deliberado:_ no inventa vacantes ni convierte
+una oportunidad en una oferta. ADR-30 sigue entero: `/oportunidades` no lleva
+`JobPosting`, y sigue medido en **0**.
+
+_Cuándo revisarla._ El día que haya vacantes de verdad, comprobar que el primario
+ha cambiado solo y que la home ya no dice que no hay ninguna. Es una comprobación
+de dos `curl`, y está en el «hecho cuando» de la fase que traiga la primera ETT.
+
+---
+
+### ADR-37 · El copy largo de una pantalla de servidor no viaja en `messages/<locale>.json`
+
+Decidido en la fase C1, el 2026-08-20. **Generaliza ADR-33**, que dejó esto
+anotado como «una tarea propia, con su propia medición».
+
+`NextIntlClientProvider` serializa el fichero de mensajes **entero** en el HTML
+de **todas** las páginas. La C1 llevó el namespace `Home` de 546 B a 3,8 KB —
+contenido que hay que escribir, porque es lo que responde por qué esto no es un
+fraude— y esos 3,8 KB viajaban también a `/es/ofertas`, a cada oportunidad y a
+cada landing, donde nadie los pinta.
+
+_La medición que lo obligó:_ con el copy dentro de `messages/`, las seis páginas
+perdían de 2 a 3 puntos de Lighthouse móvil, **incluidas las que la fase no
+tocaba**. El presupuesto de velocidad es puerta dura (ADR-10), así que la
+decisión de diseño no era negociable: o salía el copy del payload, o no entraba
+el contenido.
+
+_La regla, para que no haya que decidirlo caso a caso:_ el copy que **solo pinta
+un Server Component** va a `messages/<área>/<locale>.json` y se carga desde un
+módulo `server-only`; en `messages/<locale>.json` se queda lo que necesita el
+cliente —navegación, formularios, etiquetas compartidas— y lo corto que enlaza
+el pie en todas las páginas.
+
+`createTranslator` de `next-intl` da el mismo `t` que `getTranslations` —ICU,
+plurales y `t.raw` incluidos—, así que la pantalla no cambia por esto.
+`CONVENTIONS.md` se cumple igual: cambia **qué fichero**, no que el copy viva
+fuera del código. La paridad `es`/`en` la comprueba el mismo `parity.mjs`, al que
+se le pasa el par de ficheros.
+
+_Lo que sigue sin resolverse:_ acotar qué namespaces se serializan **en general**.
+Hoy el backoffice y las plantillas de correo siguen viajando al HTML de la home.
+Sigue siendo una tarea propia y sigue sin hacerse.
 
 ---
 

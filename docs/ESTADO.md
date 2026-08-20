@@ -1,5 +1,105 @@
 # Estado del proyecto — punto de retomada
 
+> ## 🟡 2026-08-20 — la C1 está hecha y medida, y **no está desplegada**
+>
+> **Commit `72136a4`.** Todo el código de la fase C1 está escrito, comprobado y
+> con su evidencia en `docs/evidencia/fase-c1/`. **Falta exactamente una cosa, y
+> es la que convierte el trabajo en algo que exista:** no está vivo en
+> `https://talpass.eu`. El despliegue se bloqueó en la sesión y **lo tiene que
+> lanzar Ulises**:
+>
+> ```bash
+> pnpm exec vercel --prod
+> pnpm exec vercel inspect talpass.eu   # y de aquí sale el dpl_ que se acredita
+> ```
+>
+> Hasta entonces la fase se queda 🟡 en el roadmap. Y **el commit está sin
+> subir**: `origin/main` va un commit por detrás.
+>
+> ### Qué cambia para el candidato
+>
+> - **La home responde.** Pasa de 1 `h1`, cero `h2` y 546 B de copy a cuatro
+>   secciones que contestan, **leyendo solo la home y sin ejecutar
+>   JavaScript**: qué hace Talpass, cómo funciona, **qué ve una agencia de ti y
+>   qué no**, qué cuesta, en qué punto está y quién responde del sitio — con el
+>   nombre y la ciudad del responsable, sacados de `config/controller.ts`.
+> - **El argumento de confianza más fuerte del proyecto sale del sótano.**
+>   `/legal/datos-y-agencias` enumeraba campo a campo qué ve una ETT y qué no,
+>   enterrado en un documento legal. Ahora está resumido en la home y
+>   **enlazado, no duplicado**: el que manda sigue siendo el texto legal.
+> - **Ya no se lee «Fase de construcción» lo primero.** No se ha sustituido por
+>   una promesa: el estado real —hoy no hay ninguna vacante publicada— se cuenta
+>   entero en su propia sección, donde informa en vez de disculparse. El pie
+>   decía lo mismo y ahora lleva el nombre del responsable.
+> - **Los diez enlaces de `(auth)` ya no se anuncian como la home.** Título y
+>   descripción propios en `es` y `en`, con canónica, y el `noindex` intacto. Es
+>   lo que se ve al compartir el registro por WhatsApp, que es como se va a
+>   compartir esto.
+> - **La cabecera cabe en el móvil.** Medía 453 px a 390 de viewport y empujaba
+>   el documento entero de lado. Ahora 390/390, y también 320/320.
+>
+> ### La decisión de producto, y está razonada en un ADR
+>
+> **ADR-36: el botón más llamativo lleva a lo que tiene contenido, y lo decide la
+> base de datos.** Sin vacantes, el primario va a `/oportunidades` —cinco
+> perfiles con cifras, fuente y fecha—; con al menos una, pasa a `/ofertas`
+> solo. **No se retira `/ofertas`** (habría destruido la ruta que el día que haya
+> ETT es la principal) y **no se inventa nada** (ADR-30 intacto: `JobPosting` en
+> oportunidades sigue en 0, comprobado en las 10 páginas de producción).
+>
+> El mecanismo es **ADR-35**: la home lee `listPublishedJobs`. Así no hay copy
+> que envejezca solo — el día que se publique una vacante, la home se corrige
+> sola. Sigue siendo estática y cacheada: la lectura no toca cookies.
+>
+> ### Dos cosas que la fase descubrió y no estaban en el guion
+>
+> 1. 🔴 **Una pasada de Lighthouse por página no sirve para cerrar nada.**
+>    Midiendo el mismo build dos veces seguidas salen notas distintas: la banda
+>    de ruido es de **±3 puntos** y el LCP salta entre 2,0 y 2,8 s. La primera
+>    vuelta de esta sesión pareció una regresión de 2-3 puntos y **no lo era**.
+>    Todas las cifras nuevas son mediana de 3 pasadas, y las dos páginas dudosas
+>    se remidieron con 7: `registro` empata y `ofertas` sale mejor.
+>    👉 **La C2 tiene que medir así, y mirar el LCP antes que la nota**: casi
+>    todo el sitio está en 2,4–2,8 s con el umbral «bueno» en 2,5, y la C2 trae
+>    una fuente nueva, que es justo lo que cruza ese borde.
+> 2. 🔴 **El copy largo no puede vivir en `messages/<locale>.json`. ADR-37.**
+>    `NextIntlClientProvider` serializa el fichero entero en **todas** las
+>    páginas, así que los 3,8 KB de argumentario de la home viajaban a cada
+>    oportunidad y a cada landing, donde nadie los pinta — y costaban puntos en
+>    páginas que la fase no tocaba. El copy se movió a `messages/home/`, cargado
+>    con `createTranslator` desde un módulo `server-only`, igual que los legales.
+>    Resultado: la home pesa 13 KB más de contenido y **no pierde un punto**.
+>
+> ⚠️ **Y una trampa de método que costó dos mediciones falsas:**
+> `pkill -f "next start"` **no mata** el servidor de `pnpm start:local`. El
+> puerto 3210 se queda con el proceso viejo, el nuevo `start` falla en silencio y
+> se acaba midiendo el build anterior creyendo que es el nuevo. Se mata con
+> `kill -9 $(lsof -ti tcp:3210)`, y se comprueba con un `grep` de algo que solo
+> esté en el build que se quiere medir.
+>
+> ### Lo que sube de la línea base sin que lo hiciera esta fase
+>
+> - **Migraciones: 18 / 18**, sin huecos. La `20260816120000_verification` ya
+>   está aplicada en producción (fila 30 de la auditoría, que decía 18/17).
+> - **Variables de Vercel: 11 / 11.** `RESEND_API_KEY` y `EMAIL_FROM` están
+>   puestas (fila 31, que decía «faltan 2»).
+> - **`format:check` limpio** (fila 17, que fallaba).
+>
+> ### Lo que sigue abierto y esta fase no toca
+>
+> - 🟡 **`ettrecruiter.vercel.app` sirve el sitio a 200 y es rastreable**
+>   (hallazgo 8). Mitigado porque su canónica apunta al apex. Es configuración
+>   de dominio, no credibilidad. **Anotado, no arreglado.**
+> - 🔴 **`/es/trabajo/**` es 404 en producción** (hallazgo 5). Es ADR-23
+>   funcionando: 0 vacantes ⇒ 0 landings. **No se arregla con código, se arregla
+>   con una ETT.**
+> - 📝 **La documentación dice que `(auth)` es `noindex, follow` y el código
+>   pone `noindex, nofollow`.** Ya era así antes de la C1. Alguien tiene que
+>   decidir cuál de las dos es la buena.
+> - **La C2 entera**: tipografía, escala, color, espaciado, componentes y
+>   estados de carga/error. La paleta y General Sans están elegidas y **no se han
+>   aplicado aquí**, a propósito.
+
 > ## 🎨 2026-08-20 — el diseño se parte en dos fases, y con qué se hace
 >
 > **Decisión de Ulises.** El punto 6 («el pase de credibilidad», decidido el

@@ -576,6 +576,33 @@ se cierra.
 - `typecheck`, `lint`, `format:check` limpios · `test:security` en verde ·
   cabeceras públicas sin regresión.
 
+### 🟡 Estado 2026-08-20 — hecha y medida en local, **sin desplegar**
+
+Todo el código está escrito, y la evidencia local está en
+`docs/evidencia/fase-c1/`. **Falta un criterio y solo uno: no está vivo en
+`https://talpass.eu`.** El despliegue quedó bloqueado en la sesión y lo tiene
+que lanzar Ulises (`pnpm exec vercel --prod`). Hasta entonces la fase **no se
+marca ✅**, por la regla de la casa: este proyecto tiene dos correcciones
+ganadas por marcar de más.
+
+| Criterio                            | Estado                                                          |
+| ----------------------------------- | --------------------------------------------------------------- |
+| Tabla de 40 cifras rellenada        | ✅ local · ⏳ las 12 filas de producción esperan al despliegue  |
+| Ningún CTA lleva a una página vacía | ✅ **ADR-36** — lo decide el contenido, no el copy (**ADR-35**) |
+| Las cinco preguntas, sin JavaScript | ✅ `curl` sobre el HTML servido, `01-local.md` §B               |
+| 390×844 sin desbordamiento          | ✅ 390/390 en home, registro y oportunidad — y 320/320 también  |
+| `(auth)` con metadatos y canónica   | ✅ las diez páginas, `es` y `en`, con el `noindex` intacto      |
+| Lighthouse igual o mejor            | ✅ ninguna empeora — ver el aviso de método abajo               |
+| Calidad y cabeceras                 | ✅ 64/64, drill verde, 15/15 públicas, 5/5 privadas             |
+| Vivo en `talpass.eu`                | ⏳ **lo único que falta**                                       |
+
+🔴 **Un hallazgo de método que hereda la C2:** la línea base se midió con **una
+pasada de Lighthouse por página**, y con ese método esta fase no se podía
+cerrar — midiendo el mismo build dos veces seguidas salen notas distintas, con
+una banda de ruido de **±3 puntos**. Todas las cifras nuevas son **mediana de 3
+pasadas**, y las dos páginas dudosas se remidieron con 7. Detalle en
+`docs/evidencia/fase-c1/03-rendimiento.md`.
+
 ---
 
 ## Fase C2 · Sistema visual
