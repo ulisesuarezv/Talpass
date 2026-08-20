@@ -62,6 +62,20 @@
 > móvil barato no parece profesional, parece descuidado**, y esta fase existe
 > justo para lo contrario.
 >
+> ### El prompt de la C1 está escrito — 2026-08-20
+>
+> `docs/prompts/fase-c1.md`. Se pega en una sesión nueva y limpia **cuando el
+> punto 4 esté cerrado**, no antes. El de la C2 no se escribe todavía, a
+> propósito: uno redactado hoy ignoraría lo que la C1 descubra.
+>
+> **Un matiz que el prompt corrige y conviene no volver a perder:** la página de
+> ofertas vacía **no es un callejón sin salida**. Tiene un estado vacío honesto
+> —«Todavía no hay vacantes publicadas», con el motivo y un botón a las
+> oportunidades— en `jobs/page.tsx:84-97`, y está bien hecho. **No hay que
+> rehacerlo.** El problema es de **jerarquía de CTA**: el botón más llamativo del
+> sitio lleva a la página que dice que no hay nada, mientras `/oportunidades`
+> —cinco perfiles con cifras, fuente y fecha— es el enlace secundario.
+>
 > **Pendiente de decisión de Ulises, y sigue abierta desde el 2026-08-18:**
 > precisar **ADR-10** para que «sobrio y profesional» quede definido como
 > **creíble** y no como vacío, y para que la política de agentes de arriba viva
