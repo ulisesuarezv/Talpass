@@ -1,5 +1,134 @@
 # Estado del proyecto — punto de retomada
 
+> ## 🟡 2026-08-20 — la C2 está hecha y medida entera, y **falta desplegarla**
+>
+> **Fase C2 · Sistema visual.** El sitio deja de ser la escala de grises de
+> serie de shadcn: hay paleta, hay tipografía de marca, hay una escala
+> tipográfica con un nombre por papel, y existen por fin el estado de carga y el
+> de error, que **no había ninguno en toda la aplicación**.
+>
+> ### 🔴 LO PRIMERO PARA LA SESIÓN SIGUIENTE: esto NO está vivo
+>
+> **`origin/main` está en `84d7615`, subido y al día. Pero subir y desplegar son
+> dos actos distintos en este proyecto, y el segundo no se ha hecho.** El
+> despliegue de esta sesión quedó **bloqueado por el clasificador de permisos
+> del entorno**, no por un fallo del código. Lo que hay en `talpass.eu` sigue
+> siendo la C1.
+>
+> ```bash
+> pnpm exec vercel --prod
+> pnpm exec vercel inspect talpass.eu   # el dpl_ se lee de AQUÍ, no del deploy
+> ```
+>
+> Y después queda por comprobar **lo que solo se puede comprobar contra
+> producción**, que es el único hueco de evidencia de esta fase:
+>
+> - Cabeceras públicas: `x-vercel-cache` + `x-nextjs-prerender: 1`, **sin**
+>   `x-ett-session-checked` y **sin** `Set-Cookie`.
+> - Control negativo: `/es/cuenta` en **307** con la función en **`dub1`**.
+> - Lighthouse **con el borde caliente**. Recién desplegado sale `PRERENDER` en
+>   vez de `HIT` y eso cuesta puntos de verdad: la C1 midió `/es/oportunidades`
+>   en **93 en frío y 100 en caliente**, con el mismo código. Tres `curl` y
+>   comprobar `HIT` antes de la primera pasada.
+> - Que el HTML servido trae el `preload` de `GeneralSans_Regular-…woff2`.
+>
+> **Todo lo demás está medido**, contra el build de producción servido en local
+> (`localhost:3210`), que es donde se ha hecho toda la evidencia de abajo.
+>
+> Evidencia completa en `docs/evidencia/fase-c2/`. ADR-38, ADR-39 y ADR-40.
+>
+> ### Qué cambia para el candidato
+>
+> - **El sitio se parece a algo.** Primario teal-900, superficie de marca en la
+>   caja que explica «qué ve una agencia de ti», y el naranja en un solo sitio
+>   de la home: el hecho de que **no se le cobra nunca**, que hasta ahora era
+>   gris pequeño debajo de dos botones.
+> - **Se lee mejor en un móvil barato.** El texto de lectura sube de 14 a 15 px,
+>   el gris del cuerpo pasa de **4,74:1 a 7,24:1**, el borde de un campo de
+>   **1,35 a 3,68** —antes era prácticamente invisible— y el indicador de foco de
+>   **1,9 a 5,23**.
+> - **Se puede pulsar.** El botón principal pasa de 36 a **44 px**, que es lo que
+>   piden las guías táctiles, y la casilla de consentimiento de 16 a 20 con área
+>   de pulsación de 44.
+> - **Ya no se queda en blanco.** Al navegar aparece un esqueleto en vez de nada,
+>   y si algo falla sale una pantalla en su idioma que dice que no es culpa suya,
+>   que no ha perdido nada y qué hacer, con cabecera y pie — en vez de la página
+>   de error de Next en inglés.
+>
+> ### Lo medido
+>
+> | Qué                                 | Antes           | Ahora                                  |
+> | ----------------------------------- | --------------- | -------------------------------------- |
+> | Colores de marca en la aplicación   | **ninguno**     | paleta completa en tokens, 0 en el JSX |
+> | Pares de contraste comprobados      | 0 (a ojo)       | **40, con script que falla el build**  |
+> | `--muted-foreground` sobre el fondo | 4,74            | **7,24**                               |
+> | Borde de campo · foco               | 1,35 · 1,9      | **3,68 · 5,23**                        |
+> | `loading.tsx` / `error.tsx`         | **0 / 0**       | **2 / 1**, demostrados con captura     |
+> | Combinaciones de encabezado         | 13 a mano       | **una clase por papel**                |
+> | Fuente en la ruta crítica           | Geist, 29.288 B | **General Sans, 23.904 B**             |
+> | Rutas prerenderizadas               | 26              | **26**                                 |
+>
+> ### 🔴 Las tres cosas que la fase descubrió midiendo, y ninguna se veía a ojo
+>
+> 1. **La primera versión completa de la fase perdía 3–4 puntos en las seis
+>    páginas.** No era ruido: las distribuciones no se solapaban. Bisecando salió
+>    que **el color, la escala tipográfica, los 15 px, los botones grandes y los
+>    acentos de marca cuestan exactamente cero**, y que todo el coste era de dos
+>    sitios: la tipografía y los ficheros de estado.
+> 2. **Lo que cuesta puntos son los bytes en la ruta crítica, no las
+>    peticiones.** El General Sans variable son 38 KB en **un** fichero y cuesta
+>    lo mismo que dos ficheros de 48 KB. El umbral cae entre los 29 KB de Geist
+>    y los 38 del variable. Quitar el `preload` **empeora**. Se midieron seis
+>    configuraciones (ADR-39) y solo una no toca el LCP: **la Regular sola**, que
+>    además pesa 5,4 KB menos que el Geist que había.
+> 3. **Un `loading.tsx` se paga en todas las páginas, se vea o no.** Con
+>    `getTranslations` volvió dinámico el sitio entero —**26 rutas
+>    prerenderizadas a 0**— porque no recibe `params` y acaba leyendo cabeceras.
+>    Con `useTranslations` desde cliente se salva el estático pero se lleva un
+>    `chunk` al paquete de todas las páginas: **+4,1 KB y dos peticiones**, un
+>    punto y 0,14 s de LCP en la home. La salida fue **no traducir ahí**: el
+>    nombre accesible viene por `aria-labelledby` de una etiqueta que pinta el
+>    layout, y el componente se queda sin una línea de JavaScript. **ADR-40.**
+>
+> ### 🔴 Y una cosa que la licencia impidió hacer
+>
+> El prompt pedía **subsetear General Sans a `latin`**. **No se puede:** la ITF
+> Free Font License v2.0 §02 prohíbe expresamente el subsetting y la conversión
+> de formato, y §05 lo llama obra derivada. Lo que sí permite con todas las
+> letras es el autoalojamiento. Se sirve el WOFF2 oficial íntegro y **no hizo
+> falta**: la Regular oficial ya pesa menos que el subconjunto de Geist.
+>
+> ### El precio que hay que leer, porque es una decisión de Ulises
+>
+> **Los `font-semibold` los emboldece el navegador**, no son la Semibold de
+> verdad. En un titular grande se nota al comparar. Traer la Semibold real cuesta
+> **de 1 a 4 puntos de Lighthouse y 0,15–0,16 s de LCP**, sobre un sitio que ya
+> está en 2,6–2,8 s con el umbral «bueno» de Core Web Vitals en 2,5. El fichero
+> está a un `cp` del paquete de Fontshare. Cifras en ADR-39.
+>
+> ### La decisión sobre el modo oscuro: aplazado, y el bloque `.dark` se retira
+>
+> Era **inalcanzable** —no hay `ThemeProvider`, ni `next-themes`, ni un sitio
+> donde se aplique la clase—. Se borra en vez de dejarlo con los grises viejos
+> porque junto a un `:root` con la paleta nueva es un medio-estado que aparecería
+> roto el día que alguien añadiese un interruptor. Y el motivo de fondo:
+> **los 40 ratios están medidos contra fondo claro y no valen para el oscuro**;
+> un tema oscuro obliga a rehacer la tabla entera, no a invertirla. Ojo además a
+> ADR-11 y ADR-13: un interruptor en la cabecera volvería dinámicas **todas** las
+> públicas. Razonado en ADR-38.
+>
+> ### Lo que sigue abierto y esta fase no toca
+>
+> - **La Semibold**, con su precio arriba.
+> - **El modo oscuro.**
+> - 🟡 **`messages/<locale>.json` sigue pesando 37 KB** y viaja entero a todas
+>   las páginas. ADR-37 lo resolvió para la home y ADR-33 para los legales; el
+>   resto sigue igual. Es una tarea propia y no era esta.
+> - 🟡 **`ettrecruiter.vercel.app` a 200** (hallazgo 8) y 🔴 **`/es/trabajo/**`
+>   en 404 por no haber vacantes** (hallazgo 5). Los dos siguen igual.
+> - 📝 La documentación dice que `(auth)` es `noindex, follow` y el código pone
+>   `noindex, nofollow`. Sigue sin decidirse.
+
 > ## ✅ 2026-08-20 — la C1 está cerrada: desplegada y verificada
 >
 > **Fase C1 · Credibilidad.** En `https://talpass.eu` ya no hay una home que sea
