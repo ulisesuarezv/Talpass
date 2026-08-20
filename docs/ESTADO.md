@@ -11,9 +11,24 @@
 > cifras de la auditoría— y C2 se juzga a ojo. Juntas, lo subjetivo contamina lo
 > auditable, y aquí lo que no se mide no se cierra.
 >
-> **Y siguen después del punto 4.** Captar treinta personas hacia un embudo que
-> se para en el paso 6 es quemar la captación: hoy faltan todavía
-> `RESEND_API_KEY` y `EMAIL_FROM`, así que nadie recibe aviso de nada.
+> **Y NO dependen del punto 4** — corregido el 2026-08-20 el mismo día que se
+> escribió. El PM lo puso como precondición con el argumento de que «captar hacia
+> un embudo que se para quema la captación». Ese argumento era bueno el
+> 2026-08-18 y **se quedó flojo esa misma tarde**: con la migración aplicada y las
+> variables puestas, quien llegue hoy se registra, completa el perfil y **sube sus
+> documentos sin problema**; lo único que falta es que un admin los revise, que es
+> un cuello de botella de operaciones y no de código. Y la captación que se podría
+> «quemar» hoy casi no existe: Search Console sigue sin dar de alta.
+>
+> **No hay dependencia técnica**: la C1 toca la home, el eyebrow, los enlaces, los
+> metadatos de `(auth)` y la cabecera; el punto 4 toca migración, correo y
+> backoffice. **Cero ficheros en común**, y encima los hacen actores distintos —
+> el punto 4 lo termina Ulises a mano, la C1 es una sesión de código. Serializarlos
+> no gana nada.
+>
+> **La única coordinación es de calendario:** la C1 redespliega y toca la página de
+> registro, así que el alta real del punto 4 no debe caer **en mitad** de ese
+> despliegue. Antes o después, da igual.
 >
 > ### Los agentes: cuáles sí y cuáles no — reafirmado el 2026-08-20
 >
@@ -506,8 +521,9 @@
 >    **C1 · Credibilidad** (lo que destruye confianza, auditable contra la tabla
 >    de 40 cifras) y **C2 · Sistema visual** (tipografía, color, escala,
 >    estados). Fichas completas con su «hecho cuando» en `docs/02-ROADMAP.md`.
->    Van **después del punto 4**: captar hacia un embudo que se para es quemar
->    la captación.
+>    **No dependen del punto 4 y pueden correr en paralelo** (corregido el
+>    2026-08-20; ver el bloque de diseño arriba). Solo hay que evitar que el alta
+>    real caiga en mitad de un despliegue de la C1.
 >
 > ### Lo siguiente — **el punto 4, y es de Ulises**
 >
@@ -615,20 +631,20 @@ que exista una ETT** — una vacante real es de una agencia real. Por eso las do
 están bloqueadas y por eso existe la 4b: para conseguir los candidatos con los
 que se cierra esa ETT.
 
-| Fase                    | Estado                                                                     |
-| ----------------------- | -------------------------------------------------------------------------- |
-| 0 · Fundaciones         | ✅ desplegada en producción                                                |
-| 1 · Datos y seguridad   | ✅ 36 tablas, RLS probada                                                  |
-| 2 · Auth y onboarding   | ✅ registro real end-to-end                                                |
-| 3 · Vacantes + SEO      | 🟡 **bloqueada hasta que haya ETT** — Rich Results Test sobre vacante real |
-| 4 · Verificación        | 🟡 **bloqueada hasta que haya ETT** — publicar una vacante real            |
-| **4b · Oportunidades**  | **✅ cerrada 2026-08-17 — 5 perfiles vivos y el sitio abierto a Google**   |
-| **Vía B**               | **🟢 es donde se trabaja hoy** — ver «El orden acordado», arriba           |
-| **C1 · Credibilidad**   | **⬜ vía B** — decidida el 2026-08-20; va después del punto 4              |
-| **C2 · Sistema visual** | **⬜ vía B** — después de C1; paleta y tipografía ya elegidas              |
-| **5 · Aplicaciones**    | **⬜ congelada en la vía A** — su prompt sigue sin escribirse, a propósito |
-| 6, 7, 8, 10             | ⬜ vía A, congeladas hasta que haya ETT                                    |
-| **9 · GDPR y legal**    | **🟡 los textos legales salieron de aquí y están vivos** (ADR-33, ADR-34)  |
+| Fase                    | Estado                                                                             |
+| ----------------------- | ---------------------------------------------------------------------------------- |
+| 0 · Fundaciones         | ✅ desplegada en producción                                                        |
+| 1 · Datos y seguridad   | ✅ 36 tablas, RLS probada                                                          |
+| 2 · Auth y onboarding   | ✅ registro real end-to-end                                                        |
+| 3 · Vacantes + SEO      | 🟡 **bloqueada hasta que haya ETT** — Rich Results Test sobre vacante real         |
+| 4 · Verificación        | 🟡 **bloqueada hasta que haya ETT** — publicar una vacante real                    |
+| **4b · Oportunidades**  | **✅ cerrada 2026-08-17 — 5 perfiles vivos y el sitio abierto a Google**           |
+| **Vía B**               | **🟢 es donde se trabaja hoy** — ver «El orden acordado», arriba                   |
+| **C1 · Credibilidad**   | **⬜ vía B** — prompt listo en `docs/prompts/fase-c1.md`; **no espera al punto 4** |
+| **C2 · Sistema visual** | **⬜ vía B** — después de C1; paleta y tipografía ya elegidas                      |
+| **5 · Aplicaciones**    | **⬜ congelada en la vía A** — su prompt sigue sin escribirse, a propósito         |
+| 6, 7, 8, 10             | ⬜ vía A, congeladas hasta que haya ETT                                            |
+| **9 · GDPR y legal**    | **🟡 los textos legales salieron de aquí y están vivos** (ADR-33, ADR-34)          |
 
 ### Lo que dejó la fase 4 (2026-08-16, verificado contra la base local)
 

@@ -1,6 +1,10 @@
 # PROMPT — Fase C1 · Credibilidad
 
-> Pegar en una sesión nueva y limpia. Es la primera de las dos fases de diseño decididas el 2026-08-20, y va **después del punto 4** del orden acordado. La C2 (sistema visual) es la siguiente y **no es esta**.
+> Pegar en una sesión nueva y limpia. Es la primera de las dos fases de diseño decididas el 2026-08-20. La C2 (sistema visual) es la siguiente y **no es esta**.
+>
+> **No depende del punto 4 y puede correr en paralelo** — corregido el 2026-08-20: el PM lo había escrito como precondición y no lo es. Esta fase no toca la base de datos, ni el correo, ni el backoffice; el punto 4 no toca la home, ni los metadatos, ni la cabecera. Cero ficheros en común.
+>
+> **La única coordinación, y es de calendario:** esta fase redespliega producción y toca la página de registro, y al punto 4 le queda un alta real end-to-end desde el móvil. Que ese alta no caiga **en mitad** de tu despliegue, para no probar un blanco móvil. Antes o después, da igual.
 
 ---
 
