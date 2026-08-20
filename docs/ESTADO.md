@@ -1,20 +1,25 @@
 # Estado del proyecto — punto de retomada
 
-> ## 🟡 2026-08-20 — la C1 está hecha y medida, y **no está desplegada**
+> ## ✅ 2026-08-20 — la C1 está cerrada: desplegada y verificada
 >
-> **Commit `72136a4`.** Todo el código de la fase C1 está escrito, comprobado y
-> con su evidencia en `docs/evidencia/fase-c1/`. **Falta exactamente una cosa, y
-> es la que convierte el trabajo en algo que exista:** no está vivo en
-> `https://talpass.eu`. El despliegue se bloqueó en la sesión y **lo tiene que
-> lanzar Ulises**:
+> **Fase C1 · Credibilidad.** En `https://talpass.eu` ya no hay una home que sea
+> un hero y se acabe, ni un botón grande que lleve a una página vacía, ni una
+> cabecera que empuje el móvil de lado.
 >
-> ```bash
-> pnpm exec vercel --prod
-> pnpm exec vercel inspect talpass.eu   # y de aquí sale el dpl_ que se acredita
-> ```
+> **`dpl_64afKgpF4rDcxSRGVvfkKUMXzKFv`**, aliased a `talpass.eu` y leído de
+> `pnpm exec vercel inspect talpass.eu` **antes** de mirar ninguna cabecera.
 >
-> Hasta entonces la fase se queda 🟡 en el roadmap. Y **el commit está sin
-> subir**: `origin/main` va un commit por detrás.
+> ⚠️ Ese identificador **acredita esta verificación con fecha, no lo que se
+> sirve hoy**: en cuanto alguien redespliegue, el alias se mueve. Para saber
+> cuál está vivo se ejecuta el comando.
+>
+> ⚠️ **Los commits están sin subir.** `origin/main` va tres por detrás, y en
+> este proyecto **`git push` no despliega nada**: subir y desplegar son dos
+> actos distintos, y solo el segundo está hecho.
+>
+> Evidencia completa en `docs/evidencia/fase-c1/`: la tabla de 40 cifras
+> rellenada entera, el detalle local, el de producción, el de rendimiento y las
+> capturas a 390 px.
 >
 > ### Qué cambia para el candidato
 >
@@ -36,7 +41,25 @@
 >   lo que se ve al compartir el registro por WhatsApp, que es como se va a
 >   compartir esto.
 > - **La cabecera cabe en el móvil.** Medía 453 px a 390 de viewport y empujaba
->   el documento entero de lado. Ahora 390/390, y también 320/320.
+>   el documento entero de lado. Ahora 390/390 —comprobado contra producción, no
+>   solo en local— y también 320/320.
+>
+> ### Lo medido contra el sitio vivo
+>
+> | Qué                           | Antes                   | Ahora                                    |
+> | ----------------------------- | ----------------------- | ---------------------------------------- |
+> | Encabezados de la home        | 1 `h1`, **0 `h2`**      | **1 `h1`, 5 `h2`, 6 `h3`**               |
+> | «Fase de construcción»        | lo primero que se leía  | **0 apariciones**                        |
+> | `/es/ofertas` en la home      | **×2** en el cuerpo     | **×1**, y es la de la cabecera           |
+> | `/es/oportunidades`           | ×1, secundario          | **×3**, y es el botón primario           |
+> | `(auth)` con título propio    | 0 de 10                 | **10 de 10**, con canónica y `noindex`   |
+> | Públicas sin sesión ni cookie | 15/15                   | **15/15**                                |
+> | `/es/cuenta`                  | 307 + `dub1`            | **307 + `dub1`** — ADR-11/13/32 en pie   |
+> | `JobPosting` en oportunidades | 0                       | **0** en las 10 páginas — ADR-30 intacto |
+> | Lighthouse móvil producción   | 97 / 98 / 100 / 98 / 97 | **100 / 100 / 100 / 98 / 99**            |
+>
+> **Ninguna página de rendimiento empeora y cuatro mejoran**, incluida la home,
+> que es la que se reescribió entera.
 >
 > ### La decisión de producto, y está razonada en un ADR
 >
@@ -51,7 +74,7 @@
 > que envejezca solo — el día que se publique una vacante, la home se corrige
 > sola. Sigue siendo estática y cacheada: la lectura no toca cookies.
 >
-> ### Dos cosas que la fase descubrió y no estaban en el guion
+> ### Tres cosas que la fase descubrió y no estaban en el guion
 >
 > 1. 🔴 **Una pasada de Lighthouse por página no sirve para cerrar nada.**
 >    Midiendo el mismo build dos veces seguidas salen notas distintas: la banda
@@ -59,16 +82,26 @@
 >    vuelta de esta sesión pareció una regresión de 2-3 puntos y **no lo era**.
 >    Todas las cifras nuevas son mediana de 3 pasadas, y las dos páginas dudosas
 >    se remidieron con 7: `registro` empata y `ofertas` sale mejor.
->    👉 **La C2 tiene que medir así, y mirar el LCP antes que la nota**: casi
->    todo el sitio está en 2,4–2,8 s con el umbral «bueno» en 2,5, y la C2 trae
->    una fuente nueva, que es justo lo que cruza ese borde.
-> 2. 🔴 **El copy largo no puede vivir en `messages/<locale>.json`. ADR-37.**
+> 2. 🔴 **En producción, además, el borde frío parece una regresión.** Recién
+>    desplegado, `/es/oportunidades` medía **93** —cinco puntos por debajo de la
+>    línea base, y con las tres pasadas de acuerdo entre sí, así que tampoco
+>    parecía ruido—. Las ocho pasadas seguidas de esa página fueron
+>    `93, 94, 93, 96, 100, 98, 100, 100`: con el borde ya caliente la mediana es
+>    **100** y el LCP baja de 2,9 s a 1,5 s. 👉 **Calentar con tres `curl` y
+>    comprobar que responde `HIT` antes de la primera medición.**
+> 3. 🔴 **El copy largo no puede vivir en `messages/<locale>.json`. ADR-37.**
 >    `NextIntlClientProvider` serializa el fichero entero en **todas** las
 >    páginas, así que los 3,8 KB de argumentario de la home viajaban a cada
 >    oportunidad y a cada landing, donde nadie los pinta — y costaban puntos en
 >    páginas que la fase no tocaba. El copy se movió a `messages/home/`, cargado
 >    con `createTranslator` desde un módulo `server-only`, igual que los legales.
 >    Resultado: la home pesa 13 KB más de contenido y **no pierde un punto**.
+>
+> 👉 **Lo que la C2 tiene que llevarse de aquí:** medir con mediana de 3 como
+> mínimo, calentar el borde en producción, y **mirar el LCP antes que la nota**.
+> En local casi todo el sitio está en 2,4–2,8 s con el umbral «bueno» en 2,5, y
+> la C2 trae **una fuente nueva** (General Sans, local), que es exactamente lo
+> que cruza ese borde sin que la nota baje mucho.
 >
 > ⚠️ **Y una trampa de método que costó dos mediciones falsas:**
 > `pkill -f "next start"` **no mata** el servidor de `pnpm start:local`. El

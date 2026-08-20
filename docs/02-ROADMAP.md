@@ -576,32 +576,43 @@ se cierra.
 - `typecheck`, `lint`, `format:check` limpios · `test:security` en verde ·
   cabeceras públicas sin regresión.
 
-### 🟡 Estado 2026-08-20 — hecha y medida en local, **sin desplegar**
+### ✅ Cerrada el 2026-08-20 — desplegada y verificada
 
-Todo el código está escrito, y la evidencia local está en
-`docs/evidencia/fase-c1/`. **Falta un criterio y solo uno: no está vivo en
-`https://talpass.eu`.** El despliegue quedó bloqueado en la sesión y lo tiene
-que lanzar Ulises (`pnpm exec vercel --prod`). Hasta entonces la fase **no se
-marca ✅**, por la regla de la casa: este proyecto tiene dos correcciones
-ganadas por marcar de más.
+**`dpl_64afKgpF4rDcxSRGVvfkKUMXzKFv`**, vivo en `https://talpass.eu` y leído de
+`vercel inspect` **antes** de mirar ninguna cabecera. Evidencia completa en
+`docs/evidencia/fase-c1/`.
 
-| Criterio                            | Estado                                                          |
-| ----------------------------------- | --------------------------------------------------------------- |
-| Tabla de 40 cifras rellenada        | ✅ local · ⏳ las 12 filas de producción esperan al despliegue  |
-| Ningún CTA lleva a una página vacía | ✅ **ADR-36** — lo decide el contenido, no el copy (**ADR-35**) |
-| Las cinco preguntas, sin JavaScript | ✅ `curl` sobre el HTML servido, `01-local.md` §B               |
-| 390×844 sin desbordamiento          | ✅ 390/390 en home, registro y oportunidad — y 320/320 también  |
-| `(auth)` con metadatos y canónica   | ✅ las diez páginas, `es` y `en`, con el `noindex` intacto      |
-| Lighthouse igual o mejor            | ✅ ninguna empeora — ver el aviso de método abajo               |
-| Calidad y cabeceras                 | ✅ 64/64, drill verde, 15/15 públicas, 5/5 privadas             |
-| Vivo en `talpass.eu`                | ⏳ **lo único que falta**                                       |
+| Criterio                            | Estado                                                                                       |
+| ----------------------------------- | -------------------------------------------------------------------------------------------- |
+| Tabla de 40 cifras rellenada        | ✅ las 40, columna a columna, con los mismos comandos                                        |
+| Ningún CTA lleva a una página vacía | ✅ **ADR-36** — en producción el primario va a `/oportunidades` y `/ofertas` queda ×1        |
+| Las cinco preguntas, sin JavaScript | ✅ `curl` sobre el HTML servido; la home pasa de 546 B a 3.791 B de copy y de 0 a 5 `h2`     |
+| 390×844 sin desbordamiento          | ✅ 390/390 en home, registro y oportunidad — contra local **y** contra producción            |
+| `(auth)` con metadatos y canónica   | ✅ las diez páginas, `es` y `en`, con el `noindex` intacto                                   |
+| Lighthouse igual o mejor            | ✅ producción **100/100/100/98/99**: ninguna empeora y **cuatro mejoran**                    |
+| Calidad y cabeceras                 | ✅ 64/64, drill verde, 15/15 públicas sin sesión ni cookie, `/es/cuenta` en 307 desde `dub1` |
+| `JobPosting` en oportunidades       | ✅ **0** en las 10 páginas de producción — ADR-30 intacto                                    |
 
-🔴 **Un hallazgo de método que hereda la C2:** la línea base se midió con **una
-pasada de Lighthouse por página**, y con ese método esta fase no se podía
-cerrar — midiendo el mismo build dos veces seguidas salen notas distintas, con
-una banda de ruido de **±3 puntos**. Todas las cifras nuevas son **mediana de 3
-pasadas**, y las dos páginas dudosas se remidieron con 7. Detalle en
-`docs/evidencia/fase-c1/03-rendimiento.md`.
+**Lo que queda pendiente y no es de esta fase:** los commits están **sin subir**
+a `origin/main` (fila 19). `git push` no despliega nada en este proyecto, así
+que subir y desplegar son dos actos y solo el segundo está hecho.
+
+### 🔴 Dos reglas de método que la C2 hereda
+
+Las dos salieron de esta fase, y las dos produjeron una regresión que no existía:
+
+1. **Una pasada de Lighthouse por página no vale.** El mismo build medido dos
+   veces seguidas da notas distintas: banda de ruido de **±3 puntos**. Mediana
+   de 3 como mínimo; las dos páginas dudosas se remidieron con 7 y empataron.
+2. **En producción hay que calentar el borde antes de medir.** Recién
+   desplegado, `/es/oportunidades` daba **93** con tres pasadas de acuerdo entre
+   sí. Con el borde caliente, **100**. Tres `curl` y comprobar `HIT`.
+
+Y una tercera, de operación: `pkill -f "next start"` **no mata** el servidor de
+`pnpm start:local`; el puerto 3210 se queda con el proceso viejo y se acaba
+midiendo el build anterior. Se mata con `kill -9 $(lsof -ti tcp:3210)`.
+
+Detalle en `docs/evidencia/fase-c1/03-rendimiento.md` y `02-produccion.md`.
 
 ---
 
