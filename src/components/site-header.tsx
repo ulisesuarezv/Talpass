@@ -23,12 +23,22 @@ export async function SiteHeader() {
         {t('skipToContent')}
       </a>
 
-      <div className="mx-auto flex h-14 max-w-5xl items-center justify-between gap-4 px-4">
+      {/*
+        `flex-wrap` y altura mínima en vez de `h-14` fija: a 390 px la fila
+        —marca + dos enlaces + `AccountNav` + `LocaleSwitcher`— medía 453 px y
+        empujaba el documento entero de lado (medido el 2026-08-19, arreglado en
+        la fase C1). El pie ya envolvía bien con este mismo patrón; aquí no se
+        inventa otro. Que envuelva en vez de esconderse detrás de un menú
+        desplegable no es pereza: un menú exige JavaScript y un estado en la
+        cabecera de TODAS las páginas públicas, y estas son estáticas a
+        propósito (ADR-11).
+      */}
+      <div className="mx-auto flex min-h-14 max-w-5xl flex-wrap items-center justify-between gap-x-2 gap-y-1 px-4 py-2 sm:gap-x-4">
         <Link href="/" className="font-semibold tracking-tight">
           {siteConfig.name}
         </Link>
 
-        <div className="flex items-center gap-4">
+        <div className="flex flex-wrap items-center justify-end gap-x-3 gap-y-1 sm:gap-x-4">
           <Link
             href="/opportunities"
             className="text-sm text-muted-foreground transition-colors hover:text-foreground"

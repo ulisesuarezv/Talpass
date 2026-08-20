@@ -23,6 +23,18 @@ export const localeLabels: Record<Locale, string> = {
 };
 
 /**
+ * El mismo idioma en dos letras, para la cabecera.
+ *
+ * Va aquí y no en `messages/` por lo mismo que `localeLabels`: es el código del
+ * idioma, no copy — no se traduce, es igual en todos los idiomas, y el día que
+ * se abra `pt` se añade en la misma línea que el resto de su entrada.
+ */
+export const localeShortLabels: Record<Locale, string> = {
+  es: 'ES',
+  en: 'EN',
+};
+
+/**
  * Mapa centralizado de rutas.
  *
  * Clave  = ruta interna (nombre de carpeta en `src/app/[locale]/`), siempre en inglés.

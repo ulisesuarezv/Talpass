@@ -1,0 +1,71 @@
+{
+  "Home": {
+    "eyebrow": "Germany · for Spanish- and Portuguese-speaking candidates",
+    "title": "Work in Europe, without opaque middlemen",
+    "subtitle": "{brand} connects Spanish- and Portuguese-speaking candidates with temporary work agencies in Central Europe. We start with Germany.",
+    "ctaOpportunities": "See what Germany actually pays",
+    "ctaJobs": "See the published jobs",
+    "ctaSignup": "Create my account",
+    "note": "Candidates are never charged. Browsing jobs is free and needs no account.",
+    "how": {
+      "title": "How it works",
+      "steps": {
+        "account": {
+          "title": "You create your account and fill in your profile",
+          "body": "Your experience, your level of English and what you need in order to move. It takes a few minutes on your phone."
+        },
+        "documents": {
+          "title": "You upload your documents and a person reviews them",
+          "body": "Your ID document and your CV. The review is not done by an algorithm, and until it is done you are not visible to any agency."
+        },
+        "pool": {
+          "title": "Agencies see you pseudonymised",
+          "body": "They see “Carlos M.” and your experience. They do not see your full surname, your email or your documents."
+        },
+        "consent": {
+          "title": "You decide who opens each document",
+          "body": "An agency that wants to see a document of yours has to ask you. You grant or refuse, silence grants nothing, and you can revoke a permission you already gave."
+        }
+      }
+    },
+    "privacy": {
+      "title": "What an agency sees about you, and what it does not",
+      "intro": "This is not a statement of intent. An agency has no read permission on the tables where your contact details and your documents live: the restriction is enforced in the database, not on the screen.",
+      "seesTitle": "What it sees",
+      "sees": [
+        "Your first name and the initial of your surname, in the form “Carlos M.”.",
+        "Your calculated age, your city, your country of residence and your nationality.",
+        "Your work experience and the sectors you have it in.",
+        "Your level of English, whether you are available and whether you need housing or transport."
+      ],
+      "neverTitle": "What it does not see without your permission",
+      "never": [
+        "Your full surname, your email address and your phone number.",
+        "Your postal address and your exact date of birth.",
+        "Any of your documents: ID card, passport, CV, driving licence, tax identification.",
+        "Your IBAN, which on top of that is never shared with an agency, not even with your permission."
+      ],
+      "nothingAsked": "And there are details {brand} does not even ask you for today: no IBAN, no postal address, no phone number.",
+      "link": "How your profile is shared, field by field"
+    },
+    "cost": {
+      "title": "What this costs you",
+      "body": "Nothing, and it is not a launch offer: charging a candidate for access to a job is prohibited in the European Union. No commission on your wage, no subscription, no paying to feature your profile.",
+      "who": "{brand} charges nobody today: there is no payment gateway at all. The day there is one, the agency is who pays."
+    },
+    "status": {
+      "title": "Where this stands today",
+      "empty": "There is no published vacancy on {brand} today: the first agreements with agencies in Germany are still being closed. It is written here, not hidden, because finding out later would be worse.",
+      "open": "There {count, plural, one {is # published vacancy} other {are # published vacancies}} on {brand} today.",
+      "meanwhile": "What you can do already: see what each sector in Germany actually pays, with the source and the date of every figure, and get your profile ready for when the first jobs arrive.",
+      "opportunitiesLink": "See the market conditions",
+      "jobsLink": "See the published jobs"
+    },
+    "behind": {
+      "title": "Who answers for this site",
+      "body": "Behind {brand} there is a natural person with a published name, address and email, not an anonymous company: {name}, in {city}.",
+      "detail": "You can check it and you can write to him. The Impressum carries the full address and the email, as German law requires.",
+      "link": "See the Impressum"
+    }
+  }
+}

@@ -28,16 +28,6 @@
     "c2": "C2 — Proficient",
     "native": "Native"
   },
-  "Home": {
-    "eyebrow": "Work in progress",
-    "title": "Work in Europe, without opaque middlemen",
-    "subtitle": "{brand} connects Spanish- and Portuguese-speaking candidates with staffing agencies in Central Europe. We start with Germany.",
-    "ctaJobs": "Browse jobs",
-    "ctaSignup": "Create my account",
-    "note": "Browsing jobs is always free. Candidates are never charged.",
-    "behind": "Behind {brand} there is a person with a published name, address and email, not an anonymous company.",
-    "behindLink": "Who answers for this site"
-  },
   "Jobs": {
     "title": "Job openings",
     "subtitle": "Browsing is free and needs no account. Filter by what matters to you.",
@@ -357,6 +347,28 @@
     }
   },
   "Auth": {
+    "meta": {
+      "signup": {
+        "title": "Create your {brand} account",
+        "description": "Sign up free on {brand} to apply for jobs in Germany. Candidates are never charged."
+      },
+      "login": {
+        "title": "Sign in to {brand}",
+        "description": "Sign in to your {brand} account to complete your profile, upload your documents and apply for jobs."
+      },
+      "forgot": {
+        "title": "Recover access to your {brand} account",
+        "description": "We email you a link to set a new password on your {brand} account."
+      },
+      "reset": {
+        "title": "Choose a new password on {brand}",
+        "description": "Finish recovering access to your {brand} account."
+      },
+      "checkEmail": {
+        "title": "Confirm your email to activate your {brand} account",
+        "description": "We have sent you a confirmation link. Open it on this same phone to activate your {brand} account."
+      }
+    },
     "pending": "One moment…",
     "backToLogin": "Back to sign in",
     "fields": {
@@ -636,7 +648,7 @@
     "back": "Back to home"
   },
   "Footer": {
-    "rights": "{brand} · Project under construction",
+    "rights": "{brand} · Responsible: {name}, {city}",
     "legalHeading": "Legal"
   },
   "Legal": {

@@ -1,0 +1,71 @@
+{
+  "Home": {
+    "eyebrow": "Alemania · para candidatos hispanohablantes y lusófonos",
+    "title": "Trabajo en Europa, sin intermediarios opacos",
+    "subtitle": "{brand} conecta a candidatos hispanohablantes y lusófonos con agencias de trabajo temporal en Europa Central. Empezamos por Alemania.",
+    "ctaOpportunities": "Ver qué se paga en Alemania",
+    "ctaJobs": "Ver las ofertas publicadas",
+    "ctaSignup": "Crear mi cuenta",
+    "note": "Al candidato no se le cobra nunca. Ver ofertas es libre y no hace falta cuenta.",
+    "how": {
+      "title": "Cómo funciona",
+      "steps": {
+        "account": {
+          "title": "Creas tu cuenta y completas tu perfil",
+          "body": "Tu experiencia, tu nivel de inglés y qué necesitas para mudarte. Se hace desde el móvil en unos minutos."
+        },
+        "documents": {
+          "title": "Subes tus documentos y los revisa una persona",
+          "body": "Tu documento de identidad y tu CV. La revisión no la hace un algoritmo, y mientras no esté hecha no apareces ante ninguna agencia."
+        },
+        "pool": {
+          "title": "Las agencias te ven seudonimizado",
+          "body": "Ven «Carlos M.» y tu experiencia. No ven tu apellido completo, ni tu correo, ni tus documentos."
+        },
+        "consent": {
+          "title": "Tú decides quién abre cada documento",
+          "body": "Una agencia que quiera ver un documento tuyo tiene que pedírtelo. Concedes o deniegas, el silencio no concede nada, y puedes revocar un permiso ya dado."
+        }
+      }
+    },
+    "privacy": {
+      "title": "Qué ve una agencia de ti, y qué no",
+      "intro": "Esto no es una declaración de intenciones. Una agencia no tiene permiso de lectura sobre las tablas donde viven tus datos de contacto y tus documentos: la restricción está impuesta en la base de datos, no en la pantalla.",
+      "seesTitle": "Lo que ve",
+      "sees": [
+        "Tu nombre de pila y la inicial de tu apellido, en la forma «Carlos M.».",
+        "Tu edad calculada, tu ciudad, tu país de residencia y tu nacionalidad.",
+        "Tu experiencia laboral y los sectores en los que la tienes.",
+        "Tu nivel de inglés, si estás disponible y si necesitas alojamiento o transporte."
+      ],
+      "neverTitle": "Lo que no ve sin tu permiso",
+      "never": [
+        "Tus apellidos completos, tu correo electrónico y tu teléfono.",
+        "Tu dirección postal y tu fecha de nacimiento exacta.",
+        "Cualquiera de tus documentos: DNI, pasaporte, CV, carné, identificación fiscal.",
+        "Tu IBAN, que además no se comparte con una agencia nunca, ni con tu permiso."
+      ],
+      "nothingAsked": "Y hay datos que hoy {brand} ni siquiera te pide: ni IBAN, ni dirección postal, ni teléfono.",
+      "link": "Cómo se comparte tu perfil, campo a campo"
+    },
+    "cost": {
+      "title": "Qué te cuesta esto",
+      "body": "Nada, y no es una oferta de lanzamiento: cobrar a un candidato por acceder a un empleo está prohibido en la Unión Europea. Ni comisión sobre tu sueldo, ni suscripción, ni pagar por destacar tu perfil.",
+      "who": "Hoy {brand} no cobra a nadie: no hay ninguna pasarela de pagos. El día que la haya, quien pague será la agencia."
+    },
+    "status": {
+      "title": "En qué punto está esto",
+      "empty": "Hoy no hay ninguna vacante publicada en {brand}: se están cerrando los primeros acuerdos con agencias en Alemania. Está escrito aquí, y no escondido, porque enterarte después sería peor.",
+      "open": "Hoy hay {count, plural, one {# vacante publicada} other {# vacantes publicadas}} en {brand}.",
+      "meanwhile": "Lo que sí puedes hacer ya: ver qué se paga de verdad por sector en Alemania, con la fuente y la fecha de cada cifra, y dejar tu perfil listo para cuando lleguen las primeras ofertas.",
+      "opportunitiesLink": "Ver las condiciones del mercado",
+      "jobsLink": "Ver las ofertas publicadas"
+    },
+    "behind": {
+      "title": "Quién responde de este sitio",
+      "body": "Detrás de {brand} hay una persona física con nombre, domicilio y correo publicados, no una empresa anónima: {name}, en {city}.",
+      "detail": "Puedes comprobarlo y puedes escribirle. El Impressum lleva la dirección completa y el correo, como exige la ley alemana.",
+      "link": "Ver el Impressum"
+    }
+  }
+}

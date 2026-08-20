@@ -28,16 +28,6 @@
     "c2": "C2 — Muy avanzado",
     "native": "Nativo"
   },
-  "Home": {
-    "eyebrow": "Fase de construcción",
-    "title": "Trabajo en Europa, sin intermediarios opacos",
-    "subtitle": "{brand} conecta a candidatos hispanohablantes y lusófonos con agencias de trabajo temporal en Europa Central. Empezamos por Alemania.",
-    "ctaJobs": "Ver ofertas",
-    "ctaSignup": "Crear mi cuenta",
-    "note": "Ver ofertas siempre es libre y gratuito. Al candidato no se le cobra nunca.",
-    "behind": "Detrás de {brand} hay una persona con nombre, domicilio y correo publicados, no una empresa anónima.",
-    "behindLink": "Quién responde de este sitio"
-  },
   "Jobs": {
     "title": "Ofertas de trabajo",
     "subtitle": "Verlas es libre y no hace falta cuenta. Filtra por lo que necesites.",
@@ -357,6 +347,28 @@
     }
   },
   "Auth": {
+    "meta": {
+      "signup": {
+        "title": "Crear tu cuenta en {brand}",
+        "description": "Regístrate gratis en {brand} para aplicar a ofertas de trabajo en Alemania. Al candidato no se le cobra nunca."
+      },
+      "login": {
+        "title": "Entrar en {brand}",
+        "description": "Accede a tu cuenta de {brand} para completar tu perfil, subir tus documentos y aplicar a ofertas."
+      },
+      "forgot": {
+        "title": "Recuperar el acceso a tu cuenta de {brand}",
+        "description": "Te enviamos un enlace por correo para poner una contraseña nueva en tu cuenta de {brand}."
+      },
+      "reset": {
+        "title": "Elegir una contraseña nueva en {brand}",
+        "description": "Termina de recuperar el acceso a tu cuenta de {brand}."
+      },
+      "checkEmail": {
+        "title": "Confirma tu correo para activar tu cuenta de {brand}",
+        "description": "Te hemos enviado un enlace de confirmación. Ábrelo desde este mismo teléfono para activar tu cuenta de {brand}."
+      }
+    },
     "pending": "Un momento…",
     "backToLogin": "Volver a entrar",
     "fields": {
@@ -636,7 +648,7 @@
     "back": "Volver al inicio"
   },
   "Footer": {
-    "rights": "{brand} · Proyecto en construcción",
+    "rights": "{brand} · Responsable: {name}, {city}",
     "legalHeading": "Legal"
   },
   "Legal": {

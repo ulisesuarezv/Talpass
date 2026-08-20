@@ -1,5 +1,6 @@
 import { getLocale, getTranslations } from 'next-intl/server';
 
+import { controller } from '@/config/controller';
 import { legalLink, LEGAL_DOCUMENTS } from '@/config/legal';
 import { siteConfig } from '@/config/site';
 import { Link } from '@/i18n/navigation';
@@ -38,7 +39,17 @@ export async function SiteFooter() {
           </ul>
         </nav>
 
-        <p>{footer('rights', { brand: siteConfig.name })}</p>
+        {/* El pie decía «Proyecto en construcción». Era la última cosa que
+            leía alguien que estaba decidiendo si esto es un fraude, y una
+            disculpa no acredita nada; el nombre del responsable sí (fase C1).
+            Sale de `config/controller`, no del copy. */}
+        <p>
+          {footer('rights', {
+            brand: siteConfig.name,
+            name: controller.name,
+            city: controller.address.city,
+          })}
+        </p>
       </div>
     </footer>
   );

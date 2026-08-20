@@ -4,7 +4,12 @@ import { useParams } from 'next/navigation';
 import { useLocale, useTranslations } from 'next-intl';
 
 import { usePathname, useRouter } from '@/i18n/navigation';
-import { localeLabels, locales, type Locale } from '@/i18n/routing';
+import {
+  localeLabels,
+  localeShortLabels,
+  locales,
+  type Locale,
+} from '@/i18n/routing';
 import { cn } from '@/lib/utils';
 
 /**
@@ -52,7 +57,14 @@ export function LocaleSwitcher() {
                 : 'text-muted-foreground hover:text-foreground',
             )}
           >
-            {localeLabels[locale]}
+            {/*
+              A 390 px «Español» y «English» sumaban 135 px de cabecera y eran
+              la mitad del desbordamiento. El código corto se lee igual y el
+              nombre completo sigue ahí para quien navega con lector de
+              pantalla, que es a quien le servía de verdad.
+            */}
+            <span aria-hidden>{localeShortLabels[locale]}</span>
+            <span className="sr-only">{localeLabels[locale]}</span>
           </button>
         );
       })}
