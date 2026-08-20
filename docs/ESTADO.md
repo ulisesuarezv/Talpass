@@ -368,8 +368,9 @@
 >
 > Tres peticiones seguidas a `/es/cuenta` dieron `dub1` las tres. **Ni un
 > `iad1` en ninguna ruta.** Control negativo intacto: `/es/cuenta` 307 con
-> `x-ett-session-checked: 1`, `/es/oportunidades` 200 con `x-vercel-cache:
-PRERENDER` y **sin** cabecera de sesión ni `Set-Cookie` (ADR-11, ADR-13).
+> `x-ett-session-checked: 1`, y `/es/oportunidades` 200 con
+> `x-vercel-cache: PRERENDER` y **sin** cabecera de sesión ni `Set-Cookie`
+> (ADR-11, ADR-13).
 >
 > ℹ️ El log de construcción dice `Running build in Washington – iad1`: esa es la
 > **máquina que compila**, no dónde corre el código, no la cambia `regions` y no
@@ -407,8 +408,9 @@ PRERENDER` y **sin** cabecera de sesión ni `Set-Cookie` (ADR-11, ADR-13).
 >    3.5. ~~**La región de las funciones**~~ ✅ **hecho el 2026-08-19** (ADR-32,
 >    `dpl_6TMu6yXKRiP9bCpsuXyzsatCHFVU`). Se adelantó al punto 3 por decisión de
 >    Ulises, para que la política de privacidad se escriba ya sin rodeos.
-> 4. **Desbloquear la verificación en producción**: `db:push:prod` de
->    `20260816120000_verification.sql` + las dos variables + redespliegue.
+> 4. **Desbloquear la verificación en producción**: ~~`db:push:prod` de
+>    `20260816120000_verification.sql`~~ ✅ **aplicada el 2026-08-20** + las dos
+>    variables + redespliegue + el alta real. **Sigue abierto.**
 > 5. **El campo de sector/ciudad de destino en el onboarding** — antes de captar,
 >    no después: pedírselo a 30 personas ya captadas es hacerlas volver.
 > 6. **El pase de credibilidad**, y su auditoría posterior contra la tabla.
@@ -419,15 +421,24 @@ PRERENDER` y **sin** cabecera de sesión ni `Set-Cookie` (ADR-11, ADR-13).
 > el punto 4: desbloquear la verificación en producción.** No lleva prompt de
 > código: son escrituras y llaves, y las lanza Ulises.
 >
-> ```bash
-> ! printf 'produccion\nY\n' | pnpm db:push:prod   # 20260816120000_verification.sql
-> ```
+> ✅ **La migración, hecha y verificada el 2026-08-20.** Ulises lanzó
+> `pnpm db:push:prod` y el PM lo comprobó con `supabase migration list --linked`,
+> no con el mensaje del script: **18 locales y 18 remotas, `local` y `remote`
+> idénticos y sin huecos**. `20260816120000_verification` ya tiene su lado
+> remoto. Producción está al día con el repositorio por primera vez desde la
+> fase 4.
+>
+> **Pero el punto 4 NO está cerrado, y esto es la mitad.** Su criterio son las
+> dos variables, el redespliegue y el alta real; con la migración sola el
+> backoffice puede escribir pero el candidato no se entera de nada, porque la
+> aplicación todavía no puede mandar el correo. Lo que falta:
 >
 > más `RESEND_API_KEY` y `EMAIL_FROM` en Vercel, y **redesplegar después**
 > (`EMAIL_FROM` no es `NEXT_PUBLIC_`, pero el despliegue es lo que hace que la
-> función las lea). **Comprobado el 2026-08-19 con `vercel env ls production`:
-> las dos siguen faltando.** El PM verifica con `supabase migration list
---linked` y `vercel env ls` al terminar, no con el mensaje del script.
+> función las lea). **Comprobado el 2026-08-20 con `vercel env ls production`:
+> siguen faltando las dos, y salen 9 variables donde tienen que salir 11.**
+> El PM verifica con `vercel env ls` y `supabase migration list --linked` al
+> terminar, no con el mensaje del script.
 >
 > Ese punto es además donde se ejercita el **alta real contra producción**, que
 > los legales dejaron probada solo en local.
@@ -567,9 +578,14 @@ pnpm db:start && pnpm dev:local
 pnpm job:publish content/jobs/mi-oferta.json
 ```
 
-### 2. Antes de publicar en producción: la migración de la fase 4
+### 2. ~~Antes de publicar en producción: la migración de la fase 4~~ ✅ HECHO, 2026-08-20
 
-Producción está al día **hasta la fase 3**. La fase 4 añade una migración
+> **Este paso ya no hay que darlo.** La migración se aplicó el 2026-08-20 dentro
+> del punto 4 del orden acordado, sin esperar a la ETT, y el PM lo verificó con
+> `supabase migration list --linked`: **18 / 18 sin huecos**. Se conserva el
+> texto porque explica por qué hacía falta.
+
+Producción estaba al día **hasta la fase 3**. La fase 4 añade una migración
 (`20260816120000_verification.sql`) y sin ella el backoffice no funciona ahí.
 Validada en local con `db:reset` desde cero, `test:security` 64/64 y el
 simulacro en verde:
@@ -950,7 +966,8 @@ Está todo en "El día que haya ETT", arriba.
 3. **Conseguir la primera ETT.** Es lo único que desbloquea las fases 3 y 4, y
    desde el 2026-08-17 hay con qué enseñarse: el sitio está indexado y las
    oportunidades ya están captando. Cuando la haya, publicar sus vacantes reales
-   —arriba—, que incluye subir la migración de la fase 4 y poner **dos variables
+   —arriba—, que incluye ~~subir la migración de la fase 4~~ (✅ aplicada y
+   verificada el 2026-08-20, 18/18) y poner **dos variables
    en Vercel** (`RESEND_API_KEY` y `EMAIL_FROM`; la `SUPABASE_SERVICE_ROLE_KEY`
    ya está puesta). **Desde el 2026-08-18 la migración y las variables ya no
    esperan a la ETT**: son el punto 4 del orden acordado, porque sin ellas no se
