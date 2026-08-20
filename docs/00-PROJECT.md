@@ -675,6 +675,19 @@ mapa de `src/config/legal.ts`. Son cinco: los cuatro que se consienten
 no se consiente porque no es un permiso sino la identificación del responsable
 que exige el §5 DDG.
 
+> **Tres recuentos distintos, y los tres son correctos. No se contradicen:**
+>
+> | Cuántos | Qué son                                                                          |
+> | ------- | -------------------------------------------------------------------------------- |
+> | **4**   | los consentimientos de `CONSENT_VERSIONS` — el Impressum no se consiente         |
+> | **5**   | los documentos de `LEGAL_DOCUMENTS`, que sí incluyen el Impressum                |
+> | **12**  | las **rutas servidas**: los 5 documentos **más el índice** `/legal`, × 2 idiomas |
+>
+> Y los segmentos **cambian de idioma** (`/es/legal/privacidad` ↔
+> `/en/legal/privacy`), así que **no se adivinan**: salen de `LEGAL_SLUGS` en
+> `src/config/legal.ts`. Escribir a mano una URL legal por analogía da 404 —
+> pasó el 2026-08-20 al auditar.
+
 **Por qué un parámetro y no cinco rutas.** Los cinco documentos tienen la misma
 forma —título, fecha de versión, epígrafes— y difieren solo en el copy. Cinco
 ficheros de página serían cinco sitios donde arreglar el mismo fallo de

@@ -3,23 +3,24 @@
 > Sesión del 2026-08-19, punto 3 del orden acordado. **Vivo en
 > `https://talpass.eu`.**
 
-> ⚠️ **Nota del PM, 2026-08-20 — este fichero es una foto, y su despliegue ya
-> no es el vivo.** Todo lo que se mide aquí se midió contra
-> `dpl_2vHfuQdbqKGdAJwxjjcZ41CMJbSd` y era cierto. Quince minutos después, a las
-> 19:47, un redespliegue puso `talpass.eu` sobre
-> **`dpl_DR9SqRyoQtNsAQBFgPFfmGn4sc9g`**, que es el que sirve hoy.
-> **Ninguna medición de las de abajo cambia**, y por eso no se reescribe una
-> sola cifra: es el mismo código —el último commit que toca `src`, `messages` o
-> `vercel.json` es `79e6291`, de las 17:18— y se ha recomprobado hoy contra el
-> despliegue vivo (12 rutas legales a 200, cuatro enlaces reales en el registro,
-> funciones en `dub1`).
+> ⚠️ **Nota del PM, 2026-08-20 — este fichero es una foto.** Todo lo que se mide
+> aquí se midió contra `dpl_2vHfuQdbqKGdAJwxjjcZ41CMJbSd` y era cierto. El alias
+> de `talpass.eu` se movió quince minutos después, y **varias veces más desde
+> entonces**, siempre a despliegues del mismo código: el último commit que toca
+> `src`, `messages` o `vercel.json` es `79e6291`, de las 17:18.
 >
-> Lo que sí falla es la fila «ID del despliegue» de la tabla de cierre: acredita
-> un identificador que dejó de ser el servido. **La lección, y va para la
-> próxima sesión que cierre algo:** el `dpl_` que vale se lee de
-> `vercel inspect talpass.eu` **al terminar de verificar**, no del que devolvió
-> el propio despliegue. Son dos hechos distintos, igual que «desplegado» y
-> «subido».
+> **Ninguna medición de las de abajo cambia**, y por eso no se reescribe una sola
+> cifra. Se recomprobaron el 2026-08-20 contra el despliegue vivo de ese momento:
+> 12 rutas legales a 200, cuatro enlaces reales en el registro, funciones en
+> `dub1`.
+>
+> **Cuál está vivo no se lee aquí** —ningún documento puede saberlo—; se pregunta
+> con `pnpm exec vercel inspect talpass.eu`.
+>
+> **La lección, y va para la próxima sesión que cierre algo:** un `dpl_` escrito
+> en un documento **acredita una medición con fecha**, no dice qué se sirve. La
+> fila «ID del despliegue» de la tabla de cierre es correcta como acta de lo que
+> se midió; sería falsa si se leyera como «lo que está vivo».
 
 ## El despliegue, y de qué despliegue hablamos
 

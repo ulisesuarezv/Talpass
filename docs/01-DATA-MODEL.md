@@ -73,6 +73,15 @@ _(Fase 4)_ Subir un documento mueve al candidato de `unverified`/`rejected` a **
 
 **`candidate_sectors`** — experiencia por sector (N:M con `sectors`), con meses de experiencia
 
+> ⚠️ **Es experiencia pasada, NO preferencia de destino.** Anotado el 2026-08-20
+> para la sesión que construya el punto 5 del orden acordado —«el campo de
+> sector/ciudad de destino en el onboarding»—: el atajo evidente es reutilizar
+> esta tabla, y **sería un error**. «Dónde he trabajado» y «dónde quiero
+> trabajar» son dos hechos distintos: se pueden dar por separado, uno tiene meses
+> asociados y el otro no, y confundirlos rompe tanto el emparejamiento como la
+> ficha del candidato. Dónde vive el destino es una decisión de modelo que esa
+> fase tiene que tomar a propósito, no heredar.
+
 **`candidate_onboarding_drafts`** _(fase 2, ADR-21)_ — `profile_id` PK · `data` (jsonb) · `step`
 El formulario de alta a medio rellenar. Existe porque `candidates` exige nombre, apellidos, fecha de nacimiento y dos países, y hace bien: una ficha incompleta no es un candidato. Al terminar el onboarding se crea la fila de `candidates` y el borrador se borra.
 Son datos personales sin validar: **solo su dueño tiene política, ni siquiera el admin**, y la batería de seguridad la incluye entre las tablas que nadie más puede leer.

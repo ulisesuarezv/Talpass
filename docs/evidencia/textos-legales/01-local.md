@@ -133,9 +133,8 @@ haber roto:
 <link rel="alternate" hreflang="x-default" href=".../es/legal/privacidad" />
 ```
 
-> **Un fallo cazado aquí:** la primera versión servía `<title>Política de
-privacidad · {brand}</title>` — el hueco sin interpolar, porque a `t()` no se
-> le pasaba `brand`. Arreglado y vuelto a medir. Es exactamente por qué se mira
+> **Un fallo cazado aquí:** la primera versión servía el título con el hueco
+> `{brand}` **sin interpolar**, porque a `t()` no se le pasaba `brand`. Arreglado y vuelto a medir. Es exactamente por qué se mira
 > el HTML y no el código.
 
 ## 5. Los enlaces

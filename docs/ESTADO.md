@@ -114,20 +114,25 @@
 > **`dpl_2vHfuQdbqKGdAJwxjjcZ41CMJbSd`**, aliased a `talpass.eu` y confirmado
 > con `vercel inspect` **antes** de leer ninguna cabecera.
 >
-> ⚠️ **Ese ya no es el despliegue vivo, corregido el 2026-08-20 por el PM.** El
-> que sirve `talpass.eu` hoy es **`dpl_DR9SqRyoQtNsAQBFgPFfmGn4sc9g`**, de las
-> 19:47 — quince minutos después del que esta sección acredita. **Es el mismo
-> código**: el último commit que toca `src`, `messages` o `vercel.json` es
-> `79e6291`, de las 17:18, y después no se tocó ni un fichero de código
-> (`git log --since --name-only` sobre esas rutas sale vacío). Así que lo
-> verificado abajo sigue siendo cierto —recomprobado hoy contra el despliegue
-> vivo: 12 rutas legales a 200, los cuatro enlaces del registro, `dub1` en las
-> funciones—, pero **el identificador que constaba como evidencia no era el que
-> se estaba sirviendo**. Se deja escrito en vez de sustituirlo porque el fallo
-> es la lección: en este proyecto **el `dpl_` que vale es el que devuelve
-> `vercel inspect talpass.eu` al terminar de verificar**, no el que devolvió el
-> despliegue. Son dos hechos distintos, y el segundo se queda atrás en cuanto
-> alguien vuelve a desplegar.
+> ⚠️ **Ese identificador acredita esta verificación, no lo que se sirve hoy.**
+> Detectado el 2026-08-20: ya el mismo día 19 el alias había pasado a un
+> redespliegue posterior, y el 20 volvió a moverse dos veces más. **No busques
+> aquí cuál está vivo** —esta línea no puede saberlo—; pregúntaselo a quien sí:
+>
+> ```bash
+> pnpm exec vercel inspect talpass.eu
+> ```
+>
+> Lo verificado abajo sigue siendo cierto: se recomprobó el 2026-08-20 contra el
+> despliegue vivo de ese momento —12 rutas legales a 200, los cuatro enlaces del
+> registro, `dub1` en las funciones— y **ninguna de esas mediciones cambió**,
+> porque todos esos despliegues son del mismo código.
+>
+> **La regla que sale de esto, y vale para toda la documentación:** un `dpl_`
+> escrito en prosa **acredita una verificación con fecha**; nunca dice cuál está
+> vivo, porque caduca en cuanto alguien redespliega. Escribir «el que sirve hoy
+> es X» ha envejecido mal **tres veces en dos días**. Se acredita el `dpl_` de la
+> medición, y para saber el vivo se ejecuta el comando.
 >
 > - **Las doce rutas a 200** en `es` y `en`, legibles sin ejecutar JavaScript.
 > - `x-vercel-cache: HIT` + `x-nextjs-prerender: 1`, **sin**
@@ -325,8 +330,10 @@
 >    legales), y el "landing 97"
 >    del roadmap **no se puede reproducir donde se sirve**: el rediseño mide en
 >    local para tener las seis páginas.
-> 6. 🟡 **Faltan DOS variables en Vercel, no tres.** `SUPABASE_SERVICE_ROLE_KEY`
->    ya está puesta desde el 2026-08-14. Faltan `RESEND_API_KEY` y `EMAIL_FROM`.
+> 6. ~~🟡 **Faltan DOS variables en Vercel, no tres.**~~ ✅ **RESUELTO el
+>    2026-08-20**: `RESEND_API_KEY` y `EMAIL_FROM` puestas, 11 variables en
+>    `production`, y con un redespliegue **posterior** a ellas, que es lo que
+>    hace que la función las lea.
 > 7. 🟡 **Las páginas de `(auth)` no tienen metadatos propios**: `/es/registro`
 >    sirve el título y la descripción **de la home**, sin canónica y con el
 >    `hreflang` apuntando a la home. Cae dentro del rediseño.
@@ -465,19 +472,20 @@
 >    con `docs/prompts/correccion-copy.md`, desplegado y verificado contra
 >    producción. Ver el bloque de arriba y `docs/evidencia/correccion-copy/`.
 > 3. ~~**Los textos legales y su ruta.**~~ ✅ **hecho el 2026-08-19** (ADR-33 y
->    ADR-34; vivo hoy en `dpl_DR9SqRyoQtNsAQBFgPFfmGn4sc9g`, un redespliegue del
->    mismo código que el `dpl_2vHfuQ…` que acredita la evidencia — ver el aviso
->    del bloque de arriba), desplegado y verificado contra
+>    ADR-34; verificado contra `dpl_2vHfuQ…`, y el alias ha cambiado varias veces
+>    desde entonces sin cambiar el código — ver el aviso del bloque de arriba),
+>    desplegado y verificado contra
 >    producción. Ver el bloque de arriba y `docs/evidencia/textos-legales/`.
->    **Lo siguiente es el punto 4: desbloquear la verificación en producción** —
->    las dos variables de Vercel (`RESEND_API_KEY`, `EMAIL_FROM`) y el
->    `db:push:prod` de la migración de la fase 4.
+>    Lo siguiente era el punto 4, del que el 2026-08-20 se hicieron la
+>    migración, las dos variables y el redespliegue; **queda solo el alta real**.
 >    3.5. ~~**La región de las funciones**~~ ✅ **hecho el 2026-08-19** (ADR-32,
 >    `dpl_6TMu6yXKRiP9bCpsuXyzsatCHFVU`). Se adelantó al punto 3 por decisión de
 >    Ulises, para que la política de privacidad se escriba ya sin rodeos.
 > 4. **Desbloquear la verificación en producción**: ~~`db:push:prod` de
->    `20260816120000_verification.sql`~~ ✅ **aplicada el 2026-08-20** + las dos
->    variables + redespliegue + el alta real. **Sigue abierto.**
+>    `20260816120000_verification.sql`~~ ✅ · ~~las dos variables~~ ✅ ·
+>    ~~redespliegue~~ ✅ — **todo el 2026-08-20**. 🔴 **Queda el alta real**, y la
+>    bloquea que **no haya ningún admin en producción**: ver «El primer
+>    administrador».
 > 5. **El campo de sector/ciudad de destino en el onboarding** — antes de captar,
 >    no después: pedírselo a 30 personas ya captadas es hacerlas volver.
 > 6. **El pase de credibilidad** — **partido en dos fases el 2026-08-20**:
@@ -500,20 +508,31 @@
 > remoto. Producción está al día con el repositorio por primera vez desde la
 > fase 4.
 >
-> **Pero el punto 4 NO está cerrado, y esto es la mitad.** Su criterio son las
-> dos variables, el redespliegue y el alta real; con la migración sola el
-> backoffice puede escribir pero el candidato no se entera de nada, porque la
-> aplicación todavía no puede mandar el correo. Lo que falta:
+> ✅ **Las dos variables, puestas y verificadas el 2026-08-20.**
+> `vercel env ls production` da **11**, y `RESEND_API_KEY` y `EMAIL_FROM` están.
+> Y lo que importa tanto como ponerlas: **el redespliegue es posterior a ellas**
+> —se comprobó que el que había era 8 minutos anterior y por tanto no las veía—.
+> Sin regresiones: públicas sin cabecera de sesión ni `Set-Cookie`, control
+> negativo en 307 con la función en `dub1`, sitemap 13, `JobPosting` 0.
 >
-> más `RESEND_API_KEY` y `EMAIL_FROM` en Vercel, y **redesplegar después**
-> (`EMAIL_FROM` no es `NEXT_PUBLIC_`, pero el despliegue es lo que hace que la
-> función las lea). **Comprobado el 2026-08-20 con `vercel env ls production`:
-> siguen faltando las dos, y salen 9 variables donde tienen que salir 11.**
-> El PM verifica con `vercel env ls` y `supabase migration list --linked` al
-> terminar, no con el mensaje del script.
+> ⚠️ **Quedaron también en `Preview`**, a diferencia del resto de variables, que
+> son solo `production`. Un despliegue de preview manda ahora **correos reales**
+> desde el remitente de producción. Este proyecto ya se quemó con esto el
+> 2026-08-16. Conviene dejarlas solo en `Production`.
 >
-> Ese punto es además donde se ejercita el **alta real contra producción**, que
-> los legales dejaron probada solo en local.
+> ℹ️ **`EMAIL_FROM` no era el bloqueante que decía la auditoría.**
+> `src/lib/email/send.ts:51` es `process.env.EMAIL_FROM ?? 'no-reply@updates.talpass.eu'`:
+> ya caía en el remitente correcto. La que bloqueaba de verdad es
+> `RESEND_API_KEY`, que no tiene reserva.
+>
+> 🔴 **Lo que SIGUE ABIERTO y es lo único que queda del punto 4: el alta real
+> contra producción.** Y tiene un bloqueo que se descubrió el 2026-08-20:
+> **no existe ninguna cuenta de administrador en producción** —hay un solo perfil
+> y es `candidate`—, así que los pasos de revisar y aprobar no se pueden
+> recorrer. No es un olvido: el perfil nace siempre `candidate` a propósito, y
+> el primer admin solo se crea desde una conexión privilegiada. **Hacen falta dos
+> cuentas**, porque `role` es una sola columna. Cómo se hace, en «El primer
+> administrador», más abajo.
 >
 > Después van el punto 5 (sector/ciudad de destino en el onboarding) y el 6 (el
 > pase de credibilidad y su auditoría contra la tabla de 40 cifras).
@@ -582,18 +601,20 @@ que exista una ETT** — una vacante real es de una agencia real. Por eso las do
 están bloqueadas y por eso existe la 4b: para conseguir los candidatos con los
 que se cierra esa ETT.
 
-| Fase                   | Estado                                                                     |
-| ---------------------- | -------------------------------------------------------------------------- |
-| 0 · Fundaciones        | ✅ desplegada en producción                                                |
-| 1 · Datos y seguridad  | ✅ 36 tablas, RLS probada                                                  |
-| 2 · Auth y onboarding  | ✅ registro real end-to-end                                                |
-| 3 · Vacantes + SEO     | 🟡 **bloqueada hasta que haya ETT** — Rich Results Test sobre vacante real |
-| 4 · Verificación       | 🟡 **bloqueada hasta que haya ETT** — publicar una vacante real            |
-| **4b · Oportunidades** | **✅ cerrada 2026-08-17 — 5 perfiles vivos y el sitio abierto a Google**   |
-| **Vía B (sin número)** | **🟢 es donde se trabaja hoy** — ver «El orden acordado», arriba           |
-| **5 · Aplicaciones**   | **⬜ congelada en la vía A** — su prompt sigue sin escribirse, a propósito |
-| 6, 7, 8, 10            | ⬜ vía A, congeladas hasta que haya ETT                                    |
-| **9 · GDPR y legal**   | **🟡 los textos legales salieron de aquí y están vivos** (ADR-33, ADR-34)  |
+| Fase                    | Estado                                                                     |
+| ----------------------- | -------------------------------------------------------------------------- |
+| 0 · Fundaciones         | ✅ desplegada en producción                                                |
+| 1 · Datos y seguridad   | ✅ 36 tablas, RLS probada                                                  |
+| 2 · Auth y onboarding   | ✅ registro real end-to-end                                                |
+| 3 · Vacantes + SEO      | 🟡 **bloqueada hasta que haya ETT** — Rich Results Test sobre vacante real |
+| 4 · Verificación        | 🟡 **bloqueada hasta que haya ETT** — publicar una vacante real            |
+| **4b · Oportunidades**  | **✅ cerrada 2026-08-17 — 5 perfiles vivos y el sitio abierto a Google**   |
+| **Vía B**               | **🟢 es donde se trabaja hoy** — ver «El orden acordado», arriba           |
+| **C1 · Credibilidad**   | **⬜ vía B** — decidida el 2026-08-20; va después del punto 4              |
+| **C2 · Sistema visual** | **⬜ vía B** — después de C1; paleta y tipografía ya elegidas              |
+| **5 · Aplicaciones**    | **⬜ congelada en la vía A** — su prompt sigue sin escribirse, a propósito |
+| 6, 7, 8, 10             | ⬜ vía A, congeladas hasta que haya ETT                                    |
+| **9 · GDPR y legal**    | **🟡 los textos legales salieron de aquí y están vivos** (ADR-33, ADR-34)  |
 
 ### Lo que dejó la fase 4 (2026-08-16, verificado contra la base local)
 
@@ -682,14 +703,16 @@ que se redespliega, aunque la vacante ya esté publicada y visible en su URL.
 Y recuerda que **este proyecto de Vercel no tiene integración con GitHub**: un
 `git push` no despliega nada (ver 3 bis, más abajo).
 
-### 4. Dos variables de entorno que faltan en Vercel
+### 4. ~~Dos variables de entorno que faltan en Vercel~~ ✅ HECHO, 2026-08-20
 
-> **Corregido el 2026-08-18 con `vercel env ls`**: aquí decía **tres**.
-> `SUPABASE_SERVICE_ROLE_KEY` **ya está puesta** en `production` desde el
-> 2026-08-14. Faltan dos, y esto ya no espera a la ETT: es del punto 4 del orden
-> acordado arriba.
+> **Este paso ya no hay que darlo.** Las dos se pusieron el 2026-08-20 —11
+> variables en `production`— con redespliegue posterior. Se conserva la tabla
+> porque explica para qué sirve cada una.
+>
+> **Corregido antes, el 2026-08-18:** aquí decía **tres**.
+> `SUPABASE_SERVICE_ROLE_KEY` ya estaba puesta desde el 2026-08-14.
 
-Sin ellas el backoffice de la fase 4 no funciona en producción:
+Sin ellas el backoffice de la fase 4 no funcionaba en producción:
 
 | Variable         | Para qué                                                          |
 | ---------------- | ----------------------------------------------------------------- |
@@ -771,7 +794,9 @@ Lo que decía el 2026-08-17, con lo hecho desde entonces marcado:
    Corregido en el propio informe, con la nota de qué se cambió. **No afecta a
    nada vivo**: el código y el copy publicado ya usaban el 11.
 
-3. **Los cinco textos caducan el 2026-09-01**, cuando sube el convenio de la
+3. **Los cinco textos de las oportunidades caducan el 2026-09-01** —los perfiles
+   de mercado, **no** los cinco documentos legales, que son otra cosa y no
+   dependen del convenio—, cuando sube el convenio de la
    Zeitarbeit (15,33 → 15,87 €/h en abril de 2027). Los suelos publicados dejan
    de ser ciertos ese día. Es una revisión con fecha, no una tarea abierta.
 
@@ -1038,12 +1063,10 @@ Está todo en "El día que haya ETT", arriba.
 3. **Conseguir la primera ETT.** Es lo único que desbloquea las fases 3 y 4, y
    desde el 2026-08-17 hay con qué enseñarse: el sitio está indexado y las
    oportunidades ya están captando. Cuando la haya, publicar sus vacantes reales
-   —arriba—, que incluye ~~subir la migración de la fase 4~~ (✅ aplicada y
-   verificada el 2026-08-20, 18/18) y poner **dos variables
-   en Vercel** (`RESEND_API_KEY` y `EMAIL_FROM`; la `SUPABASE_SERVICE_ROLE_KEY`
-   ya está puesta). **Desde el 2026-08-18 la migración y las variables ya no
-   esperan a la ETT**: son el punto 4 del orden acordado, porque sin ellas no se
-   puede verificar a nadie y una bolsa sin verificar no se le enseña a nadie.
+   —arriba—. ~~Subir la migración de la fase 4~~ y ~~poner las dos variables en
+   Vercel~~ ✅ **hechas y verificadas el 2026-08-20** (18/18 y 11 variables), y
+   ya no esperaban a la ETT desde el 2026-08-18, porque sin ellas no se puede
+   verificar a nadie y una bolsa sin verificar no se le enseña a nadie.
    **Revisar los textos de las oportunidades** (`messages/es.json` y
    `messages/en.json`, namespace `Opportunities`): están vivos en producción y
    respondes tú de ellos. Y **caducan el 2026-09-01**, cuando suba el convenio.
@@ -1071,6 +1094,52 @@ Está todo en "El día que haya ETT", arriba.
    comprobó que ya no existen**. Y un envío a `maria@talpass.test`, de una
    prueba en local que heredó la clave real: rebotará, porque ese dominio no
    existe.
+
+---
+
+## El primer administrador — descubierto el 2026-08-20
+
+**En producción no hay ninguna cuenta de admin.** Comprobado en lectura: hay
+**un solo perfil y es `candidate`**. Eso bloquea el último criterio del punto 4,
+porque los pasos de «aparecer en la cola», «abrir el documento» y «aprobar» no se
+pueden recorrer sin un admin.
+
+**No es un olvido, es un arranque en frío.** El perfil nace siempre como
+`candidate` y el rol de los metadatos del registro **se ignora a propósito** —
+cualquiera podría enviarse `{"role":"admin"}` al registrarse
+(`app.handle_new_user`, en `20260813120300_identity.sql`). Cambiar el rol exige
+`app.is_admin()` **o** una conexión privilegiada (`postgres`, `service_role`,
+`supabase_admin`), y lo vigila el disparador
+`profiles_guard_privileged_columns`. Sin admin, ningún admin puede crear el
+primero.
+
+**Hacen falta DOS cuentas, no una.** `role` es una sola columna
+(`candidate | agency_member | admin`): un perfil es candidato **o** admin, nunca
+las dos. `/account` y `/onboarding` solo admiten `candidate`; `/admin`, solo
+`admin`. Promocionar la única cuenta candidata deja el recorrido sin candidato.
+
+Se registra el segundo correo por el formulario y se promociona desde el **SQL
+Editor del panel de Supabase**, que corre como `postgres` y por eso pasa el
+disparador:
+
+```sql
+update public.profiles set role = 'admin' where email = '<correo>';
+select email, role from public.profiles order by created_at;
+```
+
+> **Es un hueco del producto, no solo una tarea.** No hay ninguna vía dentro de
+> la aplicación para crear el primer administrador, y hasta hoy no estaba escrito
+> en ninguna parte. Quien monte este proyecto desde cero se estrella en el mismo
+> sitio. Si algún día se resuelve, es un script con `service_role` o un
+> `supabase/seed`, no una pantalla.
+
+> **De paso, una pregunta que se puede cerrar casi gratis.** Si en producción hay
+> **un solo perfil**, las 24 filas de `consents` con versión `1` y las 3 con
+> `2026-08-14` que preocupaban el 2026-08-19 son casi con seguridad de la base
+> **local**, no de producción — y entonces **no hay reconsentimiento que montar**,
+> que era la decisión abierta de ADR-34. Se confirma con un
+> `select version, count(*) from public.consents group by version;` en el mismo
+> SQL Editor. El clasificador bloqueó esa consulta desde la sesión.
 
 ---
 
