@@ -595,7 +595,9 @@ se cierra.
 
 **Subido y desplegado.** `origin/main` está en `4d3c30d` y la fila 19 pasa a
 **0 commits sin subir**. Conviene no leerlo como una sola cosa: en este proyecto
-`git push` no despliega nada, así que son dos actos y hubo que hacer los dos.
+`git push` no desplegaba nada **cuando se escribió esto**, así que eran dos
+actos y hubo que hacer los dos. ⚠️ **Dejó de ser cierto el 2026-08-21**: hoy el
+proyecto despliega solo al hacer `push`. Ver el bloque del 21 en `ESTADO.md`.
 
 ### 🔴 Dos reglas de método que la C2 hereda
 

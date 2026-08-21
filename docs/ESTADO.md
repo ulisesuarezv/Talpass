@@ -124,6 +124,49 @@
 > ADR-11 y ADR-13: un interruptor en la cabecera volvería dinámicas **todas** las
 > públicas. Razonado en ADR-38.
 >
+> ### 🔴 2026-08-21 — EL PROYECTO YA DESPLIEGA SOLO AL HACER `git push`
+>
+> **Esto contradice lo que dicen esta misma página, el roadmap y los cuatro
+> prompts anteriores**, así que hay que leerlo antes de trabajar. La frase «este
+> proyecto de Vercel no tiene integración con GitHub: un `git push` no despliega
+> nada» **ya no es cierta**. Sigue escrita más abajo en los bloques históricos,
+> que se dejan como estaban porque eran verdad cuando se escribieron.
+>
+> **Cómo se vio, y es concluyente.** Esta noche hubo cuatro despliegues de
+> producción y solo dos los lancé yo con el CLI. Los dos que **no** lancé
+> aparecieron justo después de mis dos `git push`, y son exactamente los dos que
+> llevan el alias `…-git-main-…`; los del CLI no lo llevan:
+>
+> | Despliegue  | `dpl_`                             | Origen                |
+> | ----------- | ---------------------------------- | --------------------- |
+> | `2826g0mac` | `dpl_E4dYQr1PmY8mWnZ4EoYK8Sf8YQ3f` | `vercel --prod` (CLI) |
+> | `3e6ludgtn` | `dpl_ARCUNtX6CJXA9wKWsXr3UrZS1UPk` | **`git push`**        |
+> | `9mgexwd2h` | `dpl_Anm4HViZFm9NMxdX6sDc5TSBjSrp` | `vercel --prod` (CLI) |
+> | `7tuh3kzz1` | `dpl_AyftLgvVcGKz2NyFAVFyyupDNVEu` | **`git push`**        |
+>
+> ❓ **Ulises: confírmalo.** Lo de arriba es una deducción por observación, muy
+> sólida pero deducción. Si conectaste GitHub al proyecto, esto queda cerrado y
+> hay que corregir los documentos que dicen lo contrario.
+>
+> ### ⚠️ Y la consecuencia, que es la que muerde
+>
+> **Un `git push` después de verificar sustituye en silencio lo que acabas de
+> verificar.** Es justo lo que pasó aquí: el `dpl_Anm4…` que verifiqué a fondo
+> dejó de servir el sitio cuando subí el commit de documentación, y el alias
+> pasó a `dpl_Ayft…`.
+>
+> **Esta vez no rompió nada** —ese commit solo tocaba `docs/`, así que el build
+> es idéntico: se recomprobó y el sitio vivo sigue dando 307 en `/es/cuenta`,
+> `/es/admin` y `/en/account`, cero `meta refresh`, el mismo hash de fuente
+> (`GeneralSans_Regular-s.p.25yjfdw5omr67.woff2`) y los 5 `h2` de la home—. Pero
+> si el push hubiera llevado código, la verificación habría quedado invalidada
+> sin que nadie se enterara.
+>
+> 👉 **Regla nueva para la sesión siguiente:** verifica **después** del último
+> push, no antes, y vuelve a leer `vercel inspect talpass.eu` al terminar. Que un
+> `dpl_` escrito en prosa caduque ya lo decía la documentación; ahora caduca
+> también **por subir documentación**.
+>
 > ### ⚠️ Una cosa medida a medias, y es barata de cerrar
 >
 > **El Lighthouse de producción de esta noche no concluye.** Con el borde

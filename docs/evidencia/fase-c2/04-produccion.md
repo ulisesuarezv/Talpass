@@ -9,7 +9,8 @@
 > despliegue**, y **antes** de mirar ninguna cabecera.
 >
 > ⚠️ Acredita esta verificación con fecha, **no lo que se sirve hoy**. En cuanto
-> alguien redespliegue, el alias se mueve.
+> alguien redespliegue, el alias se mueve — y **se movió doce minutos después**,
+> al hacer `git push` del commit de documentación: ver §F.
 
 ---
 
@@ -147,3 +148,45 @@ que es la que cumple §6: mismo día, misma máquina, los dos árboles, mediana 
 👉 **Pendiente, y es barato:** volver a pasar Lighthouse contra producción en
 una hora tranquila. Si `una-oportunidad` sigue en 86 con FCP y TTFB constantes,
 entonces sí hay algo que mirar; si sube a 98–100 como la home, era la red.
+
+## 🔴 F · El alias se movió al terminar, y el proyecto ya despliega al hacer `push`
+
+**Todo lo verificado arriba es de `dpl_Anm4HViZFm9NMxdX6sDc5TSBjSrp`. Cuando se
+terminó de escribir esta evidencia, el sitio ya lo servía otro**:
+`dpl_AyftLgvVcGKz2NyFAVFyyupDNVEu`, que apareció solo tras subir el commit de
+documentación.
+
+Esta noche hubo **cuatro** despliegues de producción y solo **dos** se lanzaron
+con el CLI. Los otros dos aparecieron justo después de cada `git push`, y son
+exactamente los dos que llevan el alias `…-git-main-…`:
+
+| Despliegue  | `dpl_`                             | Origen                |
+| ----------- | ---------------------------------- | --------------------- |
+| `2826g0mac` | `dpl_E4dYQr1PmY8mWnZ4EoYK8Sf8YQ3f` | `vercel --prod` (CLI) |
+| `3e6ludgtn` | `dpl_ARCUNtX6CJXA9wKWsXr3UrZS1UPk` | **`git push`**        |
+| `9mgexwd2h` | `dpl_Anm4HViZFm9NMxdX6sDc5TSBjSrp` | `vercel --prod` (CLI) |
+| `7tuh3kzz1` | `dpl_AyftLgvVcGKz2NyFAVFyyupDNVEu` | **`git push`**        |
+
+**Esto contradice lo que dicen el roadmap, `ESTADO.md` y los cuatro prompts
+anteriores** («un `git push` no despliega nada»). Anotado en `docs/ESTADO.md`
+para que lo confirme Ulises.
+
+**Recomprobado sobre el despliegue nuevo**, porque una verificación que ya no
+sirve a nadie no acredita nada:
+
+| Qué                                      | `dpl_Ayft…` (el vivo)                                        |
+| ---------------------------------------- | ------------------------------------------------------------ |
+| `/es/cuenta`, `/es/admin`, `/en/account` | **307** desde `dub1`                                         |
+| `meta refresh` en el cuerpo              | **0**                                                        |
+| Hash de la fuente                        | `GeneralSans_Regular-s.p.25yjfdw5omr67.woff2` — **idéntico** |
+| Rastros de Geist                         | **0**                                                        |
+| `h2` en la home                          | **5**                                                        |
+
+El hash de fuente idéntico prueba que es el **mismo build**: el commit que lo
+disparó (`33c0000`) solo tocaba `docs/`, y `git diff 37eb925 33c0000 -- src/`
+está vacío.
+
+👉 **La regla que sale de aquí:** verificar **después** del último `push`, no
+antes, y releer `vercel inspect talpass.eu` al terminar. Esta vez no rompió nada
+por suerte; si el push hubiera llevado código, la verificación de arriba habría
+quedado invalidada sin que nadie se enterase.
