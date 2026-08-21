@@ -191,6 +191,32 @@
 > `dpl_` escrito en prosa caduque ya lo decía la documentación; ahora caduca
 > también **por subir documentación**.
 >
+> ### 🔁 Y el bucle que sale de esa regla, resuelto — 2026-08-21
+>
+> La regla, llevada al pie de la letra, no se puede cumplir: **documentar una
+> verificación exige un push, y ese push redespliega e invalida lo verificado.**
+> El PM lo comprobó en directo — su commit de documentación creó
+> `dpl_3RKSzgoWs4sz8cZ5NbKd7WLcqezh` a los 19 s de empezar a construir— y si se
+> persigue, no termina nunca.
+>
+> **La salida no es reverificarlo todo: es demostrar que el build es el mismo.**
+> Un commit que solo toca `docs/` produce un artefacto idéntico, y eso se prueba
+> con un **hash de contenido del build** — el de la fuente vale y es de un vistazo:
+>
+> ```bash
+> curl -s https://talpass.eu/es | grep -oE 'GeneralSans_Regular-s\.p\.[a-z0-9]+\.woff2'
+> ```
+>
+> Si el hash coincide con el de la verificación, **la verificación sigue en pie**
+> y basta un repaso de las invariantes baratas (307 de las privadas, ausencia de
+> `Set-Cookie`, encabezados de la home). Si el hash cambia, el commit llevaba
+> código aunque pareciera documentación, y **hay que verificar de nuevo**.
+>
+> Recomprobado así el 2026-08-21 sobre `dpl_3RKS…`: mismo hash
+> (`25yjfdw5omr67`), 6/6 públicas sin cookie, 3/3 privadas en 307 desde `dub1`,
+> cero `meta refresh` y la home con 1 `h1`, 5 `h2` y 6 `h3`. **El cierre de la C2
+> se sostiene sobre el despliegue que sirve el sitio.**
+>
 > ### ⚠️ Una cosa medida a medias, y es barata de cerrar
 >
 > **El Lighthouse de producción de esta noche no concluye.** Con el borde
