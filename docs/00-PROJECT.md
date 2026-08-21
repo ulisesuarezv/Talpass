@@ -1047,6 +1047,55 @@ encontrando `ƒ` donde había `●`; la segunda solo aparece midiendo. Merece la
 pena hacer las dos cosas en toda fase que añada un `loading`, `error`,
 `template` o `default`.
 
+### ADR-41 · Una frontera de `Suspense` por encima de un `redirect()` de sesión convierte el 307 en un `meta refresh`
+
+Descubierto el 2026-08-21 **verificando la C2 contra producción**, no en local:
+el primer despliegue de la fase pasó todas las comprobaciones locales y aun así
+rompió el control negativo de ADR-11 y ADR-13.
+
+**Lo que se vio:** `/es/cuenta` sin sesión respondía **200** en vez de **307**.
+El cuerpo eran 57 KB con el esqueleto de carga dentro y un
+`<meta http-equiv="refresh" content="1;url=/es/entrar">`.
+
+**Por qué.** Un `loading.tsx` abre una frontera de `Suspense`, y con ella Next
+**confirma el 200 y empieza a emitir el cuerpo antes de ejecutar la página**. El
+`redirect()` de `requireCandidate`, que vive **dentro** de la página, ya no puede
+fijar un código de estado: lo único que le queda es emitir la redirección en el
+cuerpo. La C2 había puesto un `loading.tsx` en `[locale]`, que está por encima de
+todo `(private)`.
+
+**Y el daño no es cosmético:** un visitante sin sesión se lleva 57 KB y **un
+segundo de espera mirando el esqueleto de una pantalla que no va a ver**, en vez
+de una redirección instantánea desde el borde. Además la redirección pasa a
+depender del cuerpo en vez de la capa HTTP, que es justo lo que ADR-13 no
+quiere.
+
+**La regla:** un `loading.tsx` (o cualquier frontera de `Suspense`) **no puede
+colocarse por encima de una pantalla cuya redirección de sesión tiene que salir
+como código de estado**. En este proyecto eso significa que el estado de carga
+vive en `(public)/loading.tsx` y **no** en `[locale]/` ni en `(private)/`. Las
+rutas públicas no redirigen —son estáticas y no tocan la sesión— así que ahí la
+frontera es gratis.
+
+**El coste asumido, y hay que decirlo:** `(private)` se queda **sin estado de
+carga**, que era el sitio donde más falta hacía —es `force-dynamic` y la espera
+es real en toda visita, no solo al navegar—. Se acepta porque un 307 roto es
+peor que un esqueleto que falta, y porque arreglarlo bien no es cosa de una fase
+visual.
+
+👉 **El arreglo de verdad, para quien tome el área privada:** subir la
+comprobación de sesión de la página al `layout` de `(private)` —un `layout` corre
+**fuera** de la frontera que abre el `loading.tsx` de su propio segmento, así que
+el 307 se conserva y el esqueleto vuelve—, o resolver la redirección en el proxy,
+que ya sabe si hay sesión porque es quien pone `x-ett-session-checked`. Las dos
+tocan autenticación, así que no se hicieron aquí.
+
+👉 **Y la lección de método, que es la que más vale:** esto **no se puede cazar
+en local mirando la pantalla**, porque el usuario acaba en el mismo sitio. Se
+caza mirando el **código de estado**. Toda fase que añada un fichero de
+convención de Next tiene que comprobar, además de la tabla de rutas del build
+(ADR-40), que los controles negativos siguen dando el código que daban.
+
 ---
 
 ## 5. Reglas de negocio

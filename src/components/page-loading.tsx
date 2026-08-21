@@ -12,11 +12,16 @@ import { Skeleton } from '@/components/ui/skeleton';
  * con qué forma, así que el salto al contenido real no mueve la página. Con un
  * `spinner` centrado, el contenido aparece de golpe y desplaza todo.
  *
+ * ⚠️ **Solo lo pinta `(public)/loading.tsx`, y el área privada se quedó sin
+ * él.** No es un olvido: una frontera de `Suspense` por encima del
+ * `redirect()` de sesión convierte el 307 de `/es/cuenta` en un 200 con un
+ * `meta refresh` dentro. Razonado en ADR-41, con el arreglo de verdad
+ * anotado.
+ *
  * 🔴 **Server Component sin una línea de JavaScript, y las dos cosas raras de
- * aquí abajo son por eso.** Este componente pinta en `loading.tsx`, que cuelga
- * del árbol `[locale]` y por tanto entra en el paquete de **todas** las
- * páginas. Las dos versiones anteriores costaban LCP y las dos se descartaron
- * midiendo (ADR-40, y el detalle en `docs/evidencia/fase-c2/02-rendimiento.md`):
+ * aquí abajo son por eso.** Este componente pinta en un `loading.tsx`, que entra
+ * en el paquete de todas las páginas de su árbol. Las dos versiones anteriores
+ * costaban LCP y las dos se descartaron midiendo (ADR-40, y el detalle en `docs/evidencia/fase-c2/02-rendimiento.md`):
  *
  * 1. Con `getTranslations`, un `loading.tsx` **vuelve dinámico el sitio
  *    entero** —no recibe `params`, así que no puede llamar a

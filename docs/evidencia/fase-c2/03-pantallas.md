@@ -55,7 +55,9 @@ espera 45 s—, se compiló, se fotografió y **se revirtió**. La instrumentaci
 está en el árbol: `grep -rn "DEMO_C2" src/` = **0**.
 
 - **Carga** (`390-estado-carga.png`): navegación de cliente desde la home a
-  `/es/cuenta`, que es ruta dinámica. Se comprobó en la propia página que la
+  `/es/cuenta`, que es ruta dinámica. ⚠️ La captura es de **antes** de mover el
+  `loading.tsx` a `(public)` (ver C-bis): el componente es el mismo, pero hoy el
+  área privada ya no lo pinta. Se comprobó en la propia página que la
   región viva existe y dice lo que tiene que decir:
   `role="status"` con texto **«Cargando…»** y **7** elementos
   `[data-slot=skeleton]`.
@@ -69,6 +71,33 @@ está en el árbol: `grep -rn "DEMO_C2" src/` = **0**.
 Next: en inglés, sin cabecera, sin pie y sin forma de volver.** En un producto
 cuyo problema es que podría parecer un fraude, ese es el peor momento posible
 para que el sitio deje de parecerse a sí mismo.
+
+## C-bis · 🔴 Dónde vive el estado de carga, y por qué NO en el área privada
+
+**La primera colocación rompió el 307 de `/es/cuenta`, y solo se vio verificando
+contra producción.** El `loading.tsx` estaba en `[locale]`, por encima de todo
+`(private)`; una frontera de `Suspense` hace que Next confirme el **200 y
+empiece a emitir el cuerpo antes de ejecutar la página**, así que el `redirect()`
+de `requireCandidate` ya no podía fijar un código de estado y degradaba a un
+`<meta http-equiv="refresh">` dentro de 57 KB de cuerpo.
+
+Reproducido y arreglado en local, con el código de estado como testigo:
+
+| Configuración                      | `/es/cuenta` | `/es/admin` | Rutas SSG |
+| ---------------------------------- | ------------ | ----------- | --------- |
+| `loading.tsx` en `[locale]` (rota) | **200** 🔴   | **200** 🔴  | 26        |
+| Sin ningún `loading.tsx`           | 307          | 307         | 26        |
+| **En `(public)` — lo que va**      | **307** ✅   | **307** ✅  | **26**    |
+
+**El coste asumido:** `(private)` se queda **sin estado de carga**, que es donde
+más falta hacía. Un 307 roto es peor que un esqueleto que falta, y el arreglo de
+verdad —subir la comprobación de sesión al `layout` de `(private)`, o resolverla
+en el proxy— toca autenticación y no es de una fase visual. **ADR-41**, con el
+arreglo anotado.
+
+Comprobado además que la frontera pública sigue viva: la carga de
+`/es/oportunidades` trae el esqueleto, y la etiqueta `app-loading-label` del
+layout dice «Cargando…».
 
 ## D · El tercer estado, el vacío, no se ha tocado
 
