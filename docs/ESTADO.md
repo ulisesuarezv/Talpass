@@ -1,5 +1,65 @@
 # Estado del proyecto — punto de retomada
 
+> # 👉 SI RETOMAS AQUÍ, LEE SOLO ESTO PRIMERO
+>
+> _Escrito al cerrar la sesión del **2026-08-21**, tras una auditoría completa.
+> Todo lo de abajo está verificado contra producción, no contra resúmenes._
+>
+> ## El estado en cinco líneas
+>
+> Talpass está **vivo, indexado y creíble** en `https://talpass.eu`. Del 19 al 21
+> se corrigió el copy falso, se publicaron los legales, las funciones se movieron
+> a Dublín, y el diseño pasó por dos fases (**C1 credibilidad**, **C2 sistema
+> visual**). **La vía B está agotada salvo dos cosas.** El proyecto **no tiene
+> todavía ninguna ETT**, y eso —no el código— es lo que bloquea las fases 3 y 4.
+>
+> ## Lo único que queda abierto
+>
+> | #     | Qué                                                                                                                                                                                      | De quién                        |
+> | ----- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------- |
+> | **4** | **El alta real end-to-end contra producción.** Migración, variables y redespliegue ✅. Bloqueada porque **no hay ninguna cuenta de admin en producción** — ver «El primer administrador» | **Ulises** (SQL Editor + móvil) |
+> | **5** | **Sector/ciudad de destino en el onboarding.** **No tiene prompt escrito**; es el siguiente que debe redactar el PM                                                                      | PM redacta, sesión ejecuta      |
+>
+> ## Las cuatro cosas anotadas para mirar con calma
+>
+> 1. **El Lighthouse de producción no concluye:** `/es/oportunidades/alemania/almacen` da **17 puntos de rango** sobre el mismo build, con FCP y TTFB constantes. La home sale 98 de mediana en 7 pasadas.
+> 2. **El área privada se quedó sin estado de carga** (ADR-41), con el arreglo ya escrito: subir la comprobación de sesión al `layout` de `(private)`, o resolverla en el proxy.
+> 3. **La Semibold de General Sans**, con su precio medido: **1–4 puntos de Lighthouse y 0,15–0,16 s de LCP**. Es decisión de Ulises, no técnica.
+> 4. **`main` no tiene puerta.** Un `git push` va a producción **en un segundo**, sin revisión ni preview. Nadie ha decidido si eso está bien.
+>
+> ## Las cinco reglas de esta casa, ganadas con errores reales
+>
+> 1. **El PM verifica, no se fía del resumen.** Se ganó con dos errores: un resumen que decía 16 migraciones cuando eran 17, y una fase marcada ✅ cuyo criterio no se había medido.
+> 2. **Un `dpl_` escrito en prosa acredita una medición con fecha; NUNCA dice qué se sirve.** Ha envejecido mal cuatro veces en dos días. Cuál está vivo se pregunta con `pnpm exec vercel inspect talpass.eu`.
+> 3. **Un `git push` a `main` despliega.** Confirmado el 2026-08-21. Verifica **después** del último push. Y si el push era solo documentación, **no reverifiques todo: compara el hash del build** (el de la fuente vale) — ver el bloque del 21.
+> 4. **Lo que no se mide, no se cierra.** Y una pasada de Lighthouse **no es una medición**: la banda de ruido es de ±3 puntos. Mediana de 3 como mínimo, borde caliente, y comparar contra el árbol de justo antes medido el mismo día.
+> 5. **Verifica contra producción, no contra local.** ADR-41 —un `loading.tsx` que degradaba el 307 a un `meta refresh`— pasó todas las comprobaciones locales.
+>
+> ## Cinco trampas donde ya se ha caído
+>
+> - **Las URLs traducidas no se adivinan.** `/es/legal/privacidad`, pero `/es/recuperar-acceso` (no `-contrasena`). Salen de `LEGAL_SLUGS` y de `src/i18n/routing.ts`. Escribir una por analogía da 404, y ha pasado dos veces.
+> - **`.env.local` apunta a PRODUCCIÓN y `.env.test` a local.** El nombre engaña. Y lo que `.env.test` no declare, se hereda de `.env.local`: costó un correo real enviado en una prueba.
+> - **`candidate_sectors` es experiencia PASADA**, no preferencia de destino. Es el atajo evidente del punto 5 y sería un error.
+> - **Prettier parte los `code span` largos** y deja líneas de cita sin `>`. Ha pasado cuatro veces. Si un `` `comando con espacios` `` cae a final de línea, reescribe la frase.
+> - **Tres recuentos legales distintos y los tres correctos:** 4 consentimientos, 5 documentos, 12 rutas. Están reconciliados en `00-PROJECT.md`.
+>
+> ## Lo que NO hay que hacer
+>
+> - **Nada de GSAP, R3F, shaders ni layout disruptivo.** Está dentro de ADR-10. Hay agentes instalados y **en este proyecto restan**.
+> - **No inventar vacantes** (ADR-30). No hay ninguna, y la página vacía lo dice honestamente a propósito.
+> - **No tocar el estado vacío de `/ofertas`**: está bien hecho (ADR-36).
+> - **No rehacer la home**: sus 5 `h2` responden preguntas medidas.
+> - **Nunca `db reset` ni el simulacro contra producción** (ADR-17).
+>
+> ## Los números de hoy, para cotejar mañana
+>
+> `origin/main` = `main` · 18/18 migraciones · **11** variables en `production` ·
+> sitemap **13** URLs · `JobPosting` **0** · públicas con caché y sin `Set-Cookie` ·
+> privadas 307 desde **`dub1`** · `typecheck`, `lint`, `format:check` limpios ·
+> **ADR-01…41**.
+>
+> ---
+
 > ## ✅ 2026-08-21 — la C2 está cerrada: desplegada y verificada
 >
 > **Fase C2 · Sistema visual.** `https://talpass.eu` deja de ser la escala de
@@ -880,7 +940,11 @@
 > alta completa end-to-end desde el móvil**, que ejercita sesión y escritura con
 > credenciales reales. Si eso falla, mirar la región antes que los legales.
 
-> ### El orden acordado — nada de diseño hasta que esto esté
+> ### El orden acordado — cerrado salvo dos cosas
+>
+> ⚠️ **El título de esta sección era «nada de diseño hasta que esto esté», y
+> caducó.** El diseño se desacopló el 2026-08-20 (no dependía del punto 4) y las
+> dos fases están cerradas. Se conserva la lista porque fecha cada decisión.
 >
 > 1. ~~`git push`~~ ✅ hecho el 2026-08-18.
 > 2. ~~**Corregir el copy falso y redesplegar.**~~ ✅ **hecho el 2026-08-19**
@@ -903,7 +967,9 @@
 >    administrador».
 > 5. **El campo de sector/ciudad de destino en el onboarding** — antes de captar,
 >    no después: pedírselo a 30 personas ya captadas es hacerlas volver.
-> 6. **El pase de credibilidad** — **partido en dos fases el 2026-08-20**:
+> 6. ~~**El pase de credibilidad**~~ ✅ **HECHO** — **partido en dos fases el
+>    2026-08-20**, y las dos cerradas: **C1 el 2026-08-20** y **C2 el
+>    2026-08-21**. Era:
 >    **C1 · Credibilidad** (lo que destruye confianza, auditable contra la tabla
 >    de 40 cifras) y **C2 · Sistema visual** (tipografía, color, escala,
 >    estados). Fichas completas con su «hecho cuando» en `docs/02-ROADMAP.md`.
@@ -913,9 +979,10 @@
 >
 > ### Lo siguiente — **el punto 4, y es de Ulises**
 >
-> Los puntos 2, 3 y 3.5 están hechos, desplegados y verificados. **Lo que toca es
-> el punto 4: desbloquear la verificación en producción.** No lleva prompt de
-> código: son escrituras y llaves, y las lanza Ulises.
+> **Todo lo demás está cerrado**: los puntos 1, 2, 3, 3.5 y 6, desplegados y
+> verificados. Queda el **punto 4** —un trozo— y el **punto 5**, que no tiene
+> prompt escrito. El 4 no lleva prompt de código: son escrituras y llaves, y las
+> lanza Ulises.
 >
 > ✅ **La migración, hecha y verificada el 2026-08-20.** Ulises lanzó
 > `pnpm db:push:prod` y el PM lo comprobó con `supabase migration list --linked`,
@@ -1006,16 +1073,21 @@
 
 ## Dónde estamos
 
-**Fases 0, 1 y 2 cerradas. Las fases 3 y 4 están construidas y verificadas, y
-las dos esperan a lo mismo: una vacante real en producción.** La 3 la necesita
-para el Google Rich Results Test; la 4, porque su criterio de "hecho cuando"
-incluye que el admin haya podido publicar una. No es trabajo de código: la vía
-existe, está probada y documentada.
+**El proyecto va por dos vías desde el 2026-08-18, y la de trabajo es la B.**
 
-**Pero desde el 2026-08-17 se sabe que eso no depende de ponerse a ello, sino de
-que exista una ETT** — una vacante real es de una agencia real. Por eso las dos
-están bloqueadas y por eso existe la 4b: para conseguir los candidatos con los
-que se cierra esa ETT.
+**Vía A — espera a una ETT.** Fases 0, 1 y 2 cerradas. Las fases 3 y 4 están
+construidas y verificadas, y las dos esperan a lo mismo: **una vacante real en
+producción**. La 3 la necesita para el Google Rich Results Test; la 4, porque su
+criterio de "hecho cuando" incluye que el admin haya podido publicar una. No es
+trabajo de código: la vía existe, está probada y documentada. Y desde el
+2026-08-17 se sabe que **no depende de ponerse a ello, sino de que exista una
+ETT** — una vacante real es de una agencia real. Las fases 5, 6, 7, 8 y 10 están
+congeladas detrás de eso.
+
+**Vía B — captar candidatos ahora.** Es donde se ha trabajado del 19 al 21, y
+**está agotada salvo dos cosas**: el alta real del punto 4 (bloqueada porque no
+hay admin en producción) y el punto 5, que no tiene prompt escrito. La 4b, los
+legales, la región, el copy y las dos fases de diseño están cerrados y vivos.
 
 | Fase                    | Estado                                                                                 |
 | ----------------------- | -------------------------------------------------------------------------------------- |

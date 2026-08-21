@@ -388,6 +388,11 @@ referencia de vacante.
   esta fase existe para no publicar. Lo natural es por fichero, como ADR-28 con
   las vacantes: `content/opportunities/`, rutas estáticas propias, sin base de
   datos y sin migración.
+  > **La fase eligió otra cosa, y esto es la propuesta previa.** Los perfiles
+  > viven en **`src/lib/opportunities.ts`** y su copy en `messages/` — ver el
+  > bloque de cierre más abajo. `content/opportunities/` **no existe**; no lo
+  > busques. Lo que sí se cumplió es lo que importaba: sin base de datos, sin
+  > migración y rutas estáticas propias.
 - **Por ese camino NO hace falta enmendar ADR-23 aquí.** Las landings siguen
   derivando de vacantes vivas y las oportunidades son su propio árbol de rutas.
   La enmienda —permitir páginas indexables que no cuelguen de una vacante— es de
@@ -642,7 +647,9 @@ vacío es maquillaje. El orden importa.
 | Acento        | `#F97316`                                    | orange-500 |
 | Neutros       | tinta muy oscura, gris azulado y blanco roto |            |
 
-**Tipografía: General Sans** (Fontshare / ITF). Hoy el proyecto carga `Geist`
+**Tipografía: General Sans** (Fontshare / ITF). _Escrito antes de la fase; al
+cerrarla, ver ADR-39 — la licencia ITF **prohíbe subsetear**, y va con un solo
+corte por presupuesto de LCP._ Cuando esto se escribió el proyecto cargaba `Geist`
 por `next/font/google`; General Sans **no está en Google Fonts**, así que se
 sirve **local con `next/font/local`** y los ficheros en el repositorio. Se
 subsetea a `latin` y se cargan solo los pesos que se usen: cada peso extra es

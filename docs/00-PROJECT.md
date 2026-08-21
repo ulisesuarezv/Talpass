@@ -123,6 +123,14 @@ Tailwind + shadcn/ui, sistema de diseño consistente. El candidato entra desde m
 
 _Concreción (fase 0):_ shadcn/ui con preset Nova sobre Radix, base de color `neutral` (escala de grises pura, sin acento) y tipografía Geist. Sin librería de animación.
 
+> ⚠️ **Esa concreción está DEROGADA desde la fase C2 (2026-08-20).** Ni la escala
+> de grises ni Geist siguen en pie: la paleta es **ADR-38** (teal-600, teal-900,
+> acento naranja, con el reparto de papeles que decide el contraste medido) y la
+> tipografía es **ADR-39** (General Sans autoalojada, sin subsetear, un solo
+> corte). Lo que sí sigue vigente de la línea de arriba es «sin librería de
+> animación» y el preset de shadcn. La frase se conserva porque fecha el punto de
+> partida.
+
 _Enmienda (fase C1, 2026-08-20). Pendiente desde el 2026-08-18._ «Sobrio y
 profesional» se estaba leyendo como **vacío**, y una home vacía no es sobria: es
 indistinguible de una estafa montada en una tarde. Un peón que se plantea subir
