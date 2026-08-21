@@ -144,9 +144,33 @@
 > | `9mgexwd2h` | `dpl_Anm4HViZFm9NMxdX6sDc5TSBjSrp` | `vercel --prod` (CLI) |
 > | `7tuh3kzz1` | `dpl_AyftLgvVcGKz2NyFAVFyyupDNVEu` | **`git push`**        |
 >
-> ❓ **Ulises: confírmalo.** Lo de arriba es una deducción por observación, muy
-> sólida pero deducción. Si conectaste GitHub al proyecto, esto queda cerrado y
-> hay que corregir los documentos que dicen lo contrario.
+> ✅ **CONFIRMADO por el PM el 2026-08-21, y ya no hace falta preguntar a nadie.**
+> La deducción era correcta, y hay dos pruebas independientes:
+>
+> 1. **El alias de rama.** `vercel inspect` del despliegue vivo lo lista entre sus
+>    alias: `ettrecruiter-git-main-ulisesuarezvs-projects.vercel.app`. Vercel
+>    **solo genera el alias `…-git-<rama>-…` para despliegues creados por la
+>    integración de Git**; uno lanzado con el CLI nunca lo lleva. Eso solo ya
+>    cierra la pregunta.
+> 2. **El emparejamiento temporal, al segundo.** Cotejando el reflog de
+>    `origin/main` con la hora de creación de cada despliegue:
+>
+> | Push a `origin/main`     | Despliegue creado    | Diferencia |
+> | ------------------------ | -------------------- | ---------- |
+> | `57b2ad7` a las 02:26:57 | `dpl_6EVX…` 02:26:58 | **1 s**    |
+> | `33c0000` a las 02:21:20 | `dpl_Ayft…` 02:21:22 | **2 s**    |
+>
+> **Los despliegues siguen siendo dos vías, no una**, y esto importa: el CLI
+> (`pnpm exec vercel --prod`) despliega **el árbol de trabajo**, commiteado o no.
+> O sea que sigue siendo posible poner en producción código que no está en
+> `origin` —el fallo de la fase 4b— solo que ahora por la vía del CLI en vez de
+> por olvidar el push. **Lo que ha desaparecido es el fallo contrario**: ya no se
+> puede subir algo y que se quede sin desplegar.
+>
+> ⚠️ **Y aparece un riesgo que antes no existía: en `main` no hay puerta.** Un
+> push a `main` va a producción en un segundo, sin revisión y sin preview de por
+> medio. Antes el despliegue manual actuaba de freno accidental. **No lo arregla
+> este documento**; se anota para que sea una decisión y no una sorpresa.
 >
 > ### ⚠️ Y la consecuencia, que es la que muerde
 >
@@ -967,20 +991,20 @@ que exista una ETT** — una vacante real es de una agencia real. Por eso las do
 están bloqueadas y por eso existe la 4b: para conseguir los candidatos con los
 que se cierra esa ETT.
 
-| Fase                    | Estado                                                                                               |
-| ----------------------- | ---------------------------------------------------------------------------------------------------- |
-| 0 · Fundaciones         | ✅ desplegada en producción                                                                          |
-| 1 · Datos y seguridad   | ✅ 36 tablas, RLS probada                                                                            |
-| 2 · Auth y onboarding   | ✅ registro real end-to-end                                                                          |
-| 3 · Vacantes + SEO      | 🟡 **bloqueada hasta que haya ETT** — Rich Results Test sobre vacante real                           |
-| 4 · Verificación        | 🟡 **bloqueada hasta que haya ETT** — publicar una vacante real                                      |
-| **4b · Oportunidades**  | **✅ cerrada 2026-08-17 — 5 perfiles vivos y el sitio abierto a Google**                             |
-| **Vía B**               | **🟢 es donde se trabaja hoy** — ver «El orden acordado», arriba                                     |
-| **C1 · Credibilidad**   | **✅ cerrada 2026-08-20** — desplegada y verificada; ADR-35, 36, 37 y ADR-10 precisada               |
-| **C2 · Sistema visual** | **⬜ vía B, y es lo siguiente** — prompt listo en `docs/prompts/fase-c2.md`; ojo al LCP en 2,4–2,8 s |
-| **5 · Aplicaciones**    | **⬜ congelada en la vía A** — su prompt sigue sin escribirse, a propósito                           |
-| 6, 7, 8, 10             | ⬜ vía A, congeladas hasta que haya ETT                                                              |
-| **9 · GDPR y legal**    | **🟡 los textos legales salieron de aquí y están vivos** (ADR-33, ADR-34)                            |
+| Fase                    | Estado                                                                                 |
+| ----------------------- | -------------------------------------------------------------------------------------- |
+| 0 · Fundaciones         | ✅ desplegada en producción                                                            |
+| 1 · Datos y seguridad   | ✅ 36 tablas, RLS probada                                                              |
+| 2 · Auth y onboarding   | ✅ registro real end-to-end                                                            |
+| 3 · Vacantes + SEO      | 🟡 **bloqueada hasta que haya ETT** — Rich Results Test sobre vacante real             |
+| 4 · Verificación        | 🟡 **bloqueada hasta que haya ETT** — publicar una vacante real                        |
+| **4b · Oportunidades**  | **✅ cerrada 2026-08-17 — 5 perfiles vivos y el sitio abierto a Google**               |
+| **Vía B**               | **🟢 es donde se trabaja hoy** — ver «El orden acordado», arriba                       |
+| **C1 · Credibilidad**   | **✅ cerrada 2026-08-20** — desplegada y verificada; ADR-35, 36, 37 y ADR-10 precisada |
+| **C2 · Sistema visual** | **✅ cerrada 2026-08-21** — paleta y General Sans vivas; ADR-38, 39, 40 y 41           |
+| **5 · Aplicaciones**    | **⬜ congelada en la vía A** — su prompt sigue sin escribirse, a propósito             |
+| 6, 7, 8, 10             | ⬜ vía A, congeladas hasta que haya ETT                                                |
+| **9 · GDPR y legal**    | **🟡 los textos legales salieron de aquí y están vivos** (ADR-33, ADR-34)              |
 
 ### Lo que dejó la fase 4 (2026-08-16, verificado contra la base local)
 
@@ -1066,8 +1090,11 @@ pnpm exec vercel --prod
 **El despliegue no es opcional.** Las landings son estáticas y se derivan de las
 vacantes vivas (ADR-23): una ciudad o un sector nuevos no tienen landing hasta
 que se redespliega, aunque la vacante ya esté publicada y visible en su URL.
-Y recuerda que **este proyecto de Vercel no tiene integración con GitHub**: un
-`git push` no despliega nada (ver 3 bis, más abajo).
+⚠️ **Caducado el 2026-08-21:** aquí decía que este proyecto **no** tiene
+integración con GitHub y que un `git push` no despliega nada. **Ya no es cierto**
+—confirmado, ver el bloque rojo del 21 arriba—: un push a `main` despliega a
+producción en un segundo. El `vercel --prod` de abajo sigue siendo válido y
+despliega el árbol de trabajo, que es otra vía.
 
 ### 4. ~~Dos variables de entorno que faltan en Vercel~~ ✅ HECHO, 2026-08-20
 
@@ -1445,13 +1472,18 @@ Está todo en "El día que haya ETT", arriba.
    en notarse. Search Console es además el único sitio donde se ve si Google
    **acepta** las páginas o las descarta, que es información que no da ningún
    `curl`.
-5. **Conectar el repositorio de GitHub al proyecto de Vercel.** ⚠️ **Subió de
-   prioridad el 2026-08-18.** Hoy los despliegues son manuales
+5. ~~**Conectar el repositorio de GitHub al proyecto de Vercel.**~~ ✅ **HECHO**
+   — confirmado por el PM el 2026-08-21 (alias `…-git-main-…` y push→despliegue
+   en 1–2 s). El texto de abajo describe el problema que esto resolvió y se
+   conserva por eso. ~~Hoy los despliegues son manuales
    (`pnpm exec vercel --prod`), y esa desconexión ya ha fallado **en los dos
    sentidos**: la fase 3 pasó un día entero en `origin` sin llegar a producción,
    y la fase 4b pasó un día entero **en producción sin llegar a `origin`** —
    indexándose en Google desde un código que solo existía en tu portátil. Mientras
-   no estén conectados, "desplegado" y "subido" hay que comprobarlos por separado.
+   no estén conectados, "desplegado" y "subido" hay que comprobarlos por separado.~~
+   **Ojo al fallo que NO desaparece:** `pnpm exec vercel --prod` despliega el
+   árbol de trabajo, commiteado o no. Poner en producción código que no está en
+   `origin` sigue siendo posible por esa vía.
 6. **`talpass.com` queda aplazado por presupuesto.** Decisión consciente: es la
    mitigación del riesgo de ADR-12 y sigue pendiente. Revisarlo cuando haya caja.
 7. **Ruido conocido en la bandeja y en Resend, nada que hacer.** Correos de
