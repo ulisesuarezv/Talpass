@@ -5,39 +5,45 @@
 > comparación es `14d82ec`, que es lo que había justo antes de esta fase, medido
 > **el mismo día y en la misma máquina** (regla de método de la C1).
 
-## 🔴 Lo que falta, y hay que decirlo antes que nada
+## Desplegada y verificada — y el primer despliegue rompió algo
 
-**Esta fase NO está desplegada.** El código está subido (`origin/main` en
-`84d7615`) pero `git push` no despliega nada en este proyecto, y el
-`pnpm exec vercel --prod` de esta sesión quedó **bloqueado por el clasificador
-de permisos del entorno**. Lo que sirve `talpass.eu` sigue siendo la C1.
+**`dpl_Anm4HViZFm9NMxdX6sDc5TSBjSrp`**, vivo en `https://talpass.eu` y leído de
+`pnpm exec vercel inspect talpass.eu` **antes** de mirar ninguna cabecera.
 
-Lo que queda por comprobar es exactamente lo que solo existe en producción:
-cabeceras de caché, el control negativo de `/es/cuenta` en `dub1`, y Lighthouse
-**con el borde caliente**. Instrucciones en `docs/ESTADO.md`.
+⚠️ Ese identificador acredita esta verificación con fecha, no lo que se sirve
+hoy. Para saber cuál está vivo se ejecuta el comando.
+
+🔴 **Y hubo que desplegar dos veces.** El primero
+(`dpl_E4dYQr1PmY8mWnZ4EoYK8Sf8YQ3f`) pasó todas las comprobaciones locales y aun
+así **rompió el control negativo de ADR-11 y ADR-13**: `/es/cuenta` sin sesión
+devolvía **200** con un `meta refresh` dentro, en vez de **307**. Lo causaba el
+`loading.tsx` de la propia fase. Diagnóstico, arreglo y regla en **ADR-41** y en
+`03-pantallas.md` §C-bis. **Solo se caza mirando el código de estado**, no la
+pantalla: el usuario acababa en el mismo sitio.
 
 ## Los documentos
 
-| Documento           | Qué acredita                                                                |
-| ------------------- | --------------------------------------------------------------------------- |
-| `01-contraste.md`   | Los **40 pares** de color reales, con el script que los recorre y su salida |
-| `02-rendimiento.md` | Que **ninguna página empeora**, y las **seis configuraciones** que costó    |
-| `03-pantallas.md`   | **60 comprobaciones** de desbordamiento y las capturas, estados incluidos   |
-| `capturas/`         | 11 imágenes a 390 y 1280 px                                                 |
+| Documento           | Qué acredita                                                                                   |
+| ------------------- | ---------------------------------------------------------------------------------------------- |
+| `01-contraste.md`   | Los **40 pares** de color reales, con el script que los recorre y su salida                    |
+| `02-rendimiento.md` | Que **ninguna página empeora**, y las **seis configuraciones** que costó                       |
+| `03-pantallas.md`   | **60 comprobaciones** de desbordamiento y las capturas, estados incluidos                      |
+| `04-produccion.md`  | El despliegue, el 307 que rompió el primero, y por qué el Lighthouse de producción no concluye |
+| `capturas/`         | 12 imágenes a 390 y 1280 px, producción incluida                                               |
 
 ## El veredicto, criterio a criterio
 
-| Criterio del «hecho cuando»              | Estado                                                                       |
-| ---------------------------------------- | ---------------------------------------------------------------------------- |
-| Texto ≥4,5:1 e interfaz ≥3:1, con script | ✅ 40 pares · `pnpm check:contrast` · el más justo, 3,58 (interfaz)          |
-| El LCP no empeora en ninguna página      | ✅ mediana de 5 (7 en `landing`); las seis empatan con la línea base         |
-| 390 y 1280 px sin desbordamiento         | ✅ 30 rutas × 2 anchos = 60 comprobaciones, 0 desbordan                      |
-| Carga y error demostrados                | ✅ capturas de un fallo y una espera **reales**, no simulados                |
-| Fuente autoalojada y preacargada         | ✅ en el HTML servido · licencia leída y escrita (ADR-39)                    |
-| Decisión sobre el modo oscuro            | ✅ aplazada y razonada; el bloque `.dark` se retira (ADR-38)                 |
-| Sin regresión de caché ni de sesión      | 🟡 **26 rutas prerenderizadas, las mismas que antes** — pero medido en local |
-| La C1 sigue en pie                       | 🟡 comprobado en local; falta recomprobarlo contra producción                |
-| Calidad                                  | ✅ `typecheck` · `lint` · `format:check` · 64/64 · `drill` · paridad 485/485 |
+| Criterio del «hecho cuando»              | Estado                                                                                                                              |
+| ---------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| Texto ≥4,5:1 e interfaz ≥3:1, con script | ✅ 40 pares · `pnpm check:contrast` · el más justo, 3,58 (interfaz)                                                                 |
+| El LCP no empeora en ninguna página      | ✅ en local, que es el método de §6; las seis empatan. En producción el instrumento tuvo demasiado ruido — §E de `04-produccion.md` |
+| 390 y 1280 px sin desbordamiento         | ✅ 30 rutas × 2 anchos = 60 comprobaciones, 0 desbordan                                                                             |
+| Carga y error demostrados                | ✅ capturas de un fallo y una espera **reales**, no simulados                                                                       |
+| Fuente autoalojada y preacargada         | ✅ en producción: 1 petición, **23.904 B**, `immutable`, `HIT` · licencia escrita (ADR-39)                                          |
+| Decisión sobre el modo oscuro            | ✅ aplazada y razonada; el bloque `.dark` se retira (ADR-38)                                                                        |
+| Sin regresión de caché ni de sesión      | ✅ en producción: 15/15 sin cookie · `/es/cuenta` **307** desde `dub1` (al segundo intento)                                         |
+| La C1 sigue en pie                       | ✅ contra producción: 1/5/6 encabezados, `JobPosting` 0, sitemap 13, SEO intacto                                                    |
+| Calidad                                  | ✅ `typecheck` · `lint` · `format:check` · 64/64 · `drill` · paridad 485/485                                                        |
 
 ## 🔴 Y el precio que hay que leer, porque es decisión de Ulises
 

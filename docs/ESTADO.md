@@ -1,41 +1,47 @@
 # Estado del proyecto — punto de retomada
 
-> ## 🟡 2026-08-20 — la C2 está hecha y medida entera, y **falta desplegarla**
+> ## ✅ 2026-08-21 — la C2 está cerrada: desplegada y verificada
 >
-> **Fase C2 · Sistema visual.** El sitio deja de ser la escala de grises de
-> serie de shadcn: hay paleta, hay tipografía de marca, hay una escala
+> **Fase C2 · Sistema visual.** `https://talpass.eu` deja de ser la escala de
+> grises de serie de shadcn: hay paleta, hay tipografía de marca, hay una escala
 > tipográfica con un nombre por papel, y existen por fin el estado de carga y el
 > de error, que **no había ninguno en toda la aplicación**.
 >
-> ### 🔴 LO PRIMERO PARA LA SESIÓN SIGUIENTE: esto NO está vivo
+> **`dpl_Anm4HViZFm9NMxdX6sDc5TSBjSrp`**, aliased a `talpass.eu` y leído de
+> `pnpm exec vercel inspect talpass.eu` **antes** de mirar ninguna cabecera.
 >
-> **`origin/main` está en `84d7615`, subido y al día. Pero subir y desplegar son
-> dos actos distintos en este proyecto, y el segundo no se ha hecho.** El
-> despliegue de esta sesión quedó **bloqueado por el clasificador de permisos
-> del entorno**, no por un fallo del código. Lo que hay en `talpass.eu` sigue
-> siendo la C1.
+> ⚠️ Ese identificador **acredita esta verificación con fecha, no lo que se
+> sirve hoy**: en cuanto alguien redespliegue, el alias se mueve. Para saber cuál
+> está vivo se ejecuta el comando.
 >
-> ```bash
-> pnpm exec vercel --prod
-> pnpm exec vercel inspect talpass.eu   # el dpl_ se lee de AQUÍ, no del deploy
-> ```
+> **`origin/main` está en `37eb925`, subido y al día.** En este proyecto subir y
+> desplegar son dos actos distintos y hubo que hacer los dos.
 >
-> Y después queda por comprobar **lo que solo se puede comprobar contra
-> producción**, que es el único hueco de evidencia de esta fase:
+> ### 🔴 Y hubo que desplegar DOS veces, porque el primero rompió el 307
 >
-> - Cabeceras públicas: `x-vercel-cache` + `x-nextjs-prerender: 1`, **sin**
->   `x-ett-session-checked` y **sin** `Set-Cookie`.
-> - Control negativo: `/es/cuenta` en **307** con la función en **`dub1`**.
-> - Lighthouse **con el borde caliente**. Recién desplegado sale `PRERENDER` en
->   vez de `HIT` y eso cuesta puntos de verdad: la C1 midió `/es/oportunidades`
->   en **93 en frío y 100 en caliente**, con el mismo código. Tres `curl` y
->   comprobar `HIT` antes de la primera pasada.
-> - Que el HTML servido trae el `preload` de `GeneralSans_Regular-…woff2`.
+> **El primer despliegue pasó todas las comprobaciones locales y aun así rompió
+> el control negativo de ADR-11 y ADR-13.** `/es/cuenta` sin sesión devolvía
+> **200** —57 KB de cuerpo, con el esqueleto de carga dentro y un
+> `<meta http-equiv="refresh">`— en vez del **307** desde el borde.
 >
-> **Todo lo demás está medido**, contra el build de producción servido en local
-> (`localhost:3210`), que es donde se ha hecho toda la evidencia de abajo.
+> Lo causaba el `loading.tsx` que traía esta misma fase: abre una frontera de
+> `Suspense`, y con ella Next **confirma el 200 y empieza a emitir antes de
+> ejecutar la página**, así que el `redirect()` de `requireCandidate` ya no podía
+> fijar un código de estado. Arreglado moviendo el estado de carga a
+> `(public)/loading.tsx`, donde ninguna ruta redirige. **ADR-41.**
 >
-> Evidencia completa en `docs/evidencia/fase-c2/`. ADR-38, ADR-39 y ADR-40.
+> 👉 **La lección de método, que vale para toda fase futura:** esto **no se caza
+> mirando la pantalla**, porque el usuario acababa en el mismo sitio. Se caza
+> mirando el **código de estado**. Y no lo cazó ninguna prueba, ni el LCP, ni las
+> 60 comprobaciones de maquetación: lo cazó verificar contra producción.
+>
+> **Coste asumido:** `(private)` se queda **sin estado de carga**, que es donde
+> más falta hacía. Un 307 roto es peor que un esqueleto que falta. El arreglo de
+> verdad —subir la comprobación de sesión al `layout` de `(private)`, o
+> resolverla en el proxy— toca autenticación y no es de una fase visual; está
+> anotado en ADR-41.
+>
+> Evidencia completa en `docs/evidencia/fase-c2/`. ADR-38, 39, 40 y 41.
 >
 > ### Qué cambia para el candidato
 >
@@ -50,7 +56,8 @@
 > - **Se puede pulsar.** El botón principal pasa de 36 a **44 px**, que es lo que
 >   piden las guías táctiles, y la casilla de consentimiento de 16 a 20 con área
 >   de pulsación de 44.
-> - **Ya no se queda en blanco.** Al navegar aparece un esqueleto en vez de nada,
+> - **Ya no se queda en blanco.** Al navegar por la parte pública aparece un
+>   esqueleto en vez de nada —en el área privada no, y eso es ADR-41—,
 >   y si algo falla sale una pantalla en su idioma que dice que no es culpa suya,
 >   que no ha perdido nada y qué hacer, con cabecera y pie — en vez de la página
 >   de error de Next en inglés.
@@ -117,8 +124,32 @@
 > ADR-11 y ADR-13: un interruptor en la cabecera volvería dinámicas **todas** las
 > públicas. Razonado en ADR-38.
 >
+> ### ⚠️ Una cosa medida a medias, y es barata de cerrar
+>
+> **El Lighthouse de producción de esta noche no concluye.** Con el borde
+> caliente, la home sale **98** de mediana en 7 pasadas (96–100), pero
+> `/es/oportunidades/alemania/almacen` da un rango de **17 puntos sobre el mismo
+> build y la misma URL** (83…100). Desglosado: **FCP 0,94 s y TTFB 19 ms
+> constantes en las siete**, y lo único que oscila es el LCP. Con el servidor
+> respondiendo igual, la varianza está en la estimación de ancho de banda de
+> Lighthouse, no en el sitio.
+>
+> Tampoco hay una línea base válida contra producción: el método exige comparar
+> con el árbol de justo antes **medido el mismo día y en la misma máquina**, y
+> los despliegues anteriores están tras la protección de Vercel y responden 302
+> a una petición anónima.
+>
+> 👉 **El veredicto de rendimiento se apoya en la medición local**, que sí cumple
+> el método: mismo día, misma máquina, los dos árboles, y **las seis páginas
+> empatan**. 👉 **Y queda pendiente, en una hora tranquila:** repasar Lighthouse
+> contra producción. Si esa página sigue en 86 con FCP y TTFB constantes, hay
+> algo que mirar; si sube a 98–100 como la home, era la red. Detalle en
+> `docs/evidencia/fase-c2/04-produccion.md` §E.
+>
 > ### Lo que sigue abierto y esta fase no toca
 >
+> - **El estado de carga del área privada**, que ADR-41 dejó fuera con el arreglo
+>   de verdad anotado. Es la deuda que deja esta fase.
 > - **La Semibold**, con su precio arriba.
 > - **El modo oscuro.**
 > - 🟡 **`messages/<locale>.json` sigue pesando 37 KB** y viaja entero a todas

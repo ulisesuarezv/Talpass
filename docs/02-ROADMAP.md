@@ -14,7 +14,7 @@
 | 4   | Verificación + backoffice         | Documento subido → aprobado por admin      | 🟡     |
 | 4b  | Oportunidades de mercado          | Gancho publicado y sitio indexado sin ETT  | ✅     |
 | C1  | Credibilidad (vía B)              | La home deja de poder parecer un fraude    | ✅     |
-| C2  | Sistema visual (vía B)            | Consistencia demostrada con capturas       | 🟡     |
+| C2  | Sistema visual (vía B)            | Consistencia demostrada con capturas       | ✅     |
 | 5   | Aplicaciones                      | Candidato verificado aplica y ve su estado | ⬜     |
 | 6   | Portal ETT                        | ETT gestiona vacantes y aplicaciones       | ⬜     |
 | 7   | Bolsa + consentimiento documental | Flujo completo de desbloqueo con log       | ⬜     |
@@ -686,40 +686,28 @@ los tres estados (carga, error, vacío) tienen tratamiento explícito, **ninguna
 combinación de texto baja de 4,5:1** (y ninguna de interfaz de 3:1),
 **Lighthouse no baja** y no hay regresión en las cabeceras públicas.
 
-### 🟡 2026-08-20 — hecha y medida entera, **pendiente de desplegar**
+### ✅ Cerrada el 2026-08-21 — desplegada y verificada, en el segundo intento
 
-Todo el «hecho cuando» está cumplido y medido **contra el build de producción en
-local**, y el código está subido (`origin/main` en `84d7615`). **Falta un
-criterio y solo uno: estar vivo en `https://talpass.eu`.**
+**`dpl_Anm4HViZFm9NMxdX6sDc5TSBjSrp`**, vivo en `https://talpass.eu` y leído de
+`vercel inspect` **antes** de mirar ninguna cabecera. `origin/main` en
+`37eb925`. Evidencia completa en `docs/evidencia/fase-c2/`.
 
-En este proyecto `git push` no despliega nada, así que subir y desplegar son dos
-actos distintos. El despliegue de esta sesión **no se pudo ejecutar**: el
-comando `pnpm exec vercel --prod` quedó bloqueado por el clasificador de
-permisos del entorno. Lo tiene que lanzar Ulises, o autorizarlo:
+🔴 **El primer despliegue rompió el 307 de `/es/cuenta`** —lo causaba el
+`loading.tsx` de la propia fase— y **pasó todas las comprobaciones locales**. Se
+arregló moviendo el estado de carga a `(public)`. **ADR-41**, y la lección de
+método: los ficheros de convención de Next hay que verificarlos por **código de
+estado**, no por pantalla.
 
-```bash
-pnpm exec vercel --prod
-pnpm exec vercel inspect talpass.eu   # el dpl_ que se acredita sale de AQUÍ
-```
-
-Y después hay que recomprobar contra producción lo que solo se puede comprobar
-allí: cabeceras de caché sin `x-ett-session-checked` ni `Set-Cookie`,
-`/es/cuenta` en 307 con la función en `dub1`, y Lighthouse **con el borde
-caliente** —recién desplegado da `PRERENDER` y eso cuesta puntos de verdad, la
-C1 midió 93 en frío y 100 en caliente en la misma página—.
-
-Evidencia completa en `docs/evidencia/fase-c2/`. ADR-38, ADR-39 y ADR-40.
-
-| Criterio                             | Estado                                                                                    |
-| ------------------------------------ | ----------------------------------------------------------------------------------------- |
-| Contraste: texto ≥4,5:1, interfaz ≥3 | ✅ **40 pares**, con script (`pnpm check:contrast`) sobre los pares reales, no a ojo      |
-| El LCP no empeora en ninguna página  | ✅ mediana de 5 pasadas; ninguna página pierde nota ni LCP frente al árbol de justo antes |
-| 390 y 1280 px sin desbordamiento     | ✅ **30 rutas medidas** en los dos anchos, `es` y `en`; ninguna desborda                  |
-| Carga y error con tratamiento        | ✅ demostrados con captura, provocando un fallo y una espera reales                       |
-| Fuente autoalojada y preacargada     | ✅ comprobado en el HTML servido en local · licencia leída y escrita (**ADR-39**)         |
-| Modo oscuro: decisión tomada         | ✅ **aplazado y razonado**; el bloque `.dark` se retira en vez de quedar a medias         |
-| Sin regresión de caché ni de sesión  | 🟡 **26 rutas prerenderizadas, las mismas que antes** — medido en local, falta producción |
-| Calidad                              | ✅ `typecheck`, `lint`, `format:check` · `test:security` 64/64 · `drill` verde · paridad  |
+| Criterio                             | Estado                                                                                                                                                                         |
+| ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Contraste: texto ≥4,5:1, interfaz ≥3 | ✅ **40 pares**, con script (`pnpm check:contrast`) sobre los pares reales, no a ojo                                                                                           |
+| El LCP no empeora en ninguna página  | ✅ en local, que es el método de §6: mediana de 5 (7 en `landing`), las seis empatan. En producción el instrumento tuvo demasiado ruido esta noche — ver `04-produccion.md` §E |
+| 390 y 1280 px sin desbordamiento     | ✅ **30 rutas medidas** en los dos anchos, `es` y `en`; ninguna desborda                                                                                                       |
+| Carga y error con tratamiento        | ✅ demostrados con captura, provocando un fallo y una espera reales                                                                                                            |
+| Fuente autoalojada y preacargada     | ✅ en producción: 1 petición, **23.904 B**, `immutable`, `HIT` · licencia escrita (**ADR-39**)                                                                                 |
+| Modo oscuro: decisión tomada         | ✅ **aplazado y razonado**; el bloque `.dark` se retira en vez de quedar a medias                                                                                              |
+| Sin regresión de caché ni de sesión  | ✅ en producción: 15/15 públicas sin cookie · `/es/cuenta` **307** desde `dub1`                                                                                                |
+| Calidad                              | ✅ `typecheck`, `lint`, `format:check` · `test:security` 64/64 · `drill` verde · paridad                                                                                       |
 
 **🔴 Y el precio, que no es una nota al pie.** La tipografía entra **solo con el
 corte Regular**: cualquier segundo corte —el variable, dos estáticas, o la
