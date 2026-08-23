@@ -12,15 +12,27 @@
 > Talpass está **vivo, indexado y creíble** en `https://talpass.eu`. Del 19 al 21
 > se corrigió el copy falso, se publicaron los legales, las funciones se movieron
 > a Dublín, y el diseño pasó por dos fases (**C1 credibilidad**, **C2 sistema
-> visual**). **La vía B está agotada salvo dos cosas.** El proyecto **no tiene
-> todavía ninguna ETT**, y eso —no el código— es lo que bloquea las fases 3 y 4.
+> visual**). **La vía B está AGOTADA del todo desde el 2026-08-24**: el punto 4
+> se recorrió entero y el punto 5 **se mató a propósito** (ADR-42). El proyecto
+> **no tiene todavía ninguna ETT**, y eso —no el código— es lo que bloquea las
+> fases 3 y 4, y ahora es **lo único** que bloquea nada.
 >
 > ## Lo único que queda abierto
 >
-> | #     | Qué                                                                                                                                                                                                                                                                      | De quién                                                                                           |
-> | ----- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------- |
-> | **4** | **El alta real end-to-end contra producción.** Migración, variables, admin y su verificación en la aplicación ✅ (tramo 1 cerrado el 2026-08-24). 🔴 Queda **solo el ciclo de documentos**, y **hoy no hay quien lo ejecute** — ver el tramo 3 del bloque del 2026-08-22 | 🔴 **sin dueño**: Ulises no puede desde el móvil; el PM puede con navegador si recibe credenciales |
-> | **5** | **Sector/ciudad de destino en el onboarding.** **No tiene prompt escrito**; es el siguiente que debe redactar el PM                                                                                                                                                      | PM redacta, sesión ejecuta                                                                         |
+> _Actualizado el **2026-08-24**: el punto 4 se recorrió entero ese día y ya solo
+> le falta una consulta. El **punto 5 está muerto** —no se hace nunca, ADR-42—,
+> así que **no queda trabajo de código en la vía B**. Lo siguiente no es una
+> tarea de sesión: es **conseguir la primera ETT** y **dar de alta Search
+> Console**, y las dos son de Ulises._
+>
+> | #         | Qué                                                                                                                                                                                                                                                                                                                   | De quién                                   |
+> | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------ |
+> | **4**     | **El alta real end-to-end contra producción.** 🟢 **Recorrido entero el 2026-08-24**: migración, variables, admin verificado en la aplicación y el ciclo de documentos hasta `verified`. Queda **una sola medición**, el tramo 2b: leer `email_log` tras la aprobación — la consulta está en el bloque del 2026-08-22 | **Ulises** lanza la consulta, el PM coteja |
+> | ~~**5**~~ | ~~**Sector/ciudad de destino en el onboarding.**~~ ⛔ **MUERTO el 2026-08-24, ADR-42.** No se construye nunca: el destino lo lleva la oferta y el candidato se mueve por necesidad. **No hay prompt que escribir** — si una sesión futura lo propone, la respuesta está en ADR-42                                     | —                                          |
+>
+> 👉 **Y con el 5 muerto, esta tabla se queda con una consulta.** No es que
+> queden pocas tareas: es que **no queda ninguna que dependa del código**. Lo que
+> falta es comercial —una ETT— y de panel —Search Console—.
 >
 > ⚠️ **«Punto 4» y «fase 4» NO son lo mismo, y el número coincidente despista.**
 > El **punto 4** es esta fila: recorrer el alta real contra producción, y **ya no
@@ -47,7 +59,7 @@
 >
 > - **Las URLs traducidas no se adivinan.** `/es/legal/privacidad`, pero `/es/recuperar-acceso` (no `-contrasena`). Salen de `LEGAL_SLUGS` y de `src/i18n/routing.ts`. Escribir una por analogía da 404, y ha pasado dos veces.
 > - **`.env.local` apunta a PRODUCCIÓN y `.env.test` a local.** El nombre engaña. Y lo que `.env.test` no declare, se hereda de `.env.local`: costó un correo real enviado en una prueba.
-> - **`candidate_sectors` es experiencia PASADA**, no preferencia de destino. Es el atajo evidente del punto 5 y sería un error.
+> - **`candidate_sectors` es experiencia PASADA**, no preferencia de destino. Era el atajo evidente del punto 5 — y **el punto 5 ya no existe** (ADR-42): el destino lo lleva la oferta, no el candidato. La tabla se queda como está.
 > - **Prettier parte los `code span` largos** y deja líneas de cita sin `>`. Ha pasado cuatro veces. Si un `` `comando con espacios` `` cae a final de línea, reescribe la frase.
 > - **Tres recuentos legales distintos y los tres correctos:** 4 consentimientos, 5 documentos, 12 rutas. Están reconciliados en `00-PROJECT.md`.
 >
@@ -70,7 +82,7 @@
 > `origin/main` = `main` · 18/18 migraciones · **11** variables en `production` ·
 > sitemap **13** URLs · `JobPosting` **0** · públicas con caché y sin `Set-Cookie` ·
 > privadas 307 desde **`dub1`** · `typecheck`, `lint`, `format:check` limpios ·
-> **ADR-01…41**.
+> **ADR-01…42**.
 >
 > Y en la base de producción, el 2026-08-22: **4 filas de `consents`, todas en la
 > versión viva `2026-08-19`** y ninguna huérfana — leído por Ulises y cotejado
@@ -185,32 +197,12 @@
 >    subdominio, **no el apex**, y un remitente fuera de un dominio verificado se
 >    rechaza entero. Si se cambia `EMAIL_FROM`, **hay que redesplegar** para que
 >    la función lo lea.
-> 4. 🔴 **Tramo 3 — el ciclo completo. PENDIENTE Y SIN FECHA, y es lo único que
->    queda del punto 4**: subir documentos con la cuenta candidata, verlos en la
->    cola, abrir uno (URL firmada de 60 s), rechazar con motivo, volver a subir,
->    aprobar, y comprobar `verified` + aviso.
->
->    ⚠️ **Bloqueado el 2026-08-24: Ulises dice que no tiene forma de verificarlo
->    desde el móvil.** No es una tarea aplazada por prioridad, es que hoy no hay
->    quien la ejecute — conviene no volver a escribirla como «pendiente de
->    Ulises» sin más, porque no lo es.
->
->    👉 **El PM sí puede recorrerlo con el navegador**, y hay que decidirlo a
->    sabiendas de lo que cuesta:
->
->    - **Hacen falta las credenciales de las dos cuentas** de producción, la
->      candidata y la de admin.
->    - **Hacen falta cuatro ficheros** que subir. Sirve cualquiera: la cuenta
->      candidata es de prueba y es de Ulises (dicho el 2026-08-22). **Si algún
->      día fuera de una persona real, esto no se hace.**
->    - **Son escrituras reales contra producción**: filas en `documents`,
->      `document_access_log` y `email_log`, y un `verification_status` que se
->      mueve de verdad. No lo prohíbe ADR-17 —que veta el `db reset` y el
->      simulacro—, pero **es una decisión de Ulises, no del PM**.
->    - **El «desde el móvil» se emula, no se finge**: 390×844 en el navegador
->      mide el diseño, **no** mide la cámara, ni el selector de archivos de
->      Android, ni una subida con datos móviles. Si el ciclo pasa así, se anota
->      **cómo se midió**, y lo del teléfono real sigue sin estar probado.
+> 4. ✅ **Tramo 3 — el ciclo completo, recorrido y cerrado el 2026-08-24.** Lo
+>    verificó Ulises contra producción: subir documentos con la cuenta
+>    candidata, verlos en la cola, abrir uno, rechazar con motivo, volver a
+>    subir, aprobar y llegar a `verified`. **El bloqueo del móvil se resolvió
+>    solo**: encontró la forma de hacerlo. La nota que decía «sin dueño» duró
+>    unas horas y se sustituye por esto.
 >
 > 👉 **El 2b NO se adivina, se mide, y por eso puede ir DESPUÉS del 3.**
 > `sendEmail` nunca lanza y **siempre** deja rastro. Justo tras aprobar:
@@ -927,6 +919,8 @@
 > - **Vía B — captar y retener candidatos, ahora**: corregir el copy falso ·
 >   textos legales · desbloquear la verificación en producción · el campo de
 >   sector de destino en el onboarding · el pase de credibilidad.
+>   _(⚠️ Al día de hoy la vía B está **agotada**: todo eso está cerrado y **el
+>   campo de sector de destino se descartó** el 2026-08-24 — **ADR-42**.)_
 >
 > **Los textos legales dejan de ser fase 9** y entran en la vía B: caen dentro de
 > la superficie del rediseño y son parte del problema de confianza, no un
@@ -1168,7 +1162,8 @@
 >
 > **Todo lo demás está cerrado**: los puntos 1, 2, 3, 3.5 y 6, desplegados y
 > verificados. Queda el **punto 4** —un trozo— y el **punto 5**, que no tiene
-> prompt escrito. El 4 no lleva prompt de código: son escrituras y llaves, y las
+> prompt escrito. _(⚠️ Escrito el 2026-08-20. Hoy el punto 4 está recorrido y el
+> **punto 5 está muerto** — ADR-42.)_ El 4 no lleva prompt de código: son escrituras y llaves, y las
 > lanza Ulises.
 >
 > ✅ **La migración, hecha y verificada el 2026-08-20.** Ulises lanzó
@@ -1208,6 +1203,8 @@
 >
 > Después van el punto 5 (sector/ciudad de destino en el onboarding) y el 6 (el
 > pase de credibilidad y su auditoría contra la tabla de 40 cifras).
+> _(⚠️ Ninguno de los dos sigue vivo: el 6 se cerró como C1 y C2, y el **5 se
+> descartó** el 2026-08-24 — **ADR-42**.)_
 
 > ## ✅ Fase 4b cerrada, 2026-08-17 — el sitio ya está abierto a Google
 >
@@ -1274,8 +1271,10 @@ ETT** — una vacante real es de una agencia real. Las fases 5, 6, 7, 8 y 10 est
 congeladas detrás de eso.
 
 **Vía B — captar candidatos ahora.** Es donde se ha trabajado del 19 al 21, y
-**está agotada salvo dos cosas**: el alta real del punto 4 (bloqueada porque no
-hay admin en producción) y el punto 5, que no tiene prompt escrito. La 4b, los
+~~**está agotada salvo dos cosas**: el alta real del punto 4 (bloqueada porque no
+hay admin en producción) y el punto 5, que no tiene prompt escrito.~~
+**Corregido el 2026-08-24: está agotada del todo.** El punto 4 se recorrió entero
+y el punto 5 se descartó (**ADR-42**). La 4b, los
 legales, la región, el copy y las dos fases de diseño están cerrados y vivos.
 
 | Fase                    | Estado                                                                                 |
@@ -1286,7 +1285,7 @@ legales, la región, el copy y las dos fases de diseño están cerrados y vivos.
 | 3 · Vacantes + SEO      | 🟡 **bloqueada hasta que haya ETT** — Rich Results Test sobre vacante real             |
 | 4 · Verificación        | 🟡 **bloqueada hasta que haya ETT** — publicar una vacante real                        |
 | **4b · Oportunidades**  | **✅ cerrada 2026-08-17 — 5 perfiles vivos y el sitio abierto a Google**               |
-| **Vía B**               | **🟢 es donde se trabaja hoy** — ver «El orden acordado», arriba                       |
+| **Vía B**               | **✅ agotada el 2026-08-24** — los seis puntos cerrados; el 5 descartado (ADR-42)      |
 | **C1 · Credibilidad**   | **✅ cerrada 2026-08-20** — desplegada y verificada; ADR-35, 36, 37 y ADR-10 precisada |
 | **C2 · Sistema visual** | **✅ cerrada 2026-08-21** — paleta y General Sans vivas; ADR-38, 39, 40 y 41           |
 | **5 · Aplicaciones**    | **⬜ congelada en la vía A** — su prompt sigue sin escribirse, a propósito             |

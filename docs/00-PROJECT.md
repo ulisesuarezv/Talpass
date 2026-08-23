@@ -1112,6 +1112,54 @@ convención de Next tiene que comprobar, además de la tabla de rutas del build
 
 ---
 
+### ADR-42 · El destino lo lleva la oferta, no el candidato: no se le pregunta a dónde quiere ir
+
+_(2026-08-24. Mata el «punto 5» del orden acordado del 2026-08-18, que pedía un
+campo de sector/ciudad de destino en el onboarding. Decisión de Ulises, con el
+razonamiento de quien conoce el terreno.)_
+
+**El candidato no elige destino, elige salir.** Estas personas se mueven **por
+necesidad**, no por ciudad ni por ambiente. Y el destino real de las ETT
+objetivo —las que ofrecen alojamiento— **suele ser un pueblo remoto junto a una
+fábrica o un polígono**, no una capital.
+
+**Por eso el campo no es que no aporte: es que estorba.** Un desplegable de
+ciudades recoge las que la gente conoce —Berlín, Múnich, Hamburgo— y ese dato,
+usado para emparejar, **filtraría fuera justo las ofertas que existen**. Se
+estaría construyendo una preferencia que ni es sincera ni es accionable, y luego
+decidiendo con ella.
+
+**La evidencia de la competencia apunta al mismo sitio.** Mokka360 **no pregunta
+en ningún momento a dónde quieres ir**: publica las ofertas con su ciudad y el
+candidato elige entre lo que hay. Ese es el modelo correcto, y es el que este
+schema ya tiene: **`jobs.city` existe y `candidates` no tiene destino**. No
+había nada que arreglar en el modelo — lo que había que arreglar era el plan.
+
+**La regla que queda:** la ubicación es un atributo **de la oferta**. El
+emparejamiento se hace con lo que el candidato sí puede declarar de verdad
+—experiencia, idioma, disponibilidad, si necesita alojamiento o transporte, si
+conduce—, que ya está todo recogido desde la fase 2.
+
+**Y `candidate_sectors` se queda como está**, que era la otra mitad del riesgo:
+es **experiencia pasada**, con meses asociados, y ya no hay ninguna tentación de
+reutilizarla como preferencia de destino, porque la preferencia de destino no se
+va a pedir.
+
+_Lo que NO decide este ADR, para que no se lea de más._
+
+- **El país, cuando haya un segundo.** Hoy el MVP es solo Alemania y la pregunta
+  es vacía. El día que exista otro país vuelve a ser real —idioma, visado, quién
+  tienes allí— y **entonces se decide de nuevo**, sin que este ADR lo impida.
+- **La exclusión dura, que es otra cosa y queda aparcada.** «¿Dónde te gustaría
+  trabajar?» se cae entera; **«¿hay algo que no harías?»** no es gusto, es un no
+  rotundo —el matadero es el ejemplo típico, y también quien no puede hacer
+  turnos de noche—. Ofrecerle a alguien lo que ya dijo que no hace quema una
+  aplicación y algo de confianza. **No se construye ahora** y no tiene fase:
+  **espera a que haya ofertas reales que rechazar**, que es cuando se puede medir
+  si hace falta. Queda escrito para no redescubrirlo dentro de tres meses.
+
+---
+
 ## 5. Reglas de negocio
 
 1. Ver ofertas: libre y sin cuenta. **Aplicar: requiere cuenta verificada.**

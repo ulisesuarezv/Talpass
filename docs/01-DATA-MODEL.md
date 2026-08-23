@@ -74,13 +74,19 @@ _(Fase 4)_ Subir un documento mueve al candidato de `unverified`/`rejected` a **
 **`candidate_sectors`** — experiencia por sector (N:M con `sectors`), con meses de experiencia
 
 > ⚠️ **Es experiencia pasada, NO preferencia de destino.** Anotado el 2026-08-20
-> para la sesión que construya el punto 5 del orden acordado —«el campo de
-> sector/ciudad de destino en el onboarding»—: el atajo evidente es reutilizar
-> esta tabla, y **sería un error**. «Dónde he trabajado» y «dónde quiero
+> como aviso para la sesión que fuera a construir el «punto 5» —un campo de
+> sector/ciudad de destino en el onboarding—: el atajo evidente era reutilizar
+> esta tabla, y **habría sido un error**. «Dónde he trabajado» y «dónde quiero
 > trabajar» son dos hechos distintos: se pueden dar por separado, uno tiene meses
-> asociados y el otro no, y confundirlos rompe tanto el emparejamiento como la
-> ficha del candidato. Dónde vive el destino es una decisión de modelo que esa
-> fase tiene que tomar a propósito, no heredar.
+> asociados y el otro no.
+>
+> ✅ **Y el riesgo desapareció el 2026-08-24: ese campo NO se va a pedir nunca**
+> (**ADR-42**). El destino lo lleva la oferta —`jobs.city`—, no el candidato: se
+> mueve por necesidad, y el destino real de las ETT objetivo es un pueblo junto a
+> una fábrica, no una capital. Así que **esta tabla se queda exactamente como
+> está** y no hay ninguna decisión de modelo pendiente sobre ella. Si alguna
+> sesión futura propone «añadir el sector deseado aquí», la respuesta ya está
+> escrita en ADR-42.
 
 **`candidate_onboarding_drafts`** _(fase 2, ADR-21)_ — `profile_id` PK · `data` (jsonb) · `step`
 El formulario de alta a medio rellenar. Existe porque `candidates` exige nombre, apellidos, fecha de nacimiento y dos países, y hace bien: una ficha incompleta no es un candidato. Al terminar el onboarding se crea la fila de `candidates` y el borrador se borra.
