@@ -17,10 +17,10 @@
 >
 > ## Lo único que queda abierto
 >
-> | #     | Qué                                                                                                                                                                                                                                    | De quién                           |
-> | ----- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------- |
-> | **4** | **El alta real end-to-end contra producción.** Migración, variables y redespliegue ✅. **El admin de producción ya existe** (2026-08-22) y con él se levantó el bloqueo. 🟡 Queda **recorrer el ciclo** — ver el bloque del 2026-08-22 | **Ulises** (móvil), el PM verifica |
-> | **5** | **Sector/ciudad de destino en el onboarding.** **No tiene prompt escrito**; es el siguiente que debe redactar el PM                                                                                                                    | PM redacta, sesión ejecuta         |
+> | #     | Qué                                                                                                                                                                                                                                                                      | De quién                                                                                           |
+> | ----- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------- |
+> | **4** | **El alta real end-to-end contra producción.** Migración, variables, admin y su verificación en la aplicación ✅ (tramo 1 cerrado el 2026-08-24). 🔴 Queda **solo el ciclo de documentos**, y **hoy no hay quien lo ejecute** — ver el tramo 3 del bloque del 2026-08-22 | 🔴 **sin dueño**: Ulises no puede desde el móvil; el PM puede con navegador si recibe credenciales |
+> | **5** | **Sector/ciudad de destino en el onboarding.** **No tiene prompt escrito**; es el siguiente que debe redactar el PM                                                                                                                                                      | PM redacta, sesión ejecuta                                                                         |
 >
 > ⚠️ **«Punto 4» y «fase 4» NO son lo mismo, y el número coincidente despista.**
 > El **punto 4** es esta fila: recorrer el alta real contra producción, y **ya no
@@ -166,13 +166,16 @@
 >
 > ### Lo que queda del punto 4, en orden
 >
-> 1. 🟡 **Tramo 1 — verificar el admin en la aplicación** (los tres pasos de
->    arriba). **Lo verifica el PM, pero no puede hacerlo solo**: los tres pasos
->    exigen una sesión iniciada con la cuenta de admin, y el PM no tiene sus
->    credenciales. O las recibe para la comprobación, o **los recorre Ulises y
->    pega los tres resultados**, que el PM coteja con `roleCanEnter`
->    (`src/lib/auth/roles.ts:29`). Lo que **no** vale es dar el tramo por bueno
->    sin ninguna de las dos cosas.
+> 1. ✅ **Tramo 1 — el admin, verificado en la aplicación. Cerrado el
+>    2026-08-24.** Ulises recorrió los tres pasos y los tres salen: entra,
+>    `/es/admin` da la cola, y **`/es/cuenta` le echa a `/es/admin`**. Ese
+>    tercero es el que cierra el asunto: prueba que la aplicación **lee** el rol
+>    y actúa, no solo que la tabla lo dice — es `roleCanEnter('admin',
+'/account')` dando `false` (`src/lib/auth/roles.ts:22,29`) y
+>    `ROLE_HOME.admin` mandando a `/admin` (`session.ts:55-56`). El PM cotejó la
+>    cadena en el código y midió la otra mitad, la que no depende de la sesión:
+>    `/es/admin`, `/es/cuenta` y `/en/account` **sin sesión** dan 307 al login
+>    del idioma correcto.
 > 2. ✅ **Tramo 2a — URL Configuration de Supabase.** Comprobado por Ulises el
 >    2026-08-22: `Site URL` y `Redirect URLs` ya estaban puestos al apex. Era la
 >    trampa del «funciona pero no entra», y no aplica.
@@ -182,9 +185,32 @@
 >    subdominio, **no el apex**, y un remitente fuera de un dominio verificado se
 >    rechaza entero. Si se cambia `EMAIL_FROM`, **hay que redesplegar** para que
 >    la función lo lea.
-> 4. 🟡 **Tramo 3 — el ciclo completo**: subir documentos desde el móvil con la
->    cuenta candidata, verlos en la cola, abrir uno (URL firmada de 60 s),
->    rechazar con motivo, volver a subir, aprobar, y comprobar `verified` + aviso.
+> 4. 🔴 **Tramo 3 — el ciclo completo. PENDIENTE Y SIN FECHA, y es lo único que
+>    queda del punto 4**: subir documentos con la cuenta candidata, verlos en la
+>    cola, abrir uno (URL firmada de 60 s), rechazar con motivo, volver a subir,
+>    aprobar, y comprobar `verified` + aviso.
+>
+>    ⚠️ **Bloqueado el 2026-08-24: Ulises dice que no tiene forma de verificarlo
+>    desde el móvil.** No es una tarea aplazada por prioridad, es que hoy no hay
+>    quien la ejecute — conviene no volver a escribirla como «pendiente de
+>    Ulises» sin más, porque no lo es.
+>
+>    👉 **El PM sí puede recorrerlo con el navegador**, y hay que decidirlo a
+>    sabiendas de lo que cuesta:
+>
+>    - **Hacen falta las credenciales de las dos cuentas** de producción, la
+>      candidata y la de admin.
+>    - **Hacen falta cuatro ficheros** que subir. Sirve cualquiera: la cuenta
+>      candidata es de prueba y es de Ulises (dicho el 2026-08-22). **Si algún
+>      día fuera de una persona real, esto no se hace.**
+>    - **Son escrituras reales contra producción**: filas en `documents`,
+>      `document_access_log` y `email_log`, y un `verification_status` que se
+>      mueve de verdad. No lo prohíbe ADR-17 —que veta el `db reset` y el
+>      simulacro—, pero **es una decisión de Ulises, no del PM**.
+>    - **El «desde el móvil» se emula, no se finge**: 390×844 en el navegador
+>      mide el diseño, **no** mide la cámara, ni el selector de archivos de
+>      Android, ni una subida con datos móviles. Si el ciclo pasa así, se anota
+>      **cómo se midió**, y lo del teléfono real sigue sin estar probado.
 >
 > 👉 **El 2b NO se adivina, se mide, y por eso puede ir DESPUÉS del 3.**
 > `sendEmail` nunca lanza y **siempre** deja rastro. Justo tras aprobar:
