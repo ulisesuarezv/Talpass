@@ -2,8 +2,10 @@
 
 > # 👉 SI RETOMAS AQUÍ, LEE SOLO ESTO PRIMERO
 >
-> _Escrito al cerrar la sesión del **2026-08-21**, tras una auditoría completa.
-> Todo lo de abajo está verificado contra producción, no contra resúmenes._
+> _Escrito al cerrar la sesión del **2026-08-21** tras una auditoría completa, y
+> **enmendado el 2026-08-22 y el 2026-08-24**. Todo lo de abajo está verificado
+> contra producción, no contra resúmenes — pero **la fecha manda sobre la
+> palabra «hoy»**: cada cifra de abajo lleva la suya._
 >
 > ## El estado en cinco líneas
 >
@@ -15,10 +17,16 @@
 >
 > ## Lo único que queda abierto
 >
-> | #     | Qué                                                                                                                                                                                      | De quién                        |
-> | ----- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------- |
-> | **4** | **El alta real end-to-end contra producción.** Migración, variables y redespliegue ✅. Bloqueada porque **no hay ninguna cuenta de admin en producción** — ver «El primer administrador» | **Ulises** (SQL Editor + móvil) |
-> | **5** | **Sector/ciudad de destino en el onboarding.** **No tiene prompt escrito**; es el siguiente que debe redactar el PM                                                                      | PM redacta, sesión ejecuta      |
+> | #     | Qué                                                                                                                                                                                                                                    | De quién                           |
+> | ----- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------- |
+> | **4** | **El alta real end-to-end contra producción.** Migración, variables y redespliegue ✅. **El admin de producción ya existe** (2026-08-22) y con él se levantó el bloqueo. 🟡 Queda **recorrer el ciclo** — ver el bloque del 2026-08-22 | **Ulises** (móvil), el PM verifica |
+> | **5** | **Sector/ciudad de destino en el onboarding.** **No tiene prompt escrito**; es el siguiente que debe redactar el PM                                                                                                                    | PM redacta, sesión ejecuta         |
+>
+> ⚠️ **«Punto 4» y «fase 4» NO son lo mismo, y el número coincidente despista.**
+> El **punto 4** es esta fila: recorrer el alta real contra producción, y **ya no
+> está bloqueada**. La **fase 4** del roadmap es otra cosa: le falta **una vacante
+> real publicada**, y esa sí **espera a que haya ETT**. Cerrar el punto 4 **no**
+> cierra la fase 4.
 >
 > ## Las cuatro cosas anotadas para mirar con calma
 >
@@ -51,12 +59,166 @@
 > - **No rehacer la home**: sus 5 `h2` responden preguntas medidas.
 > - **Nunca `db reset` ni el simulacro contra producción** (ADR-17).
 >
-> ## Los números de hoy, para cotejar mañana
+> ## Los números, para cotejar mañana
+>
+> **Medidos el 2026-08-21. Recomprobados el 2026-08-24 y siguen exactos**, con el
+> método del hash de build: misma fuente `25yjfdw5omr67`, `/es` a 200 con 5 `h2`,
+> `/es/cuenta` en 307, sitemap 13 URLs, `HEAD` = `origin/main` = `d707d9c`, 18
+> migraciones. **No se ha desplegado nada desde el 21**, y es correcto: las
+> sesiones del 22 y del 24 fueron de PM y no tocaron código.
 >
 > `origin/main` = `main` · 18/18 migraciones · **11** variables en `production` ·
 > sitemap **13** URLs · `JobPosting` **0** · públicas con caché y sin `Set-Cookie` ·
 > privadas 307 desde **`dub1`** · `typecheck`, `lint`, `format:check` limpios ·
 > **ADR-01…41**.
+>
+> Y en la base de producción, el 2026-08-22: **4 filas de `consents`, todas en la
+> versión viva `2026-08-19`** y ninguna huérfana — leído por Ulises y cotejado
+> con el código por el PM. El recuento de `profiles` **no está verificado**: la
+> consulta no llegó a lanzarse, y el PM no puede leer producción.
+>
+> ---
+
+> ## 🟡 2026-08-22 — el primer admin YA EXISTE, y ADR-34 se cierra sin construir nada
+>
+> _Sesión de PM. **No se tocó ni una línea de código y no hubo despliegue**: el
+> build que sirve el sitio sigue siendo el de la C2._
+>
+> ### Lo primero, porque invalida un bloqueo que se repite en cinco sitios
+>
+> 🟢 **En producción ya hay una cuenta de administrador.** El arranque en frío
+> descrito en «El primer administrador» **está resuelto**. Toda frase de este
+> documento que diga «no hay ningún admin en producción» es de antes del
+> 2026-08-22 y **ya no es cierta**; se han corregido las que bloqueaban algo y se
+> han dejado las históricas marcadas.
+>
+> ⚠️ **Lo hizo Ulises y el PM NO lo ha verificado todavía.** Por eso esto va 🟡 y
+> no ✅: falta la comprobación en la aplicación, que es de dos minutos y es la
+> que de verdad cierra el asunto —una tabla diciendo `admin` y la aplicación
+> tratándote como candidato sería justo el tipo de cosa que aquí no se da por
+> buena—:
+>
+> 1. `https://talpass.eu/es/entrar` con la cuenta de admin
+> 2. `https://talpass.eu/es/admin` → **200**, con la cola de revisión
+> 3. `https://talpass.eu/es/cuenta` → **debe echarte a `/es/admin`**, no dejarte
+>    pasar. Eso es `roleCanEnter` confirmando el rol desde la aplicación.
+>
+> ### Cómo se creó, y por qué NO como decía este documento
+>
+> Lo escrito hasta hoy era «se registra el segundo correo por el formulario y se
+> promociona». **Se cambió a propósito, y el guion nuevo es el bueno:**
+>
+> 1. Panel de Supabase → **Authentication › Users › Add user**, con **Auto
+>    Confirm User** marcado y un correo distinto del candidato.
+> 2. SQL Editor:
+>
+> ```sql
+> update public.profiles
+>    set role = 'admin'
+>  where lower(email) = lower(trim('<correo>'))
+> returning id, email, role;
+> ```
+>
+> **Los dos motivos, y los dos están comprobados en el código:**
+>
+> - **Los correos de Supabase Auth no salen por Resend.** `RESEND_API_KEY` es del
+>   correo propio de la aplicación (ADR-26, `src/lib/email/send.ts`); la
+>   confirmación de registro la manda el servicio de serie de Supabase, limitado
+>   a unos pocos envíos por hora. Depender de él para crear el admin es un punto
+>   de fallo que no hace falta.
+> - **El admin no necesita el formulario.** `requireArea('/admin')` solo mira
+>   `profiles.role`; el onboarding es cosa del candidato. Quien sí tiene que
+>   pasar por el formulario de verdad es el **candidato**, porque ese recorrido
+>   es justo lo que se está probando.
+>
+> Y funciona porque `app.handle_new_user` salta en **cualquier** inserción en
+> `auth.users`, también las del panel: el perfil nace igual, como `candidate`, y
+> el `update` del SQL Editor pasa el disparador
+> `profiles_guard_privileged_columns` por correr como `postgres`.
+>
+> 👉 **El `returning` no es adorno:** el SQL Editor de Supabase **solo devuelve
+> el resultado de la última sentencia** cuando pegas varias. Costó una tanda de
+> consultas cuya salida no se vio nunca. **Lánzalas de una en una**, o mete el
+> `returning` en la misma.
+>
+> ### ✅ ADR-34 cerrado: no hay reconsentimiento que montar
+>
+> `select version, count(*) from public.consents` en **producción** devuelve una
+> sola fila: **versión `2026-08-19`, 4 filas.** Cotejado con
+> `src/config/legal.ts:24-27`, que pone `2026-08-19` en los cuatro consentimientos
+> — o sea **la versión viva**.
+>
+> - **Cero filas con versión `1` o `2026-08-14` en producción.** Las 24 y las 3
+>   que preocupaban el 2026-08-19 eran de la base **local**, como se sospechaba
+>   el 20. **Confirmado, ya no es una sospecha.**
+> - **La tarea desaparece, no se aplaza.** ADR-34 condicionaba el flujo de
+>   reconsentimiento a que hubiera filas huérfanas en producción. No las hay.
+> - **Y no hay nada que borrar**, que era la otra salida contemplada.
+> - De paso cuadra el número: 4 filas = **un solo registro** con sus cuatro
+>   consentimientos, y **posterior al 2026-08-19** — si fuera anterior apuntaría
+>   a `2026-08-14`.
+>
+> ### La cuenta de candidato de producción es de prueba, de Ulises
+>
+> Dicho por él el 2026-08-22. **Sirve como candidato del alta real** y no hay que
+> registrar una tercera cuenta. Si hubiera sido de una persona real, ni sus
+> documentos ni su estado se tocarían.
+>
+> ### Lo que queda del punto 4, en orden
+>
+> 1. 🟡 **Tramo 1 — verificar el admin en la aplicación** (los tres pasos de
+>    arriba). **Lo verifica el PM, pero no puede hacerlo solo**: los tres pasos
+>    exigen una sesión iniciada con la cuenta de admin, y el PM no tiene sus
+>    credenciales. O las recibe para la comprobación, o **los recorre Ulises y
+>    pega los tres resultados**, que el PM coteja con `roleCanEnter`
+>    (`src/lib/auth/roles.ts:29`). Lo que **no** vale es dar el tramo por bueno
+>    sin ninguna de las dos cosas.
+> 2. ✅ **Tramo 2a — URL Configuration de Supabase.** Comprobado por Ulises el
+>    2026-08-22: `Site URL` y `Redirect URLs` ya estaban puestos al apex. Era la
+>    trampa del «funciona pero no entra», y no aplica.
+> 3. 🟡 **Tramo 2b — Resend.** Que `updates.talpass.eu` esté **Verified** y que
+>    `EMAIL_FROM` de `production` sea una dirección **de ese subdominio**.
+>    `src/lib/email/send.ts:47-52` lo dice: el dominio verificado es el
+>    subdominio, **no el apex**, y un remitente fuera de un dominio verificado se
+>    rechaza entero. Si se cambia `EMAIL_FROM`, **hay que redesplegar** para que
+>    la función lo lea.
+> 4. 🟡 **Tramo 3 — el ciclo completo**: subir documentos desde el móvil con la
+>    cuenta candidata, verlos en la cola, abrir uno (URL firmada de 60 s),
+>    rechazar con motivo, volver a subir, aprobar, y comprobar `verified` + aviso.
+>
+> 👉 **El 2b NO se adivina, se mide, y por eso puede ir DESPUÉS del 3.**
+> `sendEmail` nunca lanza y **siempre** deja rastro. Justo tras aprobar:
+>
+> ```sql
+> select template, recipient_email, status, error, provider_id, created_at
+>   from public.email_log order by created_at desc limit 5;
+> ```
+>
+> `status = 'sent'` con `provider_id` → Resend lo aceptó y no hay nada que tocar.
+> `status = 'failed'` → la columna `error` trae el motivo literal del proveedor.
+> Y no bloquea: **un correo que falla no impide que el candidato pase a
+> `verified`** — está medido y es deliberado.
+>
+> ### ⚠️ Sigue abierto y es de un minuto: las variables de correo están en Preview
+>
+> `RESEND_API_KEY` y `EMAIL_FROM` quedaron el 2026-08-20 también en **Preview**,
+> a diferencia del resto. **Un despliegue de preview manda correos reales.**
+> Dejarlas solo en `Production`.
+>
+> ### Una regla de método que se reconfirmó
+>
+> **El PM no puede leer la base de producción desde la sesión**: el clasificador
+> bloquea el script, y bloqueó también el intento del 2026-08-20. No es un
+> obstáculo que rodear — **las consultas contra producción las lanza Ulises** y
+> el PM coteja la salida con el código. Así se cerró ADR-34 hoy.
+>
+> ### Lo verificado hoy contra el sitio vivo, y sale limpio
+>
+> Antes de creerse nada se recomprobó que el cierre de la C2 sigue en pie, con el
+> método del hash de build: misma fuente `25yjfdw5omr67`, `/es/cuenta`,
+> `/es/admin` y `/en/account` en **307**, la home con **5 `h2`**, `origin/main` =
+> `main` en `d707d9c` y 18 migraciones. **El último push era solo `docs/` y no
+> invalidó la verificación.**
 >
 > ---
 
@@ -654,13 +816,12 @@
 >
 > ### Decisiones que quedan escritas y le tocan a Ulises revisar
 >
-> - **Las filas de `consents` con versión vieja.** En la base local hay **24 con
->   versión `1`** (el valor de reserva del disparador) y **3 con `2026-08-14`**.
->   Ninguna acredita consentimiento informado, porque su texto no existió nunca.
->   **No se borran** —la fila prueba que hubo un acto—, y lo correcto es volver a
->   pedirlo en el siguiente acceso. **Ese flujo no se construye aquí.**
->   👉 **Antes de construir nada, mira cuántas cuentas reales hay en producción.**
->   Si son de prueba, el arreglo es borrarlas, no montar un reconsentimiento.
+> - ~~**Las filas de `consents` con versión vieja.**~~ ✅ **CERRADO el
+>   2026-08-22, y no hay que construir nada.** Se miró producción, que era lo que
+>   pedía esta nota: **4 filas y todas en la versión viva `2026-08-19`**. Las 24
+>   con versión `1` y las 3 con `2026-08-14` eran de la base **local**. No hay
+>   filas huérfanas, luego **no hay reconsentimiento que montar ni nada que
+>   borrar**. Ver el bloque del 2026-08-22.
 > - **La política se compromete a plazos que hoy se cumplen a mano**: 30 días
 >   para el borrado, 3 años para consentimientos y aperturas, 1 año para
 >   `email_log`. El texto lo admite expresamente en vez de fingir un proceso
@@ -1009,7 +1170,9 @@
 > `RESEND_API_KEY`, que no tiene reserva.
 >
 > 🔴 **Lo que SIGUE ABIERTO y es lo único que queda del punto 4: el alta real
-> contra producción.** Y tiene un bloqueo que se descubrió el 2026-08-20:
+> contra producción.** _(⚠️ El bloqueo que sigue **se levantó el 2026-08-22**:
+> ya hay admin en producción. Se deja escrito porque era verdad ese día.)_ Y
+> tiene un bloqueo que se descubrió el 2026-08-20:
 > **no existe ninguna cuenta de administrador en producción** —hay un solo perfil
 > y es `candidate`—, así que los pasos de revisar y aprobar no se pueden
 > recorrer. No es un olvido: el perfil nace siempre `candidate` a propósito, y
@@ -1593,12 +1756,22 @@ Está todo en "El día que haya ETT", arriba.
 
 ---
 
-## El primer administrador — descubierto el 2026-08-20
+## El primer administrador — descubierto el 2026-08-20, **resuelto el 2026-08-22**
 
-**En producción no hay ninguna cuenta de admin.** Comprobado en lectura: hay
-**un solo perfil y es `candidate`**. Eso bloquea el último criterio del punto 4,
-porque los pasos de «aparecer en la cola», «abrir el documento» y «aprobar» no se
-pueden recorrer sin un admin.
+> 🟢 **YA EXISTE.** Ulises creó la cuenta de admin de producción el 2026-08-22 y
+> con ella se levantó el bloqueo del punto 4. Lo de abajo se conserva porque
+> **explica por qué hace falta hacerlo a mano** y sigue siendo el guion para
+> cualquier entorno nuevo. 🟡 Falta que el PM lo verifique en la aplicación.
+>
+> ⚠️ **El guion cambió.** El admin **no** se registra por el formulario: se crea
+> en **Authentication › Users › Add user** con **Auto Confirm User** y se
+> promociona con el `update` de más abajo. Los motivos, en el bloque del
+> 2026-08-22.
+
+**Cuando se descubrió, en producción no había ninguna cuenta de admin.**
+Comprobado en lectura el 2026-08-20: había **un solo perfil y era `candidate`**.
+Eso bloqueaba el último criterio del punto 4, porque los pasos de «aparecer en la
+cola», «abrir el documento» y «aprobar» no se pueden recorrer sin un admin.
 
 **No es un olvido, es un arranque en frío.** El perfil nace siempre como
 `candidate` y el rol de los metadatos del registro **se ignora a propósito** —
@@ -1629,13 +1802,13 @@ select email, role from public.profiles order by created_at;
 > sitio. Si algún día se resuelve, es un script con `service_role` o un
 > `supabase/seed`, no una pantalla.
 
-> **De paso, una pregunta que se puede cerrar casi gratis.** Si en producción hay
-> **un solo perfil**, las 24 filas de `consents` con versión `1` y las 3 con
-> `2026-08-14` que preocupaban el 2026-08-19 son casi con seguridad de la base
-> **local**, no de producción — y entonces **no hay reconsentimiento que montar**,
-> que era la decisión abierta de ADR-34. Se confirma con un
-> `select version, count(*) from public.consents group by version;` en el mismo
-> SQL Editor. El clasificador bloqueó esa consulta desde la sesión.
+> ✅ **Y la pregunta que iba de paso, CERRADA el 2026-08-22.** Se lanzó
+> `select version, count(*) from public.consents group by version;` en el SQL
+> Editor y devolvió **una sola fila: versión `2026-08-19`, 4 filas**. Las 24 con
+> versión `1` y las 3 con `2026-08-14` eran de la base **local**. **No hay
+> reconsentimiento que montar**, que era la decisión abierta de ADR-34.
+> (El clasificador vuelve a bloquear esa consulta desde la sesión del PM: la
+> lanza Ulises y el PM coteja.)
 
 ---
 

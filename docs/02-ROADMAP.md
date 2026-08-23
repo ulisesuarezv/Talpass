@@ -837,8 +837,10 @@ añadir el campo antes, y el sitio natural es el onboarding.
   30 días para el borrado, 3 años para consentimientos y aperturas, y 1 año para
   `email_log`. Hoy se cumplen a mano y el texto lo admite. Programarlos es de
   esta fase.
-- **El flujo de reconsentimiento** para las filas cuya versión apunta a un texto
-  que nunca existió (ADR-34).
+- ~~**El flujo de reconsentimiento** para las filas cuya versión apunta a un texto
+  que nunca existió (ADR-34).~~ ✅ **No hay que construirlo**, comprobado contra
+  producción el 2026-08-22: **4 filas de `consents` y todas en la versión viva
+  `2026-08-19`**. Las huérfanas eran de la base local.
 
 **No confundir con los consentimientos de la fase 2.** Aquellos son de tratamiento de datos (términos, privacidad, compartición con agencias, audio) y se recogen versionados en el alta con ADR-20; ya están hechos, y desde el 2026-08-19 los **textos** que se aceptan existen y se enlazan.
 

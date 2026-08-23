@@ -795,11 +795,17 @@ _Qué pasa con las filas anteriores._ Las escritas con `2026-08-14` —o con el 
 de reserva del disparador— **no acreditan un consentimiento informado**, porque
 el texto al que apuntan no existió nunca. No se borran: la fila sigue siendo la
 prueba de que hubo un acto, y borrarla empeoraría el registro en vez de
-arreglarlo. Lo correcto es **volver a pedirlo en el siguiente acceso**, y ese
-flujo de reconsentimiento **no se construye en esta sesión**: queda anotado en
-`docs/ESTADO.md` como tarea, junto al aviso de comprobar antes cuántas cuentas
-reales hay en producción — si son las de prueba, el arreglo es borrarlas y no
-construir nada.
+arreglarlo. Lo correcto sería **volver a pedirlo en el siguiente acceso**.
+
+> ✅ **Y ese flujo NO hay que construirlo — comprobado el 2026-08-22.** Esta
+> decisión quedó condicionada a mirar antes cuántas cuentas reales hay en
+> producción, y eso es lo que se hizo:
+> `select version, count(*) from public.consents group by version;` devuelve
+> **una sola fila — versión `2026-08-19`, 4 filas**, que es la versión viva de
+> `CONSENT_VERSIONS`. **Cero filas huérfanas en producción**; las 24 con versión
+> `1` y las 3 con `2026-08-14` eran de la base **local**. No hay reconsentimiento
+> que montar ni nada que borrar. Detalle en `docs/ESTADO.md`, bloque del
+> 2026-08-22.
 
 ---
 
