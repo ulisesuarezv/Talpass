@@ -70,14 +70,20 @@
 > - **No tocar el estado vacío de `/ofertas`**: está bien hecho (ADR-36).
 > - **No rehacer la home**: sus 5 `h2` responden preguntas medidas.
 > - **Nunca `db reset` ni el simulacro contra producción** (ADR-17).
+> - **No proponer el campo de sector/ciudad de destino** en el onboarding: está
+>   descartado con motivo en **ADR-42**, y es la idea que más fácil se
+>   redescubre porque suena razonable en abstracto.
 >
 > ## Los números, para cotejar mañana
 >
 > **Medidos el 2026-08-21. Recomprobados el 2026-08-24 y siguen exactos**, con el
-> método del hash de build: misma fuente `25yjfdw5omr67`, `/es` a 200 con 5 `h2`,
-> `/es/cuenta` en 307, sitemap 13 URLs, `HEAD` = `origin/main` = `d707d9c`, 18
-> migraciones. **No se ha desplegado nada desde el 21**, y es correcto: las
-> sesiones del 22 y del 24 fueron de PM y no tocaron código.
+> método del hash de build: misma fuente **`25yjfdw5omr67`**, `/es` a 200 con 5
+> `h2`, `/es/cuenta` en 307, sitemap 13 URLs, 18 migraciones.
+>
+> ⚠️ **El commit ya NO es `d707d9c`**: las sesiones del 22 y del 24 dejaron
+> varios commits, **todos de `docs/`**. Por eso el alias de despliegue se ha
+> movido y **la fuente servida no**, que es justo lo que la regla del hash de
+> build sirve para distinguir. **No se ha desplegado código desde el 21.**
 >
 > `origin/main` = `main` · 18/18 migraciones · **11** variables en `production` ·
 > sitemap **13** URLs · `JobPosting` **0** · públicas con caché y sin `Set-Cookie` ·
@@ -91,10 +97,65 @@
 >
 > ---
 
-> ## 🟡 2026-08-22 — el primer admin YA EXISTE, y ADR-34 se cierra sin construir nada
+> ## ✅ 2026-08-24 — el punto 4 recorrido, el punto 5 muerto, y la vía B agotada
+>
+> _Sesión de PM. **No se tocó ni una línea de código y no hubo despliegue de
+> aplicación**: solo `docs/`. La fuente servida sigue siendo `25yjfdw5omr67`._
+>
+> ### Lo que cambió de estado
+>
+> - ✅ **Tramo 1 — el admin, verificado en la aplicación.** Los tres pasos, por
+>   Ulises. El que cierra el asunto es el tercero: `/es/cuenta` le echa a
+>   `/es/admin`, o sea la aplicación **leyendo** el rol, no la tabla diciéndolo.
+> - ✅ **Tramo 3 — el ciclo de documentos, recorrido contra producción.** Ulises
+>   encontró la forma pese a lo del móvil.
+> - ⛔ **Punto 5, descartado — ADR-42.** No se construye nunca. El razonamiento
+>   es suyo y es de terreno: el candidato se mueve **por necesidad**, el destino
+>   real de las ETT objetivo es un pueblo junto a una fábrica, y un desplegable
+>   de ciudades recogería capitales que **filtrarían fuera las ofertas que
+>   existen**. Mokka360 tampoco lo pregunta. El destino lo lleva `jobs.city`.
+> - ✅ **Vía B agotada del todo.** Sus seis puntos están cerrados o descartados.
+>
+> ### 🔴 Y esto es lo importante para quien retome: NO QUEDA TRABAJO DE CÓDIGO
+>
+> Es la primera vez en este proyecto que se puede decir. Lo abierto es:
+>
+> 1. **Una consulta** — el tramo 2b, leer `email_log`. La lanza Ulises.
+> 2. **Un minuto de panel** — sacar `RESEND_API_KEY` y `EMAIL_FROM` de Preview.
+> 3. **Search Console** y **la primera ETT**. Las dos son de Ulises y **ninguna
+>    se resuelve escribiendo un prompt**.
+>
+> 👉 **Por eso, si retomas y buscas «la siguiente fase», no la hay.** La
+> tentación será inventar trabajo de código —rehacer algo, adelantar la fase 5,
+> proponer otra vez el campo de destino—. Todo eso está vetado por escrito:
+> fases 5 a 10 congeladas tras la ETT, el rediseño cerrado en C1 y C2, y el
+> destino en ADR-42. **Lo útil que sí queda sin ETT es el guion del día que la
+> haya**, que está en «El día que haya ETT» y no se ha ensayado nunca.
+>
+> ### Lo auditado hoy, con su resultado
+>
+> | Qué                                    | Resultado                                                                                                |
+> | -------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+> | Build servido vs. el de la C2          | ✅ misma fuente `25yjfdw5omr67`; los push de hoy fueron solo `docs/`                                     |
+> | Home, `/es/cuenta`, sitemap            | ✅ 200 con 5 `h2` · 307 desde `dub1` · 13 URLs                                                           |
+> | Rutas privadas sin sesión              | ✅ `/es/admin`, `/es/cuenta`, `/en/account` → 307 al login del idioma                                    |
+> | Las afirmaciones del bloque del 22     | ✅ las ocho, cotejadas contra el código antes de commitear                                               |
+> | Líneas de cita rotas por Prettier      | ✅ **una encontrada y arreglada**, y las cuatro `docs/` reescaneadas                                     |
+> | Hallazgo 7 de la auditoría del 18      | ✅ **cerrado**: `/es/registro` tiene su título y su canónica propios                                     |
+> | Hallazgo 5 (`/es/trabajo/**` 404)      | 🟡 **vivo pero esperado**: 0 vacantes ⇒ 0 landings (ADR-23)                                              |
+> | Hallazgo 8 (`ettrecruiter.vercel.app`) | 🟡 **mitigado, no cerrado**: la canónica apunta a `talpass.eu`, pero su `robots.txt` sigue en `Allow: /` |
+>
+> ---
+
+> ## ✅ 2026-08-22 — el primer admin YA EXISTE, y ADR-34 se cierra sin construir nada
 >
 > _Sesión de PM. **No se tocó ni una línea de código y no hubo despliegue**: el
 > build que sirve el sitio sigue siendo el de la C2._
+>
+> _**Enmendado el 2026-08-24.** Este bloque nació 🟡 porque el admin estaba sin
+> verificar. Ya lo está, y el ciclo de documentos también: de los cuatro tramos
+> del punto 4 **solo queda el 2b, que es una consulta**. Los tramos de abajo
+> llevan su estado al día._
 >
 > ### Lo primero, porque invalida un bloqueo que se repite en cinco sitios
 >
@@ -182,10 +243,11 @@
 >    2026-08-24.** Ulises recorrió los tres pasos y los tres salen: entra,
 >    `/es/admin` da la cola, y **`/es/cuenta` le echa a `/es/admin`**. Ese
 >    tercero es el que cierra el asunto: prueba que la aplicación **lee** el rol
->    y actúa, no solo que la tabla lo dice — es `roleCanEnter('admin',
-'/account')` dando `false` (`src/lib/auth/roles.ts:22,29`) y
->    `ROLE_HOME.admin` mandando a `/admin` (`session.ts:55-56`). El PM cotejó la
->    cadena en el código y midió la otra mitad, la que no depende de la sesión:
+>    y actúa, no solo que la tabla lo dice. La cadena son tres líneas: el área de
+>    cuenta admite solo `candidate` (`src/lib/auth/roles.ts:22`), así que
+>    `roleCanEnter` devuelve falso (línea 29) y `session.ts:55-56` redirige a
+>    `ROLE_HOME.admin`. El PM cotejó esa cadena en el código y midió la otra
+>    mitad, la que no depende de la sesión:
 >    `/es/admin`, `/es/cuenta` y `/en/account` **sin sesión** dan 307 al login
 >    del idioma correcto.
 > 2. ✅ **Tramo 2a — URL Configuration de Supabase.** Comprobado por Ulises el
@@ -1138,16 +1200,20 @@
 >    producción. Ver el bloque de arriba y `docs/evidencia/textos-legales/`.
 >    Lo siguiente era el punto 4, del que el 2026-08-20 se hicieron la
 >    migración, las dos variables y el redespliegue; **queda solo el alta real**.
+>    _(⚠️ Y el alta real se recorrió el 2026-08-24: ya no queda.)_
 >    3.5. ~~**La región de las funciones**~~ ✅ **hecho el 2026-08-19** (ADR-32,
 >    `dpl_6TMu6yXKRiP9bCpsuXyzsatCHFVU`). Se adelantó al punto 3 por decisión de
 >    Ulises, para que la política de privacidad se escriba ya sin rodeos.
 > 4. **Desbloquear la verificación en producción**: ~~`db:push:prod` de
 >    `20260816120000_verification.sql`~~ ✅ · ~~las dos variables~~ ✅ ·
->    ~~redespliegue~~ ✅ — **todo el 2026-08-20**. 🔴 **Queda el alta real**, y la
->    bloquea que **no haya ningún admin en producción**: ver «El primer
->    administrador».
-> 5. **El campo de sector/ciudad de destino en el onboarding** — antes de captar,
->    no después: pedírselo a 30 personas ya captadas es hacerlas volver.
+>    ~~redespliegue~~ ✅ · ~~el alta real, bloqueada por no haber admin~~ ✅ —
+>    **recorrida entera el 2026-08-24**, admin incluido. Del punto 4 solo queda
+>    **leer `email_log`** (tramo 2b). El texto de este punto es del 2026-08-20 y
+>    su bloqueo ya no existe.
+> 5. ~~**El campo de sector/ciudad de destino en el onboarding** — antes de
+>    captar, no después: pedírselo a 30 personas ya captadas es hacerlas
+>    volver.~~ ⛔ **DESCARTADO el 2026-08-24 — ADR-42.** No se construye nunca:
+>    el candidato se mueve por necesidad y el destino lo lleva la oferta.
 > 6. ~~**El pase de credibilidad**~~ ✅ **HECHO** — **partido en dos fases el
 >    2026-08-20**, y las dos cerradas: **C1 el 2026-08-20** y **C2 el
 >    2026-08-21**. Era:
@@ -1190,10 +1256,13 @@
 > ya caía en el remitente correcto. La que bloqueaba de verdad es
 > `RESEND_API_KEY`, que no tiene reserva.
 >
-> 🔴 **Lo que SIGUE ABIERTO y es lo único que queda del punto 4: el alta real
-> contra producción.** _(⚠️ El bloqueo que sigue **se levantó el 2026-08-22**:
-> ya hay admin en producción. Se deja escrito porque era verdad ese día.)_ Y
-> tiene un bloqueo que se descubrió el 2026-08-20:
+> ✅ **Esto ya NO está abierto — leer el aviso antes que el 🔴 de la frase.**
+> _Lo de abajo era cierto el 2026-08-20 y se conserva por eso, pero el admin se
+> creó el 2026-08-22 y **el alta real se recorrió entera el 2026-08-24**. Del
+> punto 4 solo queda leer `email_log`._
+>
+> 🔴 ~~**Lo que SIGUE ABIERTO y es lo único que queda del punto 4: el alta real
+> contra producción.**~~ Y tiene un bloqueo que se descubrió el 2026-08-20:
 > **no existe ninguna cuenta de administrador en producción** —hay un solo perfil
 > y es `candidate`—, así que los pasos de revisar y aprobar no se pueden
 > recorrer. No es un olvido: el perfil nace siempre `candidate` a propósito, y
