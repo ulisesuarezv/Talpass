@@ -52,20 +52,6 @@
       "title": "What this costs you",
       "body": "Nothing, and it is not a launch offer: charging a candidate for access to a job is prohibited in the European Union. No commission on your wage, no subscription, no paying to feature your profile.",
       "who": "{brand} charges nobody today: there is no payment gateway at all. The day there is one, the agency is who pays."
-    },
-    "status": {
-      "title": "Where this stands today",
-      "empty": "There is no published vacancy on {brand} today: the first agreements with agencies in Germany are still being closed. It is written here, not hidden, because finding out later would be worse.",
-      "open": "There {count, plural, one {is # published vacancy} other {are # published vacancies}} on {brand} today.",
-      "meanwhile": "What you can do already: see what each sector in Germany actually pays, with the source and the date of every figure, and get your profile ready for when the first jobs arrive.",
-      "opportunitiesLink": "See the market conditions",
-      "jobsLink": "See the published jobs"
-    },
-    "behind": {
-      "title": "Who answers for this site",
-      "body": "Behind {brand} there is a natural person with a published name, address and email, not an anonymous company: {name}, in {city}.",
-      "detail": "You can check it and you can write to him. The Impressum carries the full address and the email, as German law requires.",
-      "link": "See the Impressum"
     }
   }
 }

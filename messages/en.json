@@ -157,25 +157,11 @@
       "description": "What warehouse, logistics, production, meat processing and agriculture pay per hour in Germany, what hours and shifts are worked, and what level of German is required. Based on 14 real job ads and the Zeitarbeit collective agreement."
     },
     "disclosure": {
-      "title": "This is not a list of open vacancies",
-      "body": "There is no company behind these pages, no start date and no position to apply to. They describe the typical conditions of the German market for each profile: what it pays, what the work is and what is asked for. Real vacancies, once there are any, are published separately.",
-      "source": "Source: 14 job ads from Randstad, Adecco and Tempton reviewed on {date}, and the Zeitarbeit collective agreement (GVP/DGB). Sector pay rises on 1 September 2026 and again in April 2027, so these figures have a known expiry date.",
       "jobs": "See published vacancies"
     },
     "agreement": {
       "title": "The floor is set by the collective agreement, not by the agency",
       "body": "Temporary agency work in Germany has its own minimum wage, above the general one: {amount} gross per hour from {date}. An offer below that figure is not a bargain, it is illegal. It is the first thing worth checking, and it applies to all five profiles on this page."
-    },
-    "ask": {
-      "title": "What almost no advert says, and you should ask",
-      "intro": "Of the 14 ads reviewed, none stated the exact weekly hours, none said whether accommodation was available and none said how long the contract lasts. These are the questions that decide whether moving is worth it:",
-      "items": [
-        "How many hours a week? With hourly pay, the working week is half the wage: €16 an hour at 35 hours and at 40 hours are not the same month.",
-        "Is there accommodation, what does it cost, and is the amount written into the contract? A surprise payroll deduction is the sector's most repeated complaint.",
-        "What is the minimum contract length? \"Temporary\" with no term does not let you decide on a move.",
-        "Who signs the contract, the agency or the factory? In this sector a \"permanent contract\" almost always means permanent with the agency, which is not the same thing.",
-        "What level of German is required, measured? \"Good German\" is not a requirement, it is an opaque filter: only 3 of the 14 ads gave a CEFR level."
-      ]
     },
     "facts": {
       "salaryLabel": "Pay",
@@ -658,7 +644,7 @@
     "back": "Back to home"
   },
   "Footer": {
-    "rights": "{brand} · Responsible: {name}, {city}",
+    "rights": "{brand}",
     "legalHeading": "Legal"
   },
   "Legal": {
@@ -666,7 +652,6 @@
     "backToIndex": "Back to Legal",
     "version": "Version of {date}",
     "noVersion": "Not a document you accept when signing up: it identifies who is behind the site.",
-    "authorship": "This text was written by the person responsible for the site, not by a lawyer, and it is not legal advice. It was written by reading what the code actually does, and it describes how the service really works as of the date of its version. If you find anything that does not match what you see, write to us and it gets fixed.",
     "index": {
       "title": "Legal",
       "intro": "The five documents that govern this site, each with the date of its version. The ones accepted at sign-up stay as you accepted them: every version is stored with its date.",

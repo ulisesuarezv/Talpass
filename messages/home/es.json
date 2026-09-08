@@ -52,20 +52,6 @@
       "title": "Qué te cuesta esto",
       "body": "Nada, y no es una oferta de lanzamiento: cobrar a un candidato por acceder a un empleo está prohibido en la Unión Europea. Ni comisión sobre tu sueldo, ni suscripción, ni pagar por destacar tu perfil.",
       "who": "Hoy {brand} no cobra a nadie: no hay ninguna pasarela de pagos. El día que la haya, quien pague será la agencia."
-    },
-    "status": {
-      "title": "En qué punto está esto",
-      "empty": "Hoy no hay ninguna vacante publicada en {brand}: se están cerrando los primeros acuerdos con agencias en Alemania. Está escrito aquí, y no escondido, porque enterarte después sería peor.",
-      "open": "Hoy hay {count, plural, one {# vacante publicada} other {# vacantes publicadas}} en {brand}.",
-      "meanwhile": "Lo que sí puedes hacer ya: ver qué se paga de verdad por sector en Alemania, con la fuente y la fecha de cada cifra, y dejar tu perfil listo para cuando lleguen las primeras ofertas.",
-      "opportunitiesLink": "Ver las condiciones del mercado",
-      "jobsLink": "Ver las ofertas publicadas"
-    },
-    "behind": {
-      "title": "Quién responde de este sitio",
-      "body": "Detrás de {brand} hay una persona física con nombre, domicilio y correo publicados, no una empresa anónima: {name}, en {city}.",
-      "detail": "Puedes comprobarlo y puedes escribirle. El Impressum lleva la dirección completa y el correo, como exige la ley alemana.",
-      "link": "Ver el Impressum"
     }
   }
 }

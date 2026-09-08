@@ -108,10 +108,6 @@ export default async function LegalIndexPage({
           </a>
         </address>
       </section>
-
-      <aside className="rounded-lg border bg-muted/40 p-4 type-body text-muted-foreground">
-        {t('authorship')}
-      </aside>
     </div>
   );
 }

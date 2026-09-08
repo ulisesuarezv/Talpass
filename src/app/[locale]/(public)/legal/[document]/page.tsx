@@ -146,13 +146,6 @@ export default async function LegalDocumentPage({
         </section>
       ))}
 
-      {/* Visible y no en letra pequeña: estos textos los redacta el responsable
-          y no son un dictamen jurídico. Es cierto, y un proyecto que vende
-          transparencia no puede fingir un sello que no tiene. */}
-      <aside className="rounded-lg border bg-muted/40 p-4 type-body text-muted-foreground">
-        {t('authorship')}
-      </aside>
-
       <nav
         aria-label={t('title')}
         className="flex flex-col gap-2 border-t pt-6 type-body"

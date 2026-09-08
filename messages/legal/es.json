@@ -22,13 +22,6 @@
           ]
         },
         {
-          "heading": "Identificación fiscal",
-          "paragraphs": [
-            "No se publica un número de identificación a efectos del IVA (USt-IdNr.) porque el responsable no tiene ninguno asignado. No se inventa uno para rellenar el hueco.",
-            "El NIF español del responsable es {controllerTaxId}. Sirve para identificarle, y no es un número de IVA."
-          ]
-        },
-        {
           "heading": "Qué es este sitio, y qué no es",
           "paragraphs": [
             "{brand} pone en contacto a personas que buscan trabajo en Europa Central con empresas de trabajo temporal verificadas. Hoy el único mercado abierto es Alemania.",

@@ -8,10 +8,7 @@ import {
 
 import { SignupCta } from '@/components/jobs/signup-cta';
 import { formatMarketSalary } from '@/components/opportunities/format-market-salary';
-import {
-  AgreementFloor,
-  MarketDisclosure,
-} from '@/components/opportunities/market-disclosure';
+import { AgreementFloor } from '@/components/opportunities/market-disclosure';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Link } from '@/i18n/navigation';
@@ -160,8 +157,6 @@ export default async function OpportunityPage({
             : t('facts.basisAgreement')}
         </p>
       </header>
-
-      <MarketDisclosure />
 
       <dl className="grid grid-cols-2 gap-4 rounded-lg border bg-card p-4 text-sm sm:grid-cols-3">
         <Fact label={t('facts.weeklyHoursLabel')}>

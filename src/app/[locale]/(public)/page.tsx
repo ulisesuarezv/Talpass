@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 
 import { Button } from '@/components/ui/button';
-import { controller } from '@/config/controller';
 import { legalLink } from '@/config/legal';
 import { siteConfig } from '@/config/site';
 import { Link } from '@/i18n/navigation';
@@ -164,56 +163,6 @@ export default async function HomePage({
         <p className="type-body text-muted-foreground">{t('cost.body')}</p>
         <p className="type-body text-muted-foreground">
           {t('cost.who', { brand })}
-        </p>
-      </section>
-
-      <section className="flex flex-col gap-3">
-        <h2 className="type-h2">{t('status.title')}</h2>
-        <p className="type-body text-muted-foreground">
-          {hasJobs
-            ? t('status.open', { brand, count: jobs.length })
-            : t('status.empty', { brand })}
-        </p>
-        <p className="type-body text-muted-foreground">
-          {t('status.meanwhile')}
-        </p>
-        {/*
-          El enlace al listado de vacantes solo aparece cuando hay alguna.
-          Invitar a ver «las ofertas publicadas» en el párrafo que acaba de
-          decir que no hay ninguna es la contradicción que esta fase viene a
-          quitar, no una que valga la pena añadir.
-        */}
-        <p className="flex flex-col gap-2 type-body sm:flex-row sm:gap-5">
-          <Link href="/opportunities" className="type-link">
-            {t('status.opportunitiesLink')}
-          </Link>
-          {hasJobs ? (
-            <Link href="/jobs" className="type-link">
-              {t('status.jobsLink')}
-            </Link>
-          ) : null}
-        </p>
-      </section>
-
-      {/* El Impressum, también desde la home y no solo desde el pie: es la
-          prueba de existencia más barata que puede dar un proyecto nuevo, y
-          quien se plantea subir su DNI a un dominio que no conoce la busca
-          antes de bajar hasta el final de la página. El nombre y la ciudad
-          salen de `config/controller`, no del copy (ADR-12). */}
-      <section className="flex flex-col gap-3 border-t pt-8">
-        <h2 className="type-h2">{t('behind.title')}</h2>
-        <p className="type-body text-muted-foreground">
-          {t('behind.body', {
-            brand,
-            name: controller.name,
-            city: controller.address.city,
-          })}
-        </p>
-        <p className="type-body text-muted-foreground">{t('behind.detail')}</p>
-        <p className="type-body">
-          <Link href={legalLink('impressum', locale)} className="type-link">
-            {t('behind.link')}
-          </Link>
         </p>
       </section>
     </div>

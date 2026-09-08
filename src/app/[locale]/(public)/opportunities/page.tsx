@@ -1,10 +1,7 @@
 import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 
-import {
-  AgreementFloor,
-  MarketDisclosure,
-} from '@/components/opportunities/market-disclosure';
+import { AgreementFloor } from '@/components/opportunities/market-disclosure';
 import { OpportunityCard } from '@/components/opportunities/opportunity-card';
 import { SignupCta } from '@/components/jobs/signup-cta';
 import { Link } from '@/i18n/navigation';
@@ -57,8 +54,6 @@ export default async function OpportunitiesPage({
         <p className="text-muted-foreground">{t('subtitle')}</p>
       </header>
 
-      <MarketDisclosure />
-
       <div className="flex flex-col gap-3">
         {opportunities.map((opportunity) => (
           <OpportunityCard key={opportunity.sector} opportunity={opportunity} />
@@ -66,16 +61,6 @@ export default async function OpportunitiesPage({
       </div>
 
       <AgreementFloor />
-
-      <section className="flex flex-col gap-3">
-        <h2 className="type-h2">{t('ask.title')}</h2>
-        <p className="type-body text-muted-foreground">{t('ask.intro')}</p>
-        <ul className="flex list-disc flex-col gap-2 pl-5 type-body text-muted-foreground">
-          {(t.raw('ask.items') as string[]).map((item) => (
-            <li key={item}>{item}</li>
-          ))}
-        </ul>
-      </section>
 
       <p className="type-body">
         <Link href="/jobs" className="type-link">

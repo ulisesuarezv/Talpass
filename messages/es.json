@@ -157,25 +157,11 @@
       "description": "Cuánto se paga por hora en almacén, logística, producción, cárnico y agrícola en Alemania, qué jornada y qué turnos se hacen, y qué nivel de alemán piden. Datos de 14 ofertas reales y del convenio de la Zeitarbeit."
     },
     "disclosure": {
-      "title": "Esto no es un listado de vacantes",
-      "body": "Detrás de estas páginas no hay una empresa, ni una fecha de incorporación, ni un puesto al que aplicar. Son las condiciones típicas del mercado alemán para cada perfil: lo que se paga, lo que se trabaja y lo que se pide. Las vacantes reales, cuando las haya, se publican aparte.",
-      "source": "Fuente: 14 ofertas de Randstad, Adecco y Tempton analizadas el {date}, y el convenio de la Zeitarbeit (GVP/DGB). Los salarios del sector suben el 1 de septiembre de 2026 y otra vez en abril de 2027, así que estas cifras tienen fecha de caducidad conocida.",
       "jobs": "Ver las vacantes publicadas"
     },
     "agreement": {
       "title": "El suelo lo fija el convenio, no la agencia",
       "body": "El trabajo por ETT en Alemania tiene su propio salario mínimo, superior al general: {amount} brutos por hora desde el {date}. Una oferta por debajo de esa cifra no es una ganga, es ilegal. Es lo primero que conviene comprobar, y vale para los cinco perfiles de esta página."
-    },
-    "ask": {
-      "title": "Lo que casi ninguna oferta dice, y hay que preguntar",
-      "intro": "De las 14 ofertas analizadas, ninguna decía la jornada semanal exacta, ninguna decía si hay alojamiento y ninguna decía cuánto dura el contrato. Estas son las preguntas que deciden si te compensa mudarte:",
-      "items": [
-        "¿Cuántas horas son a la semana? Con salario por hora, la jornada es la mitad del sueldo: 16 € la hora a 35 horas y a 40 no son el mismo mes.",
-        "¿Hay alojamiento, cuánto cuesta y viene por escrito en el contrato? El descuento sorpresa en la nómina es la queja más repetida del sector.",
-        "¿Cuánto dura el contrato como mínimo? «Temporal» sin plazo no permite decidir una mudanza.",
-        "¿Quién firma el contrato, la agencia o la fábrica? En este sector, «contrato indefinido» casi siempre significa indefinido con la agencia, y no es lo mismo.",
-        "¿Qué nivel de alemán piden, medido? «Buen alemán» no es un requisito, es un filtro opaco: solo 3 de las 14 ofertas daban un nivel de la escala MCER."
-      ]
     },
     "facts": {
       "salaryLabel": "Salario",
@@ -658,7 +644,7 @@
     "back": "Volver al inicio"
   },
   "Footer": {
-    "rights": "{brand} · Responsable: {name}, {city}",
+    "rights": "{brand}",
     "legalHeading": "Legal"
   },
   "Legal": {
@@ -666,7 +652,6 @@
     "backToIndex": "Volver a Legal",
     "version": "Versión del {date}",
     "noVersion": "No es un documento que se acepte al registrarse: identifica a quien hay detrás del sitio.",
-    "authorship": "Este texto lo ha redactado el responsable del sitio, no un abogado, y no es un dictamen jurídico. Está escrito leyendo lo que el código hace de verdad, y describe el funcionamiento real del servicio en la fecha de su versión. Si encuentras algo que no cuadra con lo que ves, escríbenos y se corrige.",
     "index": {
       "title": "Legal",
       "intro": "Los cinco documentos que rigen este sitio, con la fecha de su versión. Los tres primeros que se aceptan al registrarse siguen siendo los mismos que aceptaste: cada versión queda guardada con su fecha.",

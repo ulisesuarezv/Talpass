@@ -22,13 +22,6 @@
           ]
         },
         {
-          "heading": "Tax identification",
-          "paragraphs": [
-            "No VAT identification number (USt-IdNr.) is published, because none has been issued to the controller. One is not invented to fill the gap.",
-            "The controller's Spanish tax number (NIF) is {controllerTaxId}. It identifies him, and it is not a VAT number."
-          ]
-        },
-        {
           "heading": "What this site is, and what it is not",
           "paragraphs": [
             "{brand} connects people looking for work in Central Europe with verified temporary work agencies. Germany is the only open market today.",
