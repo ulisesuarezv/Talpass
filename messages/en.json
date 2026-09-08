@@ -340,7 +340,8 @@
           "Hired directly by the farm, the lower general minimum wage applies: always ask who signs"
         ]
       }
-    }
+    },
+    "hook": "Figures measured in real job ads, each with its source and its date. None of them is a recommended band."
   },
   "Auth": {
     "meta": {

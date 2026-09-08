@@ -1,8 +1,8 @@
 {
   "Home": {
     "eyebrow": "Alemania · para candidatos hispanohablantes y lusófonos",
-    "title": "Trabajo en Europa, sin intermediarios opacos",
-    "subtitle": "{brand} conecta a candidatos hispanohablantes y lusófonos con agencias de trabajo temporal en Europa Central. Empezamos por Alemania.",
+    "title": "Tu portal directo a tu siguiente trabajo en Europa.",
+    "subtitle": "{brand} te conecta con agencias de trabajo temporal verificadas en Europa Central, y te deja ver quién te contrataría antes de que des tu nombre. Empezamos por Alemania.",
     "ctaOpportunities": "Ver qué se paga en Alemania",
     "ctaJobs": "Ver las ofertas publicadas",
     "ctaSignup": "Crear mi cuenta",
@@ -26,7 +26,8 @@
           "title": "Tú decides quién abre cada documento",
           "body": "Una agencia que quiera ver un documento tuyo tiene que pedírtelo. Concedes o deniegas, el silencio no concede nada, y puedes revocar un permiso ya dado."
         }
-      }
+      },
+      "hook": "Cuatro pasos, y en ninguno pagas nada."
     },
     "privacy": {
       "title": "Qué ve una agencia de ti, y qué no",
@@ -46,12 +47,14 @@
         "Tu IBAN, que además no se comparte con una agencia nunca, ni con tu permiso."
       ],
       "nothingAsked": "Y hay datos que hoy {brand} ni siquiera te pide: ni IBAN, ni dirección postal, ni teléfono.",
-      "link": "Cómo se comparte tu perfil, campo a campo"
+      "link": "Cómo se comparte tu perfil, campo a campo",
+      "hook": "No es una promesa de buena fe: es un permiso que la agencia no tiene."
     },
     "cost": {
       "title": "Qué te cuesta esto",
       "body": "Nada, y no es una oferta de lanzamiento: cobrar a un candidato por acceder a un empleo está prohibido en la Unión Europea. Ni comisión sobre tu sueldo, ni suscripción, ni pagar por destacar tu perfil.",
-      "who": "Hoy {brand} no cobra a nadie: no hay ninguna pasarela de pagos. El día que la haya, quien pague será la agencia."
+      "who": "Hoy {brand} no cobra a nadie: no hay ninguna pasarela de pagos. El día que la haya, quien pague será la agencia.",
+      "hook": "Cero euros, y no por ahora: no hay ni pasarela de pagos."
     }
   }
 }

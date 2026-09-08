@@ -1,8 +1,8 @@
 {
   "Home": {
     "eyebrow": "Germany · for Spanish- and Portuguese-speaking candidates",
-    "title": "Work in Europe, without opaque middlemen",
-    "subtitle": "{brand} connects Spanish- and Portuguese-speaking candidates with temporary work agencies in Central Europe. We start with Germany.",
+    "title": "Your direct route to your next job in Europe.",
+    "subtitle": "{brand} connects you with verified temporary work agencies in Central Europe, and lets you see who would be hiring you before you give your name. We start with Germany.",
     "ctaOpportunities": "See what Germany actually pays",
     "ctaJobs": "See the published jobs",
     "ctaSignup": "Create my account",
@@ -26,7 +26,8 @@
           "title": "You decide who opens each document",
           "body": "An agency that wants to see a document of yours has to ask you. You grant or refuse, silence grants nothing, and you can revoke a permission you already gave."
         }
-      }
+      },
+      "hook": "Four steps, and you pay nothing in any of them."
     },
     "privacy": {
       "title": "What an agency sees about you, and what it does not",
@@ -46,12 +47,14 @@
         "Your IBAN, which on top of that is never shared with an agency, not even with your permission."
       ],
       "nothingAsked": "And there are details {brand} does not even ask you for today: no IBAN, no postal address, no phone number.",
-      "link": "How your profile is shared, field by field"
+      "link": "How your profile is shared, field by field",
+      "hook": "Not a promise made in good faith: a permission the agency does not have."
     },
     "cost": {
       "title": "What this costs you",
       "body": "Nothing, and it is not a launch offer: charging a candidate for access to a job is prohibited in the European Union. No commission on your wage, no subscription, no paying to feature your profile.",
-      "who": "{brand} charges nobody today: there is no payment gateway at all. The day there is one, the agency is who pays."
+      "who": "{brand} charges nobody today: there is no payment gateway at all. The day there is one, the agency is who pays.",
+      "hook": "Zero, and not just for now: there is no payment gateway at all."
     }
   }
 }

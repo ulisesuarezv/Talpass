@@ -340,7 +340,8 @@
           "Contratado directamente por la explotación se aplica el salario mínimo general, que es más bajo: preguntar siempre quién firma"
         ]
       }
-    }
+    },
+    "hook": "Cifras medidas en ofertas reales, con su fuente y su fecha. Ninguna es una franja recomendada."
   },
   "Auth": {
     "meta": {

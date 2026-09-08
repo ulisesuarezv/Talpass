@@ -104,6 +104,7 @@ export default async function HomePage({
 
       <section className="flex flex-col gap-4">
         <h2 className="type-h2">{t('how.title')}</h2>
+        <p className="type-body font-medium text-foreground">{t('how.hook')}</p>
         <ol className="flex flex-col gap-4">
           {HOW_STEPS.map((step, index) => (
             <li key={step} className="flex flex-col gap-1">
@@ -125,6 +126,9 @@ export default async function HomePage({
       */}
       <section className="flex flex-col gap-4">
         <h2 className="type-h2">{t('privacy.title')}</h2>
+        <p className="type-body font-medium text-foreground">
+          {t('privacy.hook')}
+        </p>
         <p className="type-body text-muted-foreground">{t('privacy.intro')}</p>
 
         <div className="flex flex-col gap-6 rounded-lg border border-brand/25 bg-brand-soft p-5 sm:flex-row sm:gap-8">
@@ -160,6 +164,9 @@ export default async function HomePage({
 
       <section className="flex flex-col gap-3">
         <h2 className="type-h2">{t('cost.title')}</h2>
+        <p className="type-body font-medium text-foreground">
+          {t('cost.hook')}
+        </p>
         <p className="type-body text-muted-foreground">{t('cost.body')}</p>
         <p className="type-body text-muted-foreground">
           {t('cost.who', { brand })}

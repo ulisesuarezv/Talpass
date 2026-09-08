@@ -1198,6 +1198,50 @@ sigue en 0—, pero ya no hay copy que lo explique al visitante.
 **Consecuencia medida: la home pasa de 5 `h2` a 3.** Toda verificación de este
 proyecto que diga «`/es` a 200 con 5 `h2`» es de antes del 2026-09-08.
 
+### ADR-44 · Dos reclamos que este sitio no puede hacer: «el primero» y «sin intermediarios»
+
+_(2026-09-08. Ulises propuso el titular «El primer portal directo a tu siguiente
+trabajo en Europa» y pidió más ganchos del tipo «sin intermediarios». Se ajustó
+el titular y se descartaron los dos reclamos, con su motivo.)_
+
+**«El primer/único…» no se escribe nunca.** Es falso —Mokka360 existe y está en
+este documento como competencia— y en Alemania un superlativo de exclusividad
+sin prueba es una _Alleinstellungsbehauptung_ del **§5 UWG**, de los motivos de
+_Abmahnung_ más rutinarios que hay. El Impressum publica el nombre y el
+domicilio de una persona física en Göttingen: el coste de esa palabra no es
+teórico y no lo absorbe ninguna sociedad.
+
+**«Sin intermediarios» dice lo contrario de lo que Talpass es.** Al candidato
+**lo contrata la ETT**, y los propios legales lo dicen dos veces: «no es una
+empresa de trabajo temporal ni una agencia de colocación: no contrata a nadie,
+no cede trabajadores y no es parte de ningún contrato de trabajo». El
+intermediario existe por definición; lo que Talpass ofrece es que **no sea
+opaco**. Por eso el titular histórico decía «sin intermediarios **opacos**»: el
+adjetivo era el que lo hacía cierto.
+
+**Y el público hace que esto pese el doble.** Son personas que se mudan de país
+por necesidad, a las que este mismo sitio explica que «indefinido» suele
+significar indefinido **con la agencia**, no con la fábrica. «Sin
+intermediarios» es justo la frase que les haría firmar sin preguntar quién firma
+enfrente. Es el copy que la fase C1 existió para quitar.
+
+**Lo que sí se hizo, el mismo día:**
+
+- **Titular nuevo**, sin el superlativo: «Tu portal directo a tu siguiente
+  trabajo en Europa.» / «Your direct route to your next job in Europe.»
+- **El anclaje de honestidad se movió al subtítulo**, que es lo que el titular
+  perdió al soltar «opacos»: «…y te deja ver quién te contrataría antes de que
+  des tu nombre».
+- **Ganchos, pero solo verificables**: uno por sección de la home («Cuatro
+  pasos, y en ninguno pagas nada», «No es una promesa de buena fe: es un permiso
+  que la agencia no tiene», «Cero euros, y no por ahora: no hay ni pasarela de
+  pagos») y uno en `/oportunidades`, que tras ADR-43 se había quedado sin
+  ninguna atribución visible.
+
+**Regla que queda:** un gancho de este sitio tiene que poder señalarse en el
+código o en un documento fechado. Si no se puede, no se escribe — da igual lo
+bien que suene.
+
 ## 5. Reglas de negocio
 
 1. Ver ofertas: libre y sin cuenta. **Aplicar: requiere cuenta verificada.**

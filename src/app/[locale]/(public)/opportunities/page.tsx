@@ -52,6 +52,7 @@ export default async function OpportunitiesPage({
       <header className="flex flex-col gap-2">
         <h1 className="type-h1">{t('title')}</h1>
         <p className="text-muted-foreground">{t('subtitle')}</p>
+        <p className="type-body font-medium text-foreground">{t('hook')}</p>
       </header>
 
       <div className="flex flex-col gap-3">

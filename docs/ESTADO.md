@@ -79,6 +79,15 @@
 >   descartado con motivo en **ADR-42**, y es la idea que más fácil se
 >   redescubre porque suena razonable en abstracto.
 >
+> ## 📌 El titular de la home cambió el 2026-09-08
+>
+> Es **«Tu portal directo a tu siguiente trabajo en Europa.»** (ADR-44). El
+> anterior, «Trabajo en Europa, sin intermediarios opacos», aparece citado en
+> bloques históricos. Y quedan **descartados por escrito** dos reclamos que van
+> a volver a sonar razonables: **«el primer/único…»** (falso, y §5 UWG con el
+> domicilio de Ulises en el Impressum) y **«sin intermediarios»** (dice lo
+> contrario de lo que Talpass es: al candidato lo contrata la ETT).
+>
 > ## ⛔ Dos cosas que este documento repite y que ya NO son ciertas
 >
 > Los bloques históricos de más abajo se conservan enteros porque eran ciertos
@@ -200,6 +209,27 @@
 > vigente (15,33 desde el 2026-09-01). Nada falso. Subirlo a 15,33 convertiría
 > un rango medido en uno inventado, que es el fallo que la 4b corrigió. Próxima
 > revisión, abril de 2027.
+>
+> ### Copy nuevo, y dos reclamos descartados (ADR-44)
+>
+> Ulises pidió el titular «**El** primer portal directo a tu siguiente trabajo en
+> Europa» y más ganchos «tipo sin intermediarios». Se le señalaron los dos
+> problemas antes de escribir nada y él eligió la versión corregida:
+>
+> | Propuesto            | Resultado                                                                   |
+> | -------------------- | --------------------------------------------------------------------------- |
+> | «El primer portal…»  | ⛔ superlativo sin prueba: falso (Mokka360) y §5 UWG. **Fuera «el primer»** |
+> | «Sin intermediarios» | ⛔ al candidato lo contrata la ETT; los legales lo dicen dos veces          |
+> | Titular              | ✅ «Tu portal directo a tu siguiente trabajo en Europa.»                    |
+> | Ganchos              | ✅ cuatro, todos señalables en el código o en un documento fechado          |
+>
+> El titular perdió «opacos», que era lo que lo hacía cierto, así que **ese
+> anclaje se movió al subtítulo**: «…te deja ver quién te contrataría antes de
+> que des tu nombre». Y `/oportunidades`, que tras ADR-43 se había quedado sin
+> atribución ninguna, recupera una: «Cifras medidas en ofertas reales, con su
+> fuente y su fecha».
+>
+> **La home sigue en 3 `h2`**: los ganchos son párrafos, no encabezados.
 >
 > ### Lo que esto NO cambia
 >
