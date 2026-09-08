@@ -3,7 +3,7 @@
 > # 👉 SI RETOMAS AQUÍ, LEE SOLO ESTO PRIMERO
 >
 > _Escrito al cerrar la sesión del **2026-08-21** tras una auditoría completa, y
-> **enmendado el 2026-08-22 y el 2026-08-24**. Todo lo de abajo está verificado
+> **enmendado el 2026-08-22, el 2026-08-24 y el 2026-09-08**. Todo lo de abajo está verificado
 > contra producción, no contra resúmenes — pero **la fecha manda sobre la
 > palabra «hoy»**: cada cifra de abajo lleva la suya._
 >
@@ -47,13 +47,14 @@
 > 3. **La Semibold de General Sans**, con su precio medido: **1–4 puntos de Lighthouse y 0,15–0,16 s de LCP**. Es decisión de Ulises, no técnica.
 > 4. **`main` no tiene puerta.** Un `git push` va a producción **en un segundo**, sin revisión ni preview. Nadie ha decidido si eso está bien.
 >
-> ## Las cinco reglas de esta casa, ganadas con errores reales
+> ## Las seis reglas de esta casa, ganadas con errores reales
 >
 > 1. **El PM verifica, no se fía del resumen.** Se ganó con dos errores: un resumen que decía 16 migraciones cuando eran 17, y una fase marcada ✅ cuyo criterio no se había medido.
 > 2. **Un `dpl_` escrito en prosa acredita una medición con fecha; NUNCA dice qué se sirve.** Ha envejecido mal cuatro veces en dos días. Cuál está vivo se pregunta con `pnpm exec vercel inspect talpass.eu`.
 > 3. **Un `git push` a `main` despliega.** Confirmado el 2026-08-21. Verifica **después** del último push. Y si el push era solo documentación, **no reverifiques todo: compara el hash del build** (el de la fuente vale) — ver el bloque del 21.
 > 4. **Lo que no se mide, no se cierra.** Y una pasada de Lighthouse **no es una medición**: la banda de ruido es de ±3 puntos. Mediana de 3 como mínimo, borde caliente, y comparar contra el árbol de justo antes medido el mismo día.
 > 5. **Verifica contra producción, no contra local.** ADR-41 —un `loading.tsx` que degradaba el 307 a un `meta refresh`— pasó todas las comprobaciones locales.
+> 6. **Commitear no es publicar.** `origin/main` = `main` se comprueba con `git fetch` **antes** de escribirlo, nunca de memoria. Se ganó el 2026-09-08: los tres commits del 24 —ADR-42 entre ellos— llevaban quince días sin subir mientras el documento afirmaba lo contrario.
 >
 > ## Cinco trampas donde ya se ha caído
 >
@@ -76,24 +77,96 @@
 >
 > ## Los números, para cotejar mañana
 >
-> **Medidos el 2026-08-21. Recomprobados el 2026-08-24 y siguen exactos**, con el
-> método del hash de build: misma fuente **`25yjfdw5omr67`**, `/es` a 200 con 5
-> `h2`, `/es/cuenta` en 307, sitemap 13 URLs, 18 migraciones.
+> **Medidos el 2026-08-21. Recomprobados el 2026-08-24 y el 2026-09-08, y siguen
+> exactos**, con el método del hash de build: misma fuente **`25yjfdw5omr67`**,
+> `/es` a 200 con 5 `h2`, `/es/cuenta` en 307, sitemap 13 URLs, 18 migraciones.
 >
-> ⚠️ **El commit ya NO es `d707d9c`**: las sesiones del 22 y del 24 dejaron
-> varios commits, **todos de `docs/`**. Por eso el alias de despliegue se ha
-> movido y **la fuente servida no**, que es justo lo que la regla del hash de
-> build sirve para distinguir. **No se ha desplegado código desde el 21.**
+> ⚠️ **El commit ya NO es `d707d9c`**: las sesiones del 22, del 24 y del 8 de
+> septiembre dejaron commits, **todos de `docs/`**. Por eso el alias de despliegue
+> se ha movido tres veces y **la fuente servida ninguna**, que es justo lo que la
+> regla del hash de build sirve para distinguir. **No se ha desplegado código
+> desde el 21 de agosto.** El commit vivo es **`b666bd9`**.
 >
-> `origin/main` = `main` · 18/18 migraciones · **11** variables en `production` ·
-> sitemap **13** URLs · `JobPosting` **0** · públicas con caché y sin `Set-Cookie` ·
-> privadas 307 desde **`dub1`** · `typecheck`, `lint`, `format:check` limpios ·
+> `origin/main` = `main` (**verificado el 2026-09-08 — el 24 esta línea era
+> falsa**) · 18/18 migraciones · **11** variables en `production` · sitemap **13**
+> URLs · `JobPosting` **0** · públicas con caché y sin `Set-Cookie` · privadas 307
+> desde **`dub1`** · `typecheck`, `lint`, `format:check` limpios ·
 > **ADR-01…42**.
 >
 > Y en la base de producción, el 2026-08-22: **4 filas de `consents`, todas en la
 > versión viva `2026-08-19`** y ninguna huérfana — leído por Ulises y cotejado
 > con el código por el PM. El recuento de `profiles` **no está verificado**: la
 > consulta no llegó a lanzarse, y el PM no puede leer producción.
+>
+> ---
+
+> ## ✅ 2026-09-08 — quince días de silencio, y el estado del 24 que nunca se subió
+>
+> _Sesión de PM. **No se tocó ni una línea de código.** Hubo despliegue, pero de
+> `docs/`: la fuente servida sigue siendo `25yjfdw5omr67` — comprobado antes y
+> después del push._
+>
+> ### Lo que se encontró al retomar
+>
+> 🔴 **Los tres commits del 24 estaban sin subir.** `origin/main` se había
+> quedado en `42b8ea0` mientras `main` iba por `b666bd9`, y el despliegue vivo lo
+> confirmaba: era de `42b8ea0`, del 24 de agosto a las 01:33. Es decir que
+> **ADR-42 y el cierre del punto 4 vivieron quince días solo en el disco de
+> Ulises** — el mismo fallo que denuncia el título del commit anterior, «dos días
+> de estado que solo vivían aquí», multiplicado por siete.
+>
+> ⚠️ **Y `ESTADO.md` afirmaba `origin/main` = `main` con fecha del 24.** Era
+> falso al escribirlo. Los tres commits eran de documentación (191 inserciones,
+> 0 de código), así que producción nunca corrió riesgo — pero la línea que
+> acredita que el estado está publicado es justo la que no se comprobó.
+>
+> ✅ **Subido y verificado.** `42b8ea0..b666bd9`. El push disparó despliegue,
+> como manda la regla 3.
+>
+> ### El hash del build, antes y después
+>
+> |                  | Fuente servida         |
+> | ---------------- | ---------------------- |
+> | Antes del push   | `25yjfdw5omr67`        |
+> | Después del push | **`25yjfdw5omr67`** ✅ |
+>
+> `dpl_` nuevo (`dpl_AxNhBprP5y414d9LeqytXrgfszwV`, Ready, 02:05 del 08-sep) y
+> hash idéntico: el alias se mueve, la fuente no. **Sigue sin desplegarse código
+> desde el 2026-08-21.**
+>
+> ### Lo medido hoy contra producción
+>
+> | Qué                                      | Resultado                                                  |
+> | ---------------------------------------- | ---------------------------------------------------------- |
+> | `/es`                                    | ✅ 200 · 5 `h2` · `x-vercel-cache: HIT` · sin `Set-Cookie` |
+> | `/es/cuenta`, `/es/admin`, `/en/account` | ✅ 307 los tres                                            |
+> | Región de las privadas                   | ✅ `dub1`                                                  |
+> | `cache-control` privado                  | ✅ `private, no-store, must-revalidate`                    |
+> | sitemap                                  | ✅ 13 URLs                                                 |
+> | `JobPosting` en `/es/ofertas`            | ✅ 0 — sigue sin haber vacantes (ADR-30)                   |
+> | Variables en `production`                | ✅ 11                                                      |
+> | Migraciones                              | ✅ 18                                                      |
+> | `typecheck`, `lint`, `format:check`      | ✅ los tres limpios                                        |
+> | `origin/main` = `main`                   | ✅ **ahora sí**                                            |
+>
+> ### Lo que NO cambió
+>
+> **No hay trabajo de código, y sigue sin haberlo.** La vía B continúa agotada y
+> el punto 5 muerto (ADR-42). Lo abierto es lo mismo de hace quince días, y las
+> cuatro son de Ulises:
+>
+> 1. **La consulta 2b** — leer `email_log` tras la aprobación.
+> 2. **El minuto de panel** — `RESEND_API_KEY` y `EMAIL_FROM` **siguen en
+>    `Preview` además de en `Production`**, comprobado hoy en `vercel env ls`.
+> 3. **Search Console.**
+> 4. **La primera ETT.**
+>
+> ### La lección de hoy, que es una regla nueva
+>
+> 6. **Commitear no es publicar.** `origin/main` = `main` **se comprueba con
+>    `git fetch` antes de escribirlo**, nunca de memoria: un commit local no
+>    despliega, no lo ve nadie y no existe para la siguiente sesión. Se ganó
+>    perdiendo ADR-42 durante quince días.
 >
 > ---
 
