@@ -1160,6 +1160,44 @@ _Lo que NO decide este ADR, para que no se lea de más._
 
 ---
 
+### ADR-43 · El encuadre honesto de la fase 4b se retira, y con él seis bloques más de copy
+
+_(2026-09-08. Decisión de Ulises, ejecutada en `05171af`. Revierte a sabiendas
+la regla 4 de la fase 4b y dos de los cinco `h2` medidos de la home.)_
+
+**Se retiran siete bloques**, en `es` y en `en`:
+
+| Bloque                               | Dónde vivía                         |
+| ------------------------------------ | ----------------------------------- |
+| `Opportunities.disclosure` (la caja) | listado y los 5 perfiles de mercado |
+| `Opportunities.ask`                  | `/opportunities`                    |
+| `Footer.rights` → solo `{brand}`     | el pie de **todas** las páginas     |
+| «Identificación fiscal»              | el Impressum                        |
+| `Legal.authorship`                   | el índice legal y los 5 documentos  |
+| `Home.status`                        | la home                             |
+| `Home.behind`                        | la home                             |
+
+**Lo que esto revierte, dicho sin adornos.** La caja «Esto no es un listado de
+vacantes» era el encuadre que la fase 4b puso **visible y arriba** para que
+`/oportunidades/**` no pudiera leerse como un listado de vacantes falsas. Al
+retirarla, cinco páginas con salarios y condiciones dejan de llevar ninguna
+advertencia. **ADR-30 sigue en pie** —no se inventan vacantes, y `JobPosting`
+sigue en 0—, pero ya no hay copy que lo explique al visitante.
+
+**Lo que NO se tocó, y por qué.** Tres cosas que sonaban parecidas y se quedan:
+
+- **«Responsable del sitio» dentro del Impressum** (nombre, domicilio, correo).
+  Lo exige el §5 DDG. Quitar el nombre del **pie** es inocuo justamente porque
+  esta sección se queda.
+- **El NIF de la política de privacidad**, en «Quién trata tus datos»:
+  identifica al responsable del tratamiento (art. 13 RGPD), que es otra cosa
+  que el USt-IdNr del Impressum.
+- **«Quién responde de este sitio» del índice `/legal`**, que es un bloque
+  distinto del de la home.
+
+**Consecuencia medida: la home pasa de 5 `h2` a 3.** Toda verificación de este
+proyecto que diga «`/es` a 200 con 5 `h2`» es de antes del 2026-09-08.
+
 ## 5. Reglas de negocio
 
 1. Ver ofertas: libre y sin cuenta. **Aplicar: requiere cuenta verificada.**

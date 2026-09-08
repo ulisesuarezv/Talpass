@@ -3,7 +3,7 @@
 > # 👉 SI RETOMAS AQUÍ, LEE SOLO ESTO PRIMERO
 >
 > _Escrito al cerrar la sesión del **2026-08-21** tras una auditoría completa, y
-> **enmendado el 2026-08-22, el 2026-08-24 y el 2026-09-08**. Todo lo de abajo está verificado
+> **enmendado el 2026-08-22, el 2026-08-24 y dos veces el 2026-09-08**. Todo lo de abajo está verificado
 > contra producción, no contra resúmenes — pero **la fecha manda sobre la
 > palabra «hoy»**: cada cifra de abajo lleva la suya._
 >
@@ -51,7 +51,17 @@
 >
 > 1. **El PM verifica, no se fía del resumen.** Se ganó con dos errores: un resumen que decía 16 migraciones cuando eran 17, y una fase marcada ✅ cuyo criterio no se había medido.
 > 2. **Un `dpl_` escrito en prosa acredita una medición con fecha; NUNCA dice qué se sirve.** Ha envejecido mal cuatro veces en dos días. Cuál está vivo se pregunta con `pnpm exec vercel inspect talpass.eu`.
-> 3. **Un `git push` a `main` despliega.** Confirmado el 2026-08-21. Verifica **después** del último push. Y si el push era solo documentación, **no reverifiques todo: compara el hash del build** (el de la fuente vale) — ver el bloque del 21.
+>    2b. 🔴 **El «hash de build» que este documento usó del 22 al 8 de septiembre NO era un hash de build.** Era el nombre del fichero de la fuente tipográfica, `GeneralSans_Regular-s.p.25yjfdw5omr67.woff2`, y ese nombre depende del **binario de la fuente**, no del código: no se mueve aunque se despliegue una aplicación entera distinta. Comprobado el 2026-09-08 — la home pasó de 5 `h2` a 3 y el nombre siguió siendo `25yjfdw5omr67`. Lo que sí distingue un build es la **huella de los chunks**, que sí cambian de nombre con el contenido:
+>
+>    ```bash
+>    curl -s https://talpass.eu/es \
+>      | grep -oE '/_next/static/immutable/chunks/[a-zA-Z0-9._-]+\.(js|css)' \
+>      | sort -u | shasum | cut -c1-12
+>    ```
+>
+>    El 2026-09-08, después de ADR-43, da **`6243f70a6e2d`**.
+>
+> 3. **Un `git push` a `main` despliega.** Confirmado el 2026-08-21. Verifica **después** del último push. Y si el push era solo documentación, **no reverifiques todo: compara la huella de assets** de la regla 2b. **La fuente tipográfica NO vale** para esto, aunque este documento lo dijera hasta el 2026-09-08.
 > 4. **Lo que no se mide, no se cierra.** Y una pasada de Lighthouse **no es una medición**: la banda de ruido es de ±3 puntos. Mediana de 3 como mínimo, borde caliente, y comparar contra el árbol de justo antes medido el mismo día.
 > 5. **Verifica contra producción, no contra local.** ADR-41 —un `loading.tsx` que degradaba el 307 a un `meta refresh`— pasó todas las comprobaciones locales.
 > 6. **Commitear no es publicar.** `origin/main` = `main` se comprueba con `git fetch` **antes** de escribirlo, nunca de memoria. Se ganó el 2026-09-08: los tres commits del 24 —ADR-42 entre ellos— llevaban quince días sin subir mientras el documento afirmaba lo contrario.
@@ -69,7 +79,7 @@
 > - **Nada de GSAP, R3F, shaders ni layout disruptivo.** Está dentro de ADR-10. Hay agentes instalados y **en este proyecto restan**.
 > - **No inventar vacantes** (ADR-30). No hay ninguna, y la página vacía lo dice honestamente a propósito.
 > - **No tocar el estado vacío de `/ofertas`**: está bien hecho (ADR-36).
-> - **No rehacer la home**: sus 5 `h2` responden preguntas medidas.
+> - **No rehacer la home.** Sus `h2` responden preguntas medidas — pero ya son **3, no 5**: ADR-43 retiró «En qué punto está esto» y «Quién responde de este sitio» el 2026-09-08. Los tres que quedan no se tocan.
 > - **Nunca `db reset` ni el simulacro contra producción** (ADR-17).
 > - **No proponer el campo de sector/ciudad de destino** en el onboarding: está
 >   descartado con motivo en **ADR-42**, y es la idea que más fácil se
@@ -77,26 +87,86 @@
 >
 > ## Los números, para cotejar mañana
 >
-> **Medidos el 2026-08-21. Recomprobados el 2026-08-24 y el 2026-09-08, y siguen
-> exactos**, con el método del hash de build: misma fuente **`25yjfdw5omr67`**,
-> `/es` a 200 con 5 `h2`, `/es/cuenta` en 307, sitemap 13 URLs, 18 migraciones.
+> ⚠️ **La línea base cambió el 2026-09-08.** Se desplegó código por primera vez
+> desde el 21 de agosto (`05171af`, ADR-43) y **la home pasó de 5 `h2` a 3**.
+> Toda cifra de este documento anterior a esa fecha que diga «5 `h2`» describe
+> un sitio que ya no existe.
 >
-> ⚠️ **El commit ya NO es `d707d9c`**: las sesiones del 22, del 24 y del 8 de
-> septiembre dejaron commits, **todos de `docs/`**. Por eso el alias de despliegue
-> se ha movido tres veces y **la fuente servida ninguna**, que es justo lo que la
-> regla del hash de build sirve para distinguir. **No se ha desplegado código
-> desde el 21 de agosto.** El commit vivo es **`b666bd9`**.
+> **Medido contra producción el 2026-09-08, después del despliegue:**
 >
-> `origin/main` = `main` (**verificado el 2026-09-08 — el 24 esta línea era
-> falsa**) · 18/18 migraciones · **11** variables en `production` · sitemap **13**
-> URLs · `JobPosting` **0** · públicas con caché y sin `Set-Cookie` · privadas 307
-> desde **`dub1`** · `typecheck`, `lint`, `format:check` limpios ·
-> **ADR-01…42**.
+> `origin/main` = `main` · commit **`05171af`** · huella de assets de `/es`
+> **`6243f70a6e2d`** · `/es` y `/en` a 200 con **3 `h2`** · `/es/cuenta` y
+> `/es/admin` en 307 desde **`dub1`** · sitemap **13** URLs · 18/18 migraciones ·
+> **11** variables en `production` · `JobPosting` **0** · públicas con caché y
+> sin `Set-Cookie` · `typecheck`, `lint`, `format:check` limpios · **ADR-01…43**.
 >
 > Y en la base de producción, el 2026-08-22: **4 filas de `consents`, todas en la
 > versión viva `2026-08-19`** y ninguna huérfana — leído por Ulises y cotejado
 > con el código por el PM. El recuento de `profiles` **no está verificado**: la
 > consulta no llegó a lanzarse, y el PM no puede leer producción.
+>
+> ---
+
+> ## ✅ 2026-09-08 (tarde) — siete bloques fuera, y el método de verificación era falso
+>
+> _Sesión de PM. **Primer despliegue de código desde el 2026-08-21.** Commits
+> `05171af` (código) y el de este bloque._
+>
+> ### Lo que se borró, y de quién fue la decisión
+>
+> **De Ulises, sobre siete capturas.** Está todo en **ADR-43**, con la tabla de
+> los siete bloques y las tres cosas que a propósito **no** se tocaron. Lo que
+> más pesa: se retira la caja «Esto no es un listado de vacantes», que era el
+> encuadre visible de la fase 4b. **ADR-30 sigue en pie** —`JobPosting` en 0,
+> ninguna vacante inventada— pero ya no hay copy que se lo explique al visitante.
+>
+> El PM avisó de las dos consecuencias antes de tocar nada, y Ulises decidió
+> igual. Eso es lo que hay que leer aquí dentro de un mes: **no fue un descuido.**
+>
+> ### 🔴 El hallazgo gordo: llevábamos dos semanas verificando con un hash falso
+>
+> Este documento decía, del 22 de agosto en adelante, que comparaba «el hash del
+> build» y que **`25yjfdw5omr67`** probaba que la fuente servida no se había
+> movido. **Ese identificador es el nombre del fichero de la fuente
+> tipográfica**, y depende del binario de General Sans, no del código.
+>
+> **Comprobado hoy, y es concluyente:** se desplegó una home con **3 `h2` en vez
+> de 5** —un cambio de código evidente, en la misma URL— y el nombre siguió
+> siendo `25yjfdw5omr67`. **El método no detecta despliegues de código.** No
+> detectó ninguno, porque no podía.
+>
+> ⚠️ **Las conclusiones que sostenía eran ciertas por otra vía, no por él.** Que
+> los push del 22, del 24 y de esta mañana fueran solo documentación está
+> acreditado por `git diff --stat`, que es prueba de verdad. Pero la frase «misma
+> fuente, luego mismo código» **nunca demostró nada**, y la palabra «fuente»
+> —tipográfica y de código a la vez— es justo lo que hizo que no se notara.
+>
+> ✅ **Sustituido por la huella de los chunks**, que sí cambia con el contenido:
+> la receta está en la **regla 2b**, y la regla 3 ya apunta a ella.
+>
+> ### La nueva línea base, medida contra producción después del despliegue
+>
+> | Qué                       | Antes         | Ahora              |
+> | ------------------------- | ------------- | ------------------ |
+> | `h2` en `/es` y `/en`     | 5             | **3**              |
+> | Huella de assets de `/es` | (no se medía) | **`6243f70a6e2d`** |
+> | Commit                    | `75c59a6`     | **`05171af`**      |
+> | ADR                       | 01…42         | **01…43**          |
+>
+> Sin cambios: `/es` y `/en` a 200 · `/es/cuenta` y `/es/admin` en 307 desde
+> `dub1` · sitemap 13 URLs · 18 migraciones · 11 variables en `production` ·
+> `JobPosting` 0 · públicas con caché y sin `Set-Cookie` · `typecheck`, `lint`,
+> `format:check` limpios · públicas siguen `●` (SSG) en el build.
+>
+> Y los cuatro textos, ausentes ya en producción: comprobado en `/es`,
+> `/es/oportunidades`, `/es/oportunidades/alemania/almacen`,
+> `/es/legal/impressum` y `/es/legal/privacidad`, los cinco a 0 coincidencias.
+>
+> ### Lo que esto NO cambia
+>
+> Sigue sin quedar trabajo de código pendiente. Lo abierto es lo de siempre y es
+> de Ulises: la consulta de `email_log`, las dos variables en `Preview`, Search
+> Console y la primera ETT.
 >
 > ---
 
