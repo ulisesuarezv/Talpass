@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 
-import { AgreementFloor } from '@/components/opportunities/market-disclosure';
+import { AgreementFloor } from '@/components/opportunities/agreement-floor';
 import { OpportunityCard } from '@/components/opportunities/opportunity-card';
 import { SignupCta } from '@/components/jobs/signup-cta';
 import { Link } from '@/i18n/navigation';

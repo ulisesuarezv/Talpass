@@ -11,8 +11,13 @@ import type { Opportunity } from '@/lib/opportunities';
  *
  * Se ve y se siente como una tarjeta de vacante —es lo que convierte— pero
  * enlaza a un perfil, no a un puesto: no lleva empresa, ni fecha de
- * incorporación, ni botón de aplicar. El encuadre honesto no está aquí sino
- * arriba del listado, visible y no en letra pequeña (regla 4 de la fase 4b).
+ * incorporación, ni botón de aplicar.
+ *
+ * ⚠️ **Ya no hay encuadre que la acompañe.** Hasta ADR-43 (2026-09-08) el
+ * listado llevaba arriba una caja diciendo que esto no son vacantes; Ulises la
+ * hizo retirar. Lo único que hoy separa esta tarjeta de una oferta real es que
+ * no emite `JobPosting` y que no promete empresa ni fecha (ADR-30, intacto).
+ * Si alguien añade aquí un dato que suene a puesto concreto, no queda red.
  */
 export function OpportunityCard({ opportunity }: { opportunity: Opportunity }) {
   const t = useTranslations('Opportunities');

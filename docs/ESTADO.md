@@ -45,7 +45,7 @@
 > 1. **El Lighthouse de producción no concluye:** `/es/oportunidades/alemania/almacen` da **17 puntos de rango** sobre el mismo build, con FCP y TTFB constantes. La home sale 98 de mediana en 7 pasadas.
 > 2. **El área privada se quedó sin estado de carga** (ADR-41), con el arreglo ya escrito: subir la comprobación de sesión al `layout` de `(private)`, o resolverla en el proxy.
 > 3. **La Semibold de General Sans**, con su precio medido: **1–4 puntos de Lighthouse y 0,15–0,16 s de LCP**. Es decisión de Ulises, no técnica.
-> 4. **`main` no tiene puerta.** Un `git push` va a producción **en un segundo**, sin revisión ni preview. Nadie ha decidido si eso está bien.
+> 4. **`main` no tiene puerta.** Un `git push` va a producción **en un segundo**, sin revisión ni preview. Nadie ha decidido si eso está bien — y el 2026-09-08 se estrenó de verdad: **cuatro despliegues a producción en una tarde**, uno de ellos de código, sin una sola preview de por medio.
 >
 > ## Las seis reglas de esta casa, ganadas con errores reales
 >
@@ -58,13 +58,15 @@
 > 5. **Verifica contra producción, no contra local.** ADR-41 —un `loading.tsx` que degradaba el 307 a un `meta refresh`— pasó todas las comprobaciones locales.
 > 6. **Commitear no es publicar.** `origin/main` = `main` se comprueba con `git fetch` **antes** de escribirlo, nunca de memoria. Se ganó el 2026-09-08: los tres commits del 24 —ADR-42 entre ellos— llevaban quince días sin subir mientras el documento afirmaba lo contrario.
 >
-> ## Cinco trampas donde ya se ha caído
+> ## Siete trampas donde ya se ha caído
 >
 > - **Las URLs traducidas no se adivinan.** `/es/legal/privacidad`, pero `/es/recuperar-acceso` (no `-contrasena`). Salen de `LEGAL_SLUGS` y de `src/i18n/routing.ts`. Escribir una por analogía da 404, y ha pasado dos veces.
 > - **`.env.local` apunta a PRODUCCIÓN y `.env.test` a local.** El nombre engaña. Y lo que `.env.test` no declare, se hereda de `.env.local`: costó un correo real enviado en una prueba.
 > - **`candidate_sectors` es experiencia PASADA**, no preferencia de destino. Era el atajo evidente del punto 5 — y **el punto 5 ya no existe** (ADR-42): el destino lo lleva la oferta, no el candidato. La tabla se queda como está.
 > - **Prettier parte los `code span` largos** y deja líneas de cita sin `>`. Ha pasado cuatro veces. Si un `` `comando con espacios` `` cae a final de línea, reescribe la frase.
 > - **Tres recuentos legales distintos y los tres correctos:** 4 consentimientos, 5 documentos, 12 rutas. Están reconciliados en `00-PROJECT.md`.
+> - **Un identificador que se mueve no prueba que el código cambió, y uno que no se mueve no prueba que no.** Se ha caído en las dos direcciones el mismo día: la fuente tipográfica (falso negativo) y la huella de chunks (falso positivo). Regla 2b.
+> - **Un commit local no existe.** `main` ≠ `origin/main` durante quince días, con ADR-42 dentro, mientras el documento afirmaba lo contrario. Regla 6.
 >
 > ## Lo que NO hay que hacer
 >
@@ -76,6 +78,19 @@
 > - **No proponer el campo de sector/ciudad de destino** en el onboarding: está
 >   descartado con motivo en **ADR-42**, y es la idea que más fácil se
 >   redescubre porque suena razonable en abstracto.
+>
+> ## ⛔ Dos cosas que este documento repite y que ya NO son ciertas
+>
+> Los bloques históricos de más abajo se conservan enteros porque eran ciertos
+> el día que se escribieron. Dos de sus muletillas envejecieron mal, y aparecen
+> muchas veces:
+>
+> 1. **«5 `h2`» en la home.** Desde ADR-43 (2026-09-08) son **3**. Cualquier
+>    verificación anterior a esa fecha que los cuente describe otro sitio.
+> 2. **«misma fuente `25yjfdw5omr67`» como prueba de que el código no cambió.**
+>    Nunca lo probó: es el nombre del fichero de General Sans. Ver la regla 2b.
+>    Donde aparezca, la conclusión puede ser cierta —normalmente lo es— pero
+>    **la evidencia citada no vale**; lo que vale es `git diff --stat`.
 >
 > ## Los números, para cotejar mañana
 >
@@ -161,6 +176,31 @@
 > `/es/oportunidades`, `/es/oportunidades/alemania/almacen`,
 > `/es/legal/impressum` y `/es/legal/privacidad`, los cinco a 0 coincidencias.
 >
+> ### La auditoría de arrastre, hecha el mismo día
+>
+> Ulises pidió repasar que nada quedara confundiendo a una sesión nueva. Lo
+> corregido, además de lo de arriba:
+>
+> | Dónde                                  | Qué decía, y ya no                                                                     |
+> | -------------------------------------- | -------------------------------------------------------------------------------------- |
+> | **La memoria del proyecto**            | `talpass-despliegue-por-push` **enseñaba el hash falso como la regla**, en cada sesión |
+> | `talpass-via-b-agotada`                | «no queda trabajo de código» sin decir que el 08-sep sí se tocó, por encargo           |
+> | `talpass-oportunidades-sin-jobposting` | no sabía que el aviso de «esto no son vacantes» ya no está                             |
+> | `MEMORY.md` + memoria nueva de ADR-43  | índice al día y una ficha propia para el borrado                                       |
+> | `02-ROADMAP.md`                        | 4b y C1 siguen ✅, pero ahora dicen qué criterio suyo se revirtió                      |
+> | `CLAUDE.md`                            | ADR-01…**43**                                                                          |
+> | «El día que haya ETT»                  | «lo que toca antes es la fase 4b» — que llevaba cerrada desde el 2026-08-17            |
+> | `opportunity-card.tsx`                 | remitía a un encuadre que ya no existe; ahora avisa de que **no queda red**            |
+> | `market-disclosure.tsx`                | renombrado a `agreement-floor.tsx`: ya solo exporta eso                                |
+> | `opportunities.ts`                     | «Revisar el 2026-09-01» estaba vencido — **revisado y resuelto**, se deja el 14,96     |
+> | `evidencia/auditoria-previa/04`        | ahora avisa de que es una foto y de qué piezas ya no existen                           |
+>
+> **Sobre el 14,96 de producción**, que era el único riesgo de copy falso: la
+> página muestra el rango observado **fechado** y justo debajo nombra el suelo
+> vigente (15,33 desde el 2026-09-01). Nada falso. Subirlo a 15,33 convertiría
+> un rango medido en uno inventado, que es el fallo que la 4b corrigió. Próxima
+> revisión, abril de 2027.
+>
 > ### Lo que esto NO cambia
 >
 > Sigue sin quedar trabajo de código pendiente. Lo abierto es lo de siempre y es
@@ -169,11 +209,17 @@
 >
 > ---
 
-> ## ✅ 2026-09-08 — quince días de silencio, y el estado del 24 que nunca se subió
+> ## ✅ 2026-09-08 (mañana) — quince días de silencio, y el estado del 24 que nunca se subió
 >
 > _Sesión de PM. **No se tocó ni una línea de código.** Hubo despliegue, pero de
-> `docs/`: la fuente servida sigue siendo `25yjfdw5omr67` — comprobado antes y
-> después del push._
+> `docs/`._
+>
+> 🔴 **ENMENDADO esa misma tarde: la verificación de este bloque no valía.**
+> Abajo se da por bueno que «la fuente servida sigue siendo `25yjfdw5omr67`».
+> Ese identificador **es el nombre del fichero de General Sans y no dice nada
+> del código** (regla 2b). Que aquí solo se subiera `docs/` es cierto, pero lo
+> acredita `git diff --stat`, no el hash. **Léelo como historia, no como
+> método.**
 >
 > ### Lo que se encontró al retomar
 >
@@ -192,16 +238,17 @@
 > ✅ **Subido y verificado.** `42b8ea0..b666bd9`. El push disparó despliegue,
 > como manda la regla 3.
 >
-> ### El hash del build, antes y después
+> ### El «hash del build», antes y después — ⛔ la medición que no valía
 >
-> |                  | Fuente servida         |
-> | ---------------- | ---------------------- |
-> | Antes del push   | `25yjfdw5omr67`        |
-> | Después del push | **`25yjfdw5omr67`** ✅ |
+> Se comparó `25yjfdw5omr67` antes y después del push y salió idéntico, y de ahí
+> se concluyó que no se había desplegado código. **La conclusión era cierta y el
+> argumento no**: ese nombre no se habría movido tampoco desplegando una
+> aplicación entera distinta, como se demostró esa tarde. Lo que sí lo acredita:
+> los tres commits tocaban solo `docs/`, por `git diff --stat`.
 >
-> `dpl_` nuevo (`dpl_AxNhBprP5y414d9LeqytXrgfszwV`, Ready, 02:05 del 08-sep) y
-> hash idéntico: el alias se mueve, la fuente no. **Sigue sin desplegarse código
-> desde el 2026-08-21.**
+> `dpl_` nuevo (`dpl_AxNhBprP5y414d9LeqytXrgfszwV`, Ready, 02:05 del 08-sep).
+> **No se desplegó código ese push**, y el último anterior seguía siendo el del
+> 2026-08-21.>
 >
 > ### Lo medido hoy contra producción
 >
@@ -1530,8 +1577,12 @@ redirige, ADR-12) · `ettrecruiter.vercel.app` sigue respondiendo como dominio a
 
 > **Esto ya NO es "lo primero al retomar"** (cambiado el 2026-08-17). Es el guion
 > del día que Ulises firme una ETT, y hasta entonces **no se ejecuta ningún paso
-> de esta sección**. Lo que toca antes es la fase 4b. Se conserva entero porque
-> el día que toque vale palabra por palabra.
+> de esta sección**. Se conserva entero porque el día que toque vale palabra por
+> palabra.
+>
+> ⚠️ **Corregido el 2026-09-08:** aquí decía «lo que toca antes es la fase 4b».
+> La 4b se cerró ese mismo 2026-08-17. **Antes de esto no toca nada de código**
+> — lo que falta es la ETT.
 >
 > Y ojo al paso 1: las ofertas tienen que ser **de esa ETT y confirmadas por
 > ella**. `content/jobs/ejemplo-almacen-nuremberg.json` lleva una agencia

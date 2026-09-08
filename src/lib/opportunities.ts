@@ -164,10 +164,19 @@ export const OPPORTUNITY_PROFILES: readonly OpportunityProfile[] = [
     // anterior de 17,00 salía de la regla 2 de redacción y no se observó en
     // ninguna oferta: hallazgo R2 de la auditoría.
     //
-    // ⚠️ El mínimo de 14,96 era el suelo del convenio hasta el 2026-09-01;
-    // ese día el suelo legal pasa a 15,33 y esta página enseñará un mínimo
-    // medido por debajo del suelo vigente. No es falso —está fechado— pero
-    // `production.conditions[0]` lo dice expresamente. Revisar el 2026-09-01.
+    // ⚠️ El mínimo de 14,96 era el suelo del convenio hasta el 2026-09-01. Ese
+    // día el suelo legal pasó a 15,33 y esta página enseña un mínimo medido por
+    // debajo del suelo vigente.
+    //
+    // **Revisado el 2026-09-08 y se deja como está**, comprobado contra
+    // producción: la página muestra «14,96 € – 16,50 €» etiquetado «Rango
+    // observado ... analizadas el 16 de agosto de 2026» y, justo debajo,
+    // `production.conditions[0]` dice «por encima de lo medido manda siempre el
+    // suelo del convenio, 15,33 € brutos por hora desde el 1 de septiembre de
+    // 2026». Las dos cifras están fechadas y la que manda se nombra, así que no
+    // hay nada falso. Cambiar el 14,96 por el 15,33 sería peor: convertiría un
+    // rango observado en uno inventado, que es justo el fallo que la fase 4b
+    // corrigió. Próxima revisión: la subida de abril de 2027.
     sector: 'production',
     countryCode: 'DE',
     salary: {

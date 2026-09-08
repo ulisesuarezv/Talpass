@@ -22,6 +22,19 @@
 | 9   | GDPR y legal                      | Export y borrado de datos operativos       | 🟡     |
 | 10  | Hardening y lanzamiento           | Auditoría pasada, listo para captar        | ⬜     |
 
+> ⚠️ **Dos fases cerradas fueron revertidas en parte el 2026-09-08 (ADR-43), y
+> siguen ✅ a propósito.** Las tablas de cierre de más abajo son **evidencia
+> fechada de lo que se midió entonces**, no criterios vigentes:
+>
+> - **Fase 4b** — su regla 4 pedía el encuadre «esto no son vacantes» visible y
+>   arriba. Ese bloque ya no existe. Lo que sostiene la fase sigue en pie:
+>   `JobPosting` en **0** y las oportunidades fuera de la tabla `jobs` (ADR-30).
+> - **Fase C1** — su criterio decía «la home pasa de 0 a **5 `h2`**». Hoy son
+>   **3**: se retiraron «En qué punto está esto» y «Quién responde de este
+>   sitio».
+>
+> No se reabren ni se reponen los bloques: fue decisión expresa de Ulises.
+
 ---
 
 ## Fase 0 · Fundaciones

@@ -2,6 +2,13 @@
 
 > **Medición: 2026-08-18.** Commit `ed214e8`.
 
+> ⚠️ **Es una foto, no el estado actual.** Varias piezas que inventaría aquí ya
+> no existen: **ADR-43 (2026-09-08)** retiró `Opportunities.disclosure`,
+> `Opportunities.ask`, `Legal.authorship`, `Home.status`, `Home.behind`, la
+> «Identificación fiscal» del Impressum y el nombre del pie, y con ellas el
+> componente `market-disclosure.tsx` (hoy `agreement-floor.tsx`). No uses este
+> fichero como inventario vivo.
+
 ---
 
 # Parte A · Inventario de lo que se va a tocar

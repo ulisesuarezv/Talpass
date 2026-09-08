@@ -8,7 +8,7 @@ import {
 
 import { SignupCta } from '@/components/jobs/signup-cta';
 import { formatMarketSalary } from '@/components/opportunities/format-market-salary';
-import { AgreementFloor } from '@/components/opportunities/market-disclosure';
+import { AgreementFloor } from '@/components/opportunities/agreement-floor';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Link } from '@/i18n/navigation';
