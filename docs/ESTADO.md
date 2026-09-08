@@ -51,17 +51,9 @@
 >
 > 1. **El PM verifica, no se fía del resumen.** Se ganó con dos errores: un resumen que decía 16 migraciones cuando eran 17, y una fase marcada ✅ cuyo criterio no se había medido.
 > 2. **Un `dpl_` escrito en prosa acredita una medición con fecha; NUNCA dice qué se sirve.** Ha envejecido mal cuatro veces en dos días. Cuál está vivo se pregunta con `pnpm exec vercel inspect talpass.eu`.
->    2b. 🔴 **El «hash de build» que este documento usó del 22 al 8 de septiembre NO era un hash de build.** Era el nombre del fichero de la fuente tipográfica, `GeneralSans_Regular-s.p.25yjfdw5omr67.woff2`, y ese nombre depende del **binario de la fuente**, no del código: no se mueve aunque se despliegue una aplicación entera distinta. Comprobado el 2026-09-08 — la home pasó de 5 `h2` a 3 y el nombre siguió siendo `25yjfdw5omr67`. Lo que sí distingue un build es la **huella de los chunks**, que sí cambian de nombre con el contenido:
+>    2b. 🔴 **NO hay forma de saber, mirando lo que se sirve, si el código cambió. Se han probado dos y las dos son falsas**, ambas el 2026-09-08: **(a)** el nombre del fichero de la fuente tipográfica (`GeneralSans_Regular-s.p.25yjfdw5omr67.woff2`), que este documento llamó «hash del build» del 22 de agosto al 8 de septiembre, depende del **binario de General Sans** y no del código — se desplegó una home con 3 `h2` en vez de 5 y no se movió: **falso negativo**; **(b)** la **huella de los nombres de chunk**, propuesta ese mismo día como recambio, cambió (`6243f70a6e2d` → `6ade081ef660`) tras un push de **solo `docs/`** — los nombres son deterministas en local, dos builds seguidos del mismo árbol dan los 23 idénticos, pero **no entre builds de Vercel**, que reparte el código distinto según el estado de su caché: **falso positivo**. 👉 **Lo que sí vale, y es lo que ha cazado todo:** `git diff --stat` entre los dos commits, que es exacto, y **comprobar las afirmaciones de contenido contra producción** —el recuento de `h2`, los códigos de estado, las URLs del sitemap, la presencia o ausencia de una frase concreta—. Es más lento, no cabe en una palabra, y es el único que no ha mentido.
 >
->    ```bash
->    curl -s https://talpass.eu/es \
->      | grep -oE '/_next/static/immutable/chunks/[a-zA-Z0-9._-]+\.(js|css)' \
->      | sort -u | shasum | cut -c1-12
->    ```
->
->    El 2026-09-08, después de ADR-43, da **`6243f70a6e2d`**.
->
-> 3. **Un `git push` a `main` despliega.** Confirmado el 2026-08-21. Verifica **después** del último push. Y si el push era solo documentación, **no reverifiques todo: compara la huella de assets** de la regla 2b. **La fuente tipográfica NO vale** para esto, aunque este documento lo dijera hasta el 2026-09-08.
+> 3. **Un `git push` a `main` despliega.** Confirmado el 2026-08-21. Verifica **después** del último push. Y si el push era solo documentación, **compara los commits con `git diff --stat`**, que es exacto. No busques un atajo en lo que se sirve: la regla 2b explica por qué las dos que se han probado son falsas.
 > 4. **Lo que no se mide, no se cierra.** Y una pasada de Lighthouse **no es una medición**: la banda de ruido es de ±3 puntos. Mediana de 3 como mínimo, borde caliente, y comparar contra el árbol de justo antes medido el mismo día.
 > 5. **Verifica contra producción, no contra local.** ADR-41 —un `loading.tsx` que degradaba el 307 a un `meta refresh`— pasó todas las comprobaciones locales.
 > 6. **Commitear no es publicar.** `origin/main` = `main` se comprueba con `git fetch` **antes** de escribirlo, nunca de memoria. Se ganó el 2026-09-08: los tres commits del 24 —ADR-42 entre ellos— llevaban quince días sin subir mientras el documento afirmaba lo contrario.
@@ -94,8 +86,8 @@
 >
 > **Medido contra producción el 2026-09-08, después del despliegue:**
 >
-> `origin/main` = `main` · commit **`05171af`** · huella de assets de `/es`
-> **`6243f70a6e2d`** · `/es` y `/en` a 200 con **3 `h2`** · `/es/cuenta` y
+> `origin/main` = `main` · commit **`a43b423`** · `/es` y `/en` a 200 con
+> **3 `h2`** · `/es/cuenta` y
 > `/es/admin` en 307 desde **`dub1`** · sitemap **13** URLs · 18/18 migraciones ·
 > **11** variables en `production` · `JobPosting` **0** · públicas con caché y
 > sin `Set-Cookie` · `typecheck`, `lint`, `format:check` limpios · **ADR-01…43**.
@@ -141,17 +133,24 @@
 > fuente, luego mismo código» **nunca demostró nada**, y la palabra «fuente»
 > —tipográfica y de código a la vez— es justo lo que hizo que no se notara.
 >
-> ✅ **Sustituido por la huella de los chunks**, que sí cambia con el contenido:
-> la receta está en la **regla 2b**, y la regla 3 ya apunta a ella.
+> ⚠️ **Y el recambio que se propuso también era falso, medido una hora después.**
+> La huella de los nombres de chunk cambió (`6243f70a6e2d` → `6ade081ef660`)
+> tras un push de **solo `docs/`**: son deterministas en local —dos builds
+> seguidos del mismo árbol dan los 23 idénticos— pero no entre builds de Vercel.
+> Se documentó tras **una sola pasada**, que es exactamente lo que la regla 4
+> prohíbe, y por eso duró una hora. **Error del PM, no de Ulises.**
+>
+> ✅ **Conclusión, en la regla 2b:** no hay atajo. Se compara con
+> `git diff --stat` y se comprueban las afirmaciones de contenido contra
+> producción.
 >
 > ### La nueva línea base, medida contra producción después del despliegue
 >
-> | Qué                       | Antes         | Ahora              |
-> | ------------------------- | ------------- | ------------------ |
-> | `h2` en `/es` y `/en`     | 5             | **3**              |
-> | Huella de assets de `/es` | (no se medía) | **`6243f70a6e2d`** |
-> | Commit                    | `75c59a6`     | **`05171af`**      |
-> | ADR                       | 01…42         | **01…43**          |
+> | Qué                   | Antes     | Ahora         |
+> | --------------------- | --------- | ------------- |
+> | `h2` en `/es` y `/en` | 5         | **3**         |
+> | Commit                | `75c59a6` | **`05171af`** |
+> | ADR                   | 01…42     | **01…43**     |
 >
 > Sin cambios: `/es` y `/en` a 200 · `/es/cuenta` y `/es/admin` en 307 desde
 > `dub1` · sitemap 13 URLs · 18 migraciones · 11 variables en `production` ·
