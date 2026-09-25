@@ -280,11 +280,35 @@
 >   avisó al principio de la fase 4b del roadmap de que describe una sección
 >   retirada, y `CLAUDE.md` pasó de «ADR-01…48» a «…50».
 >
+> ### ✅ 2026-09-26 (tarde) — GSAP y repaso responsive, DESPLEGADO en `64a2020`
+>
+> - **GSAP** (`src/components/home/home-motion.tsx` + `home-reveal.tsx`):
+>   revelado al hacer scroll de lo que está por debajo de la pantalla y las
+>   barras tachadas de la ficha. Chunk aparte (28 KB gz) tras `load` + idle;
+>   **+411 B gz** al JS inicial. Nada visible arriba empieza oculto; sin JS,
+>   todo visible. `prefers-reduced-motion` y `Save-Data` no lo descargan.
+>   Sin ScrollTrigger: `IntersectionObserver` hace lo mismo con ~17 KB menos.
+> - **Responsive**: sin desbordamiento en 6 páginas × 9 anchos (320–1440),
+>   también tras el scroll animado. Etiquetas del hero en varias líneas (la
+>   segunda se cortaba), `type-card-title` para que la tarjeta destacada y
+>   «Carlos M.» no igualen al `h2` de su sección, pasos a 15 px en móvil,
+>   escala pequeña reducida a 12 (versales) / 14 / 15 / 16, tarjetas con la
+>   misma altura por fila, zonas táctiles de cabecera a 44 px, idioma a 24 y
+>   pie a 32.
+> - **Medido**: local, 12 pasadas, **96 · 2,78 s · TBT 9 ms · CLS 0**, igual
+>   que el árbol original medido la misma tarde. **Producción**, borde
+>   caliente, 12 pasadas: **98 · 2,28 s · CLS 0**. El elemento LCP pasó a ser
+>   el `h1`.
+> - ⚠️ **Margen del móvil**: en 375×667 la primera tarjeta asoma en y=614
+>   (antes 576); cumple ADR-46. **A 320 px ya no asoma**, solo el `h2`. Si
+>   importa, la palanca es acortar una etiqueta del hero (copy de Ulises).
+> - La tarjeta destacada, igualada en alto a la de al lado, deja fondo vacío
+>   abajo en escritorio. Aceptado a sabiendas; revisable.
+>
 > ### Lo que queda, en orden
 >
-> 1. **`gsap-senior-animator`**, con la condición de ADR-47: no empeorar
->    **96 · 2,78 s · CLS 0**, que es la línea base real del árbol actual. Si
->    GSAP la rompe, animación CSS.
+> 1. ~~**`gsap-senior-animator`**~~ **Hecho y desplegado el 2026-09-26**
+>    (`64a2020`), ver arriba.
 > 2. **El IBAN y la matriz de acceso** (punto 3 de arriba): decisión tomada,
 >    implementación pendiente.
 > 3. **`visual-qa`**: capturas móvil/escritorio en es/en y Lighthouse.
