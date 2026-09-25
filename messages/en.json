@@ -10,7 +10,7 @@
     "login": "Sign in",
     "logout": "Sign out",
     "skipToContent": "Skip to content",
-    "opportunities": "Opportunities"
+    "sectionsLabel": "Sections"
   },
   "LocaleSwitcher": {
     "label": "Language"
@@ -114,9 +114,7 @@
       "city": "Jobs in {city}",
       "housing": "With housing in {country}"
     },
-    "emptyTitle": "No vacancies published yet",
-    "emptyBody": "We are closing the first agreements with agencies. In the meantime, you can see what German work actually pays by sector, with data rather than promises.",
-    "emptyCta": "See market conditions"
+    "upcoming": "We are closing agreements with agencies in Germany. More offers are coming here soon."
   },
   "Landing": {
     "related": "Keep looking",
@@ -139,7 +137,10 @@
       "intro": "{count, plural, one {# verified opening} other {# verified openings}} in {sector} in {place}.",
       "metaTitle": "{sector} jobs in {place}",
       "metaDescription": "{count, plural, one {# job opening} other {# job openings}} in {sector} in {place} for Spanish- and Portuguese-speaking candidates. Browsing is free.",
-      "link": "{sector} in {place}"
+      "link": "{sector} in {place}",
+      "marketIntro": "There are no published openings in {sector} in {place} yet. What there is: what the sector actually pays, with its source and its date.",
+      "marketMetaTitle": "{sector} in {place}: what it pays and what is required",
+      "marketMetaDescription": "What {sector} pays per hour in {place}, what hours and shifts are worked and what language is required. Based on real job ads and the sector's collective agreement, not a promise."
     },
     "housing": {
       "title": "Jobs with housing in {place}",
@@ -150,29 +151,27 @@
     }
   },
   "Opportunities": {
-    "title": "What German temp work actually pays",
-    "subtitle": "Five temporary-work profiles with their pay band, weekly hours, shifts and the level of German they ask for. Taken from 14 real job ads and from the sector's collective agreement — not from a promise.",
-    "meta": {
-      "title": "Real conditions of temporary work in Germany",
-      "description": "What warehouse, logistics, production, meat processing and agriculture pay per hour in Germany, what hours and shifts are worked, and what level of German is required. Based on 14 real job ads and the Zeitarbeit collective agreement."
-    },
-    "disclosure": {
-      "jobs": "See published vacancies"
-    },
+    "eyebrow": "Market profiles",
+    "notJobs": "These are not vacancies: there is no company behind them, no start date and no way to apply.",
     "agreement": {
       "title": "The floor is set by the collective agreement, not by the agency",
       "body": "Temporary agency work in Germany has its own minimum wage, above the general one: {amount} gross per hour from {date}. An offer below that figure is not a bargain, it is illegal. It is the first thing worth checking, and it applies to all five profiles on this page."
     },
     "facts": {
-      "salaryLabel": "Pay",
       "salaryRange": "{min} – {max} per {period}",
       "salaryFrom": "From {min} per {period}",
+      "salaryFigureRange": "{min} – {max}",
+      "salaryFigureFrom": "From {min}",
+      "salaryPer": "per {period}",
       "basisObserved": "Observed range: both ends come from the ads reviewed on {date}, not from a recommended band.",
       "basisAgreement": "Collective agreement floor. No observed range: we do not publish a ceiling we have not measured.",
+      "basisObservedShort": "Observed range",
+      "basisAgreementShort": "Agreement floor",
       "weeklyHoursLabel": "Weekly hours",
       "weeklyHours": "{hours} h/week",
       "weeklyHoursRange": "{min}–{max} h/week",
       "unknown": "Not documented in the sample",
+      "citiesLabel": "Cities",
       "shiftsLabel": "Shifts",
       "languageLabel": "German",
       "languageLevel": "{level} typically",
@@ -181,20 +180,14 @@
       "perkSometimes": "In some offers",
       "perkUndocumented": "No data"
     },
-    "card": {
-      "regionLabel": "Where",
-      "more": "See the profile"
-    },
-    "detail": {
-      "metaTitle": "{sector} in {country}: what it pays and what is required",
-      "eyebrow": "Market profile",
+    "market": {
+      "title": "What {sector} pays in {place}",
       "sections": {
         "intro": "The profile",
         "tasks": "What the work is",
         "requirements": "What is required",
         "conditions": "Conditions seen in the market"
-      },
-      "back": "See the other profiles"
+      }
     },
     "cta": {
       "title": "Does this profile fit you?",
@@ -340,8 +333,7 @@
           "Hired directly by the farm, the lower general minimum wage applies: always ask who signs"
         ]
       }
-    },
-    "hook": "Figures measured in real job ads, each with its source and its date. None of them is a recommended band."
+    }
   },
   "Auth": {
     "meta": {

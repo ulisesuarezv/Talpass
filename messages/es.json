@@ -10,7 +10,7 @@
     "login": "Entrar",
     "logout": "Salir",
     "skipToContent": "Ir al contenido",
-    "opportunities": "Oportunidades"
+    "sectionsLabel": "Secciones"
   },
   "LocaleSwitcher": {
     "label": "Idioma"
@@ -114,9 +114,7 @@
       "city": "Trabajo en {city}",
       "housing": "Con alojamiento en {country}"
     },
-    "emptyTitle": "Todavía no hay vacantes publicadas",
-    "emptyBody": "Estamos cerrando los primeros acuerdos con agencias. Mientras tanto, puedes ver qué se paga de verdad en Alemania por sector, con datos y no con promesas.",
-    "emptyCta": "Ver las condiciones del mercado"
+    "upcoming": "Estamos cerrando acuerdos con agencias en Alemania. Pronto habrá más ofertas aquí."
   },
   "Landing": {
     "related": "Sigue buscando",
@@ -139,7 +137,10 @@
       "intro": "{count, plural, one {# oferta verificada} other {# ofertas verificadas}} de {sector} en {place}.",
       "metaTitle": "Trabajo de {sector} en {place}",
       "metaDescription": "{count, plural, one {# oferta} other {# ofertas}} de {sector} en {place} para candidatos hispanohablantes y lusófonos. Ver ofertas es gratis.",
-      "link": "{sector} en {place}"
+      "link": "{sector} en {place}",
+      "marketIntro": "Todavía no hay ninguna vacante publicada de {sector} en {place}. Lo que sí hay es lo que se paga en el sector, con su fuente y su fecha.",
+      "marketMetaTitle": "{sector} en {place}: cuánto se paga y qué piden",
+      "marketMetaDescription": "Cuánto se paga por hora de {sector} en {place}, qué jornada y qué turnos se hacen y qué idioma piden. Datos de ofertas reales analizadas y del convenio del sector, no una promesa."
     },
     "housing": {
       "title": "Trabajo con alojamiento en {place}",
@@ -150,29 +151,27 @@
     }
   },
   "Opportunities": {
-    "title": "Qué se paga de verdad en Alemania",
-    "subtitle": "Cinco perfiles de trabajo temporal con su franja salarial, su jornada, sus turnos y el nivel de alemán que piden. Sale de 14 ofertas reales analizadas y del convenio del sector, no de una promesa.",
-    "meta": {
-      "title": "Condiciones reales del trabajo temporal en Alemania",
-      "description": "Cuánto se paga por hora en almacén, logística, producción, cárnico y agrícola en Alemania, qué jornada y qué turnos se hacen, y qué nivel de alemán piden. Datos de 14 ofertas reales y del convenio de la Zeitarbeit."
-    },
-    "disclosure": {
-      "jobs": "Ver las vacantes publicadas"
-    },
+    "eyebrow": "Perfiles de mercado",
+    "notJobs": "Esto no son vacantes: no hay una empresa detrás, ni fecha de incorporación, ni forma de aplicar.",
     "agreement": {
       "title": "El suelo lo fija el convenio, no la agencia",
       "body": "El trabajo por ETT en Alemania tiene su propio salario mínimo, superior al general: {amount} brutos por hora desde el {date}. Una oferta por debajo de esa cifra no es una ganga, es ilegal. Es lo primero que conviene comprobar, y vale para los cinco perfiles de esta página."
     },
     "facts": {
-      "salaryLabel": "Salario",
       "salaryRange": "{min} – {max} por {period}",
       "salaryFrom": "Desde {min} por {period}",
+      "salaryFigureRange": "{min} – {max}",
+      "salaryFigureFrom": "Desde {min}",
+      "salaryPer": "por {period}",
       "basisObserved": "Rango observado: los dos extremos salen de las ofertas analizadas el {date}, no de una franja recomendada.",
       "basisAgreement": "Suelo del convenio. Sin rango observado: no publicamos un techo que no hemos medido.",
+      "basisObservedShort": "Rango observado",
+      "basisAgreementShort": "Suelo del convenio",
       "weeklyHoursLabel": "Jornada",
       "weeklyHours": "{hours} h/semana",
       "weeklyHoursRange": "{min}–{max} h/semana",
       "unknown": "Sin datos en la muestra",
+      "citiesLabel": "Ciudades",
       "shiftsLabel": "Turnos",
       "languageLabel": "Alemán",
       "languageLevel": "Nivel {level} habitual",
@@ -181,20 +180,14 @@
       "perkSometimes": "En algunas ofertas",
       "perkUndocumented": "Sin datos"
     },
-    "card": {
-      "regionLabel": "Dónde",
-      "more": "Ver el perfil"
-    },
-    "detail": {
-      "metaTitle": "{sector} en {country}: cuánto se paga y qué piden",
-      "eyebrow": "Perfil de mercado",
+    "market": {
+      "title": "Qué se paga de {sector} en {place}",
       "sections": {
         "intro": "El perfil",
         "tasks": "Qué se hace",
         "requirements": "Qué se pide",
         "conditions": "Qué condiciones se ven en el mercado"
-      },
-      "back": "Ver los demás perfiles"
+      }
     },
     "cta": {
       "title": "¿Te encaja este perfil?",
@@ -340,8 +333,7 @@
           "Contratado directamente por la explotación se aplica el salario mínimo general, que es más bajo: preguntar siempre quién firma"
         ]
       }
-    },
-    "hook": "Cifras medidas en ofertas reales, con su fuente y su fecha. Ninguna es una franja recomendada."
+    }
   },
   "Auth": {
     "meta": {

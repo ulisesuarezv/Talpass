@@ -265,9 +265,10 @@ function localeMap<T>(build: (locale: Locale) => T): Record<Locale, T> {
  * Los perfiles resueltos contra el catálogo, en el idioma pedido.
  *
  * Los slugs **se derivan del catálogo, no se escriben a mano** (ADR-23). Es lo
- * que garantiza que `/es/oportunidades/alemania/almacen` y la landing
- * `/es/trabajo/alemania/almacen` compartan segmentos hasta el último carácter:
- * no hay dos listas que mantener sincronizadas, hay una.
+ * que garantizaba que la ficha retirada `/es/oportunidades/alemania/almacen` y
+ * la landing `/es/trabajo/alemania/almacen` compartieran segmentos hasta el
+ * último carácter, y por eso el 301 de ADR-49 es mecánico: no hay dos listas
+ * que mantener sincronizadas, hay una.
  */
 export const listOpportunities = cache(
   async (locale: Locale): Promise<Opportunity[]> => {
@@ -325,30 +326,30 @@ export async function getOpportunity(
 }
 
 /**
- * Ruta de la oportunidad **en función del idioma**.
+ * Ruta del perfil **en función del idioma**: su landing de país + sector.
  *
- * No es un lujo: los segmentos cambian enteros de idioma
+ * Hasta el 2026-09-25 apuntaba a la ficha `/oportunidades/[country]/[sector]`,
+ * que se retiró con ADR-49. Como los segmentos de la ficha y los de la landing
+ * eran idénticos por construcción (ADR-30), el cambio es de `pathname` y nada
+ * más: los mismos `paramsByLocale` valen para las dos rutas, que es justo lo
+ * que hace mecánico el 301 de `next.config.ts`.
+ *
+ * El callback por idioma no es un lujo: los segmentos cambian enteros
  * (`alemania/almacen` ↔ `germany/warehouse`), así que reutilizar los del idioma
- * actual para el `hreflang` produce `/en/opportunities/alemania/almacen`, una
- * URL que no existe, y Google descarta el emparejamiento entero. Es el fallo
- * que ya costó una vez en las landings (ADR-23).
+ * actual para el `hreflang` produce `/en/work/alemania/almacen`, una URL que no
+ * existe, y Google descarta el emparejamiento entero. Es el fallo que ya costó
+ * una vez en las landings (ADR-23).
+ *
+ * ✅ **El destino existe siempre, y eso es ADR-50.** Hasta el 2026-09-26 una
+ * landing solo existía si había una vacante viva en ese par (ADR-23,
+ * `dynamicParams = false`), así que con cero vacantes estos cinco enlaces —y
+ * los diez 301 de ADR-49— acababan en 404. Desde la enmienda, el
+ * `generateStaticParams` de `/work/[country]/[sector]` es la unión de los pares
+ * con vacante y de los pares con perfil, y estos cinco están generados siempre.
+ * Quien quite un perfil de `OPPORTUNITY_PROFILES` sin quitar antes su 301 se
+ * lleva por delante la landing a la que apunta.
  */
 export function opportunityHref(
-  opportunity: Opportunity,
-): (locale: Locale) => Href {
-  return (locale) =>
-    ({
-      pathname: '/opportunities/[country]/[sector]',
-      params: opportunity.paramsByLocale[locale],
-    }) as Href;
-}
-
-/**
- * La landing a la que esta oportunidad redirigirá con un 301 el día que se
- * retire (ADR-30). Mismos params, otra ruta: por eso el 301 es mecánico y no
- * hay que mantener una tabla de equivalencias a mano.
- */
-export function opportunityRetirementHref(
   opportunity: Opportunity,
 ): (locale: Locale) => Href {
   return (locale) =>

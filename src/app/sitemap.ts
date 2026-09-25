@@ -4,7 +4,6 @@ import { legalHref, LEGAL_DOCUMENTS } from '@/config/legal';
 import { defaultLocale, locales, type Locale } from '@/i18n/routing';
 import { listPublishedJobs } from '@/lib/jobs';
 import { landingHref, listLandings } from '@/lib/landings';
-import { listOpportunities, opportunityHref } from '@/lib/opportunities';
 import { absoluteUrl, type LocalizedHref } from '@/lib/seo';
 
 /**
@@ -45,24 +44,25 @@ function entry(
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [jobs, landings, opportunities] = await Promise.all([
+  const [jobs, landings] = await Promise.all([
     listPublishedJobs(defaultLocale),
     listLandings(),
-    listOpportunities(defaultLocale),
   ]);
 
   return [
     entry('/', { priority: 1 }),
 
-    // `/ofertas` solo entra en el sitemap cuando tiene vacantes. Vacío es
-    // `noindex` (fase 4b), y declarar en el sitemap una URL que luego se
-    // bloquea es la contradicción que más rastreo gasta.
-    ...(jobs.length > 0 ? [entry('/jobs', { priority: 0.9 })] : []),
-
-    entry('/opportunities', { priority: 0.9 }),
-    ...opportunities.map((opportunity) =>
-      entry(opportunityHref(opportunity), { priority: 0.8 }),
-    ),
+    // `/ofertas` entra SIEMPRE desde ADR-49. Hasta entonces solo entraba con
+    // vacantes, porque vacío era `noindex` y declarar en el sitemap una URL que
+    // luego se bloquea es la contradicción que más rastreo gasta. Ya no está
+    // vacío nunca: lleva dentro los cinco perfiles de mercado, así que es
+    // indexable con o sin vacantes y el sitemap y `generateMetadata` vuelven a
+    // decir lo mismo.
+    //
+    // ⛔ Y aquí ya NO van `/oportunidades` ni sus cinco fichas: se retiraron
+    // con un 301 a `/ofertas` y a su landing de país+sector (ADR-49). Una URL
+    // redirigida en el sitemap es rastreo tirado y una señal contradictoria.
+    entry('/jobs', { priority: 0.9 }),
 
     ...landings.map((landing) =>
       entry(landingHref(landing), { priority: 0.7 }),

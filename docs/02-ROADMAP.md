@@ -362,6 +362,13 @@ el proyecto lleva parado en él desde el 2026-08-16.
 **La decisión de Ulises, 2026-08-17:** romperlo por el lado del candidato,
 publicando el gancho **sin fingir que hay vacantes**.
 
+> ⛔ **Retirada el 2026-09-26 (ADR-49 y ADR-50).** Todo lo que sigue en esta
+> fase describe una sección que **ya no existe**: sus 12 URLs se redirigen con
+> 301, los cinco perfiles viven dentro de `/ofertas`, y la landing
+> `/trabajo/país/sector` los enseña cuando no hay vacante. Lo que sigue se
+> conserva porque era cierto el día que se escribió y explica de dónde salen
+> los perfiles, **no como descripción del sitio de hoy**.
+
 Sección propia `/es/oportunidades` ↔ `/en/opportunities`, derivada de
 `docs/investigacion/ofertas-mercado.md`: tarjetas con sector, ciudad, franja
 salarial, idioma exigido y alojamiento, y una página por perfil con tareas,
@@ -411,7 +418,8 @@ referencia de vacante.
   La enmienda —permitir páginas indexables que no cuelguen de una vacante— es de
   las landings de mercado, que están aplazadas más abajo. La fase sale bastante
   más pequeña de lo que parecía el 2026-08-17.
-- **`/ofertas` vacío va en `noindex`** con enlace a oportunidades, para que no
+- ⛔ _(Caducado el 2026-09-26, ADR-49: `/ofertas` **ya no es `noindex`** —tiene
+  los perfiles dentro— y su estado vacío se retiró.)_ **`/ofertas` vacío va en `noindex`** con enlace a oportunidades, para que no
   sea un callejón sin salida ni una página delgada en el sitemap.
 - **Namespace aparte, no `/ofertas`.** El día que entre una vacante real tiene
   que verse distinta de un perfil de mercado; además evita colisión de slugs y
@@ -560,7 +568,9 @@ hasta que haya vacantes. **No se resuelve inventando vacantes** (ADR-30).
 1. **El presupuesto de velocidad no se toca.** Lighthouse móvil **no baja de lo
    medido** (fila 32 y 33 de la tabla de la auditoría). Es puerta dura, no
    aspiración: el candidato entra con 4G desde el móvil (ADR-10).
-2. **Nada de GSAP, R3F, shaders ni layout disruptivo.** Decisión de Ulises del
+2. **Nada de GSAP, R3F, shaders ni layout disruptivo.** _(Enmendada el
+   2026-09-22 por ADR-47: GSAP y `layout-disruptivo` entran con condiciones;
+   R3F y shaders siguen fuera.)_ Decisión de Ulises del
    2026-08-18, reafirmada el 2026-08-20. Hay agentes instalados para eso y en
    este proyecto **restan**: un layout roto en un sitio cuyo problema es que
    podría parecer una estafa empeora justo lo que se viene a arreglar. Los que
@@ -652,6 +662,9 @@ C1. El presupuesto de velocidad sigue siendo puerta dura.
 vacío es maquillaje. El orden importa.
 
 ### La paleta y la tipografía — elegidas por Ulises el 2026-08-20
+
+> ⚠️ **Sustituida en los tokens el 2026-09-22 por la propuesta de ADR-48**,
+> pendiente de ajuste por Ulises. La tabla de abajo es la de la C2.
 
 | Papel         | Color                                        | Nota       |
 | ------------- | -------------------------------------------- | ---------- |
@@ -748,6 +761,21 @@ decisión de Ulises con precio medido en ADR-39.
 - **`messages/<locale>.json` sigue pesando 37 KB** y viaja entero a todas las
   páginas. ADR-37 lo resolvió para la home y ADR-33 para los legales; el resto
   sigue igual. Sigue siendo una tarea propia.
+
+---
+
+## Rediseño R · La home y el sistema visual, por sesiones
+
+_Abierta el 2026-09-22 por Ulises («la landing parece un Word»). No es una fase
+del MVP con número: es la continuación de la C2 y va sesión a sesión. El estado
+vivo, con lo hecho, lo medido y lo que queda, está en el bloque 🎨 de
+`docs/ESTADO.md`. Decisiones: ADR-45, 46, 47 y 48._
+
+### 🟡 En curso: sin commitear ni desplegar
+
+**Hecho cuando:** Ulises da por buena la paleta; la home en producción muestra
+la estructura de ADR-46; Lighthouse móvil (mediana de 3) no baja de la línea
+base de ese día; y en móvil 375×667 las ofertas asoman sin scroll.
 
 ---
 

@@ -23,7 +23,7 @@ export async function SiteFooter() {
 
   return (
     <footer className="border-t">
-      <div className="mx-auto flex max-w-5xl flex-col gap-4 px-4 py-8 text-sm text-muted-foreground">
+      <div className="container-page flex flex-col gap-4 py-8 text-sm text-muted-foreground">
         <nav aria-label={footer('legalHeading')}>
           <ul className="flex flex-wrap gap-x-5 gap-y-2">
             {LEGAL_DOCUMENTS.map((document) => (

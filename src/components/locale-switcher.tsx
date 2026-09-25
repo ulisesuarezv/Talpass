@@ -39,7 +39,21 @@ export function LocaleSwitcher() {
   }
 
   return (
-    <nav aria-label={t('label')} className="flex items-center gap-1">
+    // Control segmentado, y no dos enlaces sueltos (rediseño de la cabecera,
+    // 2026-09-25). El idioma es una herramienta, no un destino: pintado como
+    // dos textos de 14 px pesaba lo mismo que «Entrar», que es la acción de la
+    // cabecera. La pastilla blanca sobre el carril gris dice «esto conmuta»
+    // sin una palabra y de paso marca el idioma activo con algo más que el
+    // color (WCAG 1.4.1: además va el peso y `aria-current`).
+    //
+    // Sobre la cabecera petróleo (2026-09-25) el carril es blanco al 12 % y la
+    // pastilla del activo blanca entera con tinta del hero encima; el inactivo
+    // usa `--hero-muted`, que es el gris verdoso claro ya medido contra el
+    // petróleo (8,65). Los tres pares están en `pnpm check:contrast`.
+    <nav
+      aria-label={t('label')}
+      className="flex shrink-0 items-center gap-0.5 rounded-full bg-hero-foreground/12 p-0.5"
+    >
       {locales.map((locale) => {
         const isActive = locale === activeLocale;
 
@@ -51,10 +65,10 @@ export function LocaleSwitcher() {
             aria-current={isActive ? 'true' : undefined}
             onClick={() => switchTo(locale)}
             className={cn(
-              'rounded-md px-2 py-1 text-sm transition-colors focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none',
+              'rounded-full px-2 py-1 text-xs leading-none font-medium transition-colors focus-visible:ring-2 focus-visible:ring-hero-foreground focus-visible:outline-none',
               isActive
-                ? 'font-medium text-foreground'
-                : 'text-muted-foreground hover:text-foreground',
+                ? 'bg-hero-foreground text-hero'
+                : 'text-hero-muted hover:text-hero-foreground',
             )}
           >
             {/*

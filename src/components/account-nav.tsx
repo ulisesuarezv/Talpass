@@ -39,26 +39,45 @@ export function AccountNav() {
     return () => subscription.subscription.unsubscribe();
   }, []);
 
+  // El hueco reservado mide lo que mide el botón de «Entrar», que es el estado
+  // que ve todo el que llega de Google: 32 px de alto y ~72 de ancho. Va el
+  // último de la fila de la cabecera justamente para que su cambio de ancho no
+  // empuje a nadie (ver `site-header.tsx`).
   if (signedIn === null) {
-    return <span aria-hidden className="h-5 w-16" />;
+    return <span aria-hidden className="block h-8 w-[4.5rem]" />;
   }
 
+  // La única pieza con forma de botón de toda la cabecera, y desde que la
+  // cabecera es petróleo (2026-09-25) va en naranja pleno: en pastilla blanca
+  // sobre un fondo casi blanco no se veía, y Ulises lo dijo con esas palabras.
+  //
+  // ⚠️ Es el segundo naranja de la primera pantalla, junto al «Ver ofertas»
+  // del hero. Se acepta a sabiendas: son la misma acción en dos alturas
+  // distintas —entrar— y el CTA del hero sigue siendo cuatro veces más grande.
+  // Si algún día compiten de verdad, este se va a blanco con tinta del hero,
+  // que es el par de al lado en el comprobador.
+  //
+  // Contraste: `--brand-accent-ink` sobre `--brand-accent` (6,30) y el propio
+  // naranja como interfaz sobre `--hero` (5,19), los dos ya medidos.
   if (!signedIn) {
     return (
       <Link
         href="/login"
-        className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+        className="inline-flex h-8 shrink-0 items-center rounded-full bg-brand-accent px-3.5 type-meta font-semibold text-brand-accent-ink transition-colors hover:bg-brand-accent-hover"
       >
         {t('login')}
       </Link>
     );
   }
 
+  // Con la sesión abierta esto deja de ser una llamada a la acción y vuelve a
+  // ser cromo: dos enlaces de texto. Además son dos piezas, y a 375 px en
+  // español no caben como pastillas sin partir la fila.
   return (
-    <div className="flex items-center gap-3">
+    <div className="flex shrink-0 items-center gap-3 type-meta">
       <Link
         href="/account"
-        className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+        className="font-medium text-hero-foreground transition-colors hover:text-brand-accent-bright"
       >
         {t('account')}
       </Link>
@@ -70,7 +89,7 @@ export function AccountNav() {
         <input type="hidden" name="locale" value={locale} />
         <button
           type="submit"
-          className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+          className="text-hero-muted transition-colors hover:text-hero-foreground"
         >
           {t('logout')}
         </button>

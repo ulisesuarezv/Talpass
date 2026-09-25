@@ -70,14 +70,212 @@
 >
 > ## Lo que NO hay que hacer
 >
-> - **Nada de GSAP, R3F, shaders ni layout disruptivo.** Está dentro de ADR-10. Hay agentes instalados y **en este proyecto restan**.
+> - **Nada de R3F ni shaders.** GSAP y `layout-disruptivo` **quedaron autorizados por Ulises el 2026-09-22 (ADR-47)**: GSAP con la condición de no empeorar la línea base medida, y `layout-disruptivo` solo para composición, sin anti-grid.
 > - **No inventar vacantes** (ADR-30). No hay ninguna, y la página vacía lo dice honestamente a propósito.
-> - **No tocar el estado vacío de `/ofertas`**: está bien hecho (ADR-36).
-> - **No rehacer la home.** Sus `h2` responden preguntas medidas — pero ya son **3, no 5**: ADR-43 retiró «En qué punto está esto» y «Quién responde de este sitio» el 2026-09-08. Los tres que quedan no se tocan.
+> - ~~**No tocar el estado vacío de `/ofertas`**~~ **Caducado el 2026-09-26**:
+>   Ulises lo hizo retirar, junto con el rótulo de los perfiles. Ver la
+>   enmienda de ADR-49.
+> - ~~**No rehacer la home.**~~ **Levantado el 2026-09-22 por Ulises (ADR-46)**: la home se está rediseñando por sesiones, Indeed-first. Desde ese día tiene **5 `h2`**. Lo que sigue en pie: sus tres secciones de abajo no se tocan hasta que Ulises decida qué hacer con ellas.
 > - **Nunca `db reset` ni el simulacro contra producción** (ADR-17).
 > - **No proponer el campo de sector/ciudad de destino** en el onboarding: está
 >   descartado con motivo en **ADR-42**, y es la idea que más fácil se
 >   redescubre porque suena razonable en abstracto.
+>
+> ## 🎨 2026-09-22 — Rediseño por sesiones: EN CURSO, sin commitear y sin desplegar
+>
+> 🔴 **Si retomas aquí: el trabajo del rediseño está en el árbol de trabajo, NO
+> en un commit.** `git status` enseña los ficheros tocados (código, copy, `docs/` y `CLAUDE.md`). **Producción sigue
+> sirviendo la home vieja de 3 `h2`** hasta que se haga commit y push, y el push
+> lo decide Ulises (un push a `main` despliega en un segundo). No midas
+> producción esperando la home nueva.
+>
+> _Encargo de Ulises: «la landing parece un Word». Se hace **sesión a sesión**
+> para cuidar el contexto. Ulises **autorizó los agentes de diseño salvo
+> `r3f-scene-builder` y `shader-artist`** (ADR-47) y pidió que el agente
+> **propusiera la paleta** para ajustarla él después (ADR-48)._
+>
+> ### Lo hecho el 2026-09-22 (tres pasos)
+>
+> 1. **Sesión 1, el PM** (ADR-45 y ADR-46): home Indeed-first según el boceto de
+>    Ulises (hero a la izquierda, 3 pasos a la derecha, ofertas debajo que
+>    asoman en la primera pantalla del móvil), copy con los reclamos asumidos,
+>    primitivas de layout y la home movida de `(public)` a `(home)` para matar
+>    un CLS de 0,24.
+> 2. **`layout-disruptivo`**, acotado a composición y sin anti-grid: hero con
+>    menos texto (subtítulo de una línea, 2 tags), **franja de ventajas
+>    `perks`** con los otros tres puntos fuertes, escala de espaciado
+>    `stack-*` / `pad-tile` / `surface-panel` en `globals.css`, pasos en un
+>    solo panel.
+> 3. **`ui-polish`**: **paleta propuesta «petróleo y azafrán»** (ADR-48). Hero
+>    oscuro `#0B2E2D` como única superficie oscura, CTA naranja `#F97316` como
+>    punto focal, neutros verdosos. `pnpm check:contrast` pasa (53 pares).
+>    También tocó `opportunity-card.tsx` (hover/foco, afecta a
+>    `/oportunidades`), la línea bajo la cabecera y `check-contrast.mts`.
+>
+> ### Medido al cerrar (local, `next start`, Lighthouse 12 móvil, mediana de 3)
+>
+> | Árbol                                | Nota   | LCP       | CLS   |
+> | ------------------------------------ | ------ | --------- | ----- |
+> | Antes de empezar (`b9c297c`)         | 97     | 2,6 s     | 0,001 |
+> | Tras la sesión 1                     | 98     | 2,5 s     | 0,001 |
+> | **Tras `ui-polish` (estado actual)** | **96** | **2,8 s** | 0,001 |
+>
+> ⚠️ **El LCP subió 0,3 s con el último paso, y en las tres pasadas igual.** El
+> elemento LCP es el mismo (un párrafo de la primera tarjeta de ofertas) y el
+> tiempo extra es todo _render delay_.
+>
+> ### ✅ 2026-09-25 — Bisecado: no era el diseño, eran los bytes
+>
+> _Misma máquina, mismo día, `next start` en 3210 contra la base local,
+> Lighthouse 12 móvil simulado. Nueve pasadas al árbol actual y seis al de
+> `b9c297c` para no medir sobre la banda de ruido._
+>
+> | Árbol                                        | Nota | LCP mediana | Pasadas                |
+> | -------------------------------------------- | ---- | ----------- | ---------------------- |
+> | `b9c297c` (antes del rediseño), medido hoy   | 97   | **2,62 s**  | 6 (1,96 · 2,62 · 2,78) |
+> | Actual (rediseño entero)                     | 96   | **2,77 s**  | 9, estable             |
+> | Actual sin los tres sospechosos              | 96   | **2,77 s**  | 3                      |
+> | Actual con 2 tarjetas de ofertas en vez de 6 | 96   | **2,77 s**  | 3                      |
+> | Actual sin `preload` de la fuente            | 96   | **2,78 s**  | 3 (y FCP peor: 1,06)   |
+>
+> **Los tres sospechosos quedan descartados.** Quitando a la vez el `clamp()`
+> del `type-display`, la sombra y el `radial-gradient` del hero y las
+> transiciones de la tarjeta, la mediana no se mueve ni un milisegundo. **El
+> rediseño visual cuesta cero**, igual que en la C2.
+>
+> **Lo que sí cambió son los bytes de la página**, porque la home nueva tiene
+> más contenido: documento **19,2 → 25,9 KB** y CSS **10,6 → 12,1 KB**
+> transferidos (la fuente y los scripts, iguales). Son ~8 KB más de camino
+> crítico, y el salto del _render delay_ es de **150 ms**, exactamente un RTT
+> del 4G simulado. La diferencia real es **+0,15 s**, no +0,3: el 2,5 s
+> apuntado tras la sesión 1 cayó en el cubo rápido de una distribución que
+> salta entre 1,96 / 2,62 / 2,78 (por eso la mediana de 3 no basta aquí).
+>
+> 🔴 **Y el número de Lighthouse no mide lo que parece.** Observado en local,
+> **FCP y LCP ocurren en el mismo instante** (34–41 ms): todo pinta a la vez.
+> El 2,6–2,8 s es el simulador extrapolando el grafo de dependencias a 4G, y
+> en ese grafo entran los **263 KB de scripts**, que son el 80 % del peso.
+> De ahí que quitar 21 KB de HTML (dos tarjetas en vez de seis) no mueva la
+> mediana y que quitar el `preload` de la fuente tampoco: **la fuente no
+> bloquea el LCP** (`display: swap` + `adjustFontFallback` hacen su trabajo),
+> solo empeora el FCP, tal y como decía la C2.
+>
+> **Conclusión para la próxima sesión: no hay nada que revertir.** El único
+> palanca que queda en esta página es el JS (ADR-37), y eso no es trabajo de
+> rediseño. GSAP puede seguir adelante con la condición de ADR-47, midiendo
+> contra **2,77 s / nota 96**, que es la línea base real del árbol actual.
+>
+> Además: home estática (● en el build), 5 `h2`, sin `Set-Cookie`, sin
+> frontera de `Suspense` pendiente, `typecheck`, `lint`, `format:check`,
+> paridad (54/54) y `check:contrast` limpios.
+>
+> ### ✅ 2026-09-25 y 26 — La home entera, la cabecera y el fin de `/oportunidades`
+>
+> _Dos sesiones seguidas con Ulises delante, decidiendo. **Nada commiteado
+> todavía**: producción sigue sirviendo la home vieja de 3 `h2`. Todo lo de
+> abajo está verificado por el PM contra el build local, no contra el resumen
+> de los agentes._
+>
+> **La home, de arriba abajo:**
+>
+> 1. **Ofertas**: la tarjeta se rediseñó entera (`opportunity-card.tsx`).
+>    Región y país en versales arriba, **la cifra en grande con su procedencia
+>    debajo** (ADR-31 viaja con el número) y una rejilla de datos con jornada,
+>    alojamiento y transporte, que **no se enseñaban en ninguna tarjeta**. La
+>    destacada ocupa dos columnas con la rejilla al lado. Variantes `default` /
+>    `compact` por prop, nunca por componente duplicado. Un extra sin
+>    documentar **se calla**; el alemán es la excepción, porque `null` ahí
+>    significa «no lo sabemos» y callarlo se leería como «no hace falta».
+> 2. **«Cómo funciona» se retiró**: repetía, más largo, el panel de tres pasos
+>    del hero. La home bajó a 4 `h2` y luego volvió a 5 con el FAQ.
+> 3. **Privacidad**: dejó de ser dos listas de viñetas y pasó a **la ficha que
+>    la agencia ve de verdad**, con la mitad de arriba rellena y la de abajo
+>    tachada. El IBAN tenía fila propia diciendo «nunca, ni con tu permiso» y
+>    **Ulises lo corrigió el 25**: la ETT acaba viéndolo porque es quien paga
+>    la nómina, así que va con los demás datos sensibles, tachado.
+>    🔴 **`01-DATA-MODEL.md` apartado J sigue diciendo lo contrario** («no se
+>    comparte en ningún caso dentro del MVP»). Gana la home; falta tocar la
+>    matriz de acceso y lo que permite la base de datos. **Pendiente.**
+> 4. **«No llegas solo»** (nueva): los cuatro momentos de la llegada —agente
+>    asignado, viaje, papeleo, primer cobro— salidos de la experiencia propia
+>    de Ulises. Sus «en algunos casos» y «en algunas ofertas» son literales y
+>    **no se suben de tono**: sin ellos esto deja de describir y pasa a
+>    prometer, y no hay ninguna ETT con la que responder de la promesa. La nota
+>    del pie —«lo que te toque depende de la oferta y de la agencia»— es lo que
+>    hace cierta la sección, y por eso va al cuerpo normal y no en letra chica.
+> 5. **FAQ** (nueva, sustituye a «Qué te cuesta esto», que ya no existe):
+>    `<details>` nativos, cero JavaScript. Seis preguntas; la del viaje y el
+>    alojamiento dice sin suavizar que **el viaje lo paga el candidato y el
+>    alojamiento se le descuenta del sueldo**.
+> 6. **Ficha de ejemplo «Carlos M.»**: los valores (28, Valencia, B1) son
+>    inventados y van rotulados «Ejemplo». **Ulises decidió que se quedan.**
+>
+> **La cabecera** (`site-header.tsx`, `account-nav.tsx`, `locale-switcher.tsx`):
+> tres rangos y dos grupos donde había cuatro piezas del mismo peso. **Fondo
+> petróleo** —la superficie del hero, elegida por Ulises entre tres opciones—,
+> «Entrar» en naranja pleno porque en pastilla blanca sobre fondo casi blanco
+> no se veía, e idioma como control segmentado. **Baja de 73 px a 49 px en
+> móvil en español**, así que las ofertas de la home suben: el `h2` pasa de
+> y=553 a **y=529** y la primera tarjeta de y=600 a **y=576**. Margen ganado
+> contra ADR-46, no gastado. Sigue sin leer sesión y sin JavaScript.
+>
+> **`/oportunidades` retirada (ADR-49 y ADR-50):**
+>
+> - Los cinco perfiles viven ahora dentro de **`/ofertas`**, debajo de las
+>   vacantes, con rótulo propio y la línea «esto no son vacantes». `/ofertas`
+>   **deja de ser `noindex`**.
+> - **Las 12 URLs indexadas se redirigen con 301** desde `next.config.ts` (no
+>   desde el proxy: el redirect se resuelve antes y no toca cookies).
+> - 🔴 **El 301 aterrizaba en 404** y se descubrió el mismo día: una landing
+>   `/trabajo/país/sector` solo existía si había vacante viva (ADR-23), y en
+>   producción hay cero. **Arreglado con ADR-50**: la landing existe también
+>   sin vacante y entonces enseña el perfil de mercado, con lo que además se
+>   recupera el copy editorial (`intro`, `tasks`, `requirements`,
+>   `conditions`) que la retirada había dejado huérfano. **Verificado: las 12
+>   acaban en 200, y las landings sin vacante tienen cero `JobPosting` y cero
+>   `ld+json`.**
+> - ⚠️ **La separación perfil / vacante ya no es estructural.** Vivían en
+>   rutas distintas y confundirlas era imposible; ahora conviven en `/ofertas`
+>   y en el árbol `/trabajo`, y la garantía la sostienen tres cosas: el
+>   rótulo, el cero `JobPosting` y que no haya botón de aplicar. Quien añada
+>   empresa, fecha o «aplicar» las rompe las tres a la vez.
+>
+> **Medido al cerrar** (local, `next start`, Lighthouse 12 móvil, 6 pasadas):
+> **96 · LCP 2,78 s · CLS 0** — la misma línea base con la que se empezó, con
+> toda la home nueva dentro. `typecheck`, `lint`, `format:check`, paridad y
+> `check:contrast` (60 pares, el más justo 3,48) limpios. Home estática, sin
+> `Set-Cookie`.
+>
+> ### Lo que queda, en orden
+>
+> 1. **`gsap-senior-animator`**, con la condición de ADR-47: no empeorar
+>    **96 · 2,78 s · CLS 0**, que es la línea base real del árbol actual. Si
+>    GSAP la rompe, animación CSS.
+> 2. **El IBAN y la matriz de acceso** (punto 3 de arriba): decisión tomada,
+>    implementación pendiente.
+> 3. **`visual-qa`**: capturas móvil/escritorio en es/en y Lighthouse.
+> 4. **Commit y push**, con permiso de Ulises, y verificación contra
+>    producción (5 `h2`, cabecera petróleo, los 12 301 en 200, sin
+>    `Set-Cookie`, `/es/cuenta` en 307).
+>
+> **Después:** el pie (no se ha tocado en todo el rediseño), mudar
+> `Opportunities.*` a `messages/<ruta>/` como se hizo con `Home` (ADR-37: hoy
+> viaja entero en el HTML de todas las páginas), y alinear «en la mayoría de
+> ofertas» (franja del hero) con «se descuenta de tu sueldo» (FAQ), que es
+> decisión de Ulises (ADR-45).
+>
+> **Para lanzar los agentes que faltan:** el brief común está en
+> `docs/prompts/rediseno-brief-agentes.md`. Hay que ponerlo al día antes de
+> pasarlo, porque describe el estado del cierre del 2026-09-22.
+>
+> ### Cómo se midió lo del móvil, para repetirlo
+>
+> En 375×667 el `h2` `#home-offers` y el principio de la primera tarjeta tienen
+> que verse sin scroll. Al cerrar: `h2` en y=553 y la tarjeta en y=600 (es),
+> con **~28 px de margen**. Cualquier cambio que añada altura arriba en el
+> móvil hay que volver a medirlo con `getBoundingClientRect` en Playwright.
+>
+> ---
 >
 > ## 📌 El titular de la home cambió el 2026-09-08
 >
@@ -102,6 +300,8 @@
 >    **la evidencia citada no vale**; lo que vale es `git diff --stat`.
 >
 > ## Los números, para cotejar mañana
+>
+> ⚠️ **Estos números son de PRODUCCIÓN el 2026-09-08 y siguen siendo los vivos**: el rediseño del 2026-09-22 no está desplegado (ver el bloque 🎨).
 >
 > ⚠️ **La línea base cambió el 2026-09-08.** Se desplegó código por primera vez
 > desde el 21 de agosto (`05171af`, ADR-43) y **la home pasó de 5 `h2` a 3**.

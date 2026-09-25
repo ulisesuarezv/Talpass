@@ -1,60 +1,150 @@
 {
   "Home": {
-    "eyebrow": "Alemania · para candidatos hispanohablantes y lusófonos",
+    "eyebrow": "El primer portal que te conecta con ETTs en Europa",
     "title": "Tu portal directo a tu siguiente trabajo en Europa.",
-    "subtitle": "{brand} te conecta con agencias de trabajo temporal verificadas en Europa Central, y te deja ver quién te contrataría antes de que des tu nombre. Empezamos por Alemania.",
-    "ctaOpportunities": "Ver qué se paga en Alemania",
-    "ctaJobs": "Ver las ofertas publicadas",
-    "ctaSignup": "Crear mi cuenta",
-    "note": "Al candidato no se le cobra nunca. Ver ofertas es libre y no hace falta cuenta.",
-    "how": {
-      "title": "Cómo funciona",
-      "steps": {
-        "account": {
-          "title": "Creas tu cuenta y completas tu perfil",
-          "body": "Tu experiencia, tu nivel de inglés y qué necesitas para mudarte. Se hace desde el móvil en unos minutos."
+    "subtitle": "Emigra sin preocuparte de dónde vivir ni de cómo llegar.",
+    "tags": {
+      "eu": "Solo ciudadanía UE",
+      "english": "Inglés según la oferta"
+    },
+    "tagsLabel": "Lo que te ofrece",
+    "perks": {
+      "label": "Por qué empezar aquí",
+      "items": {
+        "housing": {
+          "lead": "Alojamiento y transporte",
+          "rest": "en la mayoría de ofertas."
         },
-        "documents": {
-          "title": "Subes tus documentos y los revisa una persona",
-          "body": "Tu documento de identidad y tu CV. La revisión no la hace un algoritmo, y mientras no esté hecha no apareces ante ninguna agencia."
+        "speed": {
+          "lead": "Empieza en tiempo récord",
+          "rest": "en distintos países de la UE."
         },
-        "pool": {
-          "title": "Las agencias te ven seudonimizado",
-          "body": "Ven «Carlos M.» y tu experiencia. No ven tu apellido completo, ni tu correo, ni tus documentos."
-        },
-        "consent": {
-          "title": "Tú decides quién abre cada documento",
-          "body": "Una agencia que quiera ver un documento tuyo tiene que pedírtelo. Concedes o deniegas, el silencio no concede nada, y puedes revocar un permiso ya dado."
+        "experience": {
+          "lead": "¿Poca experiencia?",
+          "rest": "Hay ofertas que no la piden."
         }
-      },
-      "hook": "Cuatro pasos, y en ninguno pagas nada."
+      }
+    },
+    "ctaJobs": "Ver ofertas",
+    "ctaSignup": "Crear mi cuenta",
+    "steps": {
+      "title": "Cómo empiezas",
+      "items": {
+        "signup": {
+          "title": "Crea tu cuenta",
+          "body": "Tu experiencia, tu inglés y qué necesitas para mudarte. Desde el móvil, en minutos."
+        },
+        "verify": {
+          "title": "Verifica tus papeles",
+          "body": "Una persona revisa tu documento y tu CV una sola vez, y ya te ven todas las agencias."
+        },
+        "hired": {
+          "title": "Te contratan",
+          "body": "Las agencias te proponen trabajo. Tú decides a quién le enseñas tus documentos."
+        }
+      }
+    },
+    "offers": {
+      "title": "Ofertas en Alemania",
+      "seeAll": "Ver todas"
     },
     "privacy": {
       "title": "Qué ve una agencia de ti, y qué no",
-      "intro": "Esto no es una declaración de intenciones. Una agencia no tiene permiso de lectura sobre las tablas donde viven tus datos de contacto y tus documentos: la restricción está impuesta en la base de datos, no en la pantalla.",
+      "hook": "No es una promesa de buena fe: es un permiso que la agencia no tiene.",
+      "intro": "Tus datos de contacto y tus documentos viven en tablas sobre las que una agencia no tiene permiso de lectura. La restricción está impuesta en la base de datos, no en la pantalla.",
+      "example": "Ejemplo · así te ve la bolsa",
+      "displayName": "Carlos M.",
+      "displayNote": "Tu nombre de pila y la inicial de tu apellido. Nada más.",
       "seesTitle": "Lo que ve",
       "sees": [
-        "Tu nombre de pila y la inicial de tu apellido, en la forma «Carlos M.».",
-        "Tu edad calculada, tu ciudad, tu país de residencia y tu nacionalidad.",
-        "Tu experiencia laboral y los sectores en los que la tienes.",
-        "Tu nivel de inglés, si estás disponible y si necesitas alojamiento o transporte."
+        {
+          "label": "Edad",
+          "value": "28"
+        },
+        {
+          "label": "Residencia",
+          "value": "Valencia, España · nacionalidad española"
+        },
+        {
+          "label": "Experiencia",
+          "value": "Almacén y logística · 3 años"
+        },
+        {
+          "label": "Inglés",
+          "value": "B1"
+        },
+        {
+          "label": "Disponibilidad",
+          "value": "Ya · necesita alojamiento"
+        }
       ],
       "neverTitle": "Lo que no ve sin tu permiso",
+      "blocked": "Oculto: solo con tu permiso",
       "never": [
-        "Tus apellidos completos, tu correo electrónico y tu teléfono.",
-        "Tu dirección postal y tu fecha de nacimiento exacta.",
-        "Cualquiera de tus documentos: DNI, pasaporte, CV, carné, identificación fiscal.",
-        "Tu IBAN, que además no se comparte con una agencia nunca, ni con tu permiso."
+        "Apellido completo, correo y teléfono",
+        "IBAN, dirección postal y fecha de nacimiento",
+        "DNI, pasaporte, CV, carné, identificación fiscal"
       ],
       "nothingAsked": "Y hay datos que hoy {brand} ni siquiera te pide: ni IBAN, ni dirección postal, ni teléfono.",
-      "link": "Cómo se comparte tu perfil, campo a campo",
-      "hook": "No es una promesa de buena fe: es un permiso que la agencia no tiene."
+      "link": "Cómo se comparte tu perfil, campo a campo"
     },
-    "cost": {
-      "title": "Qué te cuesta esto",
-      "body": "Nada, y no es una oferta de lanzamiento: cobrar a un candidato por acceder a un empleo está prohibido en la Unión Europea. Ni comisión sobre tu sueldo, ni suscripción, ni pagar por destacar tu perfil.",
-      "who": "Hoy {brand} no cobra a nadie: no hay ninguna pasarela de pagos. El día que la haya, quien pague será la agencia.",
-      "hook": "Cero euros, y no por ahora: no hay ni pasarela de pagos."
+    "support": {
+      "title": "No llegas solo",
+      "hook": "Qué pasa el día que llegas",
+      "items": {
+        "agent": {
+          "when": "Antes de salir",
+          "title": "Un agente, con nombre",
+          "body": "Cuando una agencia te selecciona no hablas con un buzón de correo: tienes una persona asignada que te acompaña durante la llegada y mientras trabajas con la agencia."
+        },
+        "arrival": {
+          "when": "La llegada",
+          "title": "El viaje se organiza con él",
+          "body": "El viaje y el primer día se preparan con tu agente. En algunos casos te recogen en el aeropuerto o en un punto acordado entre los dos."
+        },
+        "paperwork": {
+          "when": "El primer día",
+          "title": "El papeleo se despacha en unas horas, no en semanas",
+          "body": "El mismo día. En algunas ofertas se te entrega ahí el vehículo de empresa; en otras te llevan directamente al alojamiento."
+        },
+        "pay": {
+          "when": "El primer cobro",
+          "title": "Y cobras pronto",
+          "body": "Hay ofertas que pagan por semana y otras que pagan por mes."
+        }
+      },
+      "note": "Así funciona el trabajo por agencia en Alemania. Lo que te toque a ti depende de la oferta y de la agencia que te seleccione."
+    },
+    "faq": {
+      "title": "Lo que te estás preguntando",
+      "hook": "Seis respuestas, incluidas las incómodas.",
+      "items": {
+        "cost": {
+          "q": "¿Cuánto me cuesta a mí?",
+          "a": "Nada, y no es una oferta de lanzamiento: cobrar a un candidato por acceder a un empleo está prohibido en la Unión Europea. Ni comisión sobre tu sueldo, ni suscripción, ni pagar por destacar tu perfil. Hoy {brand} no cobra a nadie: no hay ninguna pasarela de pagos. El día que la haya, quien pague será la agencia."
+        },
+        "who": {
+          "q": "¿Quién me contrata, {brand} o la agencia?",
+          "a": "Te contrata la agencia: es ella quien firma tu contrato y quien te paga. {brand} no es una empresa de trabajo temporal ni una agencia de colocación, no contrata a nadie y no es parte de ningún contrato de trabajo. Lo que hace es ponerte delante de la agencia."
+        },
+        "eu": {
+          "q": "¿Necesito pasaporte de la UE?",
+          "a": "Sí. Es un requisito, no una preferencia: estas ofertas son para quien puede trabajar en la Unión Europea sin permiso de trabajo, con el pasaporte o el documento de identidad de un país de la UE. El inglés, en cambio, depende de cada oferta."
+        },
+        "travel": {
+          "q": "¿Quién paga el viaje y el alojamiento?",
+          "a": "El viaje lo pagas tú. Y el alojamiento, cuando la oferta lo incluye, no es un regalo: se descuenta directamente de tu sueldo. Que una oferta diga «con alojamiento» significa que la agencia te lo busca y te lo adelanta, no que salga gratis."
+        },
+        "pay": {
+          "q": "¿Cuándo cobro?",
+          "a": "Depende de la agencia: hay ofertas que pagan por semana y otras que pagan por mes."
+        },
+        "data": {
+          "q": "¿Qué ven las agencias de mí?",
+          "a": "Tu perfil sin apellido completo ni forma de contactarte, y nada más hasta que tú le des permiso a una agencia concreta.",
+          "link": "Qué se comparte y qué no, campo a campo"
+        }
+      }
     }
   }
 }

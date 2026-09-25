@@ -5,20 +5,32 @@ import { cache } from 'react';
 import type { Locale } from '@/i18n/routing';
 import { locales } from '@/i18n/routing';
 import { listPublishedJobs, type JobSummary } from '@/lib/jobs';
+import { listOpportunities, type Opportunity } from '@/lib/opportunities';
 import type { Href } from '@/lib/seo';
 
 /**
- * Landings programáticas (ADR-11, ADR-23).
+ * Landings programáticas (ADR-11, ADR-23, enmendada por ADR-50).
  *
  * El motor de tráfico de un job board no es la portada: son las páginas de
  * long-tail —"trabajo en Alemania", "trabajo en Berlín", "logística en
  * Alemania", "trabajo con alojamiento en Alemania"— enlazadas con las vacantes
  * en los dos sentidos.
  *
- * **Solo existe la landing que tiene al menos una vacante publicada.** Se
- * derivan de las vacantes vivas, no de un producto cartesiano de catálogos: una
- * URL indexable y vacía es peor que no tenerla, exactamente por lo mismo que
- * una vacante no se publica sin traducción.
+ * **Una landing existe si tiene contenido**, y hay dos fuentes de contenido:
+ *
+ * 1. **Vacantes vivas**, que es la regla original de ADR-23 y sostiene las
+ *    cuatro familias: país, país + sector, país + alojamiento y ciudad.
+ * 2. **Un perfil de mercado** (ADR-30), y **solo para país + sector**: los
+ *    cinco perfiles de `lib/opportunities.ts` tienen cifras fechadas, jornada,
+ *    turnos, idioma y texto editorial largo, que es exactamente lo que a una
+ *    landing vacía le falta. Es la enmienda que ADR-23 ya tenía anotada y que
+ *    ADR-50 cierra: sin ella los diez 301 de ADR-49 y los cinco enlaces de las
+ *    tarjetas acaban en 404 mientras no haya vacantes.
+ *
+ * Lo que **no** cambia: el producto cartesiano de catálogos sigue prohibido.
+ * Los perfiles son cinco y contarlos es la contención (ADR-30), no un límite
+ * escrito en el código. Las landings de país, de ciudad y de alojamiento siguen
+ * derivando solo de vacantes: un perfil describe un sector, no una ciudad.
  */
 
 export type LandingKind = 'country' | 'sector' | 'housing' | 'city';
@@ -61,6 +73,11 @@ function group<K extends string>(
   }
 
   return groups;
+}
+
+/** Identidad de una landing de país + sector, para no duplicar una URL. */
+function sectorKey(params: Record<string, string>): string {
+  return `${params.country}/${params.sector}`;
 }
 
 function localeMap<T>(build: (locale: Locale) => T): Record<Locale, T> {
@@ -125,6 +142,49 @@ export const listLandings = cache(async (): Promise<Landing[]> => {
     }
   }
 
+  // Landings de perfil de mercado (ADR-50). Van DESPUÉS del bucle de vacantes
+  // a propósito: si el par país + sector ya existe porque hay una vacante viva,
+  // manda esa landing —con su lista de vacantes— y el perfil se pinta debajo,
+  // en su propio bloque. Nunca hay dos landings para la misma URL.
+  const existing = new Set(
+    landings
+      .filter((landing) => landing.kind === 'sector')
+      .map((landing) => sectorKey(landing.paramsByLocale[locales[0]])),
+  );
+
+  // Los cinco perfiles en los dos idiomas: la URL sí viaja dentro de cada
+  // `Opportunity` (`paramsByLocale`), pero el nombre traducido del país y del
+  // sector no, y el `h1` y el `hreflang` los necesitan en todos los idiomas.
+  const profilesByLocale = Object.fromEntries(
+    await Promise.all(
+      locales.map(async (locale) => [
+        locale,
+        new Map(
+          (await listOpportunities(locale)).map((profile) => [
+            profile.sector,
+            profile,
+          ]),
+        ),
+      ]),
+    ),
+  ) as Record<Locale, Map<string, Opportunity>>;
+
+  for (const profile of profilesByLocale[locales[0]].values()) {
+    if (existing.has(sectorKey(profile.paramsByLocale[locales[0]]))) continue;
+
+    const inLocale = (locale: Locale) =>
+      profilesByLocale[locale].get(profile.sector) ?? profile;
+
+    landings.push({
+      kind: 'sector',
+      pathname: '/work/[country]/[sector]',
+      paramsByLocale: localeMap((l) => ({ ...profile.paramsByLocale[l] })),
+      placeByLocale: localeMap((l) => inLocale(l).countryName),
+      sectorByLocale: localeMap((l) => inLocale(l).sectorName),
+      jobs: [],
+    });
+  }
+
   for (const [citySlug, inCity] of group(jobs, (job) => job.citySlug)) {
     const city = inCity[0].city ?? citySlug;
 
@@ -146,8 +206,13 @@ export const listLandings = cache(async (): Promise<Landing[]> => {
 type Resolved = { landing: Landing; jobs: JobSummary[] } | null;
 
 /**
- * Resuelve una URL de landing contra las vacantes del idioma pedido.
- * Devuelve `null` si la combinación no tiene vacantes: la página hace 404.
+ * Resuelve una URL de landing en el idioma pedido.
+ *
+ * Devuelve `null` si esa combinación no existe —y entonces la página hace 404—,
+ * **pero existir ya no es lo mismo que tener vacantes** (ADR-50): una landing de
+ * país + sector con perfil de mercado resuelve con `jobs: []`, y la página pinta
+ * el perfil. Quien lea `jobs.length === 0` como "esto no existe" reintroduce los
+ * 404 que ADR-49 dejó abiertos.
  */
 export async function resolveLanding(
   kind: LandingKind,

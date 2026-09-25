@@ -55,19 +55,13 @@ export const pathnames = {
     en: '/jobs/[slug]',
   },
 
-  // Oportunidades de mercado (fase 4b, ADR-30). Sección propia y separada de
-  // `/jobs`: no son vacantes, no llevan `JobPosting` y no se puede aplicar a
-  // ellas. Los segmentos son EXACTAMENTE los de la landing de país+sector, para
-  // que el día que se retiren cada URL tenga su equivalente concreto al que
-  // redirigir con un 301 — ver ADR-30.
-  '/opportunities': {
-    es: '/oportunidades',
-    en: '/opportunities',
-  },
-  '/opportunities/[country]/[sector]': {
-    es: '/oportunidades/[country]/[sector]',
-    en: '/opportunities/[country]/[sector]',
-  },
+  // ⛔ `/opportunities` y `/opportunities/[country]/[sector]` SE RETIRARON el
+  // 2026-09-25 (ADR-49). No se vuelven a añadir aquí: los perfiles de mercado
+  // viven ahora dentro de `/jobs`, y las doce URLs viejas se sirven con un 301
+  // desde `redirects()` de `next.config.ts` —listado a `/jobs`, ficha a su
+  // landing de país+sector, que es la salida que ADR-30 dejó preparada al
+  // elegir segmentos idénticos—. Si alguien vuelve a declararlas aquí, la ruta
+  // ganaría al redirect y resucitaría una sección que ya no existe.
 
   // Landings programáticas (ADR-23). Los segmentos dinámicos se rellenan con
   // slugs derivados del nombre TRADUCIDO del catálogo, así que la URL cambia

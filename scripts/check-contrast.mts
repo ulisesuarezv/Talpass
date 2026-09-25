@@ -145,6 +145,36 @@ const surfaces: Record<string, { rgb: Rgb; note: string }> = {
     note: 'aviso de acento',
   },
   'brand-strong': { rgb: tok('brand-strong'), note: 'superficie teal oscura' },
+  // El hero (paleta 2026-09-22): la única superficie oscura. Se mide contra
+  // el petróleo puro y contra la mezcla con el resplandor teal al 20 % de la
+  // esquina, que es donde cae el antetítulo en móvil.
+  hero: { rgb: tok('hero'), note: 'superficie del hero' },
+  'hero + resplandor': {
+    rgb: over(tok('brand'), tok('hero'), 0.2),
+    note: 'esquina del hero, `surface-hero`',
+  },
+  'hero-foreground/6 sobre hero': {
+    rgb: over(tok('hero-foreground'), tok('hero'), 0.06),
+    note: 'etiqueta del hero',
+  },
+  'hero-foreground/10 sobre hero': {
+    rgb: over(tok('hero-foreground'), tok('hero'), 0.1),
+    note: 'botón secundario del hero en hover',
+  },
+  'brand-accent-hover': {
+    rgb: tok('brand-accent-hover'),
+    note: 'CTA del hero en hover',
+  },
+  // La cabecera petróleo (2026-09-25) comparte superficie con el hero, pero
+  // añade una suya: el carril del conmutador de idioma, blanco al 12 %.
+  'hero-foreground': {
+    rgb: tok('hero-foreground'),
+    note: 'pastilla blanca del idioma activo, cabecera',
+  },
+  'hero-foreground/12 sobre hero': {
+    rgb: over(tok('hero-foreground'), tok('hero'), 0.12),
+    note: 'carril del conmutador de idioma, cabecera',
+  },
   'destructive/10 sobre fondo': {
     rgb: over(tok('destructive'), bg, 0.1),
     note: 'botón y badge destructivos',
@@ -328,6 +358,21 @@ const pairs: Pair[] = [
     kind: 'texto',
     where: 'antetítulo sobre marca',
   },
+  // La tarjeta de oferta (rediseño 2026-09-25): el antetítulo «región · país»
+  // se pinta sobre blanco en las cuatro normales y sobre salvia en la
+  // destacada, y el título vira a `--primary` en hover en las dos.
+  {
+    fg: 'brand-strong',
+    surface: 'card',
+    kind: 'texto',
+    where: 'región de la tarjeta de oferta',
+  },
+  {
+    fg: 'primary',
+    surface: 'brand-soft',
+    kind: 'texto',
+    where: 'título en hover, tarjeta destacada',
+  },
   {
     fg: 'brand-accent-strong',
     surface: 'background',
@@ -351,6 +396,121 @@ const pairs: Pair[] = [
     surface: 'card',
     kind: 'interfaz',
     where: 'icono dentro de tarjeta',
+  },
+
+  // --- El hero: superficie invertida (paleta 2026-09-22) -------------------
+  {
+    fg: 'hero-foreground',
+    surface: 'hero',
+    kind: 'texto',
+    where: '`h1` y texto del hero',
+  },
+  {
+    fg: 'hero-foreground',
+    surface: 'hero + resplandor',
+    kind: 'texto',
+    where: '`h1` bajo el resplandor',
+  },
+  {
+    fg: 'hero-muted',
+    surface: 'hero',
+    kind: 'texto',
+    where: 'entradilla del hero (`--muted-foreground` redefinido)',
+  },
+  {
+    fg: 'hero-muted',
+    surface: 'hero + resplandor',
+    kind: 'texto',
+    where: 'entradilla bajo el resplandor',
+  },
+  {
+    fg: 'brand-accent-bright',
+    surface: 'hero',
+    kind: 'texto',
+    where: 'antetítulo del hero (`--brand-strong` redefinido)',
+  },
+  {
+    fg: 'brand-accent-bright',
+    surface: 'hero + resplandor',
+    kind: 'texto',
+    where: 'antetítulo bajo el resplandor',
+  },
+  {
+    fg: 'hero-foreground',
+    surface: 'hero-foreground/6 sobre hero',
+    kind: 'texto',
+    where: 'texto de etiqueta del hero',
+  },
+  {
+    fg: 'brand-accent-bright',
+    surface: 'hero-foreground/6 sobre hero',
+    kind: 'interfaz',
+    where: 'icono de etiqueta del hero',
+  },
+  // La cabecera (2026-09-25). Comparte el petróleo con el hero, así que casi
+  // todos sus pares ya estaban; los propios son el carril del idioma y la
+  // pastilla blanca del idioma activo, que invierte el par del hero.
+  {
+    fg: 'hero-muted',
+    surface: 'hero',
+    kind: 'texto',
+    where: 'enlace «Ofertas» y idioma inactivo, cabecera',
+  },
+  {
+    fg: 'hero-muted',
+    surface: 'hero-foreground/12 sobre hero',
+    kind: 'texto',
+    where: 'idioma inactivo sobre su carril, cabecera',
+  },
+  {
+    fg: 'hero',
+    surface: 'hero-foreground',
+    kind: 'texto',
+    where: 'idioma activo: tinta petróleo sobre la pastilla blanca',
+  },
+  {
+    fg: 'brand-accent',
+    surface: 'hero',
+    kind: 'interfaz',
+    where: 'botón «Entrar» sobre la cabecera',
+  },
+  {
+    fg: 'brand-accent-ink',
+    surface: 'brand-accent',
+    kind: 'texto',
+    where: 'texto de «Entrar», cabecera',
+  },
+  {
+    fg: 'hero-foreground',
+    surface: 'hero-foreground/10 sobre hero',
+    kind: 'texto',
+    where: 'botón secundario del hero en hover',
+  },
+  {
+    fg: 'brand-accent',
+    surface: 'hero',
+    kind: 'interfaz',
+    where: 'CTA naranja contra el petróleo',
+  },
+  {
+    fg: 'brand-accent-ink',
+    surface: 'brand-accent-hover',
+    kind: 'texto',
+    where: 'CTA del hero en hover',
+  },
+  {
+    fg: 'hero-foreground',
+    surface: 'hero',
+    kind: 'interfaz',
+    where: 'anillo de foco dentro del hero (`--ring` redefinido)',
+    alpha: 0.5,
+  },
+  {
+    fg: 'hero-foreground',
+    surface: 'hero',
+    kind: 'interfaz',
+    where: 'borde del botón secundario del hero',
+    alpha: 0.4,
   },
 
   // --- Errores -------------------------------------------------------------

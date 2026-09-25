@@ -1,60 +1,150 @@
 {
   "Home": {
-    "eyebrow": "Germany · for Spanish- and Portuguese-speaking candidates",
+    "eyebrow": "The first portal connecting you with temp agencies in Europe",
     "title": "Your direct route to your next job in Europe.",
-    "subtitle": "{brand} connects you with verified temporary work agencies in Central Europe, and lets you see who would be hiring you before you give your name. We start with Germany.",
-    "ctaOpportunities": "See what Germany actually pays",
-    "ctaJobs": "See the published jobs",
-    "ctaSignup": "Create my account",
-    "note": "Candidates are never charged. Browsing jobs is free and needs no account.",
-    "how": {
-      "title": "How it works",
-      "steps": {
-        "account": {
-          "title": "You create your account and fill in your profile",
-          "body": "Your experience, your level of English and what you need in order to move. It takes a few minutes on your phone."
+    "subtitle": "Move abroad without worrying about where to live or how to get there.",
+    "tags": {
+      "eu": "Just EU citizenship",
+      "english": "English per offer"
+    },
+    "tagsLabel": "What you get",
+    "perks": {
+      "label": "Why start here",
+      "items": {
+        "housing": {
+          "lead": "Housing and transport",
+          "rest": "in most offers."
         },
-        "documents": {
-          "title": "You upload your documents and a person reviews them",
-          "body": "Your ID document and your CV. The review is not done by an algorithm, and until it is done you are not visible to any agency."
+        "speed": {
+          "lead": "Start in record time",
+          "rest": "in different EU countries."
         },
-        "pool": {
-          "title": "Agencies see you pseudonymised",
-          "body": "They see “Carlos M.” and your experience. They do not see your full surname, your email or your documents."
-        },
-        "consent": {
-          "title": "You decide who opens each document",
-          "body": "An agency that wants to see a document of yours has to ask you. You grant or refuse, silence grants nothing, and you can revoke a permission you already gave."
+        "experience": {
+          "lead": "Little experience?",
+          "rest": "Some offers don’t ask for it."
         }
-      },
-      "hook": "Four steps, and you pay nothing in any of them."
+      }
+    },
+    "ctaJobs": "See offers",
+    "ctaSignup": "Create my account",
+    "steps": {
+      "title": "How you start",
+      "items": {
+        "signup": {
+          "title": "Create your account",
+          "body": "Your experience, your English and what you need to move. From your phone, in minutes."
+        },
+        "verify": {
+          "title": "Verify your papers",
+          "body": "A person reviews your ID and CV once, and every agency can see you."
+        },
+        "hired": {
+          "title": "Get hired",
+          "body": "Agencies offer you work. You decide who gets to see your documents."
+        }
+      }
+    },
+    "offers": {
+      "title": "Offers in Germany",
+      "seeAll": "See all"
     },
     "privacy": {
       "title": "What an agency sees about you, and what it does not",
-      "intro": "This is not a statement of intent. An agency has no read permission on the tables where your contact details and your documents live: the restriction is enforced in the database, not on the screen.",
+      "hook": "Not a promise made in good faith: a permission the agency does not have.",
+      "intro": "Your contact details and your documents live in tables an agency has no read permission on. The restriction is enforced in the database, not on the screen.",
+      "example": "Example · how the talent pool shows you",
+      "displayName": "Carlos M.",
+      "displayNote": "Your first name and the initial of your surname. Nothing else.",
       "seesTitle": "What it sees",
       "sees": [
-        "Your first name and the initial of your surname, in the form “Carlos M.”.",
-        "Your calculated age, your city, your country of residence and your nationality.",
-        "Your work experience and the sectors you have it in.",
-        "Your level of English, whether you are available and whether you need housing or transport."
+        {
+          "label": "Age",
+          "value": "28"
+        },
+        {
+          "label": "Residence",
+          "value": "Valencia, Spain · Spanish nationality"
+        },
+        {
+          "label": "Experience",
+          "value": "Warehouse and logistics · 3 years"
+        },
+        {
+          "label": "English",
+          "value": "B1"
+        },
+        {
+          "label": "Availability",
+          "value": "Now · needs housing"
+        }
       ],
       "neverTitle": "What it does not see without your permission",
+      "blocked": "Hidden: only with your permission",
       "never": [
-        "Your full surname, your email address and your phone number.",
-        "Your postal address and your exact date of birth.",
-        "Any of your documents: ID card, passport, CV, driving licence, tax identification.",
-        "Your IBAN, which on top of that is never shared with an agency, not even with your permission."
+        "Full surname, email and phone number",
+        "IBAN, postal address and date of birth",
+        "ID card, passport, CV, driving licence, tax identification"
       ],
       "nothingAsked": "And there are details {brand} does not even ask you for today: no IBAN, no postal address, no phone number.",
-      "link": "How your profile is shared, field by field",
-      "hook": "Not a promise made in good faith: a permission the agency does not have."
+      "link": "How your profile is shared, field by field"
     },
-    "cost": {
-      "title": "What this costs you",
-      "body": "Nothing, and it is not a launch offer: charging a candidate for access to a job is prohibited in the European Union. No commission on your wage, no subscription, no paying to feature your profile.",
-      "who": "{brand} charges nobody today: there is no payment gateway at all. The day there is one, the agency is who pays.",
-      "hook": "Zero, and not just for now: there is no payment gateway at all."
+    "support": {
+      "title": "You don’t arrive alone",
+      "hook": "What happens the day you get there",
+      "items": {
+        "agent": {
+          "when": "Before you leave",
+          "title": "An agent, with a name",
+          "body": "When an agency picks you, you are not writing to an inbox: you get a person assigned to you, who is there through your arrival and while you work with the agency."
+        },
+        "arrival": {
+          "when": "The arrival",
+          "title": "The trip is arranged with them",
+          "body": "The journey and the first day are prepared with your agent. In some cases they pick you up at the airport or at a point the two of you agree on."
+        },
+        "paperwork": {
+          "when": "The first day",
+          "title": "Paperwork takes hours, not weeks",
+          "body": "Same day. In some offers you are handed the company vehicle right there; in others they take you straight to your accommodation."
+        },
+        "pay": {
+          "when": "The first payday",
+          "title": "And you get paid soon",
+          "body": "Some offers pay weekly and others pay monthly."
+        }
+      },
+      "note": "This is how agency work runs in Germany. What applies to you depends on the offer and on the agency that picks you."
+    },
+    "faq": {
+      "title": "What you are wondering",
+      "hook": "Six answers, including the uncomfortable ones.",
+      "items": {
+        "cost": {
+          "q": "What does this cost me?",
+          "a": "Nothing, and it is not a launch offer: charging a candidate for access to a job is prohibited in the European Union. No commission on your wage, no subscription, no paying to feature your profile. {brand} charges nobody today: there is no payment gateway at all. The day there is one, the agency is who pays."
+        },
+        "who": {
+          "q": "Who hires me, {brand} or the agency?",
+          "a": "The agency hires you: it signs your contract and it pays you. {brand} is not a temp agency nor a placement agency, it hires nobody and it is not party to any employment contract. What it does is put you in front of the agency."
+        },
+        "eu": {
+          "q": "Do I need an EU passport?",
+          "a": "Yes. It is a requirement, not a preference: these offers are for people who can work in the European Union without a work permit, with the passport or ID card of an EU country. English, on the other hand, depends on each offer."
+        },
+        "travel": {
+          "q": "Who pays for the trip and the accommodation?",
+          "a": "You pay for the trip. And the accommodation, when the offer includes it, is not a gift: it is deducted straight from your wage. An offer saying “with accommodation” means the agency finds it and fronts it for you, not that it comes free."
+        },
+        "pay": {
+          "q": "When do I get paid?",
+          "a": "It depends on the agency: some offers pay weekly and others pay monthly."
+        },
+        "data": {
+          "q": "What do agencies see about me?",
+          "a": "Your profile without your full surname and without any way to contact you, and nothing more until you give a specific agency permission.",
+          "link": "What is shared and what is not, field by field"
+        }
+      }
     }
   }
 }

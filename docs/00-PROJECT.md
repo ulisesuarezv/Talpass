@@ -155,6 +155,10 @@ que sí se usan: `visual-qa` —capturas, 390 px real, Lighthouse— y
 `nextjs-app-router` para metadatos y rutas; `ui-polish` entra en la C2. Decisión
 de Ulises del 2026-08-18, reafirmada el 2026-08-20.
 
+> ⚠️ **Enmendado por ADR-47 (2026-09-22):** Ulises autorizó `layout-disruptivo`
+> (solo composición) y `gsap-senior-animator` (con condición de rendimiento).
+> R3F y shaders siguen fuera.
+
 ### ADR-11 · Un solo dominio, con el middleware acotado
 
 Sitio público, portal ETT y backoffice conviven en un dominio: `/[locale]/...` público, `/agency`, `/admin` privados con `noindex`.
@@ -387,6 +391,16 @@ país + sector (`/es/trabajo/alemania/logistica`), país + alojamiento
 **Solo existe la combinación que tiene al menos una vacante publicada**, y
 `dynamicParams = false`: lo que no está generado devuelve 404.
 
+> ✏️ **Enmendado el 2026-09-26 por ADR-50, y solo en un punto.** La familia
+> **país + sector** puede existir **sin vacante** cuando ese par tiene un perfil
+> de mercado (ADR-30): la condición deja de ser «tiene vacante» y pasa a ser
+> «tiene contenido», que es lo que esta ADR quiso decir desde el principio. Las
+> otras tres familias —país, ciudad y alojamiento— siguen derivando solo de
+> vacantes, y `dynamicParams = false` no se toca: lo que cambia es la lista de
+> pares que se generan, no la regla de que lo no generado es 404. El producto
+> cartesiano de catálogos sigue prohibido; los perfiles son cinco y contarlos es
+> la contención.
+
 _Motivo:_ el producto cartesiano de catálogos daría cientos de URLs indexables
 vacías. Es el mismo argumento por el que una vacante no se publica sin
 traducción, aplicado a la capa de arriba: gastar el rastreo de Google en páginas
@@ -404,6 +418,11 @@ Viven en su propio árbol de rutas y **nunca como filas en `jobs`**, así que
 `listLandings` sigue derivando de vacantes vivas y esta ADR no se toca. Lo que sí
 está pendiente es **enmendarla el día de las landings de mercado**, que sí querrán
 existir sin vacante; está anotado en la ficha de la 4b en el roadmap.
+
+> Ese día llegó el 2026-09-26 y la enmienda está arriba (ADR-50). Los perfiles
+> siguen sin ser filas en `jobs` —eso es ADR-30 y no se ha tocado—: lo que hace
+> `listLandings` es **añadir** los cinco pares con perfil a los que salen de las
+> vacantes, sin duplicar el par que ya tenga las dos cosas.
 
 **Y los slugs de las oportunidades tienen que ser compatibles con los de aquí**,
 porque al retirarlas se redirige cada una con 301 a su landing equivalente.
@@ -851,6 +870,13 @@ salida**: tiene un estado vacío honesto que dice que se están cerrando los
 primeros acuerdos y ofrece un botón a las oportunidades (`jobs/page.tsx:84-97`),
 y es `noindex` mientras no haya vacantes. Está bien hecha y no se ha tocado.
 
+✏️ **Enmendado el 2026-09-26.** Ese estado vacío **ya no existe**: Ulises lo
+hizo retirar junto con el rótulo de los perfiles. Y el `noindex` tampoco (ADR-49).
+Hoy `/ofertas` sin vacantes es el `h1`, una línea que dice que se están cerrando
+acuerdos con agencias y que pronto habrá más ofertas, y las cinco tarjetas. El
+criterio de esta ADR —el botón grande lleva a lo que tiene contenido— sigue
+vivo y se cumple solo: la página tiene contenido siempre.
+
 _Las tres salidas que se sopesaron:_
 
 1. **Retirar `/ofertas` de la superficie pública** hasta que haya vacantes.
@@ -915,6 +941,10 @@ Hoy el backoffice y las plantillas de correo siguen viajando al HTML de la home.
 Sigue siendo una tarea propia y sigue sin hacerse.
 
 ### ADR-38 · El sistema visual vive en los tokens, y el reparto de papeles lo decide el contraste medido
+
+> ⚠️ **Los valores de la paleta de este ADR ya no son los de `globals.css`** desde
+> el 2026-09-22: ADR-48 los sustituyó por una propuesta pendiente de ajuste. El
+> método (tokens, reparto por contraste medido, `check:contrast`) sigue vigente.
 
 Decidido en la fase C2, el 2026-08-20. Aplica la paleta que eligió Ulises
 —primario `#0D9488`, primario dark `#134E4A`, acento `#F97316`— sin cambiarla y
@@ -1241,6 +1271,342 @@ enfrente. Es el copy que la fase C1 existió para quitar.
 **Regla que queda:** un gancho de este sitio tiene que poder señalarse en el
 código o en un documento fechado. Si no se puede, no se escribe — da igual lo
 bien que suene.
+
+> ⚠️ **Enmendado por ADR-45 (2026-09-22):** Ulises reabrió «el primero» y la
+> regla de ganchos verificables para la home. «Sin intermediarios» sigue
+> descartado.
+
+---
+
+### ADR-45 · Ulises reabre ADR-44: tres reclamos de la home se publican sin prueba, a sabiendas
+
+_(2026-09-22. Rediseño, sesión 1. El PM planteó el riesgo de cada uno antes de
+escribirlos, y Ulises eligió las tres veces la versión fuerte.)_
+
+**Decisión de Ulises, con el riesgo asumido y escrito.** La home pasa a
+afirmar:
+
+| Reclamo                                                              | Por qué no se puede señalar en el código ni en un documento                                          |
+| -------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| «El primer portal que te conecta con ETTs en Europa» (eyebrow)       | Mokka360 existe. Superlativo de exclusividad sin prueba: §5 UWG, y el Impressum da un domicilio real |
+| «Alojamiento y transporte en la mayoría de ofertas» (franja `perks`) | No hay ninguna ETT ni ninguna oferta publicada. La fuente de mercado del 2026-08-16 dice 0 de 14     |
+| «Empieza en tiempo récord en distintos países de la UE» (`perks`)    | No hay ni un plazo medido, y el MVP es solo Alemania                                                 |
+
+Van también, y estos sí son ciertos o dependen solo de la oferta: «Solo
+ciudadanía UE» e «Inglés según la oferta» (tags del hero) y «¿Poca experiencia?
+Hay ofertas que no la piden» (`perks`; el perfil de producción lo documenta).
+_Dónde vive cada frase cambió dos veces el mismo día; la tabla dice dónde
+quedaron al cerrar la sesión (`messages/home/*.json`)._
+
+**El motivo de Ulises:** esos son los puntos fuertes reales del producto, y
+remachar lo que se da por supuesto («al candidato no se le cobra nunca») no
+convierte. Por eso **la caja naranja `Home.note` se retira del hero**. La regla
+de negocio 7 sigue intacta: solo deja de ser el titular.
+
+**Contradicción conocida, sin resolver:** las páginas de `/oportunidades` dicen
+«En algunas ofertas» sobre el alojamiento, y la home dice «la mayoría». La
+decisión de alinearlas es de Ulises.
+
+**Para una sesión futura:** esto **no se «corrige» de oficio**. Si cambia algún
+hecho (llega una ETT, hay una queja o un _Abmahnung_), se revisa con Ulises.
+
+---
+
+### ADR-46 · La home pasa a ser Indeed-first, y el sistema de layout deja de ser una columna centrada
+
+_(2026-09-22. Rediseño, sesión 1. Levanta el «no rehacer la home» de
+`ESTADO.md`. Boceto de Ulises.)_
+
+**El problema, en palabras de Ulises:** la home «parece un Word». Una columna de
+`max-w-2xl` centrada, un `gap-12` igual entre todo y un hero indistinguible de
+las secciones.
+
+**Lo que se hizo:**
+
+- **Tres primitivas en `globals.css`** con el patrón de «una clase por papel»
+  de la escala tipográfica: `container-page` (ancho `max-w-6xl`, que comparten
+  cabecera, pie y home), `section-y` (el ritmo vertical) y `surface-hero`. Sus
+  valores son provisionales: **el estilo visual lo marcarán las referencias que
+  traiga Ulises** en sesiones siguientes.
+- **Arriba, el boceto:** el hero con superficie propia a la izquierda (eyebrow,
+  `h1`, subtítulo, tags, CTA) y los 3 pasos a la derecha. Debajo, a todo el
+  ancho, **las ofertas**: los perfiles de mercado de `/oportunidades` con la
+  misma `OpportunityCard`. Siguen sin emitir `JobPosting` (ADR-30 intacto).
+- **En móvil las ofertas asoman en la primera pantalla** (375×667: el `h2` de
+  ofertas en y=570 y la primera tarjeta en y=613). Para lograrlo, el subtítulo
+  se oculta por debajo de `sm`, los tags pasan a una fila deslizable y los
+  pasos se quedan en una fila de tres sin cuerpo.
+- **La home sale de `(public)` a `(home)`.** Es el hallazgo técnico de la
+  sesión: el `loading.tsx` de `(public)` sirve el HTML estático como esqueleto
+  seguido del contenido oculto. Con el documento en 126 KB el esqueleto llegaba
+  a pintarse y el intercambio daba **CLS 0,24** en 2 de 3 pasadas. Fuera de esa
+  frontera, el CLS vuelve a 0,001. Ninguna otra ruta cambia de grupo.
+- **La home tiene ahora 5 `h2`**: pasos (visualmente oculto en móvil), ofertas y
+  las tres secciones de siempre. Toda cifra de «3 `h2`» es anterior a hoy.
+
+**Lo que NO se tocó, a propósito:** el contenido de «Cómo funciona», de
+privacidad y de coste (se decide en otra sesión), la paleta, la tipografía y el
+resto de páginas, que siguen en columnas `max-w-2xl/3xl` centradas.
+
+**Medido el 2026-09-22 en local** (`next start`, Lighthouse 12 móvil, mediana de
+3, el mismo día y en la misma máquina): el árbol anterior da **97 / LCP 2,6 s**
+(92, 99, 97) y el nuevo **98 / LCP 2,5 s** (98, 99, 96), con CLS 0,001.
+
+**Iteración 2, el mismo día, con `layout-disruptivo` (ADR-47).** A Ulises la
+sesión 1 le pareció «abarrotada». Lo que cambió sobre lo de arriba:
+
+- El hero se queda con eyebrow, `h1`, un subtítulo de **una línea** (oculto en
+  móvil), **2 tags** y los CTA. Los otros tres puntos fuertes pasan a una
+  **franja de ventajas** (`perks`, sin `h2`, con `aria-label`) entre el hero y
+  las ofertas; en móvil va detrás de las ofertas con `order-last`.
+- **Escala de espaciado con jerarquía** en `globals.css`: `stack-tight`,
+  `stack-items`, `stack-group`, `stack-block`, `pad-tile`, y `surface-panel`
+  para los paneles. `surface-hero` lleva ya su padding; si cambia el del `lg`,
+  hay que cambiar el `lg:pt-12` de la columna de pasos (está comentado).
+- Los 3 pasos son un solo panel dividido por líneas.
+- Móvil 375×667 al cerrar el día: `h2` de ofertas en y=553 y primera tarjeta
+  en y=600, con ~28 px de margen.
+
+La paleta y la tipografía de la iteración 3 están en ADR-48.
+
+---
+
+### ADR-47 · Los agentes de diseño entran, salvo R3F y shaders
+
+_(2026-09-22. Decisión de Ulises. Enmienda la política de agentes de ADR-10 y
+la regla 2 de la fase C1 del roadmap.)_
+
+**Se usan** `layout-disruptivo`, `ui-polish`, `gsap-senior-animator` y
+`visual-qa`. **Siguen fuera** `r3f-scene-builder` y `shader-artist`.
+
+**Las condiciones con las que entran**, que son las que mantenían la regla
+anterior:
+
+- **`layout-disruptivo` solo aporta composición y jerarquía**, dentro del
+  boceto de Ulises. Anti-grid y estilo Awwwards no: el sitio es un portal de
+  empleo para gente que entra desde el móvil.
+- **GSAP no puede empeorar la línea base de Lighthouse medida ese mismo día**
+  (mediana de 3, ADR-10). Si la empeora, la animación se hace en CSS. Nada que
+  reserve altura ni desplace el layout: el CLS está en 0,001 y el margen de las
+  ofertas en móvil, en ~28 px.
+- **Se encadenan de uno en uno**, porque tocan los mismos ficheros, y **el PM
+  verifica cada paso** (checks, capturas, medidas) antes del siguiente. Ulises
+  ve el resultado de cada uno.
+
+---
+
+### ADR-48 · Paleta «petróleo y azafrán»: propuesta, pendiente de ajuste por Ulises
+
+_(2026-09-22. Propuesta de `ui-polish` a petición de Ulises, que no tenía
+referencias y prefirió ajustar sobre algo. **No es definitiva.** Sustituye en
+los tokens a la paleta de ADR-38, pero conserva su método: reparto de papeles
+medido y `pnpm check:contrast` como puerta.)_
+
+**El diagnóstico:** toda la página estaba entre el 93 % y el 98 % de
+luminosidad (fondo menta, bordes teal claros), así que nada mandaba sobre nada.
+
+**La propuesta:** el hero es **la única superficie oscura del sitio**
+(`--hero` `#0B2E2D`, texto blanco, con un resplandor teal en CSS). El CTA
+principal va en **naranja pleno** `#F97316` con tinta encima: es el punto focal.
+Sobre claro el naranja da 2,80 y no vale, pero sobre el petróleo da 5,19.
+`--primary` pasa a `#0B4744`, los neutros de slate azulado a gris verdoso
+(fondo `#F6F7F5`) y `--brand-soft` a salvia `#E4F0ED`. **`surface-hero` redefine
+dentro de sí** `--foreground`, `--muted-foreground`, `--brand-strong`,
+`--border` y `--ring`, así que las clases de siempre salen ya adaptadas al
+fondo oscuro. La tabla completa, con los ratios, está en el comentario «LA
+PALETA» de `globals.css`.
+
+**Otros cambios del mismo paso:** `type-display` con `clamp()` hasta 52 px (30
+px en móvil, como antes), hover y foco nuevos en `opportunity-card.tsx`
+(también en `/oportunidades`), la línea bajo la cabecera pasa a neutra y hay
+13 pares nuevos en `scripts/check-contrast.mts`.
+
+⚠️ **Trampa de herramienta:** si un token de `:root` lleva un comentario largo en
+la misma línea, Prettier lo parte y `check-contrast.mts` deja de leerlo. Hay
+que mantener cortos esos comentarios.
+
+⚠️ **Coste medido, sin bisecar:** con este paso la home pasó de 98 / LCP 2,5 s
+a **96 / LCP 2,8 s** (mediana de 3, las tres iguales; el elemento LCP es el
+mismo y el tiempo extra es _render delay_). Hay que bisecarlo antes de dar la
+paleta por cerrada.
+
+**Pendiente de Ulises:** los tonos, cuánto naranja quiere, si los pasos van en
+blanco o en salvia junto al hero oscuro, y si la franja de ventajas pide más
+color.
+
+### ADR-49 · `/oportunidades` se retira: los perfiles de mercado se mudan a `/ofertas` y la separación pasa a ser de rótulo
+
+_(2026-09-25. Decisión de Ulises. Ejecuta la salida que ADR-30 dejó preparada y
+enmienda a ADR-36 y al `noindex` de la fase 4b.)_
+
+**La sección `/oportunidades` (`/opportunities`) desaparece del sitio.** Queda
+`/ofertas` (`/jobs`), y dentro de ella los cinco perfiles de mercado, debajo de
+las vacantes y con encabezado propio.
+
+🔴 **Enmienda del 2026-09-26, y hay que leerla entera.** Ulises hizo retirar de
+`/ofertas` el estado vacío, el rótulo «Perfiles de mercado», el encabezado y la
+línea «esto no son vacantes», por repetitivos. **De las tres patas que esta ADR
+dejó sosteniendo la separación, en esa página queda una y media**: no se emite
+`JobPosting` y no hay botón de aplicar, pero **ningún texto dice ya que esas
+cinco tarjetas no son ofertas de una empresa**. En su lugar va una línea que
+dice que se están cerrando acuerdos con agencias y que pronto habrá más ofertas
+(`Jobs.upcoming`, y **no dice «los primeros acuerdos»**: insinuaba que no hay
+ninguno cerrado, y Ulises lo corrigió). La línea `Opportunities.notJobs` sigue
+viva **en las landings** `/trabajo/país/sector` sin vacante (ADR-50), que es
+donde aterrizan los 301. Es deuda conocida y aceptada, no un descuido. No hay ya dos secciones que expliquen lo
+mismo con dos nombres, que era el motivo: el candidato entraba por la home,
+veía cinco «ofertas», pulsaba «Ver todas» y llegaba a una sección con otro
+nombre, mientras «Ofertas» —la única entrada de la cabecera— solo sabía decir
+que estaba vacía.
+
+**1. Las doce URLs viejas se sirven con un 301, y el destino no es el mismo
+para todas.** El listado va al listado; **cada ficha va a su landing de país +
+sector**, que es su equivalente uno a uno, no a una página genérica —un 301 a
+algo que no es el equivalente lo trata Google como _soft 404_, y ADR-30 eligió
+los segmentos idénticos precisamente para que esto fuera mecánico—:
+
+| Vieja                                      | Nueva                           |
+| ------------------------------------------ | ------------------------------- |
+| `/es/oportunidades`                        | `/es/ofertas`                   |
+| `/en/opportunities`                        | `/en/jobs`                      |
+| `/es/oportunidades/alemania/<sector>` (×5) | `/es/trabajo/alemania/<sector>` |
+| `/en/opportunities/germany/<sector>` (×5)  | `/en/work/germany/<sector>`     |
+
+Van en `redirects()` de `next.config.ts`, con `statusCode: 301` fijado a mano
+—`permanent: true` emite 308— y **no** en `src/proxy.ts`. El motivo es de
+orden de ejecución: `redirects()` se resuelve **antes** que el proxy y antes
+del sistema de ficheros, así que la redirección no atraviesa `updateSession`,
+no toca cookies y no vuelve dinámica ninguna ruta (ADR-11, ADR-13); en Vercel
+son reglas del borde y no una función. Meterlas en el proxy habría añadido
+comparaciones de cadena a **todas** las peticiones del sitio, porque su
+`matcher` es amplio por i18n, para atender a doce URLs muertas.
+
+Y por eso mismo **esas dos rutas no vuelven a `pathnames`**: si volvieran, la
+ruta ganaría al redirect.
+
+**2. `/ofertas` deja de ser `noindex` y vuelve al sitemap siempre.** El
+`noindex` de la fase 4b no era una política sino un hecho —sin vacantes no
+había nada que leer—, y hoy la página tiene contenido con o sin ellas. Al
+retirarse las diez fichas, mantenerlo habría sacado del índice **todo** el
+contenido de mercado del sitio a la vez.
+
+**3. La convivencia futura está decidida de antemano.** El día que haya
+vacantes reales van **arriba, en su propio bloque**, y los perfiles **debajo,
+con su propio rótulo**. Nunca mezclados en la misma rejilla. No es cuestión de
+gusto: la mezcla es justo lo que hace indistinguible un puesto de una
+descripción de mercado.
+
+**4. 🔴 Lo que hay que leer antes de tocar esa página: la separación dejó de ser
+estructural.** Hasta hoy un perfil y una vacante vivían en **árboles de rutas
+distintos**, y confundirlos era imposible por construcción —ese era el punto 3
+de ADR-30—. A partir de ahora conviven en la misma URL, y lo que sostiene la
+garantía son tres cosas y solo tres:
+
+1. **El rótulo**: antetítulo «Perfiles de mercado», encabezado propio y una
+   línea antes de la primera tarjeta que dice qué no son —«no hay una empresa
+   detrás, ni fecha de incorporación, ni forma de aplicar»—. Esto **repone en
+   parte lo que ADR-43 retiró**, y se repone porque lo que hacía prescindible
+   aquel aviso era la separación de rutas, que ya no existe.
+2. **Cero `JobPosting`**, que es el interruptor de ADR-30 y sigue intacto: lo
+   emiten las vacantes reales y nadie más. Se verifica sobre el HTML servido.
+3. **Ningún botón de aplicar** sobre un perfil, y la llamada a crear cuenta
+   cambia de copy según haya vacantes o no.
+
+Quien añada a `OpportunityCard` una empresa, una fecha de incorporación o un
+«aplicar» rompe las tres a la vez y **no queda red**.
+
+**Lo que se pierde, dicho sin adornos.** Desaparecen **diez páginas indexables**
+con texto largo por perfil —«qué se hace», «qué se pide», «qué condiciones se
+ven»— y el sitio se queda con una sola página de mercado, la de las tarjetas.
+El copy de esos apartados sigue en `messages/` sin nadie que lo pinte
+(≈7,7 KB por idioma, que viajan en el HTML de todas las páginas por ADR-37):
+o encuentra sitio, o se borra. Es decisión de Ulises y está anotada.
+
+**🔴 Y una consecuencia que hay que resolver antes de desplegar esto.** Una
+landing de país + sector **solo existe si hay una vacante viva** en ella
+(ADR-23, `dynamicParams = false`). Con cero vacantes, **los diez 301 acaban en
+404 y las cinco tarjetas enlazan a 404**. Medido el 2026-09-25 contra la base
+local, que tiene tres vacantes de demostración: los tres sectores con vacante
+resuelven 200 y los dos sin ella, 404. En producción, con cero vacantes, serían
+los diez. Las salidas son tres y las tres son de Ulises: enviar las fichas a
+`/ofertas` mientras no haya landings, dejar el perfil sin enlace hasta que su
+landing exista, o enmendar ADR-23 para que una landing pueda existir con
+contenido de mercado y sin vacante —que es la enmienda que la propia ADR-23 ya
+tenía anotada—.
+
+> ✅ **Resuelto el 2026-09-26: Ulises eligió la tercera.** Es ADR-50. Los doce
+> 301 se comprobaron uno a uno con su destino: **los doce destinos en 200**, y
+> los dos sectores sin vacante en local (`carnico` y `agricola`) también.
+
+### ADR-50 · Una landing de país + sector existe sin vacante, y entonces enseña el perfil de mercado
+
+_(2026-09-26. Decisión de Ulises. Enmienda ADR-23 y cierra el punto rojo que
+ADR-49 dejó abierto. No es diseño: es el destino de doce redirecciones 301 en un
+sitio indexado.)_
+
+**El `generateStaticParams` de `/work/[country]/[sector]` pasa a ser la unión de
+dos conjuntos**: los pares país + sector con al menos una vacante viva —lo de
+siempre— y los pares que tienen perfil de mercado (`OPPORTUNITY_PROFILES`, los
+cinco de Alemania). Sin duplicados, y `dynamicParams = false` se queda.
+
+**Por qué había que hacerlo antes de desplegar ADR-49.** El 301 de cada ficha
+retirada apunta a su landing equivalente, y en producción hay **cero vacantes**:
+sin esto, las diez fichas redirigían a un 404 —que es la peor forma de retirar
+una URL con historial, peor que no redirigir— y las cinco tarjetas de la home y
+de `/ofertas`, las dos páginas más importantes del sitio, enlazaban a 404. El
+destino del 301 fue lo que forzó la decisión, no una idea de producto.
+
+**Y se recupera lo que ADR-49 dejó huérfano.** El copy largo de cada perfil
+—«el perfil», «qué se hace», «qué se pide», «qué condiciones se ven»— seguía en
+`messages/` (≈7,7 KB por idioma, viajando en el HTML de todas las páginas por
+ADR-37) sin que nadie lo pintara. Ahora lo pinta la landing, que es justo la URL
+a la que ya redirige la ficha que lo pintaba: el contenido no cambia de texto, y
+la página que lo recibe es la que Google ya va a rastrear por el 301.
+
+**Las dos formas de la página, y el orden no es negociable:**
+
+1. **Con vacantes**: la landing hace lo de siempre —`h1`, sus vacantes
+   enlazadas, vecinas— y el perfil va **debajo**, en su propio bloque con su
+   rótulo. Nunca en la misma lista (ADR-49, punto 3).
+2. **Sin vacantes**: no hay rejilla vacía; el contenido es el perfil, y el
+   intro y la meta lo dicen en vez de anunciar «0 ofertas verificadas», que
+   describiría una página que no es esa.
+
+**🔴 La frontera de ADR-49 se mueve otra vez, y hacia el mismo lado.** Ahora un
+perfil de mercado vive también en el árbol `/trabajo`, que es el de las
+vacantes. Lo que sostiene la garantía siguen siendo las mismas tres cosas, y
+aquí las tres están verificadas sobre el HTML servido:
+
+1. **El rótulo**: antetítulo «Perfiles de mercado», `h2` propio y la línea
+   `notJobs` —«no hay una empresa detrás, ni fecha de incorporación, ni forma de
+   aplicar»— antes del primer dato.
+2. **Cero `JobPosting` y cero `application/ld+json`** en una landing sin
+   vacantes. Medido: `0` y `0`. En una landing con vacantes el marcado lo
+   emiten las fichas de vacante, nunca el bloque del perfil.
+3. **Ningún botón de aplicar**: la llamada a crear cuenta es la variante que ya
+   existía para los perfiles, la que dice que se podrá aplicar cuando una
+   agencia publique.
+
+**Qué pasa el día que entre una vacante en un sector que ya tiene perfil.** No
+hay nada que hacer y nadie tiene que acordarse de nada: la landing ya existe con
+esa URL, `listLandings` la construye a partir de las vacantes y el perfil deja
+de ser el contenido principal para pasar al bloque de abajo. Cambian solos el
+intro, la meta description, la aparición de la rejilla de vacantes y el copy de
+la llamada a crear cuenta, que pasa al de aplicar. El `h1`, la URL, la canónica
+y el `hreflang` **no se mueven**, que es lo que importa para lo ya indexado.
+
+**Sitemap.** Las cinco landings de perfil entran **siempre**, con sus
+`alternates` recíprocos, porque su contenido existe siempre. Con cero vacantes
+el sitemap de producción queda en **13 URLs**: portada, `/ofertas`, las cinco de
+perfil, `/legal` y los cinco legales. Las de país, ciudad y alojamiento no
+aparecen hasta que haya vacantes, y eso es correcto: sin vacantes no tienen
+contenido.
+
+_Lo que esta ADR no hace._ No abre la puerta al producto cartesiano: solo entra
+un par si hay un perfil escrito, revisado y fechado, y los perfiles son cinco
+(ADR-30). No toca las landings de país, de ciudad ni de alojamiento. Y no
+inventa ni una cifra: todo lo que pinta es el mismo copy y los mismos números
+que ya estaban publicados, con su procedencia pegada a la cifra (ADR-31).
 
 ## 5. Reglas de negocio
 

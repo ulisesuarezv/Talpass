@@ -13,12 +13,16 @@ src/
     [locale]/
       layout.tsx                # <html lang>, fuentes, header, footer, provider
       not-found.tsx             # 404 dentro de un idioma
-      (public)/                 # ← estático, cacheado, indexable
+      (home)/                   # ← la home sola: estática, SIN loading.tsx (ADR-46)
         page.tsx                # home
+      (public)/                 # ← estático, cacheado, indexable
+        loading.tsx             # esqueleto de navegación (ADR-41) — por eso la home no vive aquí
         jobs/                   # /es/ofertas · /en/jobs
           [slug]/               # detalle de vacante, con JobPosting
-        opportunities/          # /es/oportunidades (fase 4b, ADR-30)
-          [country]/[sector]/   # perfil de mercado — SIN JobPosting, nunca
+                                  # (RETIRADA el 2026-09-26, ADR-49: `opportunities/`
+                                  #  ya no existe. Los perfiles de mercado viven
+                                  #  dentro de `jobs/` y de `work/…/[sector]`,
+                                  #  y siguen SIN JobPosting, nunca)
         work/                   # landings programáticas (ADR-23)
           [country]/            # /es/trabajo/alemania
             [sector]/           # /es/trabajo/alemania/logistica
@@ -175,7 +179,8 @@ sitio de la cabecera que sabe si hay sesión.
 
 ## Autenticación y roles (fase 2)
 
-- **Tres grupos de rutas, tres comportamientos.** `(public)` es estático e
+- **Tres grupos de rutas, tres comportamientos** (más `(home)`, que se
+  comporta como `(public)` pero sin su `loading.tsx`, ADR-46). `(public)` es estático e
   indexable; `(auth)` es estático y `noindex` —no lee sesión al renderizar, así
   que el formulario de entrada también llega desde el CDN—; `(private)` es
   dinámico, `noindex` y pasa por el proxy de sesión.

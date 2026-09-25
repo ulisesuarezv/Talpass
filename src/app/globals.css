@@ -21,6 +21,11 @@
   --color-brand-accent-ink: var(--brand-accent-ink);
   --color-brand-accent-strong: var(--brand-accent-strong);
   --color-brand-accent-soft: var(--brand-accent-soft);
+  --color-brand-accent-hover: var(--brand-accent-hover);
+  --color-brand-accent-bright: var(--brand-accent-bright);
+  --color-hero: var(--hero);
+  --color-hero-foreground: var(--hero-foreground);
+  --color-hero-muted: var(--hero-muted);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -60,115 +65,137 @@
 }
 
 /* ==========================================================================
-   LA PALETA — fase C2, 2026-08-20. ADR-38.
+   LA PALETA — «petróleo y azafrán», 2026-09-22. Propuesta pendiente de
+   ajuste por Ulises. Sustituye a la de la fase C2 (ADR-38), de la que conserva
+   el reparto de papeles y los tres hechos medidos de abajo.
    ==========================================================================
 
-   Elegida por Ulises: primario `#0D9488` (teal-600), primario dark `#134E4A`
-   (teal-900), acento `#F97316` (orange-500), y de neutros tinta muy oscura,
-   gris azulado y blanco roto.
+   **Qué se rechazó de la anterior.** Fondo menta + antetítulo teal + bordes
+   teal claros: todo en la misma familia y en la misma luminosidad, así que
+   nada destacaba salvo el botón. No era un problema de tono sino de valor
+   (claro/oscuro): una página entera entre el 93 % y el 98 % de luminosidad no
+   tiene jerarquía, por bonita que sea la tinta.
 
-   🔴 **El reparto de papeles no es el obvio, y está medido.** El contraste se
-   comprueba con `pnpm check:contrast`, que recorre los pares reales que pinta
-   la aplicación y falla si alguno baja de 4,5:1 en texto o de 3:1 en interfaz.
-   La salida vive en `docs/evidencia/fase-c2/01-contraste.md`. Los tres hechos
-   que explican todo lo raro de abajo:
+   **Qué cambia, y por qué se queda la familia teal/naranja.** El teal se
+   queda porque ya es la marca y porque es el color que en banca y sanidad
+   dice «serio y de fiar»; el naranja se queda porque es el único cálido y da
+   un punto focal que no compite con nada. Lo que cambia es el reparto de
+   luminosidad:
 
-   1. `#F97316` sobre blanco da **2,80** — y el ratio es simétrico, así que el
-      naranja **no vale ni para texto grande ni para un elemento de interfaz**,
-      en ningún sentido. Solo sirve de superficie con tinta encima (6,37) o de
-      adorno sin información. Para texto naranja está `#C2410C` (4,95).
-   2. `#0D9488` sobre el fondo da **3,58**: iconos, bordes y titulares grandes
-      sí; texto normal no. Para eso está `#0F766E` (5,23) o el `#134E4A`.
-   3. El que aguanta cualquier cosa es `#134E4A` (9,06), y por eso **es él, y no
-      el teal-600, quien ocupa `--primary`**: `--primary` es sobre todo fondo de
-      botón con `--primary-foreground` blanco encima, y ahí 3,74 no basta.
+   1. **El hero es la única superficie oscura del sitio** (`--hero`, petróleo
+      `#0B2E2D`, blanco encima a 14,55). Un bloque oscuro al lado de todo lo
+      claro es lo que hace que el ojo aterrice ahí primero.
+   2. **El naranja deja de ser adorno y pasa a ser EL botón del hero**: sobre
+      el petróleo da 5,19 como interfaz, con tinta encima a 6,30. Es el único
+      sitio de la página donde aparece a pleno, y por eso funciona como punto
+      focal. Fuera del hero el primario sigue siendo el petróleo de `--primary`.
+   3. **Los neutros pierden el azul de slate** y toman un gris verdoso muy leve
+      (`#F6F7F5`, tinta `#0D1B1A`): con el teal y el naranja, un gris azulado
+      frío hacía que la página pareciera un panel de administración.
+   4. **`--brand-soft` baja de menta (`#F0FDFA`) a salvia (`#E4F0ED`)**: sigue
+      siendo marca, pero ya no brilla, y se distingue del fondo (antes no).
 
-   El motivo de fondo no es la norma, es el encargo: un botón que no se lee a
-   pleno sol en un móvil barato no parece profesional, parece descuidado, y el
-   candidato de este producto mira la pantalla en la calle.
+   🔴 **Los tres hechos medidos que siguen mandando** (`pnpm check:contrast`
+   recorre los pares reales y falla por debajo de 4,5:1 en texto o 3:1 en
+   interfaz; salida en `docs/evidencia/fase-c2/01-contraste.md`):
+
+   1. `#F97316` sobre fondo claro da **2,80** y el ratio es simétrico: **no
+      vale para texto ni interfaz sobre claro**. Sobre el petróleo del hero sí
+      (5,19), y para texto pequeño sobre oscuro está `--brand-accent-bright`
+      (`#FDBA74`, 8,63), que aguanta también encima del resplandor del hero.
+      Para texto naranja sobre claro sigue `#C2410C`.
+   2. `#0D9488` sobre el fondo da **3,48**: iconos y bordes sí, texto no. Para
+      texto está `--brand-strong` `#0F766E` (5,09).
+   3. `--primary` es fondo de botón con blanco encima, y por eso es el teal más
+      oscuro (`#0B4744`, 10,51) y no el teal-600.
+
+   **La superficie invertida.** `surface-hero` redefine dentro de sí
+   `--foreground`, `--muted-foreground`, `--brand-strong`, `--border` y
+   `--ring`: lo que dentro del hero se pinta con `text-muted-foreground` o
+   `type-eyebrow` sale ya en su versión para fondo oscuro, sin clases
+   especiales en el JSX. Los pares resultantes están en el comprobador.
 
    ⚠️ **`--accent` NO es el naranja de la marca, a propósito.** En shadcn
    `--accent` es la superficie de hover/foco de los componentes, no un color de
    marca: hoy la usa `select.tsx` para la fila enfocada, y todo componente que
-   añada la CLI en el futuro la usará igual. Ponerle el naranja teñiría cada
-   hover del backoffice y rompería el contraste de sitios que nadie ha mirado.
-   El acento de marca vive en `--brand-accent*`, que es explícito y no lo pisa
-   nadie. Razonado en ADR-38.
+   añada la CLI en el futuro la usará igual. El acento de marca vive en
+   `--brand-accent*`. Razonado en ADR-38.
 
-   ⚠️ **Modo oscuro: fuera de alcance.** Ver el comentario donde estaba `.dark`.
-   Los ratios de arriba son contra fondo claro y **no valen** para el oscuro. */
+   ⚠️ **Modo oscuro: fuera de alcance.** El hero oscuro no es un modo oscuro:
+   es una superficie con sus propios pares medidos. Ver el comentario donde
+   estaba `.dark`. */
 
 :root {
-  /* Neutros — blanco roto de página, tarjetas en blanco puro, tinta y gris
-     azulado. La escala es la de Tailwind slate, que ya es azulada. */
-  --background: oklch(0.9842 0.0034 247.86); /* #F8FAFC — blanco roto */
-  --foreground: oklch(0.2077 0.0398 265.75); /* #0F172A — tinta */
+  /* Neutros — gris verdoso muy leve, tarjetas en blanco puro. */
+  --background: oklch(0.9748 0.0028 128.49); /* #F6F7F5 */
+  --foreground: oklch(0.209 0.0196 190.01); /* #0D1B1A — 16,44 */
   --card: oklch(1 0 0); /* #FFFFFF */
-  --card-foreground: oklch(0.2077 0.0398 265.75);
+  --card-foreground: oklch(0.209 0.0196 190.01);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.2077 0.0398 265.75);
+  --popover-foreground: oklch(0.209 0.0196 190.01);
 
-  /* Primario = teal-900, porque es fondo de botón. Ver punto 3 de arriba. */
-  --primary: oklch(0.3861 0.059 188.42); /* #134E4A — 9,48 con blanco */
+  /* Primario = petróleo, porque es fondo de botón. Ver punto 3 de arriba. */
+  --primary: oklch(0.3613 0.0577 189.78); /* #0B4744 — 10,51 con blanco */
   --primary-foreground: oklch(1 0 0);
 
-  --secondary: oklch(0.9683 0.0069 247.9); /* #F1F5F9 */
-  --secondary-foreground: oklch(0.2077 0.0398 265.75);
-  --muted: oklch(0.9683 0.0069 247.9); /* #F1F5F9 */
-  /* Antes `oklch(0.556 0 0)` ≈ #737373, que daba 4,74 sobre blanco y se
-     quedaba en 4,5 raspado sobre cualquier superficie teñida. Con 114 usos de
-     `text-muted-foreground` en el proyecto, ese era el par que más veces se
-     pinta en todo el sitio; ahora da 7,24. */
-  --muted-foreground: oklch(0.4455 0.0374 257.28); /* #475569 */
+  --secondary: oklch(0.949 0.0051 145.54); /* #ECEFEC */
+  --secondary-foreground: oklch(0.209 0.0196 190.01);
+  --muted: oklch(0.949 0.0051 145.54); /* #ECEFEC */
+  /* El par más pintado del sitio (más de cien `text-muted-foreground`): 7,11
+     sobre el fondo, 6,54 sobre la superficie de marca. */
+  --muted-foreground: oklch(0.442 0.0154 184.51); /* #4A5654 */
 
   /* Superficie de hover/foco de shadcn. NEUTRA a propósito — ver el aviso. */
-  --accent: oklch(0.9683 0.0069 247.9); /* #F1F5F9 */
-  --accent-foreground: oklch(0.2077 0.0398 265.75);
+  --accent: oklch(0.949 0.0051 145.54); /* #ECEFEC */
+  --accent-foreground: oklch(0.209 0.0196 190.01);
 
-  /* red-800, y hubo que bajar dos escalones, no uno. El `oklch(0.577 …)`
-     anterior (≈ red-600) daba 4,54 sobre blanco y no llegaba a 4,5 sobre
-     `--background`. Con red-700 el comprobador siguió fallando en un par que a
-     mano no se mira nunca: el botón destructivo pinta `text-destructive` sobre
-     `bg-destructive/20` **en hover**, o sea el rojo sobre sí mismo al 20 %, y
-     ahí daba 4,39. Con red-800 son 5,54. Este token pinta los errores de
-     formulario, que es donde peor sienta no leerse. */
-  --destructive: oklch(0.4437 0.1613 26.9); /* #991B1B — 7,94 */
+  /* red-800. Hubo que bajar dos escalones en la C2: el botón destructivo
+     pinta `text-destructive` sobre `bg-destructive/20` en hover, y con red-700
+     ahí no llegaba a 4,5. Este token pinta los errores de formulario. */
+  --destructive: oklch(0.4437 0.1613 26.9); /* #991B1B */
 
-  --border: oklch(0.9288 0.0126 255.51); /* #E2E8F0 — separadores */
-  /* El borde de un campo es lo único que dice dónde se escribe: WCAG 1.4.11 le
-     exige 3:1 y el `oklch(0.922 0 0)` anterior daba 1,35. Este da 3,68. */
-  --input: oklch(0.6057 0.0379 257.87); /* #748399 */
-  /* Indicador de foco. `oklch(0.708 0 0)` daba 1,9 y no señalaba nada. */
-  --ring: oklch(0.5109 0.0861 186.39); /* #0F766E — 5,23 */
+  --border: oklch(0.9048 0.0076 151.88); /* #DCE1DD — separadores */
+  /* El borde de un campo es lo único que dice dónde se escribe: WCAG 1.4.11
+     le exige 3:1. 3,66 sobre el fondo. */
+  --input: oklch(0.5988 0.0153 173.82); /* #77837F */
+  --ring: oklch(0.5224 0.0892 184.69); /* #0E7A70 — 4,84 */
 
   /* --- Marca -------------------------------------------------------------
      Lo que `--primary` y `--accent` no pueden ser sin romper shadcn. */
-  --brand: oklch(0.6002 0.1038 184.7); /* #0D9488 teal-600 · 3,58 → interfaz */
-  --brand-strong: oklch(0.5109 0.0861 186.39); /* #0F766E · 5,23 → texto */
-  --brand-soft: oklch(0.9836 0.0142 180.72); /* #F0FDFA → superficie */
-  --brand-accent: oklch(0.7049 0.1867 47.6); /* #F97316 · SOLO superficie */
-  --brand-accent-ink: oklch(0.2077 0.0398 265.75); /* #0F172A · 6,37 encima */
-  --brand-accent-strong: oklch(0.5534 0.1739 38.4); /* #C2410C · 4,95 → texto */
-  --brand-accent-soft: oklch(0.9796 0.0158 73.68); /* #FFF7ED → superficie */
+  --brand: oklch(0.6002 0.1038 184.7); /* #0D9488 · 3,48 → interfaz */
+  --brand-strong: oklch(0.5109 0.0861 186.39); /* #0F766E · 5,09 → texto */
+  --brand-soft: oklch(0.9453 0.0133 179.46); /* #E4F0ED salvia → superficie */
+  /* #F97316 · superficie; 5,19 como interfaz sobre el hero */
+  --brand-accent: oklch(0.7049 0.1867 47.6);
+  --brand-accent-hover: oklch(0.7576 0.159 55.93); /* #FB923C · hover del CTA */
+  --brand-accent-ink: oklch(0.209 0.0196 190.01); /* #0D1B1A · 6,30 encima */
+  --brand-accent-strong: oklch(0.5534 0.1739 38.4); /* #C2410C · texto */
+  --brand-accent-soft: oklch(0.9725 0.0198 70); /* #FFF4E8 → superficie */
+  /* Texto naranja sobre oscuro: el antetítulo y los iconos del hero. */
+  --brand-accent-bright: oklch(0.8366 0.1165 66.29); /* #FDBA74 · 8,63 */
 
-  /* Sin gráficos en ninguna pantalla todavía; se dejan alineados con la marca
-     para que el día que entren no vuelvan a ser una escala de grises. */
-  --chart-1: oklch(0.3861 0.059 188.42);
+  /* --- El hero: la única superficie oscura ------------------------------- */
+  --hero: oklch(0.2761 0.0394 192.44); /* #0B2E2D petróleo */
+  --hero-foreground: oklch(1 0 0); /* 14,55 */
+  --hero-muted: oklch(0.8282 0.0234 183.05); /* #B7CCC8 · 8,65 → entradilla */
+
+  /* Sin gráficos en ninguna pantalla todavía; alineados con la marca. */
+  --chart-1: oklch(0.3613 0.0577 189.78);
   --chart-2: oklch(0.6002 0.1038 184.7);
   --chart-3: oklch(0.5534 0.1739 38.4);
-  --chart-4: oklch(0.5544 0.0407 257.42);
-  --chart-5: oklch(0.3717 0.0392 257.29);
+  --chart-4: oklch(0.5988 0.0153 173.82);
+  --chart-5: oklch(0.442 0.0154 184.51);
 
   --radius: 0.625rem;
 
   --sidebar: oklch(1 0 0);
-  --sidebar-foreground: oklch(0.2077 0.0398 265.75);
-  --sidebar-primary: oklch(0.3861 0.059 188.42);
+  --sidebar-foreground: oklch(0.209 0.0196 190.01);
+  --sidebar-primary: oklch(0.3613 0.0577 189.78);
   --sidebar-primary-foreground: oklch(1 0 0);
-  --sidebar-accent: oklch(0.9683 0.0069 247.9);
-  --sidebar-accent-foreground: oklch(0.2077 0.0398 265.75);
-  --sidebar-border: oklch(0.9288 0.0126 255.51);
-  --sidebar-ring: oklch(0.5109 0.0861 186.39);
+  --sidebar-accent: oklch(0.949 0.0051 145.54);
+  --sidebar-accent-foreground: oklch(0.209 0.0196 190.01);
+  --sidebar-border: oklch(0.9048 0.0076 151.88);
+  --sidebar-ring: oklch(0.5224 0.0892 184.69);
 }
 
 /* ==========================================================================
@@ -230,8 +257,12 @@
      diferencia entre un `h1` con una palabra huérfana en la última línea y uno
      que no la tiene. Cuesta cero bytes. */
 
+/* Tamaño fluido con `clamp()`: 30 px en un móvil de 375 (el mismo que antes,
+   porque en 375 × 667 no sobra ni una línea) y hasta 52 px en escritorio, sin
+   escalones entre medias. El `tracking` se cierra más que en los demás niveles
+   porque a este tamaño el espaciado por defecto se ve suelto. */
 @utility type-display {
-  @apply text-3xl leading-[1.1] font-semibold tracking-tight text-balance sm:text-5xl;
+  @apply text-[clamp(1.875rem,1.2rem+2.9vw,3.25rem)] leading-[1.06] font-semibold tracking-[-0.03em] text-balance;
 }
 
 /* `h1` de una pantalla que no es la home. La home usa `.type-display`, y esa
@@ -255,7 +286,7 @@
 
 /* Entradilla: el párrafo que va pegado a un `h1` o a un `h2` y lo desarrolla. */
 @utility type-lead {
-  @apply text-base leading-relaxed text-pretty sm:text-lg;
+  @apply text-base leading-relaxed text-pretty sm:text-[clamp(1.0625rem,0.95rem+0.35vw,1.1875rem)];
 }
 
 /* Texto de lectura. Los 15 px de arriba. */
@@ -268,10 +299,184 @@
   @apply text-sm leading-normal;
 }
 
-/* Antetítulo. `--brand-strong` y no `--brand`: 5,23 frente a 3,58, y esto es
-   texto pequeño. */
+/* Antetítulo. `--brand-strong` y no `--brand`: 5,09 frente a 3,48, y esto es
+   texto pequeño. Dentro del hero `--brand-strong` vale el naranja claro
+   (ver `surface-hero`). */
 @utility type-eyebrow {
-  @apply text-xs font-semibold tracking-[0.12em] text-brand-strong uppercase;
+  @apply text-xs leading-snug font-semibold tracking-[0.14em] text-brand-strong uppercase;
+}
+
+/* ==========================================================================
+   EL LAYOUT — rediseño, sesión 1 (2026-09-22). ADR-46.
+   ==========================================================================
+
+   El mismo criterio que la escala tipográfica: una clase por papel. Antes cada
+   pantalla era una columna de `max-w-2xl` centrada con un `gap-12` igual entre
+   todo, y eso es lo que hacía que la home pareciera un documento: no había
+   diferencia entre el hero y una sección, ni aire entre una sección y la
+   siguiente.
+
+   Los valores son provisionales hasta que lleguen las referencias visuales de
+   Ulises; por eso viven aquí y no en el JSX. */
+
+/* El ancho del sitio. Cabecera, pie y contenido comparten este borde
+   izquierdo, que es lo que alinea la página. 16 px de gutter en móvil. */
+@utility container-page {
+  @apply mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8;
+}
+
+/* El ritmo vertical entre secciones. */
+@utility section-y {
+  @apply py-12 sm:py-16 lg:py-20;
+}
+
+/* --------------------------------------------------------------------------
+   LA ESCALA DE ESPACIADO — rediseño, iteración 2 (2026-09-22).
+
+   La queja de Ulises sobre la primera versión fue «todo se ve abarrotado», y
+   la causa medida no era la cantidad de aire sino que era el mismo en todas
+   partes: un `gap` de 20 px entre el antetítulo y el titular, y el mismo entre
+   el titular y los botones. Sin diferencia de distancia no hay agrupación, y
+   sin agrupación el ojo no sabe qué va con qué (proximidad, Gestalt).
+
+   Cuatro distancias por papel, cada una claramente mayor que la anterior
+   (aprox. ×2,5), para que la diferencia se lea incluso en un móvil:
+
+     stack-tight   8 → 12 px    dentro de un grupo: antetítulo + titular +
+                                entradilla; título + texto de un paso.
+     stack-items  12 → 16 → 20  entre hermanos de una lista: tarjetas, pasos.
+     stack-group  20 → 32 px    entre grupos de un mismo bloque: textos →
+                                etiquetas → botones; cabecera → lista.
+     stack-block  32 → 40 → 48  entre bloques de la página: hero → ventajas →
+                                ofertas. No sube más en escritorio para
+                                que en 1440 × 900 asomen también las ofertas.
+
+   El móvil va más apretado a propósito: en 375 × 667 el `h2` de ofertas y el
+   comienzo de la primera tarjeta tienen que verse sin hacer scroll (ADR-46).
+   -------------------------------------------------------------------------- */
+@utility stack-tight {
+  @apply gap-2 sm:gap-3;
+}
+
+@utility stack-items {
+  @apply gap-3 sm:gap-4 lg:gap-5;
+}
+
+@utility stack-group {
+  @apply gap-5 sm:gap-8;
+}
+
+@utility stack-block {
+  @apply gap-8 sm:gap-10 lg:gap-12;
+}
+
+/* Padding interior de una pieza dentro de un panel (un paso, una ventaja).
+   Menor que el del hero: el panel ya lo enmarca. */
+@utility pad-tile {
+  @apply p-3 sm:p-5 lg:p-6;
+}
+
+/* La superficie del hero: lo que lo separa del resto sin necesitar una foto.
+   El padding va aquí porque es parte del papel: una superficie destacada con
+   el texto pegado al borde vuelve a parecer abarrotada. 24 → 40 → 48 px.
+
+   Es la única superficie oscura del sitio (paleta 2026-09-22), y funciona
+   como **superficie invertida**: redefine dentro de sí los tokens que pintan
+   texto, borde y foco, así que `text-muted-foreground`, `type-eyebrow` o el
+   anillo de foco de un botón salen ya en su versión para fondo oscuro. Los
+   pares están en `scripts/check-contrast.mts` («hero»).
+
+   El resplandor de la esquina es teal al 20 % y nada más: por encima de eso
+   el naranja claro del antetítulo bajaba de 6,68 (medido contra la mezcla,
+   no contra el petróleo puro). Es CSS, cero bytes de imagen. */
+@utility surface-hero {
+  --foreground: var(--hero-foreground);
+  --muted-foreground: var(--hero-muted);
+  --brand-strong: var(--brand-accent-bright);
+  --border: color-mix(in oklch, var(--hero-foreground) 22%, transparent);
+  --ring: var(--hero-foreground);
+  color: var(--hero-foreground);
+  background-color: var(--hero);
+  background-image: radial-gradient(
+    120% 90% at 100% 0%,
+    color-mix(in oklch, var(--brand) 20%, transparent),
+    transparent 60%
+  );
+  @apply rounded-2xl p-6 shadow-[0_24px_48px_-24px_color-mix(in_oklch,var(--hero)_60%,transparent)] sm:p-10 lg:p-12;
+}
+
+/* El panel neutro: los pasos y la franja de ventajas. Las piezas de dentro
+   se separan con líneas, no con cajas: tres tarjetas iguales en fila son lo
+   que hacía que la página pareciera una plantilla. */
+@utility surface-panel {
+  @apply rounded-2xl border bg-card;
+}
+
+/* ==========================================================================
+   LA TARJETA DE OFERTA — rediseño, sesión 4 (2026-09-25).
+   ==========================================================================
+
+   La queja: «demasiado plana y básica». La causa medida: cinco párrafos
+   seguidos del mismo tamaño (14-15 px) y casi del mismo gris, con el dato que
+   de verdad decide —el dinero— escondido en un `text-sm font-medium` entre
+   medias. Sin contraste de tamaño no hay jerarquía, y sin jerarquía todas las
+   tarjetas se leen igual y ninguna se lee.
+
+   La corrección es de escala, no de adorno: **de 11 px a 40 px dentro de la
+   misma tarjeta**. La cifra manda, el resto es cromo. Las clases viven aquí y
+   no en el JSX por lo de siempre (una clase por papel), y además porque el
+   HTML de esta tarjeta se repite cinco veces en la home: cada carácter de
+   `class` se paga cinco veces, y el presupuesto de esta página es de bytes
+   (bisecado el 2026-09-25).
+
+   ⚠️ Nada de esto puede hacerla pasar por una vacante (ADR-30): no hay
+   empresa, ni fecha, ni plazas, ni botón de aplicar. Lo que sube de tamaño es
+   un rango de mercado, y lleva pegada su etiqueta de procedencia (ADR-31). */
+
+/* La cifra salarial. `tabular-nums` para que los dos extremos del rango tengan
+   el mismo ancho de dígito y la raya quede centrada. */
+/* La cifra de una tarjeta normal. Bajó de 24 a 20 px el 2026-09-25: con cinco
+   perfiles, cuatro de las cinco cifras son solo dos números (almacén y
+   logística comparten rango observado, y cárnico y agrícola comparten suelo de
+   convenio). A 24 px las cuatro pesaban igual que la destacada y el recurso se
+   gastaba en repetir; a 20 px la cifra sigue mandando dentro de su tarjeta y
+   el número grande de la página vuelve a ser uno solo. */
+@utility type-figure {
+  @apply text-xl leading-none font-semibold tracking-[-0.02em] tabular-nums;
+}
+
+/* La misma cifra en la tarjeta destacada: 28 px en móvil, 40 en escritorio. */
+@utility type-figure-lg {
+  @apply text-[clamp(1.75rem,1.2rem+1.9vw,2.5rem)] leading-none font-semibold tracking-[-0.03em] tabular-nums;
+}
+
+/* El extremo pequeño de la escala: procedencia del dato, ciudades. 12 px. */
+@utility type-caption {
+  @apply text-xs leading-normal;
+}
+
+/* La rejilla de datos del pie de la tarjeta: etiqueta arriba en versales,
+   valor debajo. Es lo que hace que se lea como una ficha y no como un
+   párrafo. 11 px de etiqueta contra 13 de valor. */
+@utility fact-label {
+  @apply text-[0.6875rem] leading-none font-semibold tracking-[0.08em] text-muted-foreground uppercase;
+}
+
+@utility fact-value {
+  @apply text-[0.8125rem] leading-snug font-medium text-foreground;
+}
+
+/* El armazón de la tarjeta: borde, radio y estados. Hover con borde de marca y
+   sombra; con teclado, el anillo rodea la tarjeta entera (`focus-within`),
+   porque el enlace la cubre toda con su `after:`. Sin movimiento: eso es de
+   GSAP.
+
+   **El fondo no está aquí a propósito**: lo pone quien la usa (`bg-card` o
+   `bg-brand-soft` en la destacada), porque dos utilidades peleando por
+   `background-color` dentro de la misma capa dependen del orden que decida
+   Tailwind, y eso no es una base sobre la que construir. */
+@utility surface-offer {
+  @apply relative flex flex-col rounded-xl border transition-[border-color,box-shadow] focus-within:border-ring focus-within:ring-3 focus-within:ring-ring/40 hover:border-brand/60 hover:shadow-[0_10px_24px_-14px_color-mix(in_oklch,var(--foreground)_35%,transparent)];
 }
 
 /* Enlace dentro de un párrafo. Subrayado siempre: el color por sí solo no

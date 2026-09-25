@@ -2,12 +2,14 @@ import { getTranslations } from 'next-intl/server';
 
 import { JobCard } from '@/components/jobs/job-card';
 import { SignupCta } from '@/components/jobs/signup-cta';
+import { MarketProfile } from '@/components/opportunities/market-profile';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { Link } from '@/i18n/navigation';
 import type { Locale } from '@/i18n/routing';
 import type { JobSummary } from '@/lib/jobs';
 import { listLandings, type Landing } from '@/lib/landings';
+import type { Opportunity } from '@/lib/opportunities';
 
 /**
  * Cuerpo común de las cuatro landings programáticas (ADR-23).
@@ -16,15 +18,28 @@ import { listLandings, type Landing } from '@/lib/landings';
  * que la sostienen —enlazadas— y enlaces a las landings vecinas. Ese último
  * bloque es el que convierte una colección de páginas sueltas en una red
  * navegable, tanto para el candidato como para el rastreador.
+ *
+ * **Desde ADR-50 una landing de país + sector puede no tener ni una vacante** y
+ * seguir existiendo, si hay perfil de mercado de ese par. En ese caso el
+ * contenido es el perfil, y el `count` del intro sería un «0 ofertas
+ * verificadas» que no describe la página: por eso el intro cambia de mensaje.
+ *
+ * 🔴 El perfil va **debajo** de las vacantes y en su propio bloque, nunca
+ * mezclado con ellas en la misma lista (ADR-49, punto 3). `MarketProfile` no
+ * emite `JobPosting` ni ningún otro JSON-LD, y no lleva botón de aplicar: es lo
+ * que sostiene la diferencia ahora que ya no la sostiene la ruta.
  */
 export async function LandingView({
   landing,
   jobs,
   locale,
+  opportunity = null,
 }: {
   landing: Landing;
   jobs: JobSummary[];
   locale: Locale;
+  /** Perfil de mercado de este país + sector, si lo hay (ADR-30, ADR-50). */
+  opportunity?: Opportunity | null;
 }) {
   const t = await getTranslations('Landing');
 
@@ -40,17 +55,33 @@ export async function LandingView({
       <header className="flex flex-col gap-3">
         <h1 className="type-h1">{t(`${landing.kind}.title`, values)}</h1>
         <p className="text-muted-foreground">
-          {t(`${landing.kind}.intro`, { ...values, count: jobs.length })}
+          {jobs.length === 0 && opportunity
+            ? t('sector.marketIntro', values)
+            : t(`${landing.kind}.intro`, { ...values, count: jobs.length })}
         </p>
       </header>
 
-      <div className="grid gap-3">
-        {jobs.map((job) => (
-          <JobCard key={job.id} job={job} />
-        ))}
-      </div>
+      {/* Sin vacantes no se pinta la rejilla vacía: dejaba un hueco de la
+          altura de un `gap` entre el intro y el perfil. */}
+      {jobs.length > 0 ? (
+        <div className="grid gap-3">
+          {jobs.map((job) => (
+            <JobCard key={job.id} job={job} />
+          ))}
+        </div>
+      ) : null}
 
-      <SignupCta />
+      {opportunity ? (
+        <MarketProfile
+          opportunity={opportunity}
+          place={values.place}
+          sector={values.sector}
+        />
+      ) : null}
+
+      {/* Con vacantes se aplica; sin ellas no hay a dónde aplicar todavía, y
+          prometerlo sería mentir en una de las dos situaciones. */}
+      <SignupCta variant={jobs.length > 0 ? 'jobs' : 'opportunities'} />
 
       {siblings.length > 0 ? (
         <>

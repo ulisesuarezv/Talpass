@@ -5,17 +5,19 @@ import { siteConfig } from '@/config/site';
 import { Link } from '@/i18n/navigation';
 
 /**
- * Llamada a crear cuenta, al pie de cada vacante, de cada landing y de cada
- * perfil de mercado.
+ * Llamada a crear cuenta, al pie de cada vacante, de cada landing y de
+ * `/ofertas`.
  *
  * Ver es libre y sin cuenta (ADR-02, regla de negocio 1); la cuenta hace falta
  * para aplicar. La nota de que al candidato no se le cobra nunca no es adorno:
  * es la diferencia frente a lo que se encuentra el candidato en cualquier otro
  * sitio, y va donde se toma la decisión.
  *
- * La variante cambia **solo el copy**, no el patrón: en una vacante se aplica y
- * en una oportunidad no hay a dónde aplicar todavía (fase 4b), así que prometer
- * lo mismo en las dos sería mentir en una de ellas.
+ * La variante cambia **solo el copy**, no el patrón: donde hay vacante se
+ * aplica, y donde solo hay perfiles de mercado no hay a dónde aplicar todavía
+ * (ADR-30), así que prometer lo mismo en las dos sería mentir en una de ellas.
+ * Desde ADR-49 la que elige es `/ofertas`, según tenga vacantes o no: las dos
+ * situaciones ocurren ya en la misma URL.
  */
 export function SignupCta({
   variant = 'jobs',
