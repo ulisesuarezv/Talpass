@@ -249,6 +249,14 @@
 >   rótulo, el cero `JobPosting` y que no haya botón de aplicar. Quien añada
 >   empresa, fecha o «aplicar» las rompe las tres a la vez.
 >
+> **Cómo se mide, desde el 2026-09-26: `pnpm measure`.** El script
+> (`scripts/measure-lighthouse.mts`) hace seis pasadas, da la mediana, el
+> desglose por fases del LCP y el elemento que lo provoca, y **avisa cuando los
+> valores caen en cubos distintos**, que es la señal de que hacen falta más
+> pasadas. `pnpm measure https://talpass.eu/es --warm` calienta el borde antes
+> de medir producción. Su cabecera explica las tres formas en que se ha medido
+> mal aquí; léela antes de afirmar que algo empeoró.
+>
 > **Medido al cerrar** (local, `next start`, Lighthouse 12 móvil, 6 pasadas):
 > **96 · LCP 2,78 s · CLS 0** — la misma línea base con la que se empezó, con
 > toda la home nueva dentro. En producción, con el borde caliente: **98 ·
