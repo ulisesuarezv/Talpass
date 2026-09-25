@@ -81,13 +81,22 @@
 >   descartado con motivo en **ADR-42**, y es la idea que más fácil se
 >   redescubre porque suena razonable en abstracto.
 >
-> ## 🎨 2026-09-22 — Rediseño por sesiones: EN CURSO, sin commitear y sin desplegar
+> ## 🎨 2026-09-22 → 26 — Rediseño: DESPLEGADO el 2026-09-26 en `a1d620e`
 >
-> 🔴 **Si retomas aquí: el trabajo del rediseño está en el árbol de trabajo, NO
-> en un commit.** `git status` enseña los ficheros tocados (código, copy, `docs/` y `CLAUDE.md`). **Producción sigue
-> sirviendo la home vieja de 3 `h2`** hasta que se haga commit y push, y el push
-> lo decide Ulises (un push a `main` despliega en un segundo). No midas
-> producción esperando la home nueva.
+> ✅ **Si retomas aquí: ya está en producción.** Commit `a1d620e`, 32 ficheros,
+> empujado el 2026-09-26 con permiso de Ulises. **`https://talpass.eu` sirve la
+> home nueva de 5 `h2`**, la cabecera petróleo y `/ofertas` con los cinco
+> perfiles dentro.
+>
+> **Verificado contra producción ese mismo día**, no contra el build local:
+> los 12 redirects de `/oportunidades` responden 301 y sus destinos 200
+> (incluidos cárnico y agrícola, que son los que no tienen vacante), cero
+> `JobPosting` en `/es/ofertas`, cero `Set-Cookie` en la home, `/es/cuenta` en
+> 307, y el aviso «Pronto habrá más ofertas aquí» visible.
+>
+> **Rendimiento en producción, con el borde caliente (`x-vercel-cache: HIT`) y
+> mediana de 3: nota 98 · LCP 2,44 s · CLS 0.** Mejor que la línea base local
+> de 96 / 2,78 s, que es contra la que se trabajó toda la sesión.
 >
 > _Encargo de Ulises: «la landing parece un Word». Se hace **sesión a sesión**
 > para cuidar el contexto. Ulises **autorizó los agentes de diseño salvo
@@ -242,9 +251,26 @@
 >
 > **Medido al cerrar** (local, `next start`, Lighthouse 12 móvil, 6 pasadas):
 > **96 · LCP 2,78 s · CLS 0** — la misma línea base con la que se empezó, con
-> toda la home nueva dentro. `typecheck`, `lint`, `format:check`, paridad y
+> toda la home nueva dentro. En producción, con el borde caliente: **98 ·
+> 2,44 s · 0**. `typecheck`, `lint`, `format:check`, paridad y
 > `check:contrast` (60 pares, el más justo 3,48) limpios. Home estática, sin
 > `Set-Cookie`.
+>
+> ### Lo hecho el 2026-09-26, después de desplegar
+>
+> - **`/ofertas` pierde el estado vacío y el rótulo de los perfiles** (caja
+>   «Todavía no hay vacantes publicadas», antetítulo, `h2` y la línea «esto no
+>   son vacantes»), por decisión de Ulises: eran repetitivos. Ver la enmienda de
+>   ADR-49 y la de ADR-36.
+> - **Entra `Jobs.upcoming`**, una línea bajo el subtítulo: «Estamos cerrando
+>   acuerdos con agencias en Alemania. Pronto habrá más ofertas aquí.» Se pinta
+>   solo mientras no haya vacantes. 🔴 **No dice «los primeros acuerdos»**:
+>   Ulises lo corrigió porque insinuaba que no hay ninguno cerrado. No lo
+>   reintroduzcas.
+> - **Auditoría de coherencia**: se retiraron 7 claves de copy huérfanas, se
+>   marcó como caducado el árbol de `CONVENTIONS.md` con `opportunities/`, se
+>   avisó al principio de la fase 4b del roadmap de que describe una sección
+>   retirada, y `CLAUDE.md` pasó de «ADR-01…48» a «…50».
 >
 > ### Lo que queda, en orden
 >
@@ -254,9 +280,8 @@
 > 2. **El IBAN y la matriz de acceso** (punto 3 de arriba): decisión tomada,
 >    implementación pendiente.
 > 3. **`visual-qa`**: capturas móvil/escritorio en es/en y Lighthouse.
-> 4. **Commit y push**, con permiso de Ulises, y verificación contra
->    producción (5 `h2`, cabecera petróleo, los 12 301 en 200, sin
->    `Set-Cookie`, `/es/cuenta` en 307).
+> 4. ~~**Commit y push.**~~ **Hecho el 2026-09-26** (`a1d620e`), con la
+>    verificación contra producción arriba.
 >
 > **Después:** el pie (no se ha tocado en todo el rediseño), mudar
 > `Opportunities.*` a `messages/<ruta>/` como se hizo con `Home` (ADR-37: hoy
