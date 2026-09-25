@@ -347,10 +347,11 @@ export default async function HomePage({
           */}
           <ul className="grid stack-items sm:grid-cols-2 lg:grid-cols-3">
             {opportunities.map((opportunity, index) => (
-              /* Sin `grid` ni altura forzada: cada tarjeta mide lo que mide.
-                 Igualar alturas dentro de la fila obligaba a repartir el
-                 sobrante DENTRO de la pieza, y eso es lo que abría el agujero
-                 entre el resumen y la rejilla de datos. */
+              /* La destacada mide lo que mide: igualarla a su vecina repartía
+                 el sobrante DENTRO de la pieza y abría un agujero entre el
+                 resumen y la rejilla de datos. Las demás sí se igualan dentro
+                 de su fila (`h-full` en la tarjeta), con los datos al fondo:
+                 sin eso, a 768 px quedaba un hueco bajo la más corta. */
               <li
                 key={opportunity.sector}
                 data-reveal

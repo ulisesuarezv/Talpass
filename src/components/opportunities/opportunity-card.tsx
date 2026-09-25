@@ -25,7 +25,7 @@ import type { Opportunity } from '@/lib/opportunities';
  *
  * Antes eran cinco párrafos seguidos de 14-15 px, casi del mismo gris, con el
  * salario escondido en medio: «demasiado plana y básica», y con razón. Ahora
- * hay tres zonas con papeles distintos y una escala de 11 a 40 px:
+ * hay tres zonas con papeles distintos y una escala de 12 a 40 px:
  *
  * 1. **Identificación**: región y país en versales pequeñas, y el título.
  * 2. **La cifra**, que es el dato que decide, en grande y con `tabular-nums`,
@@ -132,8 +132,13 @@ export function OpportunityCard({
         // de LA TARJETA, no el de la pantalla. La misma tarjeta mide 343 px en
         // un móvil, 400 en una columna de la home y 740 en `/ofertas`, y
         // un `sm:` habría puesto tres columnas justo donde no caben.
-        'group @container surface-offer h-full',
-        featured ? 'bg-brand-soft' : 'bg-card',
+        'group @container surface-offer',
+        // Las normales llenan la celda de la rejilla, y como el bloque de
+        // arriba crece (`flex-1`), la rejilla de datos cae al fondo: en una
+        // fila todas miden lo mismo y sus líneas de datos se alinean. La
+        // destacada NO: estirada a la altura de su vecina le quedaba fondo de
+        // marca vacío debajo (medido el 2026-09-26, ~150 px en escritorio).
+        featured ? 'bg-brand-soft' : 'h-full bg-card',
       )}
     >
       {/* La destacada ocupa dos columnas, y con el pie de datos DEBAJO le

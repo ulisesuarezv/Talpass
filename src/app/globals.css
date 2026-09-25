@@ -430,7 +430,7 @@
    medias. Sin contraste de tamaño no hay jerarquía, y sin jerarquía todas las
    tarjetas se leen igual y ninguna se lee.
 
-   La corrección es de escala, no de adorno: **de 11 px a 40 px dentro de la
+   La corrección es de escala, no de adorno: **de 12 px a 40 px dentro de la
    misma tarjeta**. La cifra manda, el resto es cromo. Las clases viven aquí y
    no en el JSX por lo de siempre (una clase por papel), y además porque el
    HTML de esta tarjeta se repite cinco veces en la home: cada carácter de
