@@ -310,7 +310,13 @@
 > 1. ~~**`gsap-senior-animator`**~~ **Hecho y desplegado el 2026-09-26**
 >    (`64a2020`), ver arriba.
 > 2. **El IBAN y la matriz de acceso** (punto 3 de arriba): decisión tomada,
->    implementación pendiente.
+>    implementación pendiente. ⚠️ **No es solo `01-DATA-MODEL.md`**: la
+>    política de privacidad publicada también dice lo contrario
+>    (`messages/legal/*.json`, claves de las líneas ~72 y ~333: «no se
+>    compartirá con ninguna agencia en ningún caso», «Ni con consentimiento»).
+>    Tocarla es ADR-33/34. Antes de escribir el prompt, preguntar a Ulises:
+>    ¿con consentimiento o solo tras contratar?, ¿la dirección igual?, ¿se
+>    reescribe ya o cuando se pida el IBAN?
 > 3. **`visual-qa`**: capturas móvil/escritorio en es/en y Lighthouse.
 > 4. ~~**Commit y push.**~~ **Hecho el 2026-09-26** (`a1d620e`), con la
 >    verificación contra producción arriba.
