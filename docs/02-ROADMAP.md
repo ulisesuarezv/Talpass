@@ -15,6 +15,7 @@
 | 4b  | Oportunidades de mercado          | Gancho publicado y sitio indexado sin ETT  | ✅     |
 | C1  | Credibilidad (vía B)              | La home deja de poder parecer un fraude    | ✅     |
 | C2  | Sistema visual (vía B)            | Consistencia demostrada con capturas       | ✅     |
+| R   | Rediseño de la home, por sesiones | Home nueva en producción sin perder LCP    | 🟡     |
 | 5   | Aplicaciones                      | Candidato verificado aplica y ve su estado | ⬜     |
 | 6   | Portal ETT                        | ETT gestiona vacantes y aplicaciones       | ⬜     |
 | 7   | Bolsa + consentimiento documental | Flujo completo de desbloqueo con log       | ⬜     |
@@ -771,7 +772,17 @@ del MVP con número: es la continuación de la C2 y va sesión a sesión. El est
 vivo, con lo hecho, lo medido y lo que queda, está en el bloque 🎨 de
 `docs/ESTADO.md`. Decisiones: ADR-45, 46, 47 y 48._
 
-### 🟡 En curso: sin commitear ni desplegar
+### 🟡 En curso: desplegado el 2026-09-26, falta el pie y cerrar la paleta
+
+Lo que está en producción, verificado ese día: la home de ADR-46 con 5 `h2`, la
+cabecera petróleo, `/oportunidades` retirada (ADR-49, 50), GSAP en el scroll
+(`64a2020`, dentro de ADR-47) y el repaso responsive (`64a2020` + `7c73d55`).
+Producción, borde caliente, 12 pasadas: 98 · LCP 2,28 s · CLS 0. En móvil
+375×667 las ofertas asoman (tarjeta en y=614).
+
+**Lo que falta para ✅:** que Ulises dé por buena la paleta (ADR-48 sigue
+siendo «propuesta») y rediseñar el pie. El IBAN no es de esta fase: es de la
+matriz de acceso y de la política de privacidad (ver ESTADO).
 
 **Hecho cuando:** Ulises da por buena la paleta; la home en producción muestra
 la estructura de ADR-46; Lighthouse móvil (mediana de 3) no baja de la línea

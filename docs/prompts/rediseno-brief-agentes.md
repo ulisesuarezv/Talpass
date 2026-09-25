@@ -16,21 +16,23 @@ ADR-45 y ADR-46 al final de la sección 4 de `docs/00-PROJECT.md`.
 Portal que conecta candidatos hispanohablantes/lusófonos (entran desde el MÓVIL, 4G, datos limitados)
 con ETTs (agencias de trabajo temporal) de Europa. MVP: Alemania.
 
-## Estado actual (2026-09-25, sin commitear)
+## Estado actual (2026-09-26, desplegado en producción)
 
-- Home: `src/app/[locale]/(home)/page.tsx` (Server Component, estática, revalidate 3600).
+- Home: `src/app/[locale]/(home)/page.tsx` (Server Component, estática ●, revalidate 3600).
 - Copy: `messages/home/es.json` y `en.json` (namespace `Home`, cargado vía `src/lib/home.ts`).
   Paridad de claves obligatoria: `node docs/evidencia/correccion-copy/parity.mjs messages/home/es.json messages/home/en.json`.
-- Primitivas de layout en `src/app/globals.css`: `container-page`, `section-y`, `surface-hero`, `surface-panel`,
-  `stack-*`, `pad-tile` (@utility), junto a la escala tipográfica `type-*`. Paleta «petróleo y azafrán»
-  (ADR-48, propuesta pendiente de ajuste) en `:root`. Colores SIEMPRE como tokens, nunca hex en JSX.
-- Franja de ventajas `perks` entre hero y ofertas (en móvil va detrás de las ofertas, `order-last`).
-- Estructura (boceto del dueño, se RESPETA): header · [hero a la izquierda | 3 pasos a la derecha] · debajo
-  "Ofertas en Alemania" (5 OpportunityCard de `src/components/opportunities/opportunity-card.tsx`) · luego
-  3 secciones antiguas (Cómo funciona, privacidad, coste) que NO se tocan en contenido.
-- En móvil (375×667) el `h2` de ofertas y el inicio de la primera tarjeta DEBEN verse sin scroll.
+- Primitivas en `src/app/globals.css`: `container-page`, `section-y`, `surface-hero`, `surface-panel`,
+  `stack-*`, `pad-tile`, escala `type-*` (incluida `type-card-title`, 18 → 20 px, para el título de una pieza
+  destacada dentro de una sección) y paleta «petróleo y azafrán» (ADR-48). Colores SIEMPRE como tokens.
+- Escala pequeña: 12 px solo en versales (`type-eyebrow`, `fact-label`); 14 (`type-meta`, `type-caption`,
+  `fact-value`); 15 (`type-body`); 16+. No reintroducir 11 ni 13.
+- Estructura: cabecera petróleo · [hero | 3 pasos] · franja `perks` · «Ofertas en Alemania» (tarjeta destacada a
+  dos columnas + 4) · privacidad (ficha «Carlos M.») · «No llegas solo» · FAQ · pie (sin rediseñar).
+- GSAP ya está: `src/components/home/home-motion.tsx` (disparador) + `home-reveal.tsx` (chunk perezoso).
+  Marcar con `data-reveal` lo que deba aparecer al hacer scroll. Reglas en la nota de ADR-47.
+- En móvil (375×667) el `h2` de ofertas (y=567) y el inicio de la primera tarjeta (y=614) DEBEN verse sin scroll.
 
-## Lo que el dueño (Ulises) rechaza de la versión actual
+## Lo que el dueño (Ulises) rechazaba el 2026-09-22 (ya aplicado, se deja como contexto)
 
 "Todo se ve abarrotado", "no me convencen los colores ni los espacios". Diagnóstico acordado:
 
@@ -62,7 +64,7 @@ con ETTs (agencias de trabajo temporal) de Europa. MVP: Alemania.
 
 - i18n: nada de texto hardcodeado; es + en siempre, paridad.
 - La home sigue ESTÁTICA (● en la tabla de `pnpm build`): no leer cookies/sesión/searchParams.
-- Rendimiento es puerta dura (ADR-10). **Línea base del árbol actual, bisecada el 2026-09-25 con 9 pasadas:
+- Rendimiento es puerta dura (ADR-10). **La línea base NO se copia de aquí: se mide el árbol de antes el mismo día con `pnpm measure <url> --runs=12` (la del 2026-09-26 por la tarde fue 96 · 2,78 s · CLS 0 en local). Referencia histórica, bisecada el 2026-09-25 con 9 pasadas:
   nota 96 · LCP 2,77 s · CLS 0,001.** Lo que mueve ese número NO es el diseño (gradiente, sombra, `clamp()` y
   transiciones costaron 0 ms): son los BYTES de la página. Medido: ~8 KB más de documento+CSS = +150 ms de LCP,
   un RTT del 4G simulado. Así que el presupuesto de esta sesión es de bytes, no de efectos: markup escueto,

@@ -1,6 +1,28 @@
 # Estado del proyecto — punto de retomada
 
-> # 👉 SI RETOMAS AQUÍ, LEE SOLO ESTO PRIMERO
+> ## 🧭 RETOMA AQUÍ — foto del 2026-09-26 (noche), verificada contra producción
+>
+> - **Qué sirve `talpass.eu`:** la home rediseñada (5 `h2`, cabecera petróleo,
+>   GSAP en el scroll) y `/ofertas` con los cinco perfiles. Último código:
+>   `7c73d55`. Borde caliente, 12 pasadas sobre `64a2020`: **98 · LCP 2,28 s ·
+>   CLS 0** (`7c73d55` solo cambia una clase de la tarjeta destacada).
+> - **Lo que queda, en este orden:** (1) **el IBAN** —la home, la matriz de
+>   acceso y la política de privacidad publicada se contradicen; hay tres
+>   preguntas para Ulises antes de tocar nada, ver «Lo que queda» en el bloque
+>   🎨—; (2) **el pie de página**, lo único sin rediseñar.
+> - **Lo que no depende del código** sigue igual: la primera ETT y Search
+>   Console (tabla de abajo).
+> - **Para medir:** `pnpm measure <url> --runs=12`. La máquina cambia de humor
+>   dentro del mismo día (el 26 por la mañana el TBT local salía ~95 ms, por la
+>   tarde ~9): **compara solo contra el árbol anterior medido en la misma
+>   sesión**, con `git stash` si hace falta.
+> - **Entorno:** `pnpm db:start`, `pnpm build:local`,
+>   `pnpm start:local -p 3210`. Al acabar, `pnpm db:stop` y matar el 3210.
+>
+> Todo lo que viene debajo es historia fechada; cuando contradiga este
+> recuadro, gana el recuadro.
+
+> # 📜 El fondo del proyecto (escrito en agosto; léelo después del recuadro 🧭)
 >
 > _Escrito al cerrar la sesión del **2026-08-21** tras una auditoría completa, y
 > **enmendado el 2026-08-22, el 2026-08-24 y dos veces el 2026-09-08**. Todo lo de abajo está verificado
@@ -70,7 +92,7 @@
 >
 > ## Lo que NO hay que hacer
 >
-> - **Nada de R3F ni shaders.** GSAP y `layout-disruptivo` **quedaron autorizados por Ulises el 2026-09-22 (ADR-47)**: GSAP con la condición de no empeorar la línea base medida, y `layout-disruptivo` solo para composición, sin anti-grid.
+> - **Nada de R3F ni shaders.** GSAP y `layout-disruptivo` **quedaron autorizados por Ulises el 2026-09-22 (ADR-47)**: GSAP con la condición de no empeorar la línea base medida, y `layout-disruptivo` solo para composición, sin anti-grid. **GSAP ya está en la home desde el 2026-09-26**: cualquier animación nueva va en `src/components/home/home-reveal.tsx` (chunk perezoso), nunca en el JS inicial ni ocultando nada de la primera pantalla.
 > - **No inventar vacantes** (ADR-30). No hay ninguna, y la página vacía lo dice honestamente a propósito.
 > - ~~**No tocar el estado vacío de `/ofertas`**~~ **Caducado el 2026-09-26**:
 >   Ulises lo hizo retirar, junto con el rótulo de los perfiles. Ver la
@@ -81,7 +103,7 @@
 >   descartado con motivo en **ADR-42**, y es la idea que más fácil se
 >   redescubre porque suena razonable en abstracto.
 >
-> ## 🎨 2026-09-22 → 26 — Rediseño: DESPLEGADO el 2026-09-26 en `a1d620e`
+> ## 🎨 2026-09-22 → 26 — Rediseño: DESPLEGADO el 2026-09-26 (`a1d620e`, GSAP en `64a2020`, último ajuste `7c73d55`)
 >
 > ✅ **Si retomas aquí: ya está en producción.** Commit `a1d620e`, 32 ficheros,
 > empujado el 2026-09-26 con permiso de Ulises. **`https://talpass.eu` sirve la
@@ -302,8 +324,11 @@
 > - ⚠️ **Margen del móvil**: en 375×667 la primera tarjeta asoma en y=614
 >   (antes 576); cumple ADR-46. **A 320 px ya no asoma**, solo el `h2`. Si
 >   importa, la palanca es acortar una etiqueta del hero (copy de Ulises).
-> - La tarjeta destacada, igualada en alto a la de al lado, deja fondo vacío
->   abajo en escritorio. Aceptado a sabiendas; revisable.
+> - **Corregido en `7c73d55`:** `64a2020` igualó también la tarjeta destacada a
+>   su vecina y le dejó ~150 px de fondo vacío, justo lo que el comentario del
+>   listado advertía. Ahora la destacada mide lo que mide y **solo las demás**
+>   se igualan por fila (`h-full` fuera de la destacada, datos al fondo). En
+>   escritorio la fila de arriba vuelve a quedar dispar a propósito.
 >
 > ### Lo que queda, en orden
 >
@@ -317,25 +342,29 @@
 >    Tocarla es ADR-33/34. Antes de escribir el prompt, preguntar a Ulises:
 >    ¿con consentimiento o solo tras contratar?, ¿la dirección igual?, ¿se
 >    reescribe ya o cuando se pida el IBAN?
-> 3. **`visual-qa`**: capturas móvil/escritorio en es/en y Lighthouse.
+> 3. ~~**`visual-qa`**~~ **Hecho el 2026-09-26** por el PM, sin agente:
+>    desbordamiento en 54 combinaciones, escala, alturas y zonas táctiles,
+>    antes y después, contra producción. Las capturas `fix-*` e `iter-*` están
+>    en `.playwright-mcp/` (ignorado por git).
 > 4. ~~**Commit y push.**~~ **Hecho el 2026-09-26** (`a1d620e`), con la
 >    verificación contra producción arriba.
 >
-> **Después:** el pie (no se ha tocado en todo el rediseño), mudar
+> **Después:** el pie (no se ha tocado en todo el rediseño; sus enlaces ya
+> miden 32 px de alto), mudar
 > `Opportunities.*` a `messages/<ruta>/` como se hizo con `Home` (ADR-37: hoy
 > viaja entero en el HTML de todas las páginas), y alinear «en la mayoría de
 > ofertas» (franja del hero) con «se descuenta de tu sueldo» (FAQ), que es
 > decisión de Ulises (ADR-45).
 >
-> **Para lanzar los agentes que faltan:** el brief común está en
-> `docs/prompts/rediseno-brief-agentes.md`. Hay que ponerlo al día antes de
-> pasarlo, porque describe el estado del cierre del 2026-09-22.
+> **Para lanzar un agente de diseño:** el brief común está en
+> `docs/prompts/rediseno-brief-agentes.md`, puesto al día el 2026-09-26.
 >
 > ### Cómo se midió lo del móvil, para repetirlo
 >
 > En 375×667 el `h2` `#home-offers` y el principio de la primera tarjeta tienen
-> que verse sin scroll. Al cerrar: `h2` en y=553 y la tarjeta en y=600 (es),
-> con **~28 px de margen**. Cualquier cambio que añada altura arriba en el
+> que verse sin scroll. **Desde el 2026-09-26 (etiquetas del hero en dos
+> filas): `h2` en y=567 y la tarjeta en y=614 (es), ~53 px visibles.** En
+> inglés, 535 / 583. A 320 px la tarjeta ya no asoma (y=707). Cualquier cambio que añada altura arriba en el
 > móvil hay que volver a medirlo con `getBoundingClientRect` en Playwright.
 >
 > ---
@@ -364,7 +393,7 @@
 >
 > ## Los números, para cotejar mañana
 >
-> ⚠️ **Estos números son de PRODUCCIÓN el 2026-09-08 y siguen siendo los vivos**: el rediseño del 2026-09-22 no está desplegado (ver el bloque 🎨).
+> ⚠️ **Estos números son de PRODUCCIÓN el 2026-09-08 y YA NO son los vivos**: el rediseño se desplegó el 2026-09-26. Los vivos están en el recuadro 🧭 de arriba.
 >
 > ⚠️ **La línea base cambió el 2026-09-08.** Se desplegó código por primera vez
 > desde el 21 de agosto (`05171af`, ADR-43) y **la home pasó de 5 `h2` a 3**.
@@ -1839,6 +1868,7 @@ legales, la región, el copy y las dos fases de diseño están cerrados y vivos.
 | **Vía B**               | **✅ agotada el 2026-08-24** — los seis puntos cerrados; el 5 descartado (ADR-42)      |
 | **C1 · Credibilidad**   | **✅ cerrada 2026-08-20** — desplegada y verificada; ADR-35, 36, 37 y ADR-10 precisada |
 | **C2 · Sistema visual** | **✅ cerrada 2026-08-21** — paleta y General Sans vivas; ADR-38, 39, 40 y 41           |
+| **R · Rediseño**        | **🟡 desplegado el 2026-09-26** — falta el pie y que Ulises cierre la paleta (ADR-48)  |
 | **5 · Aplicaciones**    | **⬜ congelada en la vía A** — su prompt sigue sin escribirse, a propósito             |
 | 6, 7, 8, 10             | ⬜ vía A, congeladas hasta que haya ETT                                                |
 | **9 · GDPR y legal**    | **🟡 los textos legales salieron de aquí y están vivos** (ADR-33, ADR-34)              |

@@ -1393,6 +1393,22 @@ anterior:
   verifica cada paso** (checks, capturas, medidas) antes del siguiente. Ulises
   ve el resultado de cada uno.
 
+> **Cómo quedó GSAP (2026-09-26, `64a2020`).** Cumplió la condición: 96 · 2,78 s
+> · CLS 0 en local contra el árbol original medido la misma tarde, y 98 ·
+> 2,28 s en producción. Las reglas con las que se consiguió, y que cualquier
+> animación nueva hereda:
+>
+> 1. **GSAP no entra en el JS inicial.** `home-motion.tsx` (411 B gz) espera a
+>    `load` + idle y hace `import()` de `home-reveal.tsx`, que es donde vive
+>    GSAP (28 KB gz). Nada de `next/dynamic`: mete 1,7 KB gz en la ruta crítica.
+> 2. **El HTML servido no oculta nada.** Solo se anima lo que al arrancar está
+>    entero por debajo de la pantalla (`data-reveal`, `data-redact`); el hero y
+>    la tarjeta del LCP no se tocan nunca. Sin JS, todo visible.
+> 3. **`prefers-reduced-motion` y `Save-Data` no descargan el chunk.**
+> 4. **Sin ScrollTrigger**: para revelar una vez, `IntersectionObserver` hace
+>    lo mismo con ~17 KB gz menos. Si un día hace falta `scrub` o `pin`, se
+>    mide de nuevo.
+
 ---
 
 ### ADR-48 · Paleta «petróleo y azafrán»: propuesta, pendiente de ajuste por Ulises

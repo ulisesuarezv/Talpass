@@ -44,6 +44,8 @@ src/
   components/
     ui/                         # shadcn — no se editan a mano salvo necesidad
     *.tsx                       # componentes propios, kebab-case
+    home/                       # GSAP de la home: home-motion (disparador, JS inicial)
+                                # y home-reveal (chunk perezoso). Ver la nota de ADR-47
   config/
     site.ts                     # marca y dominio (provisionales, ADR-12)
   i18n/
