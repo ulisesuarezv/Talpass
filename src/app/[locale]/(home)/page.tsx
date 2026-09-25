@@ -15,6 +15,7 @@ import {
   Zap,
 } from 'lucide-react';
 
+import { HomeMotion } from '@/components/home/home-motion';
 import { OpportunityCard } from '@/components/opportunities/opportunity-card';
 import { Button } from '@/components/ui/button';
 import { legalLink } from '@/config/legal';
@@ -164,14 +165,13 @@ export default async function HomePage({
               </p>
             </div>
 
-            {/* En móvil las etiquetas van en una sola fila que se desliza, que
-                pegada al borde del hero (`-mx-6`) se lee como fila y no como
-                recorte; dos filas de etiquetas eran 40 px que las ofertas no
-                tienen. */}
-            <ul
-              aria-label={t('tagsLabel')}
-              className="-mx-6 flex [scrollbar-width:none] gap-2 overflow-x-auto px-6 sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0"
-            >
+            {/* Las etiquetas bajan de línea, también en móvil. Hasta el
+                2026-09-26 iban en una fila que se deslizaba, y con solo dos la
+                segunda salía cortada a media palabra («Inglés según la of»)
+                de 320 a 414 px: se leía como un fallo, no como un carrusel. La
+                fila de más cuesta ~36 px en 375×667 y las ofertas siguen
+                asomando (medido tras el cambio). */}
+            <ul aria-label={t('tagsLabel')} className="flex flex-wrap gap-2">
               {HERO_TAGS.map(({ key, Icon }) => (
                 <li
                   key={key}
@@ -255,7 +255,7 @@ export default async function HomePage({
                     <Icon aria-hidden className="size-4 lg:size-5" />
                   </span>
                   <div className="flex flex-col gap-1">
-                    <h3 className="type-meta font-semibold text-foreground lg:type-h3">
+                    <h3 className="text-[0.9375rem] leading-snug font-semibold text-foreground lg:type-h3">
                       <span className="sr-only lg:not-sr-only">
                         {index + 1}.{' '}
                       </span>
@@ -282,7 +282,11 @@ export default async function HomePage({
         >
           <ul className="grid divide-y surface-panel lg:grid-cols-3 lg:divide-x lg:divide-y-0">
             {PERKS.map(({ key, Icon }) => (
-              <li key={key} className="flex items-start gap-3 pad-tile">
+              <li
+                key={key}
+                data-reveal
+                className="flex items-start gap-3 pad-tile"
+              >
                 <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-brand-soft text-brand-strong">
                   <Icon aria-hidden className="size-4" />
                 </span>
@@ -317,7 +321,7 @@ export default async function HomePage({
             </h2>
             <Link
               href="/jobs"
-              className="inline-flex shrink-0 items-center gap-1 type-meta font-medium text-primary underline-offset-4 hover:underline"
+              className="-my-2 inline-flex shrink-0 items-center gap-1 py-2 type-meta font-medium text-primary underline-offset-4 hover:underline"
             >
               {t('offers.seeAll')}
               <ArrowRight aria-hidden className="size-4" />
@@ -349,6 +353,7 @@ export default async function HomePage({
                  entre el resumen y la rejilla de datos. */
               <li
                 key={opportunity.sector}
+                data-reveal
                 className={index === 0 ? 'sm:col-span-2' : undefined}
               >
                 <OpportunityCard
@@ -408,9 +413,9 @@ export default async function HomePage({
         */}
         <section
           aria-labelledby="home-privacy"
-          className="grid stack-group section-y lg:grid-cols-[minmax(0,4fr)_minmax(0,6fr)] lg:items-center lg:gap-12"
+          className="grid stack-group section-y lg:grid-cols-[minmax(0,4fr)_minmax(0,6fr)] lg:items-start lg:gap-12"
         >
-          <div className="flex flex-col stack-group">
+          <div data-reveal className="flex flex-col stack-group">
             <div className="flex flex-col stack-tight">
               <h2 id="home-privacy" className="type-h2 lg:text-[1.75rem]">
                 {t('privacy.title')}
@@ -436,11 +441,11 @@ export default async function HomePage({
             </div>
           </div>
 
-          <div className="overflow-hidden surface-panel">
+          <div data-reveal className="overflow-hidden surface-panel">
             <div className="flex flex-col gap-4 bg-brand-soft p-4 sm:p-5 lg:p-6">
               <div className="flex flex-col gap-0.5">
                 <p className="type-eyebrow">{t('privacy.example')}</p>
-                <p className="type-h2">{t('privacy.displayName')}</p>
+                <p className="type-card-title">{t('privacy.displayName')}</p>
                 <p className="type-caption text-muted-foreground">
                   {t('privacy.displayNote')}
                 </p>
@@ -492,6 +497,7 @@ export default async function HomePage({
                       <span className="sr-only">{t('privacy.blocked')}</span>
                       <span
                         aria-hidden
+                        data-redact
                         className={`block h-2 shrink-0 rounded-full bg-foreground/15 ${REDACTED[index]}`}
                       />
                     </dd>
@@ -533,7 +539,7 @@ export default async function HomePage({
           aria-labelledby="home-support"
           className="flex flex-col stack-group section-y"
         >
-          <div className="flex flex-col stack-tight">
+          <div data-reveal className="flex flex-col stack-tight">
             <h2 id="home-support" className="type-h2 lg:text-[1.75rem]">
               {t('support.title')}
             </h2>
@@ -546,6 +552,7 @@ export default async function HomePage({
             {SUPPORT.map((key, index) => (
               <li
                 key={key}
+                data-reveal
                 className="grid gap-x-6 gap-y-1 border-b py-4 sm:py-5 lg:grid-cols-[minmax(0,2fr)_minmax(0,4fr)_minmax(0,6fr)] lg:items-baseline lg:gap-x-8"
               >
                 <p className="flex items-baseline gap-2">
@@ -572,7 +579,10 @@ export default async function HomePage({
               arriba lo hace la AGENCIA, y varía— y a 12 px se leía como la
               letra chica de un contrato, que es justo lo contrario de lo que
               es. */}
-          <p className="max-w-[70ch] type-body text-muted-foreground">
+          <p
+            data-reveal
+            className="max-w-[70ch] type-body text-muted-foreground"
+          >
             {t('support.note')}
           </p>
         </section>
@@ -598,7 +608,10 @@ export default async function HomePage({
           aria-labelledby="home-faq"
           className="grid stack-group section-y lg:grid-cols-[minmax(0,4fr)_minmax(0,6fr)] lg:items-start lg:gap-12"
         >
-          <div className="flex flex-col stack-tight lg:sticky lg:top-24">
+          <div
+            data-reveal
+            className="flex flex-col stack-tight lg:sticky lg:top-24"
+          >
             <h2 id="home-faq" className="type-h2 lg:text-[1.75rem]">
               {t('faq.title')}
             </h2>
@@ -607,7 +620,7 @@ export default async function HomePage({
 
           <div className="flex flex-col border-t">
             {FAQ.map((key) => (
-              <details key={key} className="group border-b">
+              <details key={key} data-reveal className="group border-b">
                 <summary className="flex cursor-pointer list-none items-baseline justify-between gap-4 py-4 outline-none focus-visible:ring-3 focus-visible:ring-ring/40 [&::-webkit-details-marker]:hidden">
                   <h3 className="type-h3">
                     {t(`faq.items.${key}.q`, { brand })}
@@ -635,6 +648,13 @@ export default async function HomePage({
           </div>
         </section>
       </div>
+
+      {/*
+        El revelado al hacer scroll (ADR-47). No pinta nada ni oculta nada en
+        el HTML: GSAP llega después de \`load\`, en un chunk aparte, y solo
+        anima lo marcado con \`data-reveal\` que esté por debajo de la pantalla.
+      */}
+      <HomeMotion />
     </div>
   );
 }

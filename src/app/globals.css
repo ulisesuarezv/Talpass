@@ -280,6 +280,14 @@
   @apply text-base leading-snug font-semibold tracking-tight text-pretty;
 }
 
+/* Título de una pieza destacada DENTRO de una sección (la tarjeta destacada
+   de ofertas, la ficha de ejemplo): 18 → 20 px, siempre un paso por debajo
+   del `h2` de su sección (20 → 24 → 28). Con `type-h2` medían lo mismo que el
+   título de la sección por debajo de 1024 px y competían con él. */
+@utility type-card-title {
+  @apply text-lg leading-snug font-semibold tracking-tight text-balance sm:text-xl;
+}
+
 @utility type-h4 {
   @apply text-sm leading-snug font-semibold tracking-tight;
 }
@@ -450,20 +458,23 @@
   @apply text-[clamp(1.75rem,1.2rem+1.9vw,2.5rem)] leading-none font-semibold tracking-[-0.03em] tabular-nums;
 }
 
-/* El extremo pequeño de la escala: procedencia del dato, ciudades. 12 px. */
+/* Procedencia del dato, notas de una ficha. 14 px, como `type-meta`: a 12 px
+   era el sexto tamaño entre 12 y 16 y se leía mal en el móvil. Los 12 px
+   quedan solo para versales (`type-eyebrow`, `fact-label`). */
 @utility type-caption {
-  @apply text-xs leading-normal;
+  @apply text-sm leading-normal;
 }
 
 /* La rejilla de datos del pie de la tarjeta: etiqueta arriba en versales,
    valor debajo. Es lo que hace que se lea como una ficha y no como un
-   párrafo. 11 px de etiqueta contra 13 de valor. */
+   párrafo. 12 px de etiqueta en versales contra 14 de valor: los mismos dos
+   escalones que el resto de la página (antes 11 y 13, dos tamaños más). */
 @utility fact-label {
-  @apply text-[0.6875rem] leading-none font-semibold tracking-[0.08em] text-muted-foreground uppercase;
+  @apply text-xs leading-none font-semibold tracking-[0.08em] text-muted-foreground uppercase;
 }
 
 @utility fact-value {
-  @apply text-[0.8125rem] leading-snug font-medium text-foreground;
+  @apply text-sm leading-snug font-medium text-foreground;
 }
 
 /* El armazón de la tarjeta: borde, radio y estados. Hover con borde de marca y

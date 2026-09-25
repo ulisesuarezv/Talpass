@@ -65,7 +65,7 @@ export function LocaleSwitcher() {
             aria-current={isActive ? 'true' : undefined}
             onClick={() => switchTo(locale)}
             className={cn(
-              'rounded-full px-2 py-1 text-xs leading-none font-medium transition-colors focus-visible:ring-2 focus-visible:ring-hero-foreground focus-visible:outline-none',
+              'rounded-full px-2.5 py-1.5 text-xs leading-none font-medium transition-colors focus-visible:ring-2 focus-visible:ring-hero-foreground focus-visible:outline-none',
               isActive
                 ? 'bg-hero-foreground text-hero'
                 : 'text-hero-muted hover:text-hero-foreground',

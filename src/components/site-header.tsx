@@ -78,7 +78,7 @@ export async function SiteHeader() {
             color de marca, y va dos puntos por encima del enlace de sección. */}
         <Link
           href="/"
-          className="text-[1.0625rem] leading-none font-semibold tracking-tight text-hero-foreground"
+          className="inline-flex min-h-11 items-center text-[1.0625rem] leading-none font-semibold tracking-tight text-hero-foreground"
         >
           {siteConfig.name}
         </Link>
@@ -88,7 +88,7 @@ export async function SiteHeader() {
         <nav aria-label={t('sectionsLabel')} className="mr-auto">
           <Link
             href="/jobs"
-            className="type-meta font-medium text-hero-muted underline-offset-[6px] transition-colors hover:text-hero-foreground hover:underline"
+            className="inline-flex min-h-11 items-center type-meta font-medium text-hero-muted underline-offset-[6px] transition-colors hover:text-hero-foreground hover:underline"
           >
             {t('jobs')}
           </Link>

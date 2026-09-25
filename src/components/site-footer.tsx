@@ -25,12 +25,12 @@ export async function SiteFooter() {
     <footer className="border-t">
       <div className="container-page flex flex-col gap-4 py-8 text-sm text-muted-foreground">
         <nav aria-label={footer('legalHeading')}>
-          <ul className="flex flex-wrap gap-x-5 gap-y-2">
+          <ul className="flex flex-wrap gap-x-5">
             {LEGAL_DOCUMENTS.map((document) => (
               <li key={document}>
                 <Link
                   href={legalLink(document, locale as Locale)}
-                  className="text-primary underline-offset-4 transition-colors hover:underline"
+                  className="inline-block py-1.5 text-primary underline-offset-4 transition-colors hover:underline"
                 >
                   {t(`documents.${document}.title`)}
                 </Link>

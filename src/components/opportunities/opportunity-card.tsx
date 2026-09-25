@@ -132,7 +132,7 @@ export function OpportunityCard({
         // de LA TARJETA, no el de la pantalla. La misma tarjeta mide 343 px en
         // un móvil, 400 en una columna de la home y 740 en `/ofertas`, y
         // un `sm:` habría puesto tres columnas justo donde no caben.
-        'group @container surface-offer',
+        'group @container surface-offer h-full',
         featured ? 'bg-brand-soft' : 'bg-card',
       )}
     >
@@ -149,7 +149,7 @@ export function OpportunityCard({
       >
         <div
           className={cn(
-            'flex flex-col gap-1 p-4',
+            'flex flex-1 flex-col gap-1 p-4',
             featured ? 'sm:p-6 lg:p-8' : 'sm:p-5',
           )}
         >
@@ -163,7 +163,7 @@ export function OpportunityCard({
           <h3
             className={cn(
               'transition-colors group-hover:text-primary',
-              featured ? 'type-h2' : 'type-h3',
+              featured ? 'type-card-title' : 'type-h3',
             )}
           >
             <Link
