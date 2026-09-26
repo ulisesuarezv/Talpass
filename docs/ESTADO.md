@@ -1,23 +1,19 @@
 # Estado del proyecto — punto de retomada
 
-> ## 🧭 RETOMA AQUÍ — foto del 2026-09-26 (noche), verificada contra producción
+> ## 🧭 RETOMA AQUÍ — foto del 2026-09-27, verificada contra producción
 >
 > - **Qué sirve `talpass.eu`:** la home rediseñada (5 `h2`, cabecera petróleo,
->   GSAP en el scroll) y `/ofertas` con los cinco perfiles. Último código:
->   `7c73d55`. Borde caliente, 12 pasadas sobre `64a2020`: **98 · LCP 2,28 s ·
->   CLS 0** (`7c73d55` solo cambia una clase de la tarjeta destacada).
-> - **Lo que queda, en este orden:** (1) **desplegar el IBAN (ADR-51)**, hecho
->   y verificado en local el 2026-09-27 pero **sin commit ni despliegue**: la
->   migración `20260927100000` va a producción **antes** que el push (con el
->   disparador viejo y el código nuevo, las filas de `consents` saldrían con
->   versión `'1'`). Luego push y comprobar que `/es/legal/privacidad` dice
->   «27 de septiembre de 2026»; (2) **el pie, rediseñado el 2026-09-27 en el
->   mismo árbol, sin commit**: petróleo como la cabecera, dos grupos con
->   rótulo (`p`, no `h2`: la home sigue en 5), 44 px táctiles en móvil y 32
->   desde `sm`. Sin desbordamiento a 320/375/768/1280; HTML de la home
->   +268 B gz. **Sin Lighthouse**: está bajo el pliegue, pero al desplegar
->   hay que medir producción. Con esto la fase R solo espera a que Ulises
->   cierre la paleta (ADR-48).
+>   GSAP en el scroll, pie petróleo) y `/ofertas` con los cinco perfiles.
+>   Último código: `dcfe722`.
+> - **Desplegado el 2026-09-27** (`552d5bc` IBAN, `dcfe722` pie): migración
+>   `20260927100000` aplicada en producción **antes** del push. Verificado en
+>   `talpass.eu`: privacidad y «Cómo se comparte tu perfil» con versión del
+>   27 de septiembre, términos del 19 de agosto, cero «ni con consentimiento»,
+>   home con 5 `h2` y el pie nuevo. Borde caliente, 12 pasadas: **98 · LCP
+>   2,28 s · CLS 0**, igual que el 26.
+> - **Lo que queda:** que Ulises cierre la paleta (ADR-48) —y con ella el
+>   petróleo del pie, que fue elección del PM— para dar la fase R por ✅.
+>   Fuera del código, la primera ETT y Search Console.
 > - **ADR-51 en una línea:** el IBAN y la dirección solo los ve la ETT que ha
 >   contratado al candidato (aplicación `hired`), ni con consentimiento antes.
 >   Se reescribieron privacidad y «Cómo se comparte tu perfil» (versión
