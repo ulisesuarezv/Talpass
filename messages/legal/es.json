@@ -69,7 +69,7 @@
             "Datos técnicos mínimos asociados a hechos que hay que poder probar: la dirección IP y el navegador desde los que aceptaste cada consentimiento, y los mismos datos de quien abre uno de tus documentos."
           ],
           "paragraphs": [
-            "Hoy {brand} no te pide ni guarda tu IBAN, tu dirección postal ni tu número de teléfono, y por tanto no los tiene. El sistema los prevé para la fase de contratación, que todavía no existe en el producto; el día que se pidan, este documento lo dirá antes de pedírtelos, el IBAN se guardará cifrado y no se compartirá con ninguna agencia en ningún caso.",
+            "Hoy {brand} no te pide ni guarda tu IBAN, tu dirección postal ni tu número de teléfono, y por tanto no los tiene. El sistema los prevé para la fase de contratación, que todavía no existe en el producto; el día que se pidan, este documento lo dirá antes de pedírtelos, el IBAN se guardará cifrado. Tu IBAN y tu dirección solo los verá la agencia que te haya contratado, y el apartado «Quién puede ver tus datos» explica cuándo.",
             "No se recoge nada por observación: no hay analítica, ni seguimiento entre sitios, ni perfilado publicitario. Lo que hay sobre ti es lo que tú has escrito o subido."
           ]
         },
@@ -83,6 +83,7 @@
             "Entregar un documento tuyo a una agencia concreta — tu consentimiento explícito para esa agencia y esos documentos, nunca uno genérico (art. 6.1.a).",
             "Enviarte los correos imprescindibles de la cuenta: confirmar el registro, recuperar el acceso, avisarte de si tu verificación se aprueba o se rechaza — ejecución del contrato (art. 6.1.b).",
             "Guardar la prueba de qué consentiste, cuándo, y de quién abrió qué documento — la obligación de poder demostrar el consentimiento (art. 7.1) y el interés legítimo en poder defender o rebatir una reclamación (art. 6.1.f).",
+            "Que la agencia que te ha contratado vea tu IBAN y tu dirección postal, para pagarte la nómina y darte de alta — la ejecución del contrato de trabajo del que eres parte (art. 6.1.b). Solo esa agencia, y solo desde que te contrata.",
             "Mantener el servicio seguro y prevenir el abuso — interés legítimo (art. 6.1.f)."
           ]
         },
@@ -92,6 +93,7 @@
             "Esta es la parte que define el producto, así que va con detalle.",
             "Lo que una agencia ve en la bolsa está seudonimizado: tu nombre de pila y la inicial de tu apellido («Carlos M.»), tu edad calculada —nunca tu fecha de nacimiento—, tu ciudad, tu país y tu nacionalidad, tu experiencia y sus sectores, tu nivel de inglés, tu disponibilidad, si necesitas alojamiento o transporte, y unos sellos que dicen sí o no: identidad verificada, carné verificado, identificador fiscal verificado, si hay CV y si hay audio.",
             "Una agencia no ve tus apellidos completos, ni tu correo, ni tu teléfono, ni tu dirección, ni tu IBAN, ni ninguno de tus documentos. Y no es que la pantalla no se los enseñe: es que la base de datos no le da ninguna puerta a esas tablas, ni siquiera de lectura parcial. Su única ventana es la vista seudonimizada. La seudonimización se aplica dentro de la base, no filtrando en el navegador, que es la diferencia entre una garantía y una costumbre.",
+            "Hay una sola excepción, y es para cuando ya hay trabajo: tu IBAN y tu dirección postal los ve la agencia que te ha contratado, porque sin ellos no puede pagarte la nómina ni darte de alta. Esa agencia y ninguna otra, y nunca antes de contratarte, ni siquiera con tu permiso. Hoy {brand} no pide ninguno de los dos, así que ese caso todavía no se da.",
             "Para ver un documento tuyo, una agencia tiene que pedírtelo diciendo qué documentos quiere. Tú concedes o deniegas. Si concedes, el acceso dura una ventana limitada, puedes revocarlo antes de que termine, y el archivo se sirve con un enlace firmado que caduca en minutos.",
             "Dentro de {brand}, el responsable puede ver tus datos y abrir tus documentos para verificarlos: es lo que hace que el sello de «identidad verificada» signifique algo. Esas aperturas se registran exactamente igual que las de una agencia. No hay un acceso interno que no deje rastro."
           ]
@@ -294,9 +296,9 @@
           "items": [
             "Tus apellidos completos.",
             "Tu correo electrónico y tu teléfono.",
-            "Tu dirección postal.",
+            "Tu dirección postal, que tiene su propia regla: más abajo.",
             "Tu fecha de nacimiento exacta.",
-            "Tu IBAN.",
+            "Tu IBAN, con la misma regla que la dirección.",
             "Cualquiera de tus documentos: DNI, pasaporte, CV, carné, identificación fiscal."
           ],
           "paragraphs": [
@@ -330,10 +332,11 @@
           ]
         },
         {
-          "heading": "El IBAN y la dirección no se comparten nunca",
+          "heading": "El IBAN y la dirección solo los ve la agencia que te contrata",
           "paragraphs": [
-            "Ni con consentimiento. Una agencia no necesita tu IBAN ni tu dirección para decidir si te quiere contratar: son datos de la fase de contratación, que ocurre fuera de esta plataforma.",
-            "Hoy, además, {brand} no te los pide siquiera."
+            "Antes de contratarte, ninguna agencia los ve, ni siquiera con tu permiso: para decidir si te quiere contratar no necesita tu IBAN ni tu dirección.",
+            "Cuando una agencia te contrata, pasa a necesitarlos: el IBAN para pagarte la nómina y la dirección para darte de alta. Desde ese momento los ve esa agencia, y solo esa. Ninguna otra, tampoco una a la que hayas dado permiso para ver tus documentos.",
+            "Hoy, además, {brand} no te los pide siquiera. El día que lo haga, este documento lo dirá antes de pedírtelos."
           ]
         },
         {

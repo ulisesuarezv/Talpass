@@ -781,8 +781,8 @@ Producción, borde caliente, 12 pasadas: 98 · LCP 2,28 s · CLS 0. En móvil
 375×667 las ofertas asoman (tarjeta en y=614).
 
 **Lo que falta para ✅:** que Ulises dé por buena la paleta (ADR-48 sigue
-siendo «propuesta») y rediseñar el pie. El IBAN no es de esta fase: es de la
-matriz de acceso y de la política de privacidad (ver ESTADO).
+siendo «propuesta»). El pie se rediseñó el 2026-09-27 (ver ESTADO). El IBAN no era de esta fase y se cerró
+aparte el 2026-09-27 (ADR-51).
 
 **Hecho cuando:** Ulises da por buena la paleta; la home en producción muestra
 la estructura de ADR-46; Lighthouse móvil (mediana de 3) no baja de la línea
@@ -817,6 +817,8 @@ Alta invite-only por admin · dashboard · CRUD de vacantes con traducciones (AD
 Bolsa navegable con filtros sobre la vista seudonimizada (ADR-03) · solicitud de acceso a documentos · **flujo de consentimiento del candidato** (ADR-05): email + aviso in-app, conceder/denegar, recordatorio 24 h, caducidad 7 días · acceso temporal por URL firmada · `document_access_log` · solicitud de contacto desde la bolsa.
 
 **Hecho cuando:** el ciclo completo funciona y existe registro de cada apertura de documento.
+
+**Anotado, sin fase asignada (ADR-51):** pedir el IBAN y la dirección, y que los vea **solo** la ETT con una aplicación `hired` de ese candidato. El consentimiento documental de esta fase **no** los abre. El día que se construya: vista o RPC con solo esas dos columnas (nunca una política de fila sobre `candidate_private`, que enseñaría el teléfono), descifrado en servidor, lectura registrada, tests en `test:security`, y **subir la versión** de privacidad y de «Cómo se comparte tu perfil», que hoy dicen «no tiene ninguna puerta» y que ninguna pantalla los pide.
 
 > Fase de mayor valor comercial. Es lo que se enseña en la reunión con la ETT.
 

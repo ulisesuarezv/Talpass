@@ -19,20 +19,20 @@ import type { LocalizedHref } from '@/lib/seo';
  * publican hoy por primera vez, así que la versión es la de hoy. Qué pasa con
  * las filas ya escritas con la versión vieja está decidido y razonado en
  * ADR-34.
+ *
+ * **2026-09-27 — divergen por primera vez (ADR-51).** Privacidad y «Cómo se
+ * comparte tu perfil» se reescriben porque decían que el IBAN y la dirección
+ * no se compartían nunca, y ahora los ve la agencia que te contrata. Términos
+ * y audio no cambian de texto, así que tampoco de versión. Por eso el alta ya
+ * no manda una versión única sino este objeto entero, y `app.handle_new_user`
+ * toma la de cada fila (migración `20260927100000`).
  */
 export const CONSENT_VERSIONS = {
   terms: '2026-08-19',
-  privacy: '2026-08-19',
-  data_sharing: '2026-08-19',
+  privacy: '2026-09-27',
+  data_sharing: '2026-09-27',
   audio_sharing: '2026-08-19',
 } as const;
-
-/**
- * La versión que viaja en los metadatos del registro. Los cuatro textos se
- * publican a la vez, así que hoy es una sola; si algún día divergen, este
- * fichero es el único sitio donde hay que separarlas.
- */
-export const SIGNUP_CONSENT_VERSION = CONSENT_VERSIONS.terms;
 
 export type ConsentType = keyof typeof CONSENT_VERSIONS;
 

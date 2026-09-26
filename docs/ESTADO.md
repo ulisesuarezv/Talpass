@@ -6,10 +6,25 @@
 >   GSAP en el scroll) y `/ofertas` con los cinco perfiles. Último código:
 >   `7c73d55`. Borde caliente, 12 pasadas sobre `64a2020`: **98 · LCP 2,28 s ·
 >   CLS 0** (`7c73d55` solo cambia una clase de la tarjeta destacada).
-> - **Lo que queda, en este orden:** (1) **el IBAN** —la home, la matriz de
->   acceso y la política de privacidad publicada se contradicen; hay tres
->   preguntas para Ulises antes de tocar nada, ver «Lo que queda» en el bloque
->   🎨—; (2) **el pie de página**, lo único sin rediseñar.
+> - **Lo que queda, en este orden:** (1) **desplegar el IBAN (ADR-51)**, hecho
+>   y verificado en local el 2026-09-27 pero **sin commit ni despliegue**: la
+>   migración `20260927100000` va a producción **antes** que el push (con el
+>   disparador viejo y el código nuevo, las filas de `consents` saldrían con
+>   versión `'1'`). Luego push y comprobar que `/es/legal/privacidad` dice
+>   «27 de septiembre de 2026»; (2) **el pie, rediseñado el 2026-09-27 en el
+>   mismo árbol, sin commit**: petróleo como la cabecera, dos grupos con
+>   rótulo (`p`, no `h2`: la home sigue en 5), 44 px táctiles en móvil y 32
+>   desde `sm`. Sin desbordamiento a 320/375/768/1280; HTML de la home
+>   +268 B gz. **Sin Lighthouse**: está bajo el pliegue, pero al desplegar
+>   hay que medir producción. Con esto la fase R solo espera a que Ulises
+>   cierre la paleta (ADR-48).
+> - **ADR-51 en una línea:** el IBAN y la dirección solo los ve la ETT que ha
+>   contratado al candidato (aplicación `hired`), ni con consentimiento antes.
+>   Se reescribieron privacidad y «Cómo se comparte tu perfil» (versión
+>   `2026-09-27`; términos y audio siguen en `2026-08-19`), la matriz de
+>   `01-DATA-MODEL.md` y `CLAUDE.md`. La base **no** se tocó salvo el
+>   disparador: hoy es más estricta que la regla. La dirección se equiparó al
+>   IBAN porque la home los agrupa; Ulises no lo dijo con esas palabras.
 > - **Lo que no depende del código** sigue igual: la primera ETT y Search
 >   Console (tabla de abajo).
 > - **Para medir:** `pnpm measure <url> --runs=12`. La máquina cambia de humor
@@ -334,8 +349,8 @@
 >
 > 1. ~~**`gsap-senior-animator`**~~ **Hecho y desplegado el 2026-09-26**
 >    (`64a2020`), ver arriba.
-> 2. **El IBAN y la matriz de acceso** (punto 3 de arriba): decisión tomada,
->    implementación pendiente. ⚠️ **No es solo `01-DATA-MODEL.md`**: la
+> 2. ~~**El IBAN y la matriz de acceso**~~ **Resuelto el 2026-09-27 (ADR-51)**,
+>    pendiente de desplegar: ver el recuadro 🧭. Lo que sigue es la historia. ⚠️ **No es solo `01-DATA-MODEL.md`**: la
 >    política de privacidad publicada también dice lo contrario
 >    (`messages/legal/*.json`, claves de las líneas ~72 y ~333: «no se
 >    compartirá con ninguna agencia en ningún caso», «Ni con consentimiento»).

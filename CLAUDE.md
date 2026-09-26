@@ -8,14 +8,14 @@ Marketplace de dos lados: candidatos hispanohablantes/lusófonos ↔ ETTs de Eur
 
 ## Antes de trabajar, leer
 
-1. `docs/00-PROJECT.md` — negocio, roles, decisiones cerradas (ADR-01…50), reglas de negocio
+1. `docs/00-PROJECT.md` — negocio, roles, decisiones cerradas (ADR-01…51), reglas de negocio
 2. `docs/01-DATA-MODEL.md` — schema y matriz de acceso
 3. `docs/02-ROADMAP.md` — fases y estado actual
 4. `docs/CONVENTIONS.md` — naming, organización de carpetas, patrón servidor/cliente
 
 ## Reglas no negociables
 
-- **La ETT nunca ve documentos, IBAN, dirección, email ni teléfono de un candidato** sin consentimiento explícito del candidato para esa ETT concreta. La bolsa es seudonimizada, y la seudonimización se aplica en la base de datos (vista + RLS), nunca filtrando en el cliente.
+- **La ETT nunca ve documentos, email ni teléfono de un candidato** sin consentimiento explícito del candidato para esa ETT concreta. **El IBAN y la dirección, ni con consentimiento**: solo los ve la ETT que lo ha contratado (ADR-51). La bolsa es seudonimizada, y la seudonimización se aplica en la base de datos (vista + RLS), nunca filtrando en el cliente.
 - **Al candidato no se le cobra nunca.** Regulación UE.
 - **Lo que varía por país es catálogo en base de datos**, no enums ni condicionales. La expansión a más países es el plan, no una hipótesis.
 - **Mobile-first y rápido.** El candidato entra desde el móvil con datos limitados.

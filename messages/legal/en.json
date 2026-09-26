@@ -69,7 +69,7 @@
             "Minimal technical data attached to facts that have to be provable: the IP address and browser you accepted each consent from, and the same details for whoever opens one of your documents."
           ],
           "paragraphs": [
-            "Today {brand} does not ask for or store your IBAN, your postal address or your phone number, and therefore does not have them. The system anticipates them for the hiring stage, which does not exist in the product yet; the day they are asked for, this document will say so before you are asked, the IBAN will be stored encrypted, and it will not be shared with any agency under any circumstances.",
+            "Today {brand} does not ask for or store your IBAN, your postal address or your phone number, and therefore does not have them. The system anticipates them for the hiring stage, which does not exist in the product yet; the day they are asked for, this document will say so before you are asked, the IBAN will be stored encrypted. Your IBAN and your address will only be seen by the agency that has hired you, and the section «Who can see your data» explains when.",
             "Nothing is collected by observation: there is no analytics, no cross-site tracking, no advertising profiling. What exists about you is what you have written or uploaded."
           ]
         },
@@ -83,6 +83,7 @@
             "Handing one of your documents to one specific agency — your explicit consent for that agency and those documents, never a generic one (Art. 6.1(a)).",
             "Sending you the essential account emails: confirming your registration, recovering access, telling you whether your verification was approved or rejected — performance of the contract (Art. 6.1(b)).",
             "Keeping proof of what you consented to and when, and of who opened which document — the obligation to be able to demonstrate consent (Art. 7.1) and the legitimate interest in being able to defend or rebut a claim (Art. 6.1(f)).",
+            "Letting the agency that has hired you see your IBAN and your postal address, so it can pay your wages and register you — performance of the employment contract you are party to (Art. 6.1(b)). Only that agency, and only from the moment it hires you.",
             "Keeping the service secure and preventing abuse — legitimate interest (Art. 6.1(f))."
           ]
         },
@@ -92,6 +93,7 @@
             "This is the part that defines the product, so it goes in detail.",
             "What an agency sees in the talent pool is pseudonymised: your first name and the initial of your surname («Carlos M.»), your age as a calculated number — never your date of birth —, your city, country and nationality, your experience and its sectors, your English level, your availability, whether you need housing or transport, and a set of seals that only say yes or no: identity verified, driving licence verified, tax identifier verified, whether there is a CV and whether there is a recording.",
             "An agency does not see your full surname, your email, your phone, your address, your IBAN or any of your documents. And it is not that the screen hides them: the database gives it no door to those tables at all, not even partial read access. Its only window is the pseudonymised view. Pseudonymisation is applied inside the database, not by filtering in the browser, and that is the difference between a guarantee and a habit.",
+            "There is one single exception, and it is for when there is already a job: your IBAN and your postal address are seen by the agency that has hired you, because without them it cannot pay your wages or register you. That agency and no other, and never before it hires you, not even with your permission. Today {brand} does not ask for either of them, so that case does not happen yet.",
             "To see a document of yours, an agency has to ask you, stating which documents it wants. You grant or refuse. If you grant, the access lasts a limited window, you can revoke it before it ends, and the file is served through a signed link that expires within minutes.",
             "Inside {brand}, the controller can see your data and open your documents in order to verify them: that is what makes the «identity verified» seal mean anything. Those openings are logged exactly like an agency's. There is no internal access that leaves no trace."
           ]
@@ -294,9 +296,9 @@
           "items": [
             "Your full surname.",
             "Your email address and your phone number.",
-            "Your postal address.",
+            "Your postal address, which has its own rule: see below.",
             "Your exact date of birth.",
-            "Your IBAN.",
+            "Your IBAN, under the same rule as your address.",
             "Any of your documents: ID card, passport, CV, licence, tax identification."
           ],
           "paragraphs": [
@@ -330,10 +332,11 @@
           ]
         },
         {
-          "heading": "Your IBAN and address are never shared",
+          "heading": "Your IBAN and address are only seen by the agency that hires you",
           "paragraphs": [
-            "Not even with consent. An agency does not need your IBAN or your address to decide whether it wants to hire you: those belong to the hiring stage, which happens outside this platform.",
-            "Today, on top of that, {brand} does not even ask you for them."
+            "Before it hires you, no agency sees them, not even with your permission: to decide whether it wants to hire you it does not need your IBAN or your address.",
+            "Once an agency hires you, it does need them: the IBAN to pay your wages and the address to register you. From that moment that agency sees them, and only that one. No other, not even one you have allowed to see your documents.",
+            "Today, on top of that, {brand} does not even ask you for them. The day it does, this document will say so before you are asked."
           ]
         },
         {

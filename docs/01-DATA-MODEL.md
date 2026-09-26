@@ -211,17 +211,19 @@ Ningún bucket sensible es público. Acceso exclusivamente por **URL firmada de 
 
 ## J. Matriz de acceso (resumen de RLS)
 
-| Recurso                           | Candidato   | ETT (sin consentimiento) | ETT (con consentimiento) | Admin |
-| --------------------------------- | ----------- | ------------------------ | ------------------------ | ----- |
-| Perfil propio                     | RW          | —                        | —                        | R     |
-| Datos sensibles (IBAN, dirección) | RW          | **Nunca**                | **Nunca**                | R     |
-| Documentos                        | RW          | **No**                   | R temporal + log         | RW    |
-| Bolsa (vista seudonimizada)       | —           | R                        | R                        | R     |
-| Identidad completa del candidato  | —           | No                       | R                        | R     |
-| Vacantes publicadas               | R           | RW (propias)             | RW (propias)             | RW    |
-| Aplicaciones                      | R (propias) | RW (a sus vacantes)      | RW                       | RW    |
+| Recurso                           | Candidato   | ETT (sin consentimiento) | ETT (con consentimiento)          | Admin |
+| --------------------------------- | ----------- | ------------------------ | --------------------------------- | ----- |
+| Perfil propio                     | RW          | —                        | —                                 | R     |
+| Datos sensibles (IBAN, dirección) | RW          | **No**                   | **Solo si lo ha contratado** (\*) | R     |
+| Documentos                        | RW          | **No**                   | R temporal + log                  | RW    |
+| Bolsa (vista seudonimizada)       | —           | R                        | R                                 | R     |
+| Identidad completa del candidato  | —           | No                       | R                                 | R     |
+| Vacantes publicadas               | R           | RW (propias)             | RW (propias)                      | RW    |
+| Aplicaciones                      | R (propias) | RW (a sus vacantes)      | RW                                | RW    |
 
-> El IBAN y la dirección **no se comparten con la ETT en ningún caso** dentro del MVP: no los necesita para decidir. Son datos de la fase de contratación, fuera de la plataforma por ahora.
+> (\*) **Enmendado el 2026-09-27 por ADR-51.** El IBAN y la dirección **solo los ve la ETT que ha contratado al candidato** —una aplicación suya en estado `hired` sobre una vacante de esa ETT—, porque es quien paga la nómina y da de alta. Antes de eso no los ve **ni con consentimiento**: para decidir no los necesita, y el consentimiento documental de ADR-05 no los abre. El teléfono, que vive en la misma tabla, **no entra** en esta regla.
+>
+> **Hoy la base es más estricta que la regla, y eso es correcto:** la ETT no tiene ninguna política sobre `candidate_private` y ninguna pantalla pide IBAN ni dirección. La puerta se abre el día que se pidan, y no puede ser una política de fila sobre `candidate_private` —dejaría ver el teléfono—: tiene que ser una vista o RPC que devuelva solo esas columnas, con el IBAN descifrado en el servidor (ADR-15) y su lectura registrada. Ver el aviso en la fase 7 del roadmap.
 
 ### Cómo está implementada (fase 1)
 

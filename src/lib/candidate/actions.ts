@@ -2,7 +2,7 @@
 
 import { revalidatePath } from 'next/cache';
 
-import { SIGNUP_CONSENT_VERSION } from '@/config/legal';
+import { CONSENT_VERSIONS } from '@/config/legal';
 import { redirectAndStop } from '@/i18n/navigation';
 import { routing, type Locale } from '@/i18n/routing';
 import { createClient } from '@/lib/supabase/server';
@@ -315,7 +315,7 @@ export async function setAudioConsentAction(form: FormData): Promise<void> {
     await supabase.from('consents').insert({
       profile_id: userId,
       type: 'audio_sharing',
-      version: SIGNUP_CONSENT_VERSION,
+      version: CONSENT_VERSIONS.audio_sharing,
     });
   } else {
     await supabase

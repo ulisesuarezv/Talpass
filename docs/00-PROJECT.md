@@ -1624,6 +1624,42 @@ un par si hay un perfil escrito, revisado y fechado, y los perfiles son cinco
 inventa ni una cifra: todo lo que pinta es el mismo copy y los mismos números
 que ya estaban publicados, con su procedencia pegada a la cifra (ADR-31).
 
+### ADR-51 · El IBAN y la dirección los ve la ETT que contrata, y solo ella
+
+_(2026-09-27. Decisión de Ulises. Enmienda la fila «Datos sensibles» de la
+matriz de acceso de `01-DATA-MODEL.md` y reescribe la política de privacidad y
+«Cómo se comparte tu perfil».)_
+
+**La regla.** Una ETT ve el IBAN y la dirección postal de un candidato **solo
+cuando lo ha contratado**: una aplicación suya en estado `hired`. Antes de eso
+no los ve **ni con consentimiento**; el consentimiento documental de ADR-05 no
+los abre. El teléfono, que vive en la misma tabla, sigue la regla general del
+consentimiento y **no** entra aquí.
+
+**Por qué.** Hasta hoy tres sitios se contradecían. La home, corregida por
+Ulises el 2026-09-25, los pone con los datos que la agencia no ve sin permiso,
+porque la ETT es quien paga la nómina y da de alta: acaba necesitándolos. La
+matriz de acceso y la política publicada decían «nunca, ni con
+consentimiento». Gana la home, y «solo tras contratar» es la forma estricta de
+que sea verdad: para decidir, la ETT no los necesita.
+
+**La política cambia de texto, así que cambia de versión.** Privacidad y «Cómo
+se comparte tu perfil» pasan a `2026-09-27`; términos y audio no cambian. Es la
+primera vez que las versiones divergen, y el disparador de alta escribía una
+sola para las cuatro filas: la migración `20260927100000` le hace tomar la de
+cada tipo. Las filas anteriores quedan como estaban (ADR-34): se aceptaron sobre
+un texto más restrictivo que el nuevo, y hoy no se pide IBAN ni dirección a
+nadie, así que nadie ha cedido nada bajo la regla nueva.
+
+**Lo que esta ADR no hace.** No abre ninguna puerta en la base: hoy la ETT no
+tiene política sobre `candidate_private` y ninguna pantalla pide esos datos, de
+modo que la base es más estricta que la regla, que es lo correcto. El día que se
+pidan, la puerta será una vista o RPC con solo esas dos columnas —nunca una
+política de fila, que enseñaría el teléfono—, con el IBAN descifrado en servidor
+(ADR-15), la lectura registrada, tests en `test:security` y **otra subida de
+versión**, porque la política dirá entonces que la puerta existe. Queda anotado
+en la fase 7 del roadmap, sin fase asignada.
+
 ## 5. Reglas de negocio
 
 1. Ver ofertas: libre y sin cuenta. **Aplicar: requiere cuenta verificada.**

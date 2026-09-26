@@ -4,7 +4,7 @@ import { headers } from 'next/headers';
 import type { AuthError } from '@supabase/supabase-js';
 
 import { siteConfig } from '@/config/site';
-import { SIGNUP_CONSENT_VERSION } from '@/config/legal';
+import { CONSENT_VERSIONS } from '@/config/legal';
 import { getPathname, redirectAndStop } from '@/i18n/navigation';
 import { routing, type Locale } from '@/i18n/routing';
 import { createClient } from '@/lib/supabase/server';
@@ -114,7 +114,7 @@ export async function signUpAction(
       // que crea la cuenta. `locale` decide el idioma del perfil.
       data: {
         locale,
-        consent_version: SIGNUP_CONSENT_VERSION,
+        consent_versions: CONSENT_VERSIONS,
         consent_audio: checkbox(form, 'acceptAudio'),
         consent_ip: ip,
         consent_user_agent: userAgent,
