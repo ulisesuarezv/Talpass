@@ -11,9 +11,14 @@
 >   27 de septiembre, términos del 19 de agosto, cero «ni con consentimiento»,
 >   home con 5 `h2` y el pie nuevo. Borde caliente, 12 pasadas: **98 · LCP
 >   2,28 s · CLS 0**, igual que el 26.
-> - **Lo que queda:** que Ulises cierre la paleta (ADR-48) —y con ella el
->   petróleo del pie, que fue elección del PM— para dar la fase R por ✅.
->   Fuera del código, la primera ETT y Search Console.
+> - **Fase R ✅ cerrada el 2026-09-27**: Ulises da por buena la paleta tal
+>   como está, pie petróleo incluido (ADR-48 cerrada). En producción, a
+>   375×667, el `h2` de ofertas en y=567 y la tarjeta en y=614.
+> - **Lo que queda: no hay trabajo de código pendiente.** Lo que bloquea es la
+>   primera ETT y Search Console. Del bloque 🎨, «Después», siguen anotados
+>   como mejoras menores: mudar `Opportunities.*` a `messages/<ruta>/`
+>   (ADR-37) y alinear «en la mayoría de ofertas» con «se descuenta de tu
+>   sueldo» (copy de Ulises, ADR-45).
 > - **ADR-51 en una línea:** el IBAN y la dirección solo los ve la ETT que ha
 >   contratado al candidato (aplicación `hired`), ni con consentimiento antes.
 >   Se reescribieron privacidad y «Cómo se comparte tu perfil» (versión
@@ -1879,7 +1884,7 @@ legales, la región, el copy y las dos fases de diseño están cerrados y vivos.
 | **Vía B**               | **✅ agotada el 2026-08-24** — los seis puntos cerrados; el 5 descartado (ADR-42)      |
 | **C1 · Credibilidad**   | **✅ cerrada 2026-08-20** — desplegada y verificada; ADR-35, 36, 37 y ADR-10 precisada |
 | **C2 · Sistema visual** | **✅ cerrada 2026-08-21** — paleta y General Sans vivas; ADR-38, 39, 40 y 41           |
-| **R · Rediseño**        | **🟡 desplegado el 2026-09-26** — falta el pie y que Ulises cierre la paleta (ADR-48)  |
+| **R · Rediseño**        | **✅ cerrada 2026-09-27** — pie rediseñado y paleta aceptada por Ulises (ADR-48)       |
 | **5 · Aplicaciones**    | **⬜ congelada en la vía A** — su prompt sigue sin escribirse, a propósito             |
 | 6, 7, 8, 10             | ⬜ vía A, congeladas hasta que haya ETT                                                |
 | **9 · GDPR y legal**    | **🟡 los textos legales salieron de aquí y están vivos** (ADR-33, ADR-34)              |

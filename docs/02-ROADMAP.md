@@ -15,7 +15,7 @@
 | 4b  | Oportunidades de mercado          | Gancho publicado y sitio indexado sin ETT  | ✅     |
 | C1  | Credibilidad (vía B)              | La home deja de poder parecer un fraude    | ✅     |
 | C2  | Sistema visual (vía B)            | Consistencia demostrada con capturas       | ✅     |
-| R   | Rediseño de la home, por sesiones | Home nueva en producción sin perder LCP    | 🟡     |
+| R   | Rediseño de la home, por sesiones | Home nueva en producción sin perder LCP    | ✅     |
 | 5   | Aplicaciones                      | Candidato verificado aplica y ve su estado | ⬜     |
 | 6   | Portal ETT                        | ETT gestiona vacantes y aplicaciones       | ⬜     |
 | 7   | Bolsa + consentimiento documental | Flujo completo de desbloqueo con log       | ⬜     |
@@ -772,7 +772,7 @@ del MVP con número: es la continuación de la C2 y va sesión a sesión. El est
 vivo, con lo hecho, lo medido y lo que queda, está en el bloque 🎨 de
 `docs/ESTADO.md`. Decisiones: ADR-45, 46, 47 y 48._
 
-### 🟡 En curso: desplegado el 2026-09-26, falta el pie y cerrar la paleta
+### ✅ Cerrada el 2026-09-27
 
 Lo que está en producción, verificado ese día: la home de ADR-46 con 5 `h2`, la
 cabecera petróleo, `/oportunidades` retirada (ADR-49, 50), GSAP en el scroll
@@ -780,7 +780,11 @@ cabecera petróleo, `/oportunidades` retirada (ADR-49, 50), GSAP en el scroll
 Producción, borde caliente, 12 pasadas: 98 · LCP 2,28 s · CLS 0. En móvil
 375×667 las ofertas asoman (tarjeta en y=614).
 
-**Lo que falta para ✅:** que Ulises dé por buena la paleta (ADR-48 sigue
+**Cerrada el 2026-09-27:** Ulises dio por buena la paleta tal como está
+(ADR-48, cerrada); en producción, 98 · LCP 2,28 s · CLS 0 y, a 375×667, `h2`
+de ofertas en y=567 y tarjeta en y=614. Lo que sigue es cómo estaba antes.
+
+**Lo que faltaba para ✅:** que Ulises diera por buena la paleta (ADR-48 seguía
 siendo «propuesta»). El pie se rediseñó el 2026-09-27 (ver ESTADO). El IBAN no era de esta fase y se cerró
 aparte el 2026-09-27 (ADR-51).
 

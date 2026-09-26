@@ -1413,6 +1413,17 @@ anterior:
 
 ### ADR-48 · Paleta «petróleo y azafrán»: propuesta, pendiente de ajuste por Ulises
 
+> ✅ **Cerrada el 2026-09-27: Ulises la da por buena tal como está**, sin
+> ajustes. Queda como definitiva, incluidas dos cosas que llegaron después de
+> la propuesta: la cabecera (2026-09-25) y el pie (2026-09-27) también son
+> petróleo, así que el hero ya no es «la única superficie oscura», sino la
+> única **dentro del contenido**. Las preguntas de «Pendiente de Ulises» de
+> abajo quedan contestadas con un «así». Y el coste de LCP que pedía bisecar
+> no hizo falta perseguirlo: con la paleta en producción, la home mide **98 ·
+> LCP 2,28 s · CLS 0** (12 pasadas, 26 y 27 de septiembre), por debajo de los
+> 2,5 s de antes de la paleta. Ese 2,8 era una mediana de 3 en local, con el
+> método que luego se retiró.
+
 _(2026-09-22. Propuesta de `ui-polish` a petición de Ulises, que no tenía
 referencias y prefirió ajustar sobre algo. **No es definitiva.** Sustituye en
 los tokens a la paleta de ADR-38, pero conserva su método: reparto de papeles
