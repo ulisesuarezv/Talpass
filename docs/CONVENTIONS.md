@@ -35,7 +35,8 @@ src/
         layout.tsx              # force-dynamic + robots noindex
         onboarding/             # /es/completar-perfil · /en/onboarding
         account/                # /es/cuenta · /en/account
-        agency/
+        agency/                 # la bolsa (ADR-52)
+          candidates/[candidateId]/  # ficha seudonimizada
         admin/                  # cola de revisión
           [candidateId]/        # ficha del candidato (fase 4)
     api/
@@ -64,6 +65,8 @@ src/
     email/
       send.ts                   # ÚNICO punto de envío propio (ADR-26)
       verification.ts           # el aviso de aprobado/rechazado
+    agency/                     # portal ETT: solo `candidate_directory` y la sesión
+      pool.ts · agency.ts · translations.ts
     admin/
       review.ts                 # lecturas del backoffice
       actions.ts                # aprobar / rechazar
@@ -482,5 +485,6 @@ del esquema `app` siguen tres reglas sin excepción:
 | `pnpm check:supabase`            | conexión a Supabase, sin imprimir claves  |
 | `pnpm db:reset` / `db:push:prod` | migraciones                               |
 | `pnpm seed:demo`                 | datos de demostración                     |
+| `pnpm seed:pool`                 | bolsa de demo, 16 candidatos (ADR-52)     |
 | `pnpm test:security`             | batería de seguridad (RLS)                |
 | `pnpm test:security:drill`       | simulacro de brecha                       |

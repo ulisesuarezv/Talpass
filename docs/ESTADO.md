@@ -14,7 +14,20 @@
 > - **Fase R ✅ cerrada el 2026-09-27**: Ulises da por buena la paleta tal
 >   como está, pie petróleo incluido (ADR-48 cerrada). En producción, a
 >   375×667, el `h2` de ofertas en y=567 y la tarjeta en y=614.
-> - **Lo que queda: no hay trabajo de código pendiente.** Lo que bloquea es la
+> - **2026-09-27, tarde — portal de agencia en marcha (ADR-52)**, en local y
+>   **sin commit ni despliegue**. La bolsa (`/agency`) y la ficha
+>   seudonimizada funcionan, verificadas en navegador a 1280 y 375 con la
+>   cuenta `owner@nordlicht.test` y `pnpm seed:demo && pnpm seed:pool`.
+>   Destapó una recursión en la RLS de `agency_members` desde la fase 1 (ninguna
+>   ETT podía leer su agencia): migración `20260927110000`, que **va a
+>   producción antes que el código**. Batería 66/66 y simulacro en verde.
+>   **Siguiente: la conversación ETT ↔ candidato (ADR-53)**, en cinco
+>   sesiones (M1…M5, fase 7 del roadmap). Pedir documentos vive dentro del
+>   hilo. **Próxima sesión: pegar `docs/prompts/fase-7-m1.md`** (esquema y
+>   seguridad, sin pantallas). Traducir la
+>   experiencia del candidato queda **pendiente por decisión de Ulises**
+>   (proveedor sin elegir; ver fase 7 del roadmap).
+> - **Lo que quedaba antes de ADR-52: no había trabajo de código pendiente.** Lo que bloquea es la
 >   primera ETT y Search Console. Del bloque 🎨, «Después», siguen anotados
 >   como mejoras menores: mudar `Opportunities.*` a `messages/<ruta>/`
 >   (ADR-37) y alinear «en la mayoría de ofertas» con «se descuenta de tu

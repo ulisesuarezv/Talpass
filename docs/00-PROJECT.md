@@ -1671,6 +1671,109 @@ política de fila, que enseñaría el teléfono—, con el IBAN descifrado en se
 versión**, porque la política dirá entonces que la puerta existe. Queda anotado
 en la fase 7 del roadmap, sin fase asignada.
 
+### ADR-52 · La fase 7 se descongela: la bolsa se construye antes de tener ETT, para enseñársela
+
+_(2026-09-27. Decisión de Ulises. Enmienda la vía A de agosto —«las fases 5,
+6 y 7 esperan a que exista una ETT»— solo para la fase 7, y empezando por la
+bolsa.)_
+
+**El problema de la vía A.** Congelar el portal de agencia hasta tener ETT
+era un círculo: para conseguir la primera ETT hay que enseñarle algo, y lo que
+había en `/agency` era una frase provisional. La decisión se da la vuelta: se
+construye **el producto real** —no una maqueta— empezando por lo que más vende,
+que es la bolsa (candidatos verificados, sellos, inglés, sin datos personales).
+La base del lado ETT existía entera desde la fase 1; faltaban las pantallas.
+
+**Tres decisiones de Ulises que lo acotan:**
+
+1. **Se construye para producción**, no para una demo aparte. Cómo se enseña
+   (portátil, enlace, capturas) queda abierto.
+2. **En inglés basta** para una ETT alemana. El portal va en `es` y `en` como
+   todo; `de` no entra por esto.
+3. **Primero la bolsa.** Después, pedir documentos y el consentimiento del
+   candidato (el resto de la fase 7); vacantes y aplicaciones (fase 6), más
+   tarde.
+
+**Los datos de la demo son ficticios y no salen de local.** `pnpm seed:pool`
+siembra 16 candidatos inventados y verificados (`pool-*@talpass.test`), aparte
+de `seed:demo` para no tocar el tablero de la batería de seguridad, y con el
+mismo guardarraíl de destino (ADR-17). **Nunca a producción**: enseñarle a una
+ETT perfiles inventados como si fueran reales sería justo lo que la
+credibilidad del proyecto no aguanta. Una demo desde un enlace necesitaría un
+entorno aparte, y eso no está decidido.
+
+**Lo que salió al construirlo: una recursión en la RLS desde la fase 1.** La
+política de lectura de `agency_members` se consultaba a sí misma, y
+`agencies_member_read` y `agencies_owner_update` la heredaban: **ninguna ETT
+podía leer ni su propia agencia**. La batería no lo vio porque solo probaba lo
+que una ETT _no_ puede leer, y `assertNoRows` da por buena una consulta que
+falla. Migración `20260927110000` (dos funciones `security definer` por id de
+agencia, el patrón de `current_agency_id()`) y dos tests nuevos, entre ellos un
+control positivo; los dos salieron rojos antes del arreglo. Batería: 66.
+
+**Lo que esta ADR no hace.** No abre ninguna puerta nueva a datos de
+candidato: la bolsa lee `candidate_directory` y nada más, con la sesión de la
+agencia. No construye todavía la solicitud de documentos, así que la ficha no
+tiene ningún botón que prometa algo que no existe.
+
+### ADR-53 · La conversación ETT ↔ candidato entra en el MVP, y es el contenedor del proceso
+
+_(2026-09-27. Decisión de Ulises. Saca «Mensajería interna» de la lista de
+fuera del MVP (apartado 9) y sustituye a `candidate_contact_requests`, que nunca
+tuvo pantalla.)_
+
+**Por qué.** La conversación es el gancho: es donde la ETT decide que quiere
+contratar y donde el candidato decide que se fía. Y es donde encaja todo lo
+demás de la fase 7: **pedir documentos deja de ser una pantalla aparte y pasa
+a ser un evento dentro del hilo**, así que el candidato nunca recibe una
+petición de su DNI de alguien con quien no ha hablado.
+
+**El recorrido:** la ETT ve a alguien en la bolsa → le escribe **un** mensaje
+desde la ficha, con una de sus ofertas adjunta si quiere → el candidato acepta
+o rechaza → si acepta, conversación abierta, y dentro de ella se piden y
+conceden documentos → se contrata (`hired`) → llegan el contacto, el IBAN y la
+dirección (ADR-51).
+
+**Las decisiones de Ulises:**
+
+1. **Del lado de la agencia escribe su agente**, que es de la ETT (el «agente
+   con nombre» de la home). **El admin de Talpass puede leer todas las
+   conversaciones**, y la política de privacidad tiene que decirlo.
+2. **La ETT envía un solo mensaje; para seguir, el candidato tiene que
+   aceptar.** Ese mensaje puede adjuntar una oferta (vacante publicada de esa
+   ETT), porque una ETT tendrá muchas y el candidato tiene que saber para qué
+   le escriben. Adjuntarla es opcional.
+3. **Teléfonos, correos y enlaces se ocultan hasta la contratación.** Es
+   contenido que se da cuando se contrata, no antes. Al pasar a `hired` se
+   revelan, también los de mensajes anteriores. Protege del riesgo
+   estructural (desintermediación, apartado 1) y de la estafa.
+4. **No se traduce todavía, pero se diseña para traducir.** Cada mensaje guarda
+   su idioma de origen y las traducciones tienen su propia tabla, vacía hasta
+   elegir proveedor. Coste estimado el 2026-09-27: céntimos al mes con un
+   modelo de IA, unos 26 $/mes de mínimo con DeepL; decide la privacidad, no el
+   precio.
+
+**Las reglas de construcción, que no se discuten en cada fase:**
+
+- **La ocultación se aplica en la base de datos, no en la aplicación.** Igual
+  que la seudonimización (ADR-03): ni la ETT ni el candidato leen la tabla de
+  mensajes; leen una vista que decide original u oculto, y escriben por
+  funciones que ocultan al guardar. Un cliente con la API a mano no se salta
+  nada.
+- **Los mensajes no se editan ni se borran** por sus autores: son el registro
+  de lo que se dijo, como `application_events`.
+- **Sin tiempo real.** La conversación se carga al abrirla; el aviso llega por
+  correo, sin el contenido. El candidato vive en WhatsApp y con datos
+  limitados.
+- **Controles positivos en la batería desde el primer día**: la lección de
+  ADR-52 es que una prueba de «no ve» pasa también cuando la consulta revienta.
+
+**Por fases, cada una en su sesión** (roadmap, fase 7): M1 esquema y
+seguridad · M2 lado ETT · M3 lado candidato y avisos · M4 documentos en el
+hilo · M5 contratar y revelar. La traducción y la política de privacidad van
+aparte, y **la política tiene que estar publicada antes de que una sola
+conversación real ocurra en producción**.
+
 ## 5. Reglas de negocio
 
 1. Ver ofertas: libre y sin cuenta. **Aplicar: requiere cuenta verificada.**
@@ -1727,4 +1830,4 @@ Verificación manual por admin en MVP; OCR/IA en fase 2 — el modelo de datos y
 
 ## 9. Fuera del MVP (fase 2+)
 
-Monetización y pagos · Matching automático con IA · Verificación documental por OCR/IA · Mensajería interna · Analytics · Alta de ETTs por formulario con aprobación · Moderación de vacantes · Expansión a NL, BE, NO.
+Monetización y pagos · Matching automático con IA · Verificación documental por OCR/IA · ~~Mensajería interna~~ (entra en el MVP, ADR-53) · Analytics · Alta de ETTs por formulario con aprobación · Moderación de vacantes · Expansión a NL, BE, NO.

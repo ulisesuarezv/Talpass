@@ -18,7 +18,7 @@
 | R   | Rediseño de la home, por sesiones | Home nueva en producción sin perder LCP    | ✅     |
 | 5   | Aplicaciones                      | Candidato verificado aplica y ve su estado | ⬜     |
 | 6   | Portal ETT                        | ETT gestiona vacantes y aplicaciones       | ⬜     |
-| 7   | Bolsa + consentimiento documental | Flujo completo de desbloqueo con log       | ⬜     |
+| 7   | Bolsa + consentimiento documental | Flujo completo de desbloqueo con log       | 🟡     |
 | 8   | Emails y automatismos             | Cron de inactividad funcionando            | ⬜     |
 | 9   | GDPR y legal                      | Export y borrado de datos operativos       | 🟡     |
 | 10  | Hardening y lanzamiento           | Auditoría pasada, listo para captar        | ⬜     |
@@ -826,6 +826,42 @@ Bolsa navegable con filtros sobre la vista seudonimizada (ADR-03) · solicitud d
 
 > Fase de mayor valor comercial. Es lo que se enseña en la reunión con la ETT.
 
+### 🟡 Descongelada el 2026-09-27 (ADR-52), por partes
+
+1. ✅ **Bolsa** (en local, sin desplegar): `/agency` con filtros por sector,
+   inglés mínimo, carné verificado, grabación, «ya vive en el país de la
+   agencia» y alojamiento; ficha seudonimizada en
+   `/agency/candidates/[id]`. Cero JavaScript propio; copy en
+   `messages/agency/`. Demo con `pnpm seed:pool`. Arregló de paso la
+   recursión de `agency_members` (migración `20260927110000`).
+2. ⬜ **La conversación** (ADR-53), en cinco sesiones. Pedir documentos vive
+   **dentro** del hilo, así que los antiguos puntos «pedir documentos», «lado
+   del candidato» y «abrir el documento» quedan absorbidos aquí:
+   - ⬜ **M1 · Esquema y seguridad**, sin pantallas. Prompt:
+     `docs/prompts/fase-7-m1.md`. Hecho cuando la batería prueba que la
+     ocultación vive en la base y que nadie lee lo que no le toca.
+   - ⬜ **M2 · Lado ETT**: escribir desde la ficha con oferta adjunta, bandeja
+     y hilo.
+   - ⬜ **M3 · Lado candidato**: bandeja en su cuenta, aceptar o rechazar,
+     responder; móvil primero; avisos por correo a los dos lados.
+   - ⬜ **M4 · Documentos en el hilo**: pedir, conceder, denegar, revocar,
+     abrir con URL firmada y registro; el audio (ADR-18).
+   - ⬜ **M5 · Contratar**: `hired` desde el hilo, y con ello el revelado.
+   - ⬜ **Legal**: la política dice que el admin lee las conversaciones, cuánto
+     se guardan y qué pasa al borrar la cuenta; sube de versión. **Antes de
+     la primera conversación real en producción.**
+   - ⬜ **Traducción**: pendiente de proveedor (ver abajo).
+
+**Anotado, pendiente por decisión de Ulises (2026-09-27): traducir la
+experiencia del candidato.** Hoy la ficha la enseña en el idioma en que la
+escribió, y una ETT alemana no lee español. El diseño pensado: traducir una vez
+al guardar (no en cada lectura), guardar la traducción junto al original,
+servirla por `candidate_directory` con la etiqueta «traducido automáticamente»
+y el original a un clic. **Lo que lo frena es el proveedor**, porque es un
+encargado del tratamiento nuevo: la política de privacidad tiene que nombrarlo
+y sube de versión. Candidatos: DeepL Pro (UE), un modelo vía Vercel AI Gateway
+u OpenAI (EE. UU. salvo residencia de datos en Europa, a confirmar).
+
 ---
 
 ## Fase 8 · Emails y automatismos
@@ -927,7 +963,7 @@ _Ya no está aquí:_ el **seed de vacantes reales** pasó a la fase 4 el 2026-08
 
 ## Después del MVP
 
-Monetización tras validar con la ETT · matching con IA · OCR de documentos · mensajería interna · autoservicio de alta de ETT con aprobación · moderación de vacantes (cerrar ADR-06) · apertura de NL, BE, NO.
+Monetización tras validar con la ETT · matching con IA · OCR de documentos · ~~mensajería interna~~ (ADR-53: entra en la fase 7) · autoservicio de alta de ETT con aprobación · moderación de vacantes (cerrar ADR-06) · apertura de NL, BE, NO.
 
 ---
 
