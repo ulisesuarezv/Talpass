@@ -1,0 +1,100 @@
+{
+  "Agency": {
+    "meta": {
+      "pool": "Bolsa de candidatos · {brand}"
+    },
+    "noAgency": {
+      "title": "Tu cuenta todavía no está vinculada a una agencia",
+      "body": "El equipo de {brand} vincula cada cuenta a su agencia al darla de alta. Si ves esto, escríbenos y lo terminamos."
+    },
+    "pool": {
+      "eyebrow": "{agency}",
+      "title": "Bolsa de candidatos",
+      "intro": "Candidatos verificados y disponibles ahora. Ves lo que necesitas para decidir; su nombre completo, sus datos de contacto y sus documentos se quedan con el candidato hasta que te dé permiso.",
+      "results": "{count, plural, =0 {Ningún candidato} one {# candidato verificado} other {# candidatos verificados}}",
+      "empty": "Ningún candidato encaja con esos filtros. Prueba a quitar alguno.",
+      "filters": {
+        "title": "Filtros",
+        "sector": "Sector",
+        "anySector": "Todos los sectores",
+        "english": "Inglés",
+        "anyEnglish": "Cualquier nivel",
+        "englishAtLeast": "{level} o superior",
+        "license": "Carné de conducir verificado",
+        "audio": "Tiene grabación en inglés",
+        "here": "Ya vive en {country}",
+        "noHousing": "No necesita alojamiento",
+        "apply": "Ver candidatos",
+        "clear": "Quitar filtros"
+      }
+    },
+    "card": {
+      "age": "{age} años",
+      "activeToday": "Activo hoy",
+      "activeDaysAgo": "Activo hace {days, plural, one {# día} other {# días}}",
+      "needsHousing": "Necesita alojamiento",
+      "needsTransport": "Necesita transporte",
+      "open": "Ver perfil"
+    },
+    "duration": {
+      "months": "{count, plural, one {# mes} other {# meses}}",
+      "years": "{count, plural, one {# año} other {# años}}"
+    },
+    "levels": {
+      "a1": "A1",
+      "a2": "A2",
+      "b1": "B1",
+      "b2": "B2",
+      "c1": "C1",
+      "c2": "C2",
+      "native": "Nativo"
+    },
+    "englishLevel": "Inglés {level}",
+    "stamps": {
+      "identity": "Identidad verificada",
+      "drivingLicense": "Carné verificado",
+      "taxId": "Id. fiscal verificado",
+      "cv": "CV en archivo",
+      "audio": "Grabación en inglés"
+    },
+    "candidate": {
+      "back": "Volver a la bolsa",
+      "notFound": {
+        "title": "Este candidato ya no está en la bolsa",
+        "body": "Puede que haya pausado su perfil o que ya no esté disponible. La bolsa solo enseña candidatos verificados y activos hoy."
+      },
+      "facts": {
+        "title": "Perfil",
+        "age": "Edad",
+        "livesIn": "Vive en",
+        "nationality": "Nacionalidad",
+        "english": "Inglés",
+        "drivingLicense": "Carné de conducir",
+        "workedAbroad": "Ha trabajado en Alemania o Países Bajos",
+        "housing": "Necesita alojamiento",
+        "transport": "Necesita transporte",
+        "lastActive": "Última actividad"
+      },
+      "sectors": "Experiencia por sector",
+      "experience": "En sus palabras",
+      "experienceNote": "Lo escribe el candidato, en su idioma.",
+      "noExperience": "El candidato no ha descrito su experiencia.",
+      "verified": {
+        "title": "Comprobado por {brand}",
+        "body": "Cada sello significa que alguien de {brand} ha comprobado el documento original. Ves que existe y que se comprobó, no el documento.",
+        "missing": "No aportado"
+      },
+      "private": {
+        "title": "Lo que se queda con el candidato",
+        "items": [
+          "Apellidos completos, correo y teléfono.",
+          "Fecha de nacimiento exacta.",
+          "Sus documentos: DNI, pasaporte, CV, carné y papeles fiscales.",
+          "Su IBAN y su dirección, que solo ve la agencia que lo contrata."
+        ]
+      }
+    },
+    "yes": "Sí",
+    "no": "No"
+  }
+}

@@ -568,10 +568,6 @@
       "revoke": "Withdraw permission"
     }
   },
-  "Agency": {
-    "title": "Agency portal",
-    "placeholder": "Staffing agency area. Built in phase 6."
-  },
   "Admin": {
     "title": "Backoffice",
     "queue": {

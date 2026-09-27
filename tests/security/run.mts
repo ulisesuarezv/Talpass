@@ -728,6 +728,46 @@ suite.check('no cambia el estado de una aplicación ajena', async () => {
   assertWriteDenied(result, 'Una ETT ha movido la candidatura de otra');
 });
 
+suite.check('ve su propia agencia y su equipo (control positivo)', async () => {
+  // `assertNoRows` da por buena una consulta que FALLA, así que las pruebas de
+  // «no ve» no distinguen una política que deniega de una que revienta. Hasta
+  // el 2026-09-27 `agency_members` se consultaba a sí misma y ninguna ETT
+  // podía leer ni su agencia ni su equipo, y la batería salía verde. Esto
+  // exige la lectura buena, que es lo que habría cazado la recursión.
+  const agencies = rows(
+    await agency.from('agencies').select('id'),
+    'La ETT no puede leer su propia agencia',
+  ) as { id: string }[];
+  assert(
+    agencies.some((a) => a.id === ids.agencies.nordlicht),
+    'La ETT no ve su propia agencia',
+  );
+
+  const team = rows(
+    await agency.from('agency_members').select('agency_id, profile_id'),
+    'La ETT no puede leer su equipo',
+  ) as { agency_id: string; profile_id: string }[];
+  assert(
+    team.some((m) => m.profile_id === ids.members.nordlichtRecruiter),
+    'La ETT no ve a su propio reclutador',
+  );
+  assert(
+    team.every((m) => m.agency_id === ids.agencies.nordlicht),
+    'La ETT ve miembros de otra agencia',
+  );
+});
+
+suite.check('no ve el equipo de la otra ETT', async () => {
+  const team = rows(
+    await otherAgency.from('agency_members').select('agency_id, profile_id'),
+    'Lectura del equipo',
+  ) as { agency_id: string; profile_id: string }[];
+  assert(
+    !team.some((m) => m.agency_id === ids.agencies.nordlicht),
+    'Una ETT ve el equipo de otra',
+  );
+});
+
 // ==========================================================================
 suite.section('7 · El anónimo solo ve vacantes publicadas');
 

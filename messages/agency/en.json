@@ -1,0 +1,100 @@
+{
+  "Agency": {
+    "meta": {
+      "pool": "Talent pool · {brand}"
+    },
+    "noAgency": {
+      "title": "Your account is not linked to an agency yet",
+      "body": "The {brand} team links each account to its agency when it is set up. If you are seeing this, write to us and we will finish it."
+    },
+    "pool": {
+      "eyebrow": "{agency}",
+      "title": "Talent pool",
+      "intro": "Verified candidates who are available now. You see what you need to decide; their full name, contact details and documents stay with the candidate until they give you permission.",
+      "results": "{count, plural, =0 {No candidates} one {# verified candidate} other {# verified candidates}}",
+      "empty": "No candidate matches these filters. Try removing one.",
+      "filters": {
+        "title": "Filters",
+        "sector": "Sector",
+        "anySector": "All sectors",
+        "english": "English",
+        "anyEnglish": "Any level",
+        "englishAtLeast": "{level} or higher",
+        "license": "Verified driving licence",
+        "audio": "Has an English recording",
+        "here": "Already lives in {country}",
+        "noHousing": "Does not need housing",
+        "apply": "Show candidates",
+        "clear": "Clear filters"
+      }
+    },
+    "card": {
+      "age": "{age} years old",
+      "activeToday": "Active today",
+      "activeDaysAgo": "Active {days, plural, one {# day} other {# days}} ago",
+      "needsHousing": "Needs housing",
+      "needsTransport": "Needs transport",
+      "open": "See profile"
+    },
+    "duration": {
+      "months": "{count, plural, one {# month} other {# months}}",
+      "years": "{count, plural, one {# year} other {# years}}"
+    },
+    "levels": {
+      "a1": "A1",
+      "a2": "A2",
+      "b1": "B1",
+      "b2": "B2",
+      "c1": "C1",
+      "c2": "C2",
+      "native": "Native"
+    },
+    "englishLevel": "English {level}",
+    "stamps": {
+      "identity": "ID verified",
+      "drivingLicense": "Licence verified",
+      "taxId": "Tax ID verified",
+      "cv": "CV on file",
+      "audio": "English recording"
+    },
+    "candidate": {
+      "back": "Back to the talent pool",
+      "notFound": {
+        "title": "This candidate is no longer in the pool",
+        "body": "They may have paused their profile or become unavailable. The pool only shows candidates who are verified and active today."
+      },
+      "facts": {
+        "title": "Profile",
+        "age": "Age",
+        "livesIn": "Lives in",
+        "nationality": "Nationality",
+        "english": "English",
+        "drivingLicense": "Driving licence",
+        "workedAbroad": "Has worked in Germany or the Netherlands",
+        "housing": "Needs housing",
+        "transport": "Needs transport",
+        "lastActive": "Last active"
+      },
+      "sectors": "Experience by sector",
+      "experience": "In their own words",
+      "experienceNote": "Written by the candidate, in their language.",
+      "noExperience": "The candidate has not described their experience.",
+      "verified": {
+        "title": "Checked by {brand}",
+        "body": "Each seal means someone at {brand} checked the original document. You see that it exists and was checked, not the document itself.",
+        "missing": "Not provided"
+      },
+      "private": {
+        "title": "What stays with the candidate",
+        "items": [
+          "Full surname, email and phone number.",
+          "Exact date of birth.",
+          "Their documents: ID, passport, CV, licence and tax papers.",
+          "Their IBAN and address, which only the agency that hires them sees."
+        ]
+      }
+    },
+    "yes": "Yes",
+    "no": "No"
+  }
+}

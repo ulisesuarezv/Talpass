@@ -145,6 +145,12 @@ export const pathnames = {
     es: '/admin/[candidateId]',
     en: '/admin/[candidateId]',
   },
+  // La ficha seudonimizada de la bolsa (ADR-52). Mismo criterio que la del
+  // backoffice: pantalla interna, segmento sin traducir.
+  '/agency/candidates/[candidateId]': {
+    es: '/agency/candidates/[candidateId]',
+    en: '/agency/candidates/[candidateId]',
+  },
 } as const;
 
 export const routing = defineRouting({

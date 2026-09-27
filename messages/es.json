@@ -568,10 +568,6 @@
       "revoke": "Retirar el permiso"
     }
   },
-  "Agency": {
-    "title": "Portal de agencia",
-    "placeholder": "Área de la ETT. Se construye en la fase 6."
-  },
   "Admin": {
     "title": "Backoffice",
     "queue": {
