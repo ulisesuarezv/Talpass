@@ -577,6 +577,17 @@
       "waitingSince": "Esperando desde el {date}",
       "pending": "{count, plural, one {# documento} other {# documentos}}"
     },
+    "directory": {
+      "title": "Todos los candidatos",
+      "filterLabel": "Filtrar por verificación",
+      "all": "Todos",
+      "empty": "No hay candidatos con este estado.",
+      "since": "Registrado el {date}"
+    },
+    "incomplete": {
+      "title": "Registros sin terminar",
+      "explainer": "Crearon la cuenta pero no completaron el onboarding, así que todavía no tienen ficha."
+    },
     "candidate": {
       "back": "Volver a la cola",
       "documents": "Documentos",

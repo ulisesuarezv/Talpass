@@ -67,6 +67,87 @@ export async function listReviewQueue(): Promise<QueueEntry[]> {
   return [...byCandidate.values()];
 }
 
+export type VerificationStatus =
+  Database['public']['Enums']['verification_status'];
+
+export const VERIFICATION_STATUSES = [
+  'unverified',
+  'pending',
+  'verified',
+  'rejected',
+] as const satisfies readonly VerificationStatus[];
+
+export type DirectoryEntry = {
+  candidateId: string;
+  firstName: string;
+  lastName: string;
+  verificationStatus: VerificationStatus;
+  createdAt: string;
+};
+
+export type IncompleteSignup = {
+  profileId: string;
+  email: string;
+  createdAt: string;
+};
+
+/**
+ * Todos los candidatos, verificados o no, el más reciente primero. La cola de
+ * arriba solo enseña a quien tiene documentos pendientes; esto es el censo.
+ */
+export async function listCandidates(
+  verification?: VerificationStatus,
+): Promise<DirectoryEntry[]> {
+  const supabase = await createClient();
+
+  let query = supabase
+    .from('candidates')
+    .select(
+      'profile_id, first_name, last_name, verification_status, created_at',
+    )
+    .order('created_at', { ascending: false });
+
+  if (verification) query = query.eq('verification_status', verification);
+
+  const { data } = await query;
+
+  return (data ?? []).map((row) => ({
+    candidateId: row.profile_id,
+    firstName: row.first_name,
+    lastName: row.last_name,
+    verificationStatus: row.verification_status,
+    createdAt: row.created_at,
+  }));
+}
+
+/**
+ * Cuentas de candidato que se registraron pero no terminaron el onboarding:
+ * tienen fila en `profiles` y ninguna en `candidates`, así que no hay ficha que
+ * abrir. Solo se sabe su correo y cuándo llegaron.
+ */
+export async function listIncompleteSignups(): Promise<IncompleteSignup[]> {
+  const supabase = await createClient();
+
+  const [{ data: profiles }, { data: candidates }] = await Promise.all([
+    supabase
+      .from('profiles')
+      .select('id, email, created_at')
+      .eq('role', 'candidate')
+      .order('created_at', { ascending: false }),
+    supabase.from('candidates').select('profile_id'),
+  ]);
+
+  const withFile = new Set((candidates ?? []).map((row) => row.profile_id));
+
+  return (profiles ?? [])
+    .filter((row) => !withFile.has(row.id))
+    .map((row) => ({
+      profileId: row.id,
+      email: row.email,
+      createdAt: row.created_at,
+    }));
+}
+
 export type CandidateFile = {
   candidateId: string;
   firstName: string;

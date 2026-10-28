@@ -577,6 +577,17 @@
       "waitingSince": "Waiting since {date}",
       "pending": "{count, plural, one {# document} other {# documents}}"
     },
+    "directory": {
+      "title": "All candidates",
+      "filterLabel": "Filter by verification",
+      "all": "All",
+      "empty": "No candidates with this status.",
+      "since": "Signed up on {date}"
+    },
+    "incomplete": {
+      "title": "Unfinished sign-ups",
+      "explainer": "They created an account but didn't finish onboarding, so there's no profile yet."
+    },
     "candidate": {
       "back": "Back to the queue",
       "documents": "Documents",
