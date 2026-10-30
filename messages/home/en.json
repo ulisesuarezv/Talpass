@@ -1,8 +1,8 @@
 {
   "Home": {
-    "eyebrow": "The first portal connecting you with temp agencies in Europe",
-    "title": "Your direct route to your next job in Europe.",
-    "subtitle": "Move abroad without worrying about where to live or how to get there.",
+    "eyebrow": "Connecting candidates and agencies",
+    "title": "Your next job in Germany starts with a prepared profile.",
+    "subtitle": "Share your experience. A person reviews your documents, and you choose which agency may see them.",
     "tags": {
       "eu": "Just EU citizenship",
       "english": "English per offer"
@@ -16,8 +16,8 @@
           "rest": "in most offers."
         },
         "speed": {
-          "lead": "Start in record time",
-          "rest": "in different EU countries."
+          "lead": "Human review",
+          "rest": "of your documents."
         },
         "experience": {
           "lead": "Little experience?",
@@ -35,11 +35,11 @@
           "body": "Your experience, your English and what you need to move. From your phone, in minutes."
         },
         "verify": {
-          "title": "Verify your papers",
-          "body": "A person reviews your ID and CV once, and every agency can see you."
+          "title": "Human review",
+          "body": "A person reviews your documents. Agencies see the review status, not the files."
         },
         "hired": {
-          "title": "Get hired",
+          "title": "Connect with agencies",
           "body": "Agencies offer you work. You decide who gets to see your documents."
         }
       }
@@ -144,6 +144,19 @@
           "a": "Your profile without your full surname and without any way to contact you, and nothing more until you give a specific agency permission.",
           "link": "What is shared and what is not, field by field"
         }
+      }
+    },
+    "value": {
+      "eyebrow": "People make the difference",
+      "title": "A reviewed profile. A clearer starting point.",
+      "intro": "{brand} connects Spanish- and Portuguese-speaking candidates with temp agencies in Germany. A person carries out the document review.",
+      "candidate": {
+        "title": "For candidates",
+        "body": "Prepare your profile once and browse offers for free. Documents are only shared with the specific agency you give permission to."
+      },
+      "agency": {
+        "title": "For temp agencies",
+        "body": "A pool of preselected profiles, with experience and document review status, to support selection. Access to documents requires the candidate’s consent."
       }
     }
   }

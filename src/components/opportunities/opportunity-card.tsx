@@ -132,13 +132,13 @@ export function OpportunityCard({
         // de LA TARJETA, no el de la pantalla. La misma tarjeta mide 343 px en
         // un móvil, 400 en una columna de la home y 740 en `/ofertas`, y
         // un `sm:` habría puesto tres columnas justo donde no caben.
-        'group @container surface-offer',
+        'group @container surface-offer overflow-hidden shadow-sm',
         // Las normales llenan la celda de la rejilla, y como el bloque de
         // arriba crece (`flex-1`), la rejilla de datos cae al fondo: en una
         // fila todas miden lo mismo y sus líneas de datos se alinean. La
         // destacada NO: estirada a la altura de su vecina le quedaba fondo de
         // marca vacío debajo (medido el 2026-09-26, ~150 px en escritorio).
-        featured ? 'bg-brand-soft' : 'h-full bg-card',
+        featured ? 'border-primary/25 bg-brand-soft' : 'h-full bg-card',
       )}
     >
       {/* La destacada ocupa dos columnas, y con el pie de datos DEBAJO le

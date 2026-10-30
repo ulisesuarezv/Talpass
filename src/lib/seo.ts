@@ -54,6 +54,12 @@ export function seoMetadata({
   description: string;
 }): Metadata {
   const canonical = absoluteUrl(locale, href);
+  const image = {
+    url: new URL(`/brand/share-${locale}.png`, siteConfig.url).toString(),
+    width: 1200,
+    height: 630,
+    alt: siteConfig.name,
+  };
 
   const languages = Object.fromEntries(
     locales.map((l) => [l, absoluteUrl(l, href)]),
@@ -76,13 +82,16 @@ export function seoMetadata({
       url: canonical,
       siteName: siteConfig.name,
       locale,
+      alternateLocale: locales.filter((language) => language !== locale),
       title,
       description,
+      images: [image],
     },
     twitter: {
       card: 'summary_large_image',
       title,
       description,
+      images: [image.url],
     },
   };
 }

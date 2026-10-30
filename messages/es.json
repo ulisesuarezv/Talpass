@@ -1,7 +1,7 @@
 {
   "Metadata": {
-    "title": "{brand} — Empleo en Europa para hispanohablantes",
-    "description": "Ofertas de trabajo verificadas en Alemania para candidatos hispanohablantes y lusófonos. Ver ofertas es libre y gratuito."
+    "title": "{brand} — Empleo en Alemania con revisión humana",
+    "description": "Conecta con ETTs en Alemania. Candidatos preseleccionados y revisión documental humana, con acceso a documentos sujeto a consentimiento. Gratis para candidatos."
   },
   "Nav": {
     "home": "Inicio",
@@ -10,7 +10,8 @@
     "login": "Entrar",
     "logout": "Salir",
     "skipToContent": "Ir al contenido",
-    "sectionsLabel": "Secciones"
+    "sectionsLabel": "Secciones",
+    "howItWorks": "Cómo funciona"
   },
   "LocaleSwitcher": {
     "label": "Idioma"
@@ -644,7 +645,8 @@
     "back": "Volver al inicio"
   },
   "Footer": {
-    "legalHeading": "Legal"
+    "legalHeading": "Legal",
+    "purpose": "Conectamos candidatos y agencias de trabajo temporal, con revisión documental humana y control sobre los datos."
   },
   "Legal": {
     "title": "Legal",

@@ -1,5 +1,6 @@
 import type { MetadataRoute } from 'next';
 
+import { indexingAllowed } from '@/config/site';
 import { legalHref, LEGAL_DOCUMENTS } from '@/config/legal';
 import { defaultLocale, locales, type Locale } from '@/i18n/routing';
 import { listPublishedJobs } from '@/lib/jobs';
@@ -44,6 +45,8 @@ function entry(
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  if (!indexingAllowed) return [];
+
   const [jobs, landings] = await Promise.all([
     listPublishedJobs(defaultLocale),
     listLandings(),

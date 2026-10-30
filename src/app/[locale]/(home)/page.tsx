@@ -160,7 +160,7 @@ export default async function HomePage({
               {/* En móvil la entradilla cede su sitio para que las ofertas asomen
                   en la primera pantalla; lo que promete lo desarrolla la franja
                   de ventajas. */}
-              <p className="hidden max-w-[38ch] type-lead text-muted-foreground sm:block">
+              <p className="max-w-[42ch] type-body text-muted-foreground sm:type-lead">
                 {t('subtitle')}
               </p>
             </div>
@@ -204,7 +204,7 @@ export default async function HomePage({
               da 5,19 como interfaz y la tinta encima 6,30; sobre claro no
               valdría, por eso no es el `--primary` del resto del sitio.
             */}
-            <div className="flex flex-wrap gap-3">
+            <div className="flex flex-wrap gap-3 [&>a]:min-h-12 [&>a]:rounded-full">
               <Button
                 asChild
                 size="lg"
@@ -367,6 +367,37 @@ export default async function HomePage({
           </ul>
         </section>
       </div>
+
+      <section
+        id="home-value"
+        aria-labelledby="home-value-title"
+        className="container-page mt-12 scroll-mt-28 sm:mt-16"
+      >
+        <div className="grid overflow-hidden rounded-2xl border bg-card lg:grid-cols-[1fr_1fr]">
+          <div className="flex flex-col gap-4 p-6 sm:p-8 lg:p-10">
+            <p className="type-eyebrow">{t('value.eyebrow')}</p>
+            <h2 id="home-value-title" className="type-h2 lg:text-[1.75rem]">
+              {t('value.title')}
+            </h2>
+            <p className="type-body text-muted-foreground">
+              {t('value.intro', { brand })}
+            </p>
+          </div>
+          <div className="grid divide-y border-t bg-brand-soft p-6 sm:p-8 lg:border-t-0 lg:border-l lg:p-10">
+            {(['candidate', 'agency'] as const).map((audience) => (
+              <div
+                key={audience}
+                className="flex flex-col gap-2 py-4 first:pt-0 last:pb-0"
+              >
+                <h3 className="type-h3">{t(`value.${audience}.title`)}</h3>
+                <p className="type-body text-muted-foreground">
+                  {t(`value.${audience}.body`)}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/*
         «Cómo funciona» se retiró de la home el 2026-09-25 por decisión de

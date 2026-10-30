@@ -6,7 +6,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 
 import { SiteFooter } from '@/components/site-footer';
 import { SiteHeader } from '@/components/site-header';
-import { siteConfig } from '@/config/site';
+import { indexingAllowed, siteConfig } from '@/config/site';
 import { routing } from '@/i18n/routing';
 
 import '../globals.css';
@@ -71,6 +71,7 @@ export async function generateMetadata({
     metadataBase: new URL(siteConfig.url),
     title: t('title', { brand: siteConfig.name }),
     description: t('description'),
+    robots: indexingAllowed ? undefined : { index: false, follow: false },
     // `hreflang` por defecto del árbol de idioma. Cada página pública lo
     // sobrescribe con el suyo y con su canónica vía `seoMetadata`; esto es la
     // red de seguridad para las que no lo hacen.

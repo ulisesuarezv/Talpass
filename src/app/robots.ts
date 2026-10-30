@@ -1,6 +1,6 @@
 import type { MetadataRoute } from 'next';
 
-import { siteConfig } from '@/config/site';
+import { indexingAllowed, siteConfig } from '@/config/site';
 import { PROTECTED_EXTERNAL_PREFIXES } from '@/i18n/protected-routes';
 
 /**
@@ -15,8 +15,6 @@ import { PROTECTED_EXTERNAL_PREFIXES } from '@/i18n/protected-routes';
  * NEXT_PUBLIC_ALLOW_INDEXING=true en el entorno de producción y solo ahí.
  */
 export const dynamic = 'force-static';
-
-const indexingAllowed = process.env.NEXT_PUBLIC_ALLOW_INDEXING === 'true';
 
 export default function robots(): MetadataRoute.Robots {
   if (!indexingAllowed) {

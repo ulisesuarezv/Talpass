@@ -1,8 +1,8 @@
 {
   "Home": {
-    "eyebrow": "El primer portal que te conecta con ETTs en Europa",
-    "title": "Tu portal directo a tu siguiente trabajo en Europa.",
-    "subtitle": "Emigra sin preocuparte de dónde vivir ni de cómo llegar.",
+    "eyebrow": "Candidatos y agencias, conectados",
+    "title": "Tu próximo trabajo en Alemania empieza con un perfil preparado.",
+    "subtitle": "Presenta tu experiencia. Una persona revisa tu documentación y tú decides con qué agencia compartirla.",
     "tags": {
       "eu": "Solo ciudadanía UE",
       "english": "Inglés según la oferta"
@@ -16,8 +16,8 @@
           "rest": "en la mayoría de ofertas."
         },
         "speed": {
-          "lead": "Empieza en tiempo récord",
-          "rest": "en distintos países de la UE."
+          "lead": "Revisión humana",
+          "rest": "de tu documentación."
         },
         "experience": {
           "lead": "¿Poca experiencia?",
@@ -35,11 +35,11 @@
           "body": "Tu experiencia, tu inglés y qué necesitas para mudarte. Desde el móvil, en minutos."
         },
         "verify": {
-          "title": "Verifica tus papeles",
-          "body": "Una persona revisa tu documento y tu CV una sola vez, y ya te ven todas las agencias."
+          "title": "Revisión humana",
+          "body": "Una persona revisa tus documentos. Las agencias ven el estado de revisión, no los archivos."
         },
         "hired": {
-          "title": "Te contratan",
+          "title": "Conecta con agencias",
           "body": "Las agencias te proponen trabajo. Tú decides a quién le enseñas tus documentos."
         }
       }
@@ -144,6 +144,19 @@
           "a": "Tu perfil sin apellido completo ni forma de contactarte, y nada más hasta que tú le des permiso a una agencia concreta.",
           "link": "Qué se comparte y qué no, campo a campo"
         }
+      }
+    },
+    "value": {
+      "eyebrow": "El valor está en las personas",
+      "title": "Un perfil revisado. Un punto de partida más claro.",
+      "intro": "{brand} conecta a candidatos hispanohablantes y lusófonos con agencias de trabajo temporal en Alemania. La revisión documental la hace una persona.",
+      "candidate": {
+        "title": "Para candidatos",
+        "body": "Prepara tu perfil una vez y consulta ofertas sin coste. Tus documentos solo se comparten con la agencia concreta a la que das permiso."
+      },
+      "agency": {
+        "title": "Para ETTs",
+        "body": "Una bolsa de perfiles preseleccionados, con experiencia y estado de revisión documental, para orientar la selección. El acceso a los documentos requiere el consentimiento del candidato."
       }
     }
   }

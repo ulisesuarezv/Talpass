@@ -1,7 +1,7 @@
 {
   "Metadata": {
-    "title": "{brand} — Jobs in Europe for Spanish and Portuguese speakers",
-    "description": "Verified job openings in Germany for Spanish- and Portuguese-speaking candidates. Browsing jobs is always free."
+    "title": "{brand} — Work in Germany with human document review",
+    "description": "Connect with temp agencies in Germany. Preselected candidates and human document review, with consent required to access documents. Free for candidates."
   },
   "Nav": {
     "home": "Home",
@@ -10,7 +10,8 @@
     "login": "Sign in",
     "logout": "Sign out",
     "skipToContent": "Skip to content",
-    "sectionsLabel": "Sections"
+    "sectionsLabel": "Sections",
+    "howItWorks": "How it works"
   },
   "LocaleSwitcher": {
     "label": "Language"
@@ -644,7 +645,8 @@
     "back": "Back to home"
   },
   "Footer": {
-    "legalHeading": "Legal"
+    "legalHeading": "Legal",
+    "purpose": "Connecting candidates and temp agencies through human document review and control over personal data."
   },
   "Legal": {
     "title": "Legal",

@@ -1,7 +1,7 @@
 import { getLocale, getTranslations } from 'next-intl/server';
 
+import { BrandLogo } from '@/components/brand-logo';
 import { legalLink, LEGAL_DOCUMENTS } from '@/config/legal';
-import { siteConfig } from '@/config/site';
 import { Link } from '@/i18n/navigation';
 import type { Locale } from '@/i18n/routing';
 
@@ -50,12 +50,15 @@ export async function SiteFooter() {
   return (
     <footer className="border-t border-hero-foreground/15 bg-hero text-hero-foreground">
       <div className="container-page grid gap-8 py-10 sm:grid-cols-[1fr_auto_auto] sm:gap-x-16 sm:py-12">
-        <Link
-          href="/"
-          className="inline-flex min-h-11 items-center self-start justify-self-start text-[1.0625rem] leading-none font-semibold tracking-tight text-hero-foreground sm:min-h-0"
-        >
-          {siteConfig.name}
-        </Link>
+        <div className="flex max-w-sm flex-col items-start gap-4">
+          <Link
+            href="/"
+            className="inline-flex min-h-11 items-center self-start justify-self-start text-[1.0625rem] leading-none font-semibold tracking-tight text-hero-foreground sm:min-h-0"
+          >
+            <BrandLogo />
+          </Link>
+          <p className="type-body text-hero-muted">{footer('purpose')}</p>
+        </div>
 
         <nav aria-labelledby="footer-sections">
           <p id="footer-sections" className={labelClass}>
@@ -65,6 +68,14 @@ export async function SiteFooter() {
             <li>
               <Link href="/jobs" className={linkClass}>
                 {nav('jobs')}
+              </Link>
+            </li>
+            <li>
+              <Link
+                href={{ pathname: '/', hash: 'home-value' }}
+                className={linkClass}
+              >
+                {nav('howItWorks')}
               </Link>
             </li>
           </ul>

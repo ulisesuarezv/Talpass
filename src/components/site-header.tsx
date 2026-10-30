@@ -1,8 +1,8 @@
 import { getTranslations } from 'next-intl/server';
 
 import { AccountNav } from '@/components/account-nav';
+import { BrandLogo } from '@/components/brand-logo';
 import { LocaleSwitcher } from '@/components/locale-switcher';
-import { siteConfig } from '@/config/site';
 import { Link } from '@/i18n/navigation';
 
 /**
@@ -73,24 +73,33 @@ export async function SiteHeader() {
         `h2` de ofertas de la home, y 48 px siguen dejando 8 px por arriba y por
         abajo alrededor del botón de cuenta, que mide 32.
       */}
-      <div className="container-page flex min-h-12 flex-wrap items-center gap-x-3 gap-y-1 sm:min-h-14 sm:gap-x-5">
+      <div className="container-page flex min-h-16 flex-wrap items-center gap-x-2 gap-y-2 py-2 sm:gap-x-6">
         {/* La marca manda en el grupo de la izquierda: es el único elemento en
             color de marca, y va dos puntos por encima del enlace de sección. */}
         <Link
           href="/"
           className="inline-flex min-h-11 items-center text-[1.0625rem] leading-none font-semibold tracking-tight text-hero-foreground"
         >
-          {siteConfig.name}
+          <BrandLogo />
         </Link>
 
         {/* `mr-auto`: el hueco de la fila va aquí, entre los dos grupos. Es lo
             que separa «dónde estoy» de «qué hago». */}
-        <nav aria-label={t('sectionsLabel')} className="mr-auto">
+        <nav
+          aria-label={t('sectionsLabel')}
+          className="mr-auto flex items-center gap-5 max-[360px]:order-last max-[360px]:w-full max-[360px]:justify-between"
+        >
           <Link
             href="/jobs"
             className="inline-flex min-h-11 items-center type-meta font-medium text-hero-muted underline-offset-[6px] transition-colors hover:text-hero-foreground hover:underline"
           >
             {t('jobs')}
+          </Link>
+          <Link
+            href={{ pathname: '/', hash: 'home-value' }}
+            className="hidden min-h-11 items-center type-meta font-medium text-hero-muted underline-offset-[6px] hover:text-hero-foreground hover:underline max-[360px]:inline-flex md:inline-flex"
+          >
+            {t('howItWorks')}
           </Link>
         </nav>
 
