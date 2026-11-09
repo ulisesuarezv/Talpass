@@ -1,0 +1,75 @@
+{
+  "Metadata": {
+    "title": "{brand} — Jobs in Europa für Spanisch- und Portugiesischsprachige",
+    "description": "Geprüfte Stellen in Deutschland für spanisch- und portugiesischsprachige Bewerber."
+  },
+  "Nav": {
+    "home": "Start",
+    "jobs": "Stellen",
+    "account": "Mein Konto",
+    "login": "Anmelden",
+    "logout": "Abmelden",
+    "skipToContent": "Zum Inhalt springen",
+    "sectionsLabel": "Bereiche"
+  },
+  "LocaleSwitcher": {
+    "label": "Sprache"
+  },
+  "Common": {
+    "yes": "Ja",
+    "no": "Nein",
+    "loading": {
+      "label": "Wird geladen…"
+    },
+    "error": {
+      "title": "Beim Laden dieser Seite ist ein Fehler aufgetreten",
+      "description": "Es liegt nicht an Ihnen, und es sind keine Daten verloren gegangen. Ein neuer Versuch hilft meistens.",
+      "retry": "Erneut versuchen",
+      "home": "Zur Startseite",
+      "reference": "Fehlerreferenz: {digest}"
+    }
+  },
+  "NotFound": {
+    "title": "Seite nicht gefunden",
+    "description": "Die Adresse existiert nicht oder hat sich geändert.",
+    "back": "Zur Startseite"
+  },
+  "Footer": {
+    "legalHeading": "Rechtliches"
+  },
+  "Auth": {
+    "meta": {
+      "login": {
+        "title": "Bei {brand} anmelden",
+        "description": "Melden Sie sich bei Ihrem {brand}-Konto an."
+      }
+    },
+    "pending": "Einen Moment…",
+    "backToLogin": "Zurück zur Anmeldung",
+    "fields": {
+      "email": "E-Mail-Adresse",
+      "password": "Passwort",
+      "newPassword": "Neues Passwort",
+      "passwordConfirmation": "Passwort wiederholen",
+      "passwordHint": "Mindestens {min} Zeichen."
+    },
+    "login": {
+      "title": "Anmelden",
+      "subtitle": "Melden Sie sich an, um Ihren Bewerberpool zu sehen.",
+      "submit": "Anmelden",
+      "forgot": "Passwort vergessen",
+      "noAccount": "Noch kein Konto?",
+      "signupLink": "Kostenlos registrieren"
+    },
+    "errors": {
+      "checkTheForm": "Bitte prüfen Sie die markierten Felder.",
+      "required": "Dieses Feld ist erforderlich.",
+      "emailInvalid": "Diese E-Mail-Adresse scheint ungültig zu sein.",
+      "passwordTooShort": "Das Passwort ist zu kurz.",
+      "invalidCredentials": "E-Mail oder Passwort ist falsch.",
+      "tooManyRequests": "Zu viele Versuche. Bitte warten Sie einen Moment.",
+      "sessionExpired": "Ihre Sitzung ist abgelaufen. Bitte melden Sie sich erneut an.",
+      "unexpected": "Bei uns ist etwas schiefgelaufen. Bitte versuchen Sie es erneut."
+    }
+  }
+}

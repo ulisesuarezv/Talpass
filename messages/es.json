@@ -697,5 +697,34 @@
         }
       }
     }
+  },
+  "Inbox": {
+    "title": "Mensajes de agencias",
+    "empty": "Aún no te ha escrito ninguna agencia. Cuando lo haga, lo verás aquí.",
+    "banner": "{count, plural, one {Tienes # mensaje nuevo de una agencia} other {Tienes # mensajes nuevos de agencias}}",
+    "see": "Ver mensajes",
+    "back": "Volver a mensajes",
+    "you": "Tú",
+    "status": {
+      "pending": "Nueva",
+      "open": "En conversación",
+      "declined": "Rechazada",
+      "hired": "Contratado"
+    },
+    "pendingTitle": "{agency} quiere hablar contigo",
+    "pendingBody": "Si aceptas, podréis escribiros. Tus datos de contacto siguen ocultos hasta que te contraten.",
+    "accept": "Aceptar y responder",
+    "decline": "No me interesa",
+    "declinedNote": "Rechazaste esta conversación.",
+    "hiredNote": "¡Te han contratado! La agencia ya puede ver tu teléfono y tu email.",
+    "maskedNote": "Por tu seguridad, ocultamos teléfonos, emails y enlaces hasta que te contraten.",
+    "composer": "Escribe tu respuesta…",
+    "send": "Enviar",
+    "job": "La oferta",
+    "fromPerHour": "desde {amount}/h",
+    "perHour": "{amount}/h",
+    "transport": "Te llevan al trabajo",
+    "housing": "Con alojamiento",
+    "start": "Empieza el {date}"
   }
 }

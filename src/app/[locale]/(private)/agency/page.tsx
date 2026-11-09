@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 
 import { PoolCard } from '@/components/agency/pool-card';
 import { PoolFiltersForm } from '@/components/agency/pool-filters';
+import { AgencyNav, unreadCount } from '@/components/demo/agency-nav';
 import { siteConfig } from '@/config/site';
 import type { Locale } from '@/i18n/routing';
 import { getCurrentAgency } from '@/lib/agency/agency';
@@ -10,6 +11,7 @@ import { listPool, parsePoolFilters } from '@/lib/agency/pool';
 import { getAgencyTranslations } from '@/lib/agency/translations';
 import { requireArea } from '@/lib/auth/session';
 import { listCountries, listSectors } from '@/lib/catalogs';
+import { listConversations } from '@/lib/demo/conversations';
 
 export async function generateMetadata({
   params,
@@ -64,7 +66,10 @@ export default async function AgencyPoolPage({
     sectors.map((sector) => sector.slug),
     agency.countryCode,
   );
-  const pool = await listPool(filters);
+  const [pool, conversations] = await Promise.all([
+    listPool(filters),
+    listConversations(locale),
+  ]);
 
   const countryNames = new Map(countries.map((c) => [c.code, c.name]));
   const sectorNames = new Map(sectors.map((s) => [s.slug, s.name]));
@@ -82,69 +87,72 @@ export default async function AgencyPoolPage({
   };
 
   return (
-    <div className="container-page flex flex-col gap-6 py-8 sm:py-10">
-      <header className="flex max-w-2xl flex-col gap-2">
-        <p className="type-eyebrow">
-          {t('pool.eyebrow', { agency: agency.name })}
-        </p>
-        <h1 className="type-h1">{t('pool.title')}</h1>
-        <p className="type-body text-muted-foreground">{t('pool.intro')}</p>
-      </header>
+    <>
+      <AgencyNav t={t} current="pool" unread={unreadCount(conversations)} />
+      <div className="container-page flex flex-col gap-6 py-8 sm:py-10">
+        <header className="flex max-w-2xl flex-col gap-2">
+          <p className="type-eyebrow">
+            {t('pool.eyebrow', { agency: agency.name })}
+          </p>
+          <h1 className="type-h1">{t('pool.title')}</h1>
+          <p className="type-body text-muted-foreground">{t('pool.intro')}</p>
+        </header>
 
-      <div className="grid gap-6 lg:grid-cols-[16rem_1fr] lg:gap-10">
-        {/* En móvil los filtros van plegados: la lista es lo que se viene a
+        <div className="grid gap-6 lg:grid-cols-[16rem_1fr] lg:gap-10">
+          {/* En móvil los filtros van plegados: la lista es lo que se viene a
             ver, y desplegarlos es un toque. `<details>` nativo, sin JS. Si
             hay filtros puestos, llega abierto para que se vea por qué la
             lista es más corta. */}
-        <details
-          open={activeFilters > 0}
-          className="group rounded-xl border bg-card p-4 lg:hidden"
-        >
-          <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 type-meta font-medium [&::-webkit-details-marker]:hidden">
-            <span>
-              {t('pool.filters.title')}
-              {activeFilters > 0 ? ` · ${activeFilters}` : null}
-            </span>
-            <ChevronDownIcon
-              aria-hidden
-              className="size-4 transition-transform group-open:rotate-180"
-            />
-          </summary>
-          <div className="pt-3">
-            <PoolFiltersForm idPrefix="pool-m" {...filtersProps} />
-          </div>
-        </details>
+          <details
+            open={activeFilters > 0}
+            className="group rounded-xl border bg-card p-4 lg:hidden"
+          >
+            <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 type-meta font-medium [&::-webkit-details-marker]:hidden">
+              <span>
+                {t('pool.filters.title')}
+                {activeFilters > 0 ? ` · ${activeFilters}` : null}
+              </span>
+              <ChevronDownIcon
+                aria-hidden
+                className="size-4 transition-transform group-open:rotate-180"
+              />
+            </summary>
+            <div className="pt-3">
+              <PoolFiltersForm idPrefix="pool-m" {...filtersProps} />
+            </div>
+          </details>
 
-        <aside className="hidden lg:block">
-          <h2 className="mb-3 type-h4">{t('pool.filters.title')}</h2>
-          <PoolFiltersForm idPrefix="pool-d" {...filtersProps} />
-        </aside>
+          <aside className="hidden lg:block">
+            <h2 className="mb-3 type-h4">{t('pool.filters.title')}</h2>
+            <PoolFiltersForm idPrefix="pool-d" {...filtersProps} />
+          </aside>
 
-        <section className="flex flex-col gap-3" aria-live="polite">
-          <p className="type-meta font-medium">
-            {t('pool.results', { count: pool.length })}
-          </p>
-
-          {pool.length === 0 ? (
-            <p className="rounded-xl border bg-card p-5 type-body text-muted-foreground">
-              {t('pool.empty')}
+          <section className="flex flex-col gap-3" aria-live="polite">
+            <p className="type-meta font-medium">
+              {t('pool.results', { count: pool.length })}
             </p>
-          ) : (
-            <ul className="flex flex-col gap-3">
-              {pool.map((candidate) => (
-                <li key={candidate.id}>
-                  <PoolCard
-                    candidate={candidate}
-                    t={t}
-                    countryName={countryName}
-                    sectorName={sectorName}
-                  />
-                </li>
-              ))}
-            </ul>
-          )}
-        </section>
+
+            {pool.length === 0 ? (
+              <p className="rounded-xl border bg-card p-5 type-body text-muted-foreground">
+                {t('pool.empty')}
+              </p>
+            ) : (
+              <ul className="flex flex-col gap-3">
+                {pool.map((candidate) => (
+                  <li key={candidate.id}>
+                    <PoolCard
+                      candidate={candidate}
+                      t={t}
+                      countryName={countryName}
+                      sectorName={sectorName}
+                    />
+                  </li>
+                ))}
+              </ul>
+            )}
+          </section>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

@@ -952,6 +952,120 @@ export type Database = {
           },
         ];
       };
+      demo_conversations: {
+        Row: {
+          agency_id: string;
+          candidate_id: string;
+          created_at: string;
+          created_by: string | null;
+          id: string;
+          job_id: string | null;
+          status: string;
+          updated_at: string;
+        };
+        Insert: {
+          agency_id: string;
+          candidate_id: string;
+          created_at?: string;
+          created_by?: string | null;
+          id?: string;
+          job_id?: string | null;
+          status?: string;
+          updated_at?: string;
+        };
+        Update: {
+          agency_id?: string;
+          candidate_id?: string;
+          created_at?: string;
+          created_by?: string | null;
+          id?: string;
+          job_id?: string | null;
+          status?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'demo_conversations_agency_id_fkey';
+            columns: ['agency_id'];
+            isOneToOne: false;
+            referencedRelation: 'agencies';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'demo_conversations_candidate_id_fkey';
+            columns: ['candidate_id'];
+            isOneToOne: false;
+            referencedRelation: 'candidate_directory';
+            referencedColumns: ['candidate_id'];
+          },
+          {
+            foreignKeyName: 'demo_conversations_candidate_id_fkey';
+            columns: ['candidate_id'];
+            isOneToOne: false;
+            referencedRelation: 'candidates';
+            referencedColumns: ['profile_id'];
+          },
+          {
+            foreignKeyName: 'demo_conversations_created_by_fkey';
+            columns: ['created_by'];
+            isOneToOne: false;
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'demo_conversations_job_id_fkey';
+            columns: ['job_id'];
+            isOneToOne: false;
+            referencedRelation: 'jobs';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
+      demo_messages: {
+        Row: {
+          body: string;
+          body_masked: string;
+          conversation_id: string;
+          created_at: string;
+          id: string;
+          sender: string;
+          sender_id: string | null;
+        };
+        Insert: {
+          body: string;
+          body_masked: string;
+          conversation_id: string;
+          created_at?: string;
+          id?: string;
+          sender: string;
+          sender_id?: string | null;
+        };
+        Update: {
+          body?: string;
+          body_masked?: string;
+          conversation_id?: string;
+          created_at?: string;
+          id?: string;
+          sender?: string;
+          sender_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'demo_messages_conversation_id_fkey';
+            columns: ['conversation_id'];
+            isOneToOne: false;
+            referencedRelation: 'demo_conversations';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'demo_messages_sender_id_fkey';
+            columns: ['sender_id'];
+            isOneToOne: false;
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+        ];
+      };
       document_access_log: {
         Row: {
           document_id: string | null;
@@ -1867,6 +1981,60 @@ export type Database = {
       };
     };
     Functions: {
+      demo_agency_jobs: {
+        Args: { p_locale: string };
+        Returns: {
+          city: string;
+          id: string;
+          title: string;
+        }[];
+      };
+      demo_conversation_for: {
+        Args: { p_candidate_id: string };
+        Returns: string;
+      };
+      demo_get_conversation: {
+        Args: { p_conversation_id: string; p_locale: string };
+        Returns: Json;
+      };
+      demo_hire: { Args: { p_conversation_id: string }; Returns: undefined };
+      demo_list_conversations: {
+        Args: { p_locale: string };
+        Returns: {
+          agency_name: string;
+          candidate_id: string;
+          candidate_name: string;
+          id: string;
+          job_title: string;
+          last_at: string;
+          last_body: string;
+          last_sender: string;
+          status: string;
+          updated_at: string;
+        }[];
+      };
+      demo_respond: {
+        Args: { p_accept: boolean; p_conversation_id: string };
+        Returns: undefined;
+      };
+      demo_seed_message: {
+        Args: {
+          p_body: string;
+          p_conversation_id: string;
+          p_created_at: string;
+          p_sender: string;
+          p_sender_id: string;
+        };
+        Returns: undefined;
+      };
+      demo_send_message: {
+        Args: { p_body: string; p_conversation_id: string };
+        Returns: undefined;
+      };
+      demo_start_conversation: {
+        Args: { p_body: string; p_candidate_id: string; p_job_id?: string };
+        Returns: string;
+      };
       rls_audit: {
         Args: never;
         Returns: {

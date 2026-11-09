@@ -1,0 +1,144 @@
+{
+  "Agency": {
+    "meta": {
+      "pool": "Bewerberpool · {brand}"
+    },
+    "noAgency": {
+      "title": "Ihr Konto ist noch keiner Agentur zugeordnet",
+      "body": "Das {brand}-Team ordnet jedes Konto bei der Einrichtung seiner Agentur zu. Wenn Sie das sehen, schreiben Sie uns und wir erledigen es."
+    },
+    "pool": {
+      "eyebrow": "{agency}",
+      "title": "Bewerberpool",
+      "intro": "Geprüfte Bewerber, die jetzt verfügbar sind. Sie sehen alles, was Sie für die Entscheidung brauchen; vollständiger Name, Kontaktdaten und Dokumente bleiben beim Bewerber, bis er Ihnen die Freigabe gibt.",
+      "results": "{count, plural, =0 {Keine Bewerber} one {# geprüfter Bewerber} other {# geprüfte Bewerber}}",
+      "empty": "Kein Bewerber passt zu diesen Filtern. Entfernen Sie einen.",
+      "filters": {
+        "title": "Filter",
+        "sector": "Branche",
+        "anySector": "Alle Branchen",
+        "english": "Englisch",
+        "anyEnglish": "Jedes Niveau",
+        "englishAtLeast": "{level} oder höher",
+        "license": "Führerschein geprüft",
+        "audio": "Mit englischer Sprachaufnahme",
+        "here": "Wohnt bereits in {country}",
+        "noHousing": "Braucht keine Unterkunft",
+        "apply": "Bewerber anzeigen",
+        "clear": "Filter zurücksetzen"
+      }
+    },
+    "card": {
+      "age": "{age} Jahre",
+      "activeToday": "Heute aktiv",
+      "activeDaysAgo": "Vor {days, plural, one {# Tag} other {# Tagen}} aktiv",
+      "needsHousing": "Braucht Unterkunft",
+      "needsTransport": "Braucht Fahrdienst",
+      "open": "Profil ansehen"
+    },
+    "duration": {
+      "months": "{count, plural, one {# Monat} other {# Monate}}",
+      "years": "{count, plural, one {# Jahr} other {# Jahre}}"
+    },
+    "levels": {
+      "a1": "A1",
+      "a2": "A2",
+      "b1": "B1",
+      "b2": "B2",
+      "c1": "C1",
+      "c2": "C2",
+      "native": "Muttersprache"
+    },
+    "englishLevel": "Englisch {level}",
+    "stamps": {
+      "identity": "Ausweis geprüft",
+      "drivingLicense": "Führerschein geprüft",
+      "taxId": "Steuer-ID geprüft",
+      "cv": "Lebenslauf vorhanden",
+      "audio": "Englische Sprachaufnahme"
+    },
+    "candidate": {
+      "back": "Zurück zum Bewerberpool",
+      "notFound": {
+        "title": "Dieser Bewerber ist nicht mehr im Pool",
+        "body": "Vielleicht hat er sein Profil pausiert oder ist nicht mehr verfügbar. Der Pool zeigt nur geprüfte und aktive Bewerber."
+      },
+      "facts": {
+        "title": "Profil",
+        "age": "Alter",
+        "livesIn": "Wohnort",
+        "nationality": "Staatsangehörigkeit",
+        "english": "Englisch",
+        "drivingLicense": "Führerschein",
+        "workedAbroad": "Hat bereits in Deutschland oder den Niederlanden gearbeitet",
+        "housing": "Braucht Unterkunft",
+        "transport": "Braucht Fahrdienst",
+        "lastActive": "Zuletzt aktiv"
+      },
+      "sectors": "Erfahrung nach Branche",
+      "experience": "In eigenen Worten",
+      "experienceNote": "Vom Bewerber in seiner Sprache geschrieben.",
+      "noExperience": "Der Bewerber hat seine Erfahrung nicht beschrieben.",
+      "verified": {
+        "title": "Von {brand} geprüft",
+        "body": "Jedes Siegel bedeutet, dass jemand bei {brand} das Originaldokument geprüft hat. Sie sehen, dass es existiert und geprüft wurde, nicht das Dokument selbst.",
+        "missing": "Nicht vorhanden"
+      },
+      "private": {
+        "title": "Was beim Bewerber bleibt",
+        "items": [
+          "Vollständiger Nachname, E-Mail und Telefonnummer.",
+          "Genaues Geburtsdatum.",
+          "Seine Dokumente: Ausweis, Reisepass, Lebenslauf, Führerschein und Steuerunterlagen.",
+          "IBAN und Adresse, die nur die einstellende Agentur sieht."
+        ]
+      }
+    },
+    "yes": "Ja",
+    "no": "Nein",
+    "nav": {
+      "pool": "Bewerberpool",
+      "messages": "Nachrichten"
+    },
+    "contact": {
+      "title": "Diesen Bewerber kontaktieren",
+      "body": "Senden Sie eine erste Nachricht. Der Bewerber entscheidet, ob er antwortet; seine Kontaktdaten bleiben verborgen, bis Sie ihn einstellen.",
+      "job": "Stelle anhängen (optional)",
+      "noJob": "Keine Stelle angehängt",
+      "message": "Nachricht",
+      "template": "Hello {name}, we are Hindi Personalmanagement in Göttingen. We have a warehouse job that could suit you, with transport to work included. Would you like to hear more?",
+      "send": "Nachricht senden",
+      "existing": "Sie haben bereits eine Unterhaltung mit diesem Bewerber.",
+      "open": "Unterhaltung öffnen"
+    },
+    "inbox": {
+      "meta": "Nachrichten · {brand}",
+      "title": "Nachrichten",
+      "empty": "Noch keine Unterhaltungen. Öffnen Sie ein Profil im Bewerberpool und schreiben Sie dem Bewerber.",
+      "back": "Zurück zu den Nachrichten",
+      "you": "Sie",
+      "status": {
+        "pending": "Wartet auf Antwort",
+        "open": "Im Gespräch",
+        "declined": "Abgelehnt",
+        "hired": "Eingestellt"
+      },
+      "pendingNote": "Der Bewerber hat noch nicht angenommen. Sie können wieder schreiben, sobald er annimmt.",
+      "declinedNote": "Der Bewerber hat diese Unterhaltung abgelehnt.",
+      "maskedNote": "Kontaktdaten sind verborgen, bis Sie den Bewerber einstellen.",
+      "composer": "Nachricht schreiben…",
+      "send": "Senden",
+      "hire": "Als eingestellt markieren",
+      "hireNote": "Mit der Einstellung sehen Sie vollständigen Namen, E-Mail und Telefon des Bewerbers und seine Nachrichten ohne verborgene Angaben.",
+      "contactTitle": "Kontaktdaten",
+      "email": "E-Mail",
+      "phone": "Telefon",
+      "job": "Angehängte Stelle",
+      "perHour": "{amount}/Std.",
+      "fromPerHour": "ab {amount}/Std.",
+      "transport": "Fahrdienst inklusive",
+      "housing": "Unterkunft inklusive",
+      "start": "Start {date}"
+    }
+  }
+}

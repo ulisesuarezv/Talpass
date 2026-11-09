@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 
-import { Link } from '@/i18n/navigation';
+import { Link, usePathname } from '@/i18n/navigation';
 import { signOutAction } from '@/lib/auth/actions';
 import { createClient } from '@/lib/supabase/client';
 
@@ -22,6 +22,10 @@ import { createClient } from '@/lib/supabase/client';
 export function AccountNav() {
   const t = useTranslations('Nav');
   const locale = useLocale();
+  // ⚠️ DEMO: se vuelve a mirar la sesión al cambiar de ruta. El login la abre
+  // en servidor y no dispara `onAuthStateChange`, así que sin esto la
+  // cabecera seguía diciendo «Entrar» hasta recargar.
+  const pathname = usePathname();
   const [signedIn, setSignedIn] = useState<boolean | null>(null);
 
   useEffect(() => {
@@ -37,7 +41,7 @@ export function AccountNav() {
     );
 
     return () => subscription.subscription.unsubscribe();
-  }, []);
+  }, [pathname]);
 
   // El hueco reservado mide lo que mide el botón de «Entrar», que es el estado
   // que ve todo el que llega de Google: 32 px de alto y ~72 de ancho. Va el

@@ -1,0 +1,150 @@
+{
+  "Home": {
+    "eyebrow": "The first portal connecting you with temp agencies in Europe",
+    "title": "Your direct route to your next job in Europe.",
+    "subtitle": "Move abroad without worrying about where to live or how to get there.",
+    "tags": {
+      "eu": "Just EU citizenship",
+      "english": "English per offer"
+    },
+    "tagsLabel": "What you get",
+    "perks": {
+      "label": "Why start here",
+      "items": {
+        "housing": {
+          "lead": "Housing and transport",
+          "rest": "in most offers."
+        },
+        "speed": {
+          "lead": "Start in record time",
+          "rest": "in different EU countries."
+        },
+        "experience": {
+          "lead": "Little experience?",
+          "rest": "Some offers don’t ask for it."
+        }
+      }
+    },
+    "ctaJobs": "See offers",
+    "ctaSignup": "Create my account",
+    "steps": {
+      "title": "How you start",
+      "items": {
+        "signup": {
+          "title": "Create your account",
+          "body": "Your experience, your English and what you need to move. From your phone, in minutes."
+        },
+        "verify": {
+          "title": "Verify your papers",
+          "body": "A person reviews your ID and CV once, and every agency can see you."
+        },
+        "hired": {
+          "title": "Get hired",
+          "body": "Agencies offer you work. You decide who gets to see your documents."
+        }
+      }
+    },
+    "offers": {
+      "title": "Offers in Germany",
+      "seeAll": "See all"
+    },
+    "privacy": {
+      "title": "What an agency sees about you, and what it does not",
+      "hook": "Not a promise made in good faith: a permission the agency does not have.",
+      "intro": "Your contact details and your documents live in tables an agency has no read permission on. The restriction is enforced in the database, not on the screen.",
+      "example": "Example · how the talent pool shows you",
+      "displayName": "Carlos M.",
+      "displayNote": "Your first name and the initial of your surname. Nothing else.",
+      "seesTitle": "What it sees",
+      "sees": [
+        {
+          "label": "Age",
+          "value": "28"
+        },
+        {
+          "label": "Residence",
+          "value": "Valencia, Spain · Spanish nationality"
+        },
+        {
+          "label": "Experience",
+          "value": "Warehouse and logistics · 3 years"
+        },
+        {
+          "label": "English",
+          "value": "B1"
+        },
+        {
+          "label": "Availability",
+          "value": "Now · needs housing"
+        }
+      ],
+      "neverTitle": "What it does not see without your permission",
+      "blocked": "Hidden: only with your permission",
+      "never": [
+        "Full surname, email and phone number",
+        "IBAN, postal address and date of birth",
+        "ID card, passport, CV, driving licence, tax identification"
+      ],
+      "nothingAsked": "And there are details {brand} does not even ask you for today: no IBAN, no postal address, no phone number.",
+      "link": "How your profile is shared, field by field"
+    },
+    "support": {
+      "title": "You don’t arrive alone",
+      "hook": "What happens the day you get there",
+      "items": {
+        "agent": {
+          "when": "Before you leave",
+          "title": "An agent, with a name",
+          "body": "When an agency picks you, you are not writing to an inbox: you get a person assigned to you, who is there through your arrival and while you work with the agency."
+        },
+        "arrival": {
+          "when": "The arrival",
+          "title": "The trip is arranged with them",
+          "body": "The journey and the first day are prepared with your agent. In some cases they pick you up at the airport or at a point the two of you agree on."
+        },
+        "paperwork": {
+          "when": "The first day",
+          "title": "Paperwork takes hours, not weeks",
+          "body": "Same day. In some offers you are handed the company vehicle right there; in others they take you straight to your accommodation."
+        },
+        "pay": {
+          "when": "The first payday",
+          "title": "And you get paid soon",
+          "body": "Some offers pay weekly and others pay monthly."
+        }
+      },
+      "note": "This is how agency work runs in Germany. What applies to you depends on the offer and on the agency that picks you."
+    },
+    "faq": {
+      "title": "What you are wondering",
+      "hook": "Six answers, including the uncomfortable ones.",
+      "items": {
+        "cost": {
+          "q": "What does this cost me?",
+          "a": "Nothing, and it is not a launch offer: charging a candidate for access to a job is prohibited in the European Union. No commission on your wage, no subscription, no paying to feature your profile. {brand} charges nobody today: there is no payment gateway at all. The day there is one, the agency is who pays."
+        },
+        "who": {
+          "q": "Who hires me, {brand} or the agency?",
+          "a": "The agency hires you: it signs your contract and it pays you. {brand} is not a temp agency nor a placement agency, it hires nobody and it is not party to any employment contract. What it does is put you in front of the agency."
+        },
+        "eu": {
+          "q": "Do I need an EU passport?",
+          "a": "Yes. It is a requirement, not a preference: these offers are for people who can work in the European Union without a work permit, with the passport or ID card of an EU country. English, on the other hand, depends on each offer."
+        },
+        "travel": {
+          "q": "Who pays for the trip and the accommodation?",
+          "a": "You pay for the trip. And the accommodation, when the offer includes it, is not a gift: it is deducted straight from your wage. An offer saying “with accommodation” means the agency finds it and fronts it for you, not that it comes free."
+        },
+        "pay": {
+          "q": "When do I get paid?",
+          "a": "It depends on the agency: some offers pay weekly and others pay monthly."
+        },
+        "data": {
+          "q": "What do agencies see about me?",
+          "a": "Your profile without your full surname and without any way to contact you, and nothing more until you give a specific agency permission.",
+          "link": "What is shared and what is not, field by field"
+        }
+      }
+    }
+  }
+}

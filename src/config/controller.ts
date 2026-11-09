@@ -34,7 +34,7 @@ export const controller = {
 } as const;
 
 /** El domicilio en una línea, para el copy que no lo maqueta por partes. */
-export function controllerAddressLine(locale: 'es' | 'en'): string {
+export function controllerAddressLine(locale: string): string {
   const { street, postalCode, city, country, countryEn } = controller.address;
   return `${street}, ${postalCode} ${city}, ${locale === 'es' ? country : countryEn}`;
 }

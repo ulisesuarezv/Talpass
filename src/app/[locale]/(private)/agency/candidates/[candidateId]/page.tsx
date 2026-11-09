@@ -4,6 +4,9 @@ import type { ReactNode } from 'react';
 
 import { formatActivity, formatExperience } from '@/components/agency/format';
 import { Stamps } from '@/components/agency/stamps';
+import { AgencyNav } from '@/components/demo/agency-nav';
+import { SubmitButton } from '@/components/demo/client';
+import { Textarea } from '@/components/ui/textarea';
 import { siteConfig } from '@/config/site';
 import { Link } from '@/i18n/navigation';
 import type { Locale } from '@/i18n/routing';
@@ -11,6 +14,8 @@ import { getPoolCandidate } from '@/lib/agency/pool';
 import { getAgencyTranslations } from '@/lib/agency/translations';
 import { requireArea } from '@/lib/auth/session';
 import { listCountries, listSectors } from '@/lib/catalogs';
+import { startConversationAction } from '@/lib/demo/actions';
+import { conversationWith, listAgencyJobs } from '@/lib/demo/conversations';
 
 type Params = Promise<{ locale: string; candidateId: string }>;
 
@@ -44,11 +49,14 @@ export default async function AgencyCandidatePage({
 
   await requireArea('/agency', locale);
 
-  const [t, candidate, countries, sectors] = await Promise.all([
+  const valid = UUID.test(candidateId);
+  const [t, candidate, countries, sectors, existing, jobs] = await Promise.all([
     getAgencyTranslations(locale as Locale),
-    UUID.test(candidateId) ? getPoolCandidate(candidateId) : null,
+    valid ? getPoolCandidate(candidateId) : null,
     listCountries(locale),
     listSectors(locale),
+    valid ? conversationWith(candidateId) : null,
+    listAgencyJobs(locale),
   ]);
 
   const back = (
@@ -109,100 +117,160 @@ export default async function AgencyCandidatePage({
   ];
 
   return (
-    <div className="container-page flex flex-col gap-6 py-6 sm:py-8">
-      {back}
+    <>
+      <AgencyNav t={t} current="pool" />
+      <div className="container-page flex flex-col gap-6 py-6 sm:py-8">
+        {back}
 
-      <header className="flex flex-col gap-2">
-        <h1 className="type-h1">{candidate.displayName}</h1>
-        <p className="type-body text-muted-foreground">
-          {[
-            candidate.age != null
-              ? t('card.age', { age: candidate.age })
-              : null,
-            candidate.englishLevel
-              ? t('englishLevel', {
-                  level: t(`levels.${candidate.englishLevel}`),
-                })
-              : null,
-          ]
-            .filter(Boolean)
-            .join(' · ')}
-        </p>
-      </header>
+        <header className="flex flex-col gap-2">
+          <h1 className="type-h1">{candidate.displayName}</h1>
+          <p className="type-body text-muted-foreground">
+            {[
+              candidate.age != null
+                ? t('card.age', { age: candidate.age })
+                : null,
+              candidate.englishLevel
+                ? t('englishLevel', {
+                    level: t(`levels.${candidate.englishLevel}`),
+                  })
+                : null,
+            ]
+              .filter(Boolean)
+              .join(' · ')}
+          </p>
+        </header>
 
-      <div className="grid gap-6 lg:grid-cols-[1fr_20rem] lg:gap-10">
-        <div className="flex flex-col gap-8">
-          {candidate.sectors.length > 0 ? (
+        <div className="grid gap-6 lg:grid-cols-[1fr_20rem] lg:gap-10">
+          <div className="flex flex-col gap-8">
+            {candidate.sectors.length > 0 ? (
+              <section className="flex flex-col gap-3">
+                <h2 className="type-h4">{t('candidate.sectors')}</h2>
+                <ul className="flex flex-wrap gap-2">
+                  {candidate.sectors.map((sector) => (
+                    <li
+                      key={sector.slug}
+                      className="rounded-full bg-brand-soft px-3 py-1 type-meta"
+                    >
+                      <span className="font-medium">
+                        {sectorName(sector.slug)}
+                      </span>{' '}
+                      · {formatExperience(t, sector.months)}
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            ) : null}
+
+            <section className="flex flex-col gap-2">
+              <h2 className="type-h4">{t('candidate.experience')}</h2>
+              {candidate.workExperience ? (
+                <>
+                  <blockquote className="border-l-2 border-brand/60 pl-4 type-body">
+                    {candidate.workExperience}
+                  </blockquote>
+                  <p className="type-caption text-muted-foreground">
+                    {t('candidate.experienceNote')}
+                  </p>
+                </>
+              ) : (
+                <p className="type-body text-muted-foreground">
+                  {t('candidate.noExperience')}
+                </p>
+              )}
+            </section>
+
             <section className="flex flex-col gap-3">
-              <h2 className="type-h4">{t('candidate.sectors')}</h2>
-              <ul className="flex flex-wrap gap-2">
-                {candidate.sectors.map((sector) => (
-                  <li
-                    key={sector.slug}
-                    className="rounded-full bg-brand-soft px-3 py-1 type-meta"
+              <h2 className="type-h4">{t('candidate.facts.title')}</h2>
+              <dl className="grid gap-x-6 gap-y-4 sm:grid-cols-2">
+                {facts.map(([label, value]) => (
+                  <div key={label} className="flex flex-col gap-1.5">
+                    <dt className="fact-label">{label}</dt>
+                    <dd className="fact-value">{value}</dd>
+                  </div>
+                ))}
+              </dl>
+            </section>
+          </div>
+
+          <aside className="flex flex-col gap-6">
+            {existing ? (
+              <section className="flex flex-col gap-3 rounded-xl border-2 border-brand/40 bg-card p-4">
+                <h2 className="type-h4">{t('contact.title')}</h2>
+                <p className="type-meta text-muted-foreground">
+                  {t('contact.existing')}
+                </p>
+                <Link
+                  href={{
+                    pathname: '/agency/messages/[conversationId]',
+                    params: { conversationId: existing },
+                  }}
+                  className="inline-flex h-11 items-center justify-center rounded-lg bg-primary px-5 text-base font-medium text-primary-foreground hover:bg-primary/90"
+                >
+                  {t('contact.open')}
+                </Link>
+              </section>
+            ) : (
+              <form
+                action={startConversationAction}
+                className="flex flex-col gap-3 rounded-xl border-2 border-brand/40 bg-card p-4"
+              >
+                <h2 className="type-h4">{t('contact.title')}</h2>
+                <p className="type-caption text-muted-foreground">
+                  {t('contact.body')}
+                </p>
+                <input type="hidden" name="locale" value={locale} />
+                <input type="hidden" name="candidateId" value={candidate.id} />
+                <label className="flex flex-col gap-1.5 type-meta font-medium">
+                  {t('contact.job')}
+                  <select
+                    name="jobId"
+                    defaultValue={jobs[0]?.id ?? ''}
+                    className="h-11 rounded-lg border border-input bg-card px-3 text-base font-normal"
                   >
-                    <span className="font-medium">
-                      {sectorName(sector.slug)}
-                    </span>{' '}
-                    · {formatExperience(t, sector.months)}
-                  </li>
+                    <option value="">{t('contact.noJob')}</option>
+                    {jobs.map((job) => (
+                      <option key={job.id} value={job.id}>
+                        {job.title}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <label className="flex flex-col gap-1.5 type-meta font-medium">
+                  {t('contact.message')}
+                  <Textarea
+                    name="body"
+                    required
+                    rows={5}
+                    className="text-base font-normal"
+                    defaultValue={t('contact.template', {
+                      name: candidate.displayName.split(' ')[0],
+                    })}
+                  />
+                </label>
+                <SubmitButton label={t('contact.send')} />
+              </form>
+            )}
+            <section className="flex flex-col gap-3">
+              <h2 className="type-h4">
+                {t('candidate.verified.title', { brand: siteConfig.name })}
+              </h2>
+              <Stamps stamps={candidate.stamps} t={t} />
+              <p className="type-caption text-muted-foreground">
+                {t('candidate.verified.body', { brand: siteConfig.name })}
+              </p>
+            </section>
+
+            <section className="flex flex-col gap-2 rounded-xl bg-muted p-4">
+              <h2 className="type-h4">{t('candidate.private.title')}</h2>
+              <ul className="flex list-disc flex-col gap-1 pl-4 type-caption text-muted-foreground">
+                {(t.raw('candidate.private.items') as string[]).map((item) => (
+                  <li key={item}>{item}</li>
                 ))}
               </ul>
             </section>
-          ) : null}
-
-          <section className="flex flex-col gap-2">
-            <h2 className="type-h4">{t('candidate.experience')}</h2>
-            {candidate.workExperience ? (
-              <>
-                <blockquote className="border-l-2 border-brand/60 pl-4 type-body">
-                  {candidate.workExperience}
-                </blockquote>
-                <p className="type-caption text-muted-foreground">
-                  {t('candidate.experienceNote')}
-                </p>
-              </>
-            ) : (
-              <p className="type-body text-muted-foreground">
-                {t('candidate.noExperience')}
-              </p>
-            )}
-          </section>
-
-          <section className="flex flex-col gap-3">
-            <h2 className="type-h4">{t('candidate.facts.title')}</h2>
-            <dl className="grid gap-x-6 gap-y-4 sm:grid-cols-2">
-              {facts.map(([label, value]) => (
-                <div key={label} className="flex flex-col gap-1.5">
-                  <dt className="fact-label">{label}</dt>
-                  <dd className="fact-value">{value}</dd>
-                </div>
-              ))}
-            </dl>
-          </section>
+          </aside>
         </div>
-
-        <aside className="flex flex-col gap-6">
-          <section className="flex flex-col gap-3">
-            <h2 className="type-h4">
-              {t('candidate.verified.title', { brand: siteConfig.name })}
-            </h2>
-            <Stamps stamps={candidate.stamps} t={t} />
-            <p className="type-caption text-muted-foreground">
-              {t('candidate.verified.body', { brand: siteConfig.name })}
-            </p>
-          </section>
-
-          <section className="flex flex-col gap-2 rounded-xl bg-muted p-4">
-            <h2 className="type-h4">{t('candidate.private.title')}</h2>
-            <ul className="flex list-disc flex-col gap-1 pl-4 type-caption text-muted-foreground">
-              {(t.raw('candidate.private.items') as string[]).map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
-          </section>
-        </aside>
       </div>
-    </div>
+    </>
   );
 }

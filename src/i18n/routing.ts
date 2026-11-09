@@ -7,7 +7,7 @@ import { defineRouting } from 'next-intl/routing';
  * y añadir su entrada a cada ruta de `pathnames`. Ningún componente cambia.
  */
 
-export const locales = ['es', 'en'] as const;
+export const locales = ['es', 'en', 'de'] as const;
 export type Locale = (typeof locales)[number];
 
 export const defaultLocale: Locale = 'es';
@@ -20,6 +20,7 @@ export const defaultLocale: Locale = 'es';
 export const localeLabels: Record<Locale, string> = {
   es: 'Español',
   en: 'English',
+  de: 'Deutsch',
 };
 
 /**
@@ -32,6 +33,7 @@ export const localeLabels: Record<Locale, string> = {
 export const localeShortLabels: Record<Locale, string> = {
   es: 'ES',
   en: 'EN',
+  de: 'DE',
 };
 
 /**
@@ -49,10 +51,12 @@ export const pathnames = {
   '/jobs': {
     es: '/ofertas',
     en: '/jobs',
+    de: '/jobs',
   },
   '/jobs/[slug]': {
     es: '/ofertas/[slug]',
     en: '/jobs/[slug]',
+    de: '/jobs/[slug]',
   },
 
   // ⛔ `/opportunities` y `/opportunities/[country]/[sector]` SE RETIRARON el
@@ -69,20 +73,24 @@ export const pathnames = {
   '/work/[country]': {
     es: '/trabajo/[country]',
     en: '/work/[country]',
+    de: '/work/[country]',
   },
   '/work/[country]/[sector]': {
     es: '/trabajo/[country]/[sector]',
     en: '/work/[country]/[sector]',
+    de: '/work/[country]/[sector]',
   },
   // Segmento fijo delante del dinámico: Next resuelve antes lo estático, así
   // que `/trabajo/ciudad/berlin` nunca se confunde con un país llamado "ciudad".
   '/work/[country]/with-housing': {
     es: '/trabajo/[country]/con-alojamiento',
     en: '/work/[country]/with-housing',
+    de: '/work/[country]/with-housing',
   },
   '/work/city/[city]': {
     es: '/trabajo/ciudad/[city]',
     en: '/work/city/[city]',
+    de: '/work/city/[city]',
   },
 
   // Textos legales (ADR-33). Públicas y estáticas como el resto de `(public)`:
@@ -93,10 +101,12 @@ export const pathnames = {
   '/legal': {
     es: '/legal',
     en: '/legal',
+    de: '/legal',
   },
   '/legal/[document]': {
     es: '/legal/[document]',
     en: '/legal/[document]',
+    de: '/legal/[document]',
   },
 
   // Autenticación. No leen sesión al renderizar: son páginas estáticas con un
@@ -104,52 +114,84 @@ export const pathnames = {
   '/login': {
     es: '/entrar',
     en: '/login',
+    de: '/login',
   },
   '/signup': {
     es: '/registro',
     en: '/signup',
+    de: '/signup',
   },
   '/check-email': {
     es: '/revisa-tu-correo',
     en: '/check-email',
+    de: '/check-email',
   },
   '/forgot-password': {
     es: '/recuperar-acceso',
     en: '/forgot-password',
+    de: '/forgot-password',
   },
   '/reset-password': {
     es: '/nueva-contrasena',
     en: '/reset-password',
+    de: '/reset-password',
   },
 
   // Privado — ver `protected-routes.ts`
   '/onboarding': {
     es: '/completar-perfil',
     en: '/onboarding',
+    de: '/onboarding',
   },
   '/account': {
     es: '/cuenta',
     en: '/account',
+    de: '/account',
   },
   '/agency': {
     es: '/agency',
     en: '/agency',
+    de: '/agency',
   },
   '/admin': {
     es: '/admin',
     en: '/admin',
+    de: '/admin',
   },
   // La ficha de un candidato en el backoffice. No se traduce el segmento: es
   // una pantalla interna de una sola persona, y su URL no la ve nadie más.
   '/admin/[candidateId]': {
     es: '/admin/[candidateId]',
     en: '/admin/[candidateId]',
+    de: '/admin/[candidateId]',
   },
   // La ficha seudonimizada de la bolsa (ADR-52). Mismo criterio que la del
   // backoffice: pantalla interna, segmento sin traducir.
   '/agency/candidates/[candidateId]': {
     es: '/agency/candidates/[candidateId]',
     en: '/agency/candidates/[candidateId]',
+    de: '/agency/candidates/[candidateId]',
+  },
+  // ⚠️ DEMO (rama demo/hindi): la conversación ETT ↔ candidato.
+  '/agency/messages': {
+    es: '/agency/messages',
+    en: '/agency/messages',
+    de: '/agency/messages',
+  },
+  '/agency/messages/[conversationId]': {
+    es: '/agency/messages/[conversationId]',
+    en: '/agency/messages/[conversationId]',
+    de: '/agency/messages/[conversationId]',
+  },
+  '/account/messages': {
+    es: '/cuenta/mensajes',
+    en: '/account/messages',
+    de: '/account/messages',
+  },
+  '/account/messages/[conversationId]': {
+    es: '/cuenta/mensajes/[conversationId]',
+    en: '/account/messages/[conversationId]',
+    de: '/account/messages/[conversationId]',
   },
 } as const;
 

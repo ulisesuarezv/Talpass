@@ -95,6 +95,50 @@
       }
     },
     "yes": "Sí",
-    "no": "No"
+    "no": "No",
+    "nav": {
+      "pool": "Bolsa",
+      "messages": "Mensajes"
+    },
+    "contact": {
+      "title": "Contactar con este candidato",
+      "body": "Envía un primer mensaje. El candidato decide si responde; sus datos de contacto siguen ocultos hasta que lo contrates.",
+      "job": "Adjuntar una oferta (opcional)",
+      "noJob": "Sin oferta adjunta",
+      "message": "Mensaje",
+      "template": "Hola {name}, tenemos una oferta que podría encajarte. ¿Te interesa saber más?",
+      "send": "Enviar mensaje",
+      "existing": "Ya tienes una conversación con este candidato.",
+      "open": "Abrir conversación"
+    },
+    "inbox": {
+      "meta": "Mensajes · {brand}",
+      "title": "Mensajes",
+      "empty": "Aún no hay conversaciones. Abre una ficha de la bolsa y escribe al candidato.",
+      "back": "Volver a mensajes",
+      "you": "Tú",
+      "status": {
+        "pending": "Esperando respuesta",
+        "open": "En conversación",
+        "declined": "Rechazada",
+        "hired": "Contratado"
+      },
+      "pendingNote": "El candidato aún no ha aceptado. Podrás volver a escribir cuando acepte.",
+      "declinedNote": "El candidato ha rechazado esta conversación.",
+      "maskedNote": "Los datos de contacto se ocultan hasta que contrates al candidato.",
+      "composer": "Escribe un mensaje…",
+      "send": "Enviar",
+      "hire": "Marcar como contratado",
+      "hireNote": "Al contratar ves el nombre completo, el email y el teléfono del candidato, y sus mensajes sin ocultar.",
+      "contactTitle": "Datos de contacto",
+      "email": "Email",
+      "phone": "Teléfono",
+      "job": "Oferta adjunta",
+      "perHour": "{amount}/h",
+      "fromPerHour": "desde {amount}/h",
+      "transport": "Transporte incluido",
+      "housing": "Alojamiento incluido",
+      "start": "Inicio {date}"
+    }
   }
 }

@@ -87,11 +87,19 @@ export function documentVersion(document: LegalDocument): string | null {
  * localizable, no más.
  */
 export const LEGAL_SLUGS: Record<LegalDocument, Record<Locale, string>> = {
-  impressum: { es: 'impressum', en: 'impressum' },
-  privacy: { es: 'privacidad', en: 'privacy' },
-  terms: { es: 'terminos', en: 'terms' },
-  data_sharing: { es: 'datos-y-agencias', en: 'data-and-agencies' },
-  audio_sharing: { es: 'audio-en-ingles', en: 'english-audio' },
+  impressum: { es: 'impressum', en: 'impressum', de: 'impressum' },
+  privacy: { es: 'privacidad', en: 'privacy', de: 'privacy' },
+  terms: { es: 'terminos', en: 'terms', de: 'terms' },
+  data_sharing: {
+    es: 'datos-y-agencias',
+    en: 'data-and-agencies',
+    de: 'data-and-agencies',
+  },
+  audio_sharing: {
+    es: 'audio-en-ingles',
+    en: 'english-audio',
+    de: 'english-audio',
+  },
 };
 
 /** El documento al que apunta un segmento, o `null` si no existe ninguno. */

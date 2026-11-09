@@ -697,5 +697,34 @@
         }
       }
     }
+  },
+  "Inbox": {
+    "title": "Messages from agencies",
+    "empty": "No agency has written to you yet. When one does, you'll see it here.",
+    "banner": "{count, plural, one {You have # new message from an agency} other {You have # new messages from agencies}}",
+    "see": "See messages",
+    "back": "Back to messages",
+    "you": "You",
+    "status": {
+      "pending": "New",
+      "open": "In conversation",
+      "declined": "Declined",
+      "hired": "Hired"
+    },
+    "pendingTitle": "{agency} wants to talk to you",
+    "pendingBody": "If you accept, you can message each other. Your contact details stay hidden until you are hired.",
+    "accept": "Accept and reply",
+    "decline": "Not interested",
+    "declinedNote": "You declined this conversation.",
+    "hiredNote": "You've been hired! The agency can now see your phone and email.",
+    "maskedNote": "For your safety, we hide phone numbers, emails and links until you are hired.",
+    "composer": "Write your reply…",
+    "send": "Send",
+    "job": "The job",
+    "fromPerHour": "from {amount}/h",
+    "perHour": "{amount}/h",
+    "transport": "Transport to work",
+    "housing": "Housing included",
+    "start": "Starts {date}"
   }
 }

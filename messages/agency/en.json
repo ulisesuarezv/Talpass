@@ -95,6 +95,50 @@
       }
     },
     "yes": "Yes",
-    "no": "No"
+    "no": "No",
+    "nav": {
+      "pool": "Talent pool",
+      "messages": "Messages"
+    },
+    "contact": {
+      "title": "Contact this candidate",
+      "body": "Send a first message. The candidate decides whether to reply; their contact details stay hidden until you hire them.",
+      "job": "Attach a job (optional)",
+      "noJob": "No job attached",
+      "message": "Message",
+      "template": "Hello {name}, we have a warehouse job that could suit you, with transport to work included. Would you like to hear more?",
+      "send": "Send message",
+      "existing": "You already have a conversation with this candidate.",
+      "open": "Open conversation"
+    },
+    "inbox": {
+      "meta": "Messages · {brand}",
+      "title": "Messages",
+      "empty": "No conversations yet. Open a profile in the talent pool and write to the candidate.",
+      "back": "Back to messages",
+      "you": "You",
+      "status": {
+        "pending": "Waiting for reply",
+        "open": "In conversation",
+        "declined": "Declined",
+        "hired": "Hired"
+      },
+      "pendingNote": "The candidate has not accepted yet. You can write again once they accept.",
+      "declinedNote": "The candidate declined this conversation.",
+      "maskedNote": "Contact details are hidden until you hire the candidate.",
+      "composer": "Write a message…",
+      "send": "Send",
+      "hire": "Mark as hired",
+      "hireNote": "Hiring reveals the candidate's full name, email and phone, and their messages without hidden details.",
+      "contactTitle": "Contact details",
+      "email": "Email",
+      "phone": "Phone",
+      "job": "Attached job",
+      "perHour": "{amount}/h",
+      "fromPerHour": "from {amount}/h",
+      "transport": "Transport provided",
+      "housing": "Housing provided",
+      "start": "Start {date}"
+    }
   }
 }

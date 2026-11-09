@@ -29,7 +29,9 @@
     "job:publish": "node scripts/publish-job.mts",
     "job:publish:prod": "node scripts/publish-job.mts --prod",
     "test:security": "node --env-file=.env.test tests/security/run.mts",
-    "test:security:drill": "node --env-file=.env.test tests/security/drill.mts"
+    "test:security:drill": "node --env-file=.env.test tests/security/drill.mts",
+    "seed:hindi": "node --env-file=.env.test scripts/seed-hindi.mts",
+    "demo:setup": "supabase db reset && pnpm seed:demo && pnpm seed:pool && pnpm seed:hindi"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",
