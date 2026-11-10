@@ -49,7 +49,8 @@ export default async function AgencyMessagesPage({
         ) : (
           <ul className="flex flex-col gap-3">
             {conversations.map((c) => {
-              const waiting = c.lastSender === 'candidate';
+              const waiting =
+                c.lastSender === 'candidate' && c.status === 'open';
               return (
                 <li key={c.id}>
                   <Link
@@ -84,8 +85,13 @@ export default async function AgencyMessagesPage({
                         />
                       </span>
                     </div>
-                    {c.jobTitle ? (
-                      <span className="type-caption text-muted-foreground">
+                    {c.jobTitle || c.origin === 'application' ? (
+                      <span className="flex flex-wrap items-center gap-2 type-caption text-muted-foreground">
+                        {c.origin === 'application' ? (
+                          <span className="rounded-full bg-brand-accent-soft px-2 py-0.5 font-semibold text-brand-accent-ink">
+                            {t('inbox.application')}
+                          </span>
+                        ) : null}
                         {c.jobTitle}
                       </span>
                     ) : null}

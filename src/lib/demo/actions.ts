@@ -81,3 +81,26 @@ export async function hireAction(form: FormData) {
   if (error) throw new Error(error.message);
   refresh();
 }
+
+export async function applyAction(form: FormData) {
+  const locale = str(form, 'locale');
+  const jobId = str(form, 'jobId');
+  const body = str(form, 'body');
+  if (!body) return;
+
+  const supabase = await createClient();
+  const { data, error } = await supabase.rpc('demo_apply', {
+    p_job_id: jobId,
+    p_body: body,
+  });
+  if (error) throw new Error(error.message);
+
+  refresh();
+  redirect({
+    href: {
+      pathname: '/account/messages/[conversationId]',
+      params: { conversationId: data as string },
+    },
+    locale,
+  });
+}

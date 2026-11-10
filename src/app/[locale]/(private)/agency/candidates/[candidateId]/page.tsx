@@ -4,7 +4,7 @@ import type { ReactNode } from 'react';
 
 import { formatActivity, formatExperience } from '@/components/agency/format';
 import { Stamps } from '@/components/agency/stamps';
-import { AgencyNav } from '@/components/demo/agency-nav';
+import { AgencyNav, unreadCount } from '@/components/demo/agency-nav';
 import { SubmitButton } from '@/components/demo/client';
 import { Textarea } from '@/components/ui/textarea';
 import { siteConfig } from '@/config/site';
@@ -15,7 +15,7 @@ import { getAgencyTranslations } from '@/lib/agency/translations';
 import { requireArea } from '@/lib/auth/session';
 import { listCountries, listSectors } from '@/lib/catalogs';
 import { startConversationAction } from '@/lib/demo/actions';
-import { conversationWith, listAgencyJobs } from '@/lib/demo/conversations';
+import { listAgencyJobs, listConversations } from '@/lib/demo/conversations';
 
 type Params = Promise<{ locale: string; candidateId: string }>;
 
@@ -50,14 +50,22 @@ export default async function AgencyCandidatePage({
   await requireArea('/agency', locale);
 
   const valid = UUID.test(candidateId);
-  const [t, candidate, countries, sectors, existing, jobs] = await Promise.all([
-    getAgencyTranslations(locale as Locale),
-    valid ? getPoolCandidate(candidateId) : null,
-    listCountries(locale),
-    listSectors(locale),
-    valid ? conversationWith(candidateId) : null,
-    listAgencyJobs(locale),
-  ]);
+  const [t, candidate, countries, sectors, conversations, allJobs] =
+    await Promise.all([
+      getAgencyTranslations(locale as Locale),
+      valid ? getPoolCandidate(candidateId) : null,
+      listCountries(locale),
+      listSectors(locale),
+      listConversations(locale),
+      listAgencyJobs(locale),
+    ]);
+
+  // Una conversación por oferta: se puede escribir por las ofertas que aún no
+  // tienen conversación con este candidato.
+  const existing = conversations.filter((c) => c.candidateId === candidateId);
+  const jobs = allJobs.filter(
+    (job) => !existing.some((c) => c.jobId === job.id),
+  );
 
   const back = (
     <Link
@@ -118,7 +126,7 @@ export default async function AgencyCandidatePage({
 
   return (
     <>
-      <AgencyNav t={t} current="pool" />
+      <AgencyNav t={t} current="pool" unread={unreadCount(conversations)} />
       <div className="container-page flex flex-col gap-6 py-6 sm:py-8">
         {back}
 
@@ -193,23 +201,28 @@ export default async function AgencyCandidatePage({
           </div>
 
           <aside className="flex flex-col gap-6">
-            {existing ? (
-              <section className="flex flex-col gap-3 rounded-xl border-2 border-brand/40 bg-card p-4">
+            {existing.map((c) => (
+              <section
+                key={c.id}
+                className="flex flex-col gap-3 rounded-xl border bg-card p-4"
+              >
                 <h2 className="type-h4">{t('contact.title')}</h2>
                 <p className="type-meta text-muted-foreground">
                   {t('contact.existing')}
+                  {c.jobTitle ? ` · ${c.jobTitle}` : ''}
                 </p>
                 <Link
                   href={{
                     pathname: '/agency/messages/[conversationId]',
-                    params: { conversationId: existing },
+                    params: { conversationId: c.id },
                   }}
                   className="inline-flex h-11 items-center justify-center rounded-lg bg-primary px-5 text-base font-medium text-primary-foreground hover:bg-primary/90"
                 >
                   {t('contact.open')}
                 </Link>
               </section>
-            ) : (
+            ))}
+            {jobs.length > 0 ? (
               <form
                 action={startConversationAction}
                 className="flex flex-col gap-3 rounded-xl border-2 border-brand/40 bg-card p-4"
@@ -249,7 +262,7 @@ export default async function AgencyCandidatePage({
                 </label>
                 <SubmitButton label={t('contact.send')} />
               </form>
-            )}
+            ) : null}
             <section className="flex flex-col gap-3">
               <h2 className="type-h4">
                 {t('candidate.verified.title', { brand: siteConfig.name })}

@@ -11,6 +11,8 @@ import { JobPostingJsonLd } from '@/components/jobs/job-posting-jsonld';
 import { RelatedLandings } from '@/components/jobs/related-landings';
 import { SignupCta } from '@/components/jobs/signup-cta';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Link } from '@/i18n/navigation';
 import { Separator } from '@/components/ui/separator';
 import type { Locale } from '@/i18n/routing';
 import { listLanguages } from '@/lib/catalogs';
@@ -106,6 +108,13 @@ export default async function JobDetailPage({
           {t('detail.postedBy', { organization: job.hiringOrganization })}
         </p>
         {salary ? <p className="text-lg font-semibold">{salary}</p> : null}
+        {/* ⚠️ DEMO: postularse abre la conversación con la ETT. Es un enlace
+            a la zona privada, así que la página sigue sin tocar la sesión. */}
+        <Button asChild size="lg" className="self-start">
+          <Link href={{ pathname: '/account/apply/[slug]', params: { slug } }}>
+            {t('detail.apply')}
+          </Link>
+        </Button>
       </header>
 
       <dl className="grid grid-cols-2 gap-4 rounded-lg border bg-card p-4 text-sm sm:grid-cols-3">

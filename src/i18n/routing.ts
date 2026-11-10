@@ -193,6 +193,11 @@ export const pathnames = {
     en: '/account/messages/[conversationId]',
     de: '/account/messages/[conversationId]',
   },
+  '/account/apply/[slug]': {
+    es: '/cuenta/postular/[slug]',
+    en: '/account/apply/[slug]',
+    de: '/account/apply/[slug]',
+  },
 } as const;
 
 export const routing = defineRouting({

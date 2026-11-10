@@ -96,6 +96,11 @@ export default async function AgencyConversationPage({
 
         <div className="grid gap-6 lg:grid-cols-[1fr_22rem] lg:gap-10">
           <section className="flex flex-col gap-4 rounded-2xl border bg-muted/40 p-4 sm:p-6">
+            {conversation.origin === 'application' ? (
+              <p className="rounded-xl bg-brand-accent-soft/60 p-3 type-meta font-medium text-brand-accent-ink">
+                {t('inbox.appliedNote', { name: conversation.candidate_name })}
+              </p>
+            ) : null}
             <div className="flex max-h-[55vh] flex-col overflow-y-auto pr-1">
               <Messages
                 messages={conversation.messages}

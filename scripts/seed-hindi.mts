@@ -220,6 +220,83 @@ await check(
   'Publicar oferta',
 );
 
+// Segunda oferta: la que Pablo encuentra en /ofertas y a la que se postula.
+const job2 = await check(
+  admin
+    .from('jobs')
+    .upsert(
+      {
+        agency_id: agencyId,
+        created_by: ownerId,
+        slug: 'produktionshelfer-goettingen',
+        client_company_name: null,
+        show_client_company: false,
+        country_code: 'DE',
+        city: 'Göttingen',
+        sector_id: await idOf(admin, 'sectors', 'production'),
+        salary_min: 15.1,
+        salary_max: 16.5,
+        salary_currency: 'EUR',
+        salary_period: 'hour',
+        shifts: ['morning', 'afternoon', 'night'],
+        weekly_hours: 38,
+        required_language_code: 'en',
+        required_language_level: 'a2',
+        requires_driving_license: false,
+        housing_provided: false,
+        housing_price: null,
+        housing_currency: null,
+        transport_provided: true,
+        min_contract_months: 6,
+        start_date: '2026-12-01',
+        status: 'draft',
+      },
+      { onConflict: 'slug' },
+    )
+    .select('id')
+    .single(),
+  'Segunda oferta',
+);
+const job2Id = (job2 as { id: string }).id;
+
+await check(
+  admin.from('job_translations').upsert(
+    [
+      {
+        job_id: job2Id,
+        locale: 'de',
+        title: 'Produktionshelfer (m/w/d) in Göttingen',
+        description:
+          'Maschinenbedienung, Sichtkontrolle und Verpackung in der Lebensmittelproduktion. 3-Schicht-System mit Zuschlägen. Fahrdienst zur Arbeit.',
+      },
+      {
+        job_id: job2Id,
+        locale: 'en',
+        title: 'Production operative in Göttingen',
+        description:
+          'Machine operation, visual quality checks and packing in food production. Three-shift system with shift bonuses. Transport to work provided.',
+      },
+      {
+        job_id: job2Id,
+        locale: 'es',
+        title: 'Operario/a de producción en Göttingen',
+        description:
+          'Manejo de máquinas, control visual de calidad y embalaje en producción de alimentos. Tres turnos, con plus por turno. Te llevamos al trabajo.',
+      },
+    ],
+    { onConflict: 'job_id,locale' },
+  ),
+  'Traducciones de la segunda oferta',
+);
+
+await check(
+  admin
+    .from('jobs')
+    .update({ status: 'published', published_at: new Date().toISOString() })
+    .eq('id', job2Id),
+  'Publicar segunda oferta',
+);
+
 // ------------------------------------------------------------- teléfonos
 for (const [key, phone] of Object.entries(PHONES)) {
   const id = await findUserIdByEmail(admin, poolEmail(key));

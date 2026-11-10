@@ -98,7 +98,8 @@
         "tasks": "What you'll do",
         "requirements": "What they ask for",
         "benefits": "What's included"
-      }
+      },
+      "apply": "Apply"
     },
     "cta": {
       "title": "Sounds like you?",
@@ -725,6 +726,19 @@
     "perHour": "{amount}/h",
     "transport": "Transport to work",
     "housing": "Housing included",
-    "start": "Starts {date}"
+    "start": "Starts {date}",
+    "apply": {
+      "meta": "Apply",
+      "title": "Apply for this job",
+      "body": "Your message goes to {agency}. They see your profile without your surname or contact details; they only see those if they hire you.",
+      "message": "Your message",
+      "template": "Hello, I would like to apply for this job. I live in Göttingen and I can start right away. I have experience in warehouse and production work.",
+      "templateNote": "You can change it.",
+      "send": "Send application",
+      "already": "You have already applied for this job.",
+      "open": "See the conversation",
+      "notFound": "This job is no longer available."
+    },
+    "appliedNote": "You applied for this job."
   }
 }

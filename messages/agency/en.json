@@ -146,7 +146,9 @@
       "fromPerHour": "from {amount}/h",
       "transport": "Transport provided",
       "housing": "Housing provided",
-      "start": "Start {date}"
+      "start": "Start {date}",
+      "application": "Application",
+      "appliedNote": "{name} applied for this job."
     }
   }
 }

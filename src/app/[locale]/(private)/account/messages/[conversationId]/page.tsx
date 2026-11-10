@@ -69,6 +69,12 @@ export default async function CandidateConversationPage({
         </section>
       ) : null}
 
+      {conversation.origin === 'application' && status === 'open' ? (
+        <p className="rounded-xl bg-muted p-3 type-meta text-muted-foreground">
+          {t('appliedNote')}
+        </p>
+      ) : null}
+
       {status === 'hired' ? (
         <p className="inline-flex items-center gap-2 rounded-xl bg-emerald-50 p-3 type-meta font-medium text-emerald-900">
           <PartyPopperIcon aria-hidden className="size-5 shrink-0" />

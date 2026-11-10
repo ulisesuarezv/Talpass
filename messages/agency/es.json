@@ -146,7 +146,9 @@
       "fromPerHour": "desde {amount}/h",
       "transport": "Transporte incluido",
       "housing": "Alojamiento incluido",
-      "start": "Inicio {date}"
+      "start": "Inicio {date}",
+      "application": "Postulación",
+      "appliedNote": "{name} se ha postulado a esta oferta."
     }
   }
 }

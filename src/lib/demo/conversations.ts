@@ -12,6 +12,8 @@ export type ConversationStatus = 'pending' | 'open' | 'declined' | 'hired';
 export type ConversationSummary = {
   id: string;
   status: ConversationStatus;
+  origin: 'outreach' | 'application';
+  jobId: string | null;
   candidateId: string;
   candidateName: string;
   agencyName: string;
@@ -57,6 +59,7 @@ export type Conversation = {
   id: string;
   side: 'agency' | 'candidate' | 'admin';
   status: ConversationStatus;
+  origin: 'outreach' | 'application';
   candidate_id: string;
   candidate_name: string;
   agency_name: string;
@@ -81,6 +84,8 @@ export async function listConversations(
   return (data ?? []).map((row) => ({
     id: row.id,
     status: row.status as ConversationStatus,
+    origin: row.origin as ConversationSummary['origin'],
+    jobId: row.job_id,
     candidateId: row.candidate_id,
     candidateName: row.candidate_name,
     agencyName: row.agency_name,
@@ -128,4 +133,14 @@ export async function listAgencyJobs(
     title: row.title ?? '',
     city: row.city,
   }));
+}
+
+/** La conversación que el candidato ya tiene por esta oferta, si se postuló. */
+export async function myApplication(jobId: string): Promise<string | null> {
+  const supabase = await createClient();
+  const { data, error } = await supabase.rpc('demo_my_application', {
+    p_job_id: jobId,
+  });
+  if (error) throw new Error(`Postulación: ${error.message}`);
+  return (data as string | null) ?? null;
 }

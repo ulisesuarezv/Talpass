@@ -66,6 +66,20 @@ de la cabecera. Cambia de idioma en directo si Basil prefiere inglés.
 7. **Nachrichten.** Hay dos conversaciones más ya empezadas: Elena R.
    (esperando respuesta de Hindi) y Tiago Ferreira Lopes (ya contratado).
 
+**El otro sentido: el candidato se postula** (3 minutos más)
+
+8. **Ventana del candidato.** Pablo entra en **Ofertas** (cabecera) → abre
+   **Operario/a de producción en Göttingen** (la segunda oferta de Hindi) →
+   **Postularme**. El mensaje ya va escrito en inglés → **Enviar postulación**.
+   Le lleva a la conversación.
+9. **Ventana de Hindi → Nachrichten.** Llega sola, con la etiqueta
+   **Bewerbung** y la oferta adjunta. Dentro: «Pablo H. hat sich auf diese
+   Stelle beworben». Hindi contesta, y desde aquí es lo mismo que antes:
+   conversación con los contactos tapados y **Als eingestellt markieren**.
+
+El orden da igual: hay una conversación por oferta, así que Pablo puede
+postularse a una y recibir el mensaje de Hindi por la otra.
+
 ## 4. Lo que preguntará y aún no está
 
 Decirlo como «lo siguiente», no esconderlo:
@@ -78,6 +92,8 @@ Decirlo como «lo siguiente», no esconderlo:
 
 ## 5. Si algo falla
 
+- **Falta una oferta en «Ofertas»:** `rm -rf .next` y otra vez
+  `pnpm build:local` (el build reaprovecha una caché de datos vieja).
 - **Pantalla de error o datos raros:** `pnpm demo:setup` y volver a entrar
   con las dos cuentas.
 - **Puerto ocupado:** `lsof -ti tcp:3210 | xargs kill` y arrancar otra vez.

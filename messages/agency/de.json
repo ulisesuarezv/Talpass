@@ -146,7 +146,9 @@
       "fromPerHour": "ab {amount}/Std.",
       "transport": "Fahrdienst inklusive",
       "housing": "Unterkunft inklusive",
-      "start": "Start {date}"
+      "start": "Start {date}",
+      "application": "Bewerbung",
+      "appliedNote": "{name} hat sich auf diese Stelle beworben."
     }
   }
 }

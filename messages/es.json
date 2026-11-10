@@ -98,7 +98,8 @@
         "tasks": "Qué harás",
         "requirements": "Qué piden",
         "benefits": "Qué incluye"
-      }
+      },
+      "apply": "Postularme"
     },
     "cta": {
       "title": "¿Te encaja?",
@@ -725,6 +726,19 @@
     "perHour": "{amount}/h",
     "transport": "Te llevan al trabajo",
     "housing": "Con alojamiento",
-    "start": "Empieza el {date}"
+    "start": "Empieza el {date}",
+    "apply": {
+      "meta": "Postularme",
+      "title": "Postularte a esta oferta",
+      "body": "Tu mensaje le llega a {agency}. Ve tu perfil sin tu apellido ni tus datos de contacto; los verá solo si te contrata.",
+      "message": "Tu mensaje",
+      "template": "Hello, I would like to apply for this job. I live in Göttingen and I can start right away. I have experience in warehouse and production work.",
+      "templateNote": "Te lo dejamos en inglés para que la agencia lo entienda. Puedes cambiarlo.",
+      "send": "Enviar postulación",
+      "already": "Ya te has postulado a esta oferta.",
+      "open": "Ver la conversación",
+      "notFound": "Esta oferta ya no está disponible."
+    },
+    "appliedNote": "Te postulaste a esta oferta."
   }
 }

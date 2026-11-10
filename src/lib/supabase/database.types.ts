@@ -960,6 +960,7 @@ export type Database = {
           created_by: string | null;
           id: string;
           job_id: string | null;
+          origin: string;
           status: string;
           updated_at: string;
         };
@@ -970,6 +971,7 @@ export type Database = {
           created_by?: string | null;
           id?: string;
           job_id?: string | null;
+          origin?: string;
           status?: string;
           updated_at?: string;
         };
@@ -980,6 +982,7 @@ export type Database = {
           created_by?: string | null;
           id?: string;
           job_id?: string | null;
+          origin?: string;
           status?: string;
           updated_at?: string;
         };
@@ -1989,6 +1992,10 @@ export type Database = {
           title: string;
         }[];
       };
+      demo_apply: {
+        Args: { p_body: string; p_job_id: string };
+        Returns: string;
+      };
       demo_conversation_for: {
         Args: { p_candidate_id: string };
         Returns: string;
@@ -2014,14 +2021,17 @@ export type Database = {
           candidate_id: string;
           candidate_name: string;
           id: string;
+          job_id: string;
           job_title: string;
           last_at: string;
           last_body: string;
           last_sender: string;
+          origin: string;
           status: string;
           updated_at: string;
         }[];
       };
+      demo_my_application: { Args: { p_job_id: string }; Returns: string };
       demo_respond: {
         Args: { p_accept: boolean; p_conversation_id: string };
         Returns: undefined;
