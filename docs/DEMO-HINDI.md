@@ -57,8 +57,12 @@ de la cabecera. Cambia de idioma en directo si Basil prefiere inglés.
    Göttingen and can start next week. My phone is +49 1520 4417 382».
 5. **Volver a Hindi.** El mensaje llega solo, **con el teléfono tapado**
    (`[•••]`). Es el argumento: nadie se salta la plataforma.
-6. **Als eingestellt markieren.** Aparecen el nombre completo, el teléfono y
-   el email, y el mensaje sin tapar.
+6. **Als eingestellt markieren.** Sale un aviso: pedir los datos solo cuando
+   esté seguro de contratar, porque desde ahí cuenta como contratado y se
+   paga por él. **Ja, einstellen** → aparecen el nombre completo, el teléfono,
+   el email, **la grabación en inglés** (darle al play) y **los documentos**
+   (DNI y CV, se abren en otra pestaña; son de muestra, marcados «MUSTER»), y
+   el mensaje sin tapar.
 7. **Nachrichten.** Hay dos conversaciones más ya empezadas: Elena R.
    (esperando respuesta de Hindi) y Tiago Ferreira Lopes (ya contratado).
 
@@ -70,8 +74,6 @@ Decirlo como «lo siguiente», no esconderlo:
   (español o portugués). Está previsto traducirla automáticamente.
 - **Publicar sus propias ofertas** desde el portal. Hoy las publicamos
   nosotros por ellos.
-- **Pedir documentos** (DNI, CV) dentro de la conversación, con el
-  consentimiento del candidato.
 - **Avisos por correo** a los dos lados cuando llega un mensaje.
 
 ## 5. Si algo falla

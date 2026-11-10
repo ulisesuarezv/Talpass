@@ -1,3 +1,5 @@
+import { existsSync, readFileSync } from 'node:fs';
+
 import type { SupabaseClient } from '@supabase/supabase-js';
 
 import {
@@ -26,10 +28,10 @@ const JOB_SLUG = 'lagerhelfer-goettingen';
 const PHONES: Record<string, string> = {
   pablo: '+49 1520 4417 382',
   elena: '+49 1577 2290 115',
-  tiago: '+49 1514 8832 906',
-  sergio: '+49 1590 6612 447',
+  tiagof: '+49 1514 8832 906',
+  sergiom: '+49 1590 6612 447',
   carla: '+49 1525 3071 268',
-  rui: '+351 912 448 301',
+  ruim: '+351 912 448 301',
 };
 
 const poolEmail = (key: string) => `pool-${key}@talpass.test`;
@@ -235,10 +237,10 @@ for (const [key, phone] of Object.entries(PHONES)) {
 const CONTACT_EMAILS: Record<string, string> = {
   pablo: 'pablo.herrera@example.com',
   elena: 'elena.ruiz@example.com',
-  tiago: 'tiago.ferreira@example.com',
-  sergio: 'sergio.molina@example.com',
+  tiagof: 'tiago.ferreira@example.com',
+  sergiom: 'sergio.molina@example.com',
   carla: 'carla.dominguez@example.com',
-  rui: 'rui.martins@example.com',
+  ruim: 'rui.martins@example.com',
 };
 for (const [key, address] of Object.entries(CONTACT_EMAILS)) {
   const id = await findUserIdByEmail(admin, poolEmail(key));
@@ -247,6 +249,99 @@ for (const [key, address] of Object.entries(CONTACT_EMAILS)) {
     admin.from('profiles').update({ email: address }).eq('id', id),
     `Correo de ${key}`,
   );
+}
+
+// ------------------------------------------------------------- papeles
+// Archivos de verdad (CV, DNI y carné de muestra, audio en inglés con voz)
+// en lugar de los de texto de seed:pool, para que la ETT los abra al contratar.
+const ASSETS = [
+  {
+    file: 'id-front.pdf',
+    slug: 'id_front',
+    bucket: 'candidate-documents',
+    mime: 'application/pdf',
+  },
+  {
+    file: 'id-back.pdf',
+    slug: 'id_back',
+    bucket: 'candidate-documents',
+    mime: 'application/pdf',
+  },
+  {
+    file: 'cv.pdf',
+    slug: 'cv',
+    bucket: 'candidate-documents',
+    mime: 'application/pdf',
+  },
+  {
+    file: 'intro-en.m4a',
+    slug: 'audio_en',
+    bucket: 'candidate-audio',
+    mime: 'audio/mp4',
+  },
+  {
+    file: 'driving-licence.pdf',
+    slug: 'driving_license',
+    bucket: 'candidate-documents',
+    mime: 'application/pdf',
+  },
+];
+const assetDir = new URL('./demo-assets/', import.meta.url);
+const typeIds = new Map(
+  (
+    (await check(
+      admin.from('document_types').select('id, slug'),
+      'Tipos de documento',
+    )) as { id: string; slug: string }[]
+  ).map((row) => [row.slug, row.id]),
+);
+
+for (const key of Object.keys(PHONES)) {
+  const id = await findUserIdByEmail(admin, poolEmail(key));
+  if (!id) continue;
+  for (const asset of ASSETS) {
+    const source = new URL(`${key}/${asset.file}`, assetDir);
+    if (!existsSync(source)) continue;
+    const typeId = typeIds.get(asset.slug)!;
+    const bytes = readFileSync(source);
+    const path = `${id}/${asset.file}`;
+
+    const old = (await check(
+      admin
+        .from('candidate_documents')
+        .select('id, storage_bucket, storage_path')
+        .eq('candidate_id', id)
+        .eq('document_type_id', typeId),
+      `Papeles de ${key}`,
+    )) as { id: string; storage_bucket: string; storage_path: string }[];
+    for (const row of old) {
+      if (row.storage_path !== path)
+        await admin.storage.from(row.storage_bucket).remove([row.storage_path]);
+      await check(
+        admin.from('candidate_documents').delete().eq('id', row.id),
+        `Borrar ${asset.slug} de ${key}`,
+      );
+    }
+
+    const { error } = await admin.storage
+      .from(asset.bucket)
+      .upload(path, bytes, { contentType: asset.mime, upsert: true });
+    if (error) throw new Error(`Subida ${path}: ${error.message}`);
+
+    await check(
+      admin.from('candidate_documents').insert({
+        candidate_id: id,
+        document_type_id: typeId,
+        storage_bucket: asset.bucket,
+        storage_path: path,
+        status: 'verified',
+        reviewed_at: new Date().toISOString(),
+        mime_type: asset.mime,
+        size_bytes: bytes.byteLength,
+      }),
+      `Documento ${asset.slug} de ${key}`,
+    );
+  }
 }
 
 // --------------------------------------------------------- conversaciones
@@ -271,7 +366,7 @@ type Seeded = {
 
 const SEEDED: Seeded[] = [
   {
-    key: 'tiago',
+    key: 'tiagof',
     status: 'hired',
     messages: [
       [

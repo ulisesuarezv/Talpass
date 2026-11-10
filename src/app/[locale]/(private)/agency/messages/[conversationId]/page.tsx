@@ -1,6 +1,7 @@
 import {
   ArrowLeftIcon,
   CheckCircle2Icon,
+  FileTextIcon,
   LockIcon,
   MailIcon,
   PhoneIcon,
@@ -8,7 +9,7 @@ import {
 import type { Metadata } from 'next';
 
 import { AgencyNav, unreadCount } from '@/components/demo/agency-nav';
-import { AutoRefresh, Composer, SubmitButton } from '@/components/demo/client';
+import { AutoRefresh, Composer, HireButton } from '@/components/demo/client';
 import { JobCard, Messages, StatusPill } from '@/components/demo/thread';
 import { siteConfig } from '@/config/site';
 import { Link } from '@/i18n/navigation';
@@ -68,6 +69,9 @@ export default async function AgencyConversationPage({
 
   const { status } = conversation;
   const hasMasked = conversation.messages.some((m) => m.masked);
+  const documents = conversation.contact?.documents ?? [];
+  const audio = documents.find((d) => d.mime.startsWith('audio/'));
+  const files = documents.filter((d) => !d.mime.startsWith('audio/'));
 
   return (
     <>
@@ -146,24 +150,66 @@ export default async function AgencyConversationPage({
                     {conversation.contact.email}
                   </p>
                 ) : null}
+
+                {audio ? (
+                  <div className="flex flex-col gap-1.5 border-t border-emerald-200 pt-3">
+                    <p className="type-meta font-medium text-emerald-900">
+                      {audio.name ?? t('inbox.audio')}
+                    </p>
+                    <audio
+                      controls
+                      preload="none"
+                      src={`/api/demo/files/${audio.id}`}
+                      className="w-full"
+                    />
+                  </div>
+                ) : null}
+
+                {files.length > 0 ? (
+                  <div className="flex flex-col gap-1 border-t border-emerald-200 pt-3">
+                    <p className="type-meta font-medium text-emerald-900">
+                      {t('inbox.documents')}
+                    </p>
+                    <ul className="flex flex-col">
+                      {files.map((file) => (
+                        <li key={file.id}>
+                          <a
+                            href={`/api/demo/files/${file.id}`}
+                            target="_blank"
+                            rel="noopener"
+                            className="inline-flex min-h-10 items-center gap-2 type-body type-link"
+                          >
+                            <FileTextIcon
+                              aria-hidden
+                              className="size-4 shrink-0"
+                            />
+                            {file.name ?? file.slug}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ) : null}
               </section>
             ) : null}
 
             {status === 'open' ? (
-              <form
-                action={hireAction}
-                className="flex flex-col gap-2 rounded-xl border bg-card p-4"
-              >
-                <input
-                  type="hidden"
-                  name="conversationId"
-                  value={conversation.id}
+              <div className="flex flex-col gap-2 rounded-xl border bg-card p-4">
+                <HireButton
+                  action={hireAction}
+                  conversationId={conversation.id}
+                  labels={{
+                    trigger: t('inbox.hire'),
+                    title: t('inbox.hireConfirm.title'),
+                    body: t('inbox.hireConfirm.body'),
+                    confirm: t('inbox.hireConfirm.confirm'),
+                    cancel: t('inbox.hireConfirm.cancel'),
+                  }}
                 />
-                <SubmitButton label={t('inbox.hire')} />
                 <p className="type-caption text-muted-foreground">
                   {t('inbox.hireNote')}
                 </p>
-              </form>
+              </div>
             ) : null}
 
             {conversation.job ? (

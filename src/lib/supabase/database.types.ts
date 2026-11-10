@@ -1998,6 +1998,15 @@ export type Database = {
         Returns: Json;
       };
       demo_hire: { Args: { p_conversation_id: string }; Returns: undefined };
+      demo_hired_document: {
+        Args: { p_document_id: string };
+        Returns: {
+          bucket: string;
+          candidate_id: string;
+          mime: string;
+          path: string;
+        }[];
+      };
       demo_list_conversations: {
         Args: { p_locale: string };
         Returns: {

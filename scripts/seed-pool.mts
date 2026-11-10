@@ -416,7 +416,7 @@ const POOL: PoolCandidate[] = [
     activeDaysAgo: 0,
   },
   {
-    key: 'tiago',
+    key: 'tiagof',
     firstName: 'Tiago',
     lastName: 'Ferreira Lopes',
     birth: '1991-11-05',
@@ -434,11 +434,11 @@ const POOL: PoolCandidate[] = [
       ['production', 18],
       ['warehouse', 36],
     ],
-    docs: ['id', 'cv', 'driving_license'],
+    docs: ['id', 'cv', 'audio_en', 'driving_license'],
     activeDaysAgo: 1,
   },
   {
-    key: 'sergio',
+    key: 'sergiom',
     firstName: 'Sergio',
     lastName: 'Molina Prieto',
     birth: '1989-01-30',
@@ -456,7 +456,7 @@ const POOL: PoolCandidate[] = [
       ['warehouse', 20],
       ['agriculture', 8],
     ],
-    docs: ['id', 'cv', 'driving_license'],
+    docs: ['id', 'cv', 'audio_en', 'driving_license'],
     activeDaysAgo: 2,
   },
   {
@@ -479,7 +479,7 @@ const POOL: PoolCandidate[] = [
     activeDaysAgo: 0,
   },
   {
-    key: 'rui',
+    key: 'ruim',
     firstName: 'Rui',
     lastName: 'Martins Costa',
     birth: '1993-04-08',

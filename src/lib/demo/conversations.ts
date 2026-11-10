@@ -46,6 +46,13 @@ export type ConversationMessage = {
   created_at: string;
 };
 
+export type ConversationDocument = {
+  id: string;
+  slug: string;
+  name: string | null;
+  mime: string;
+};
+
 export type Conversation = {
   id: string;
   side: 'agency' | 'candidate' | 'admin';
@@ -54,7 +61,11 @@ export type Conversation = {
   candidate_name: string;
   agency_name: string;
   job: ConversationJob | null;
-  contact: { email: string | null; phone: string | null } | null;
+  contact: {
+    email: string | null;
+    phone: string | null;
+    documents: ConversationDocument[];
+  } | null;
   messages: ConversationMessage[];
 };
 
