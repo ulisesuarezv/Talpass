@@ -50,7 +50,10 @@ export async function SiteHeader() {
   const t = await getTranslations('Nav');
 
   return (
-    // Petróleo y opaca (elección de Ulises, 2026-09-25). Antes era el fondo
+    // 2026-11-24 (Kayao): pasa a blanca y translúcida con el logo vectorial
+    // sin caja. `header-light` redefine los tokens `--hero*` a claro.
+    //
+    // Antes: petróleo y opaca (elección de Ulises, 2026-09-25). Antes era el fondo
     // de la página al 92 %: con tan poco contraste contra el cuerpo, la
     // cabecera no se leía como una pieza y «Entrar» desaparecía dentro de
     // ella. Ahora comparte superficie con el hero —`--hero`, la única oscura
@@ -59,7 +62,7 @@ export async function SiteHeader() {
     //
     // Opaca a propósito: traslúcida sobre el hero dejaba pasar el fantasma del
     // titular, y el desenfoque costaba una capa de composición en cada scroll.
-    <header className="sticky top-0 z-40 border-b border-hero-foreground/15 bg-hero text-hero-foreground">
+    <header className="sticky top-0 z-40 border-b border-hero-foreground/8 bg-hero/90 text-hero-foreground backdrop-blur-md backdrop-saturate-150 header-light">
       <a
         href="#content"
         className="sr-only bg-background text-foreground focus:not-sr-only focus:absolute focus:left-4 focus:z-50 focus:rounded-md focus:px-3 focus:py-2 focus:ring-2 focus:ring-ring"
@@ -86,12 +89,24 @@ export async function SiteHeader() {
         {/* `mr-auto`: el hueco de la fila va aquí, entre los dos grupos. Es lo
             que separa «dónde estoy» de «qué hago». */}
         <nav aria-label={t('sectionsLabel')} className="mr-auto">
-          <Link
-            href="/jobs"
-            className="inline-flex min-h-11 items-center type-meta font-medium text-hero-muted underline-offset-[6px] transition-colors hover:text-hero-foreground hover:underline"
-          >
-            {t('jobs')}
-          </Link>
+          <ul className="flex items-center gap-5 sm:gap-6">
+            <li>
+              <Link
+                href="/jobs"
+                className="inline-flex min-h-11 items-center type-meta font-medium text-hero-muted underline-offset-[6px] transition-colors hover:text-hero-foreground hover:underline"
+              >
+                {t('jobs')}
+              </Link>
+            </li>
+            <li className="hidden sm:block">
+              <Link
+                href={{ pathname: '/', hash: 'como-funciona' }}
+                className="inline-flex min-h-11 items-center type-meta font-medium text-hero-muted underline-offset-[6px] transition-colors hover:text-hero-foreground hover:underline"
+              >
+                {t('how')}
+              </Link>
+            </li>
+          </ul>
         </nav>
 
         {/* El idioma antes que la cuenta a propósito: `AccountNav` cambia de

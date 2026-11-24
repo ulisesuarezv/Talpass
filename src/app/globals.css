@@ -8,10 +8,12 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-sans);
-  /* Sin webfont monoespaciada cargada: se cae a la del sistema si algún día
-     se usa `font-mono`, en vez de descargar 29 KB que nadie pinta. */
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
-  --font-heading: var(--font-sans);
+  /* Rediseño 2026-11-24: Geist Mono para rótulos y códigos, Inter Tight para
+     titulares. Las variables las pone `next/font` en `[locale]/layout.tsx`. */
+  --font-mono:
+    var(--font-mono-brand), ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-heading: var(--font-display);
+  --font-display: var(--font-display);
   /* Marca. Ver el bloque «LA PALETA» de `:root`: estos son los papeles que
      `--primary` y `--accent` de shadcn no pueden asumir sin romper algo. */
   --color-brand: var(--brand);
@@ -232,6 +234,20 @@
   html {
     @apply font-sans;
   }
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display), var(--font-sans), system-ui, sans-serif;
+  }
+}
+
+/* Cabecera clara (2026-11-24). Reusa los tokens `--hero*` que ya consumen
+   `LocaleSwitcher` y `AccountNav`, redefinidos aquí a blanco + tinta: así los
+   dos componentes cambian de superficie sin tocar sus clases. */
+@utility header-light {
+  --hero: #ffffff;
+  --hero-foreground: #0c1a19;
+  --hero-muted: #3e4c4a;
 }
 
 /* ==========================================================================

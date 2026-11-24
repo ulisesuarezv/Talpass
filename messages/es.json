@@ -10,7 +10,8 @@
     "login": "Entrar",
     "logout": "Salir",
     "skipToContent": "Ir al contenido",
-    "sectionsLabel": "Secciones"
+    "sectionsLabel": "Secciones",
+    "how": "Cómo funciona"
   },
   "LocaleSwitcher": {
     "label": "Idioma"

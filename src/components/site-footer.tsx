@@ -54,7 +54,7 @@ export async function SiteFooter() {
           href="/"
           className="inline-flex min-h-11 items-center self-start justify-self-start text-[1.0625rem] leading-none font-semibold tracking-tight text-hero-foreground sm:min-h-0"
         >
-          <BrandLogo />
+          <BrandLogo onDark className="h-8 sm:h-9" />
         </Link>
 
         <nav aria-labelledby="footer-sections">

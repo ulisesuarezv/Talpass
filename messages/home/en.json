@@ -1,119 +1,181 @@
 {
   "Home": {
-    "eyebrow": "The first portal connecting you with temp agencies in Europe",
-    "title": "Your direct route to your next job in Europe.",
-    "subtitle": "Move abroad without worrying about where to live or how to get there.",
-    "tags": {
-      "eu": "Just EU citizenship",
-      "english": "English per offer"
+    "hero": {
+      "badge": "The first portal connecting you with temp agencies in Europe",
+      "title": "Your next job in Europe,",
+      "titleAccent": "with a home when you arrive.",
+      "subtitle": "Warehouse, production and logistics, many with housing and transport. Verify your papers once and apply from your phone.",
+      "search": {
+        "label": "Search jobs",
+        "what": "Job",
+        "whatValue": "All",
+        "where": "Where",
+        "include": "Includes",
+        "includeValue": "Housing",
+        "submit": "Search jobs"
+      },
+      "popularLabel": "Popular:",
+      "popular": {
+        "housing": "With housing",
+        "noExperience": "No experience",
+        "english": "Basic English"
+      },
+      "stamp": {
+        "title": "Free",
+        "sub": "for you"
+      },
+      "photoCredit": "Photo: {author} · {license}",
+      "flapWords": ["Germany", "Saxony", "Thuringia", "Bavaria"],
+      "photoAlt": "Logistics warehouse with pallet racks",
+      "badgeMark": "1st"
     },
-    "tagsLabel": "What you get",
-    "perks": {
-      "label": "Why start here",
-      "items": {
-        "housing": {
-          "lead": "Housing and transport",
-          "rest": "in most offers."
-        },
-        "speed": {
-          "lead": "Start in record time",
-          "rest": "in different EU countries."
-        },
-        "experience": {
-          "lead": "Little experience?",
-          "rest": "Some offers don’t ask for it."
-        }
-      }
+    "ticket": {
+      "perHour": "€ / hour",
+      "starts": "Starts",
+      "place": "Where",
+      "profile": "Market profile",
+      "job": "Job",
+      "noDate": "No date",
+      "from": "from"
     },
-    "ctaJobs": "See offers",
-    "ctaSignup": "Create my account",
-    "steps": {
-      "title": "How you start",
-      "items": {
-        "signup": {
-          "title": "Create your account",
-          "body": "Your experience, your English and what you need to move. From your phone, in minutes."
-        },
-        "verify": {
-          "title": "Verify your papers",
-          "body": "A person reviews your ID and CV once, and every agency can see you."
-        },
-        "hired": {
-          "title": "Get hired",
-          "body": "Agencies offer you work. You decide who gets to see your documents."
-        }
-      }
+    "board": {
+      "kicker": "Jobs",
+      "title": "Jobs in Germany",
+      "label": "Jobs and market profiles",
+      "cols": {
+        "place": "Where",
+        "job": "Job",
+        "includes": "Includes",
+        "salary": "€ / hour",
+        "start": "Starts"
+      },
+      "viewJob": "View job",
+      "viewProfile": "View profile",
+      "profileSub": "Market profile · {cities}",
+      "observed": "Observed range",
+      "agreement": "Collective agreement floor",
+      "housing": "Housing",
+      "housingPrice": "Housing €{price}/month",
+      "housingSometimes": "Housing in some",
+      "transport": "Transport",
+      "transportSometimes": "Transport in some",
+      "german": "German {level}",
+      "english": "English {level}",
+      "weekly": "{hours} h/week",
+      "note": "Market profiles summarise real job ads analysed on {date}. They are not vacancies: they tell you what to expect.",
+      "jobsNote": "Jobs published by registered agencies.",
+      "seeAll": "See all jobs",
+      "foot": "Open a job to see the details: pay, housing, shifts and the agency that posted it."
     },
-    "offers": {
-      "title": "Offers in Germany",
-      "seeAll": "See all"
-    },
-    "privacy": {
-      "title": "What an agency sees about you, and what it does not",
-      "hook": "Not a promise made in good faith: a permission the agency does not have.",
-      "intro": "Your contact details and your documents live in tables an agency has no read permission on. The restriction is enforced in the database, not on the screen.",
-      "example": "Example · how the talent pool shows you",
-      "displayName": "Carlos M.",
-      "displayNote": "Your first name and the initial of your surname. Nothing else.",
-      "seesTitle": "What it sees",
-      "sees": [
-        {
-          "label": "Age",
-          "value": "28"
+    "how": {
+      "kicker": "How it works",
+      "title": "From job ad to contract.",
+      "legendApply": "You apply",
+      "legendFound": "An agency messages you",
+      "step": "Step {n}",
+      "steps": {
+        "offer": {
+          "title": "Pick a job",
+          "body": "Filter by city, pay, housing or no experience. Every job shows the pay and the agency that posted it."
         },
-        {
-          "label": "Residence",
-          "value": "Valencia, Spain · Spanish nationality"
+        "apply": {
+          "title": "Apply",
+          "body": "The first time you verify your profile: ID, CV and a short audio in English. After that you can apply to any job in a minute."
         },
-        {
-          "label": "Experience",
-          "value": "Warehouse and logistics · 3 years"
+        "chat": {
+          "title": "Talk to the agency",
+          "body": "The conversation happens here. Ask whatever you need, and you decide whether to show them your documents."
         },
-        {
-          "label": "English",
-          "value": "B1"
-        },
-        {
-          "label": "Availability",
-          "value": "Now · needs housing"
-        }
-      ],
-      "neverTitle": "What it does not see without your permission",
-      "blocked": "Hidden: only with your permission",
-      "never": [
-        "Full surname, email and phone number",
-        "IBAN, postal address and date of birth",
-        "ID card, passport, CV, driving licence, tax identification"
-      ],
-      "nothingAsked": "And there are details {brand} does not even ask you for today: no IBAN, no postal address, no phone number.",
-      "link": "How your profile is shared, field by field"
-    },
-    "support": {
-      "title": "You don’t arrive alone",
-      "hook": "What happens the day you get there",
-      "items": {
-        "agent": {
-          "when": "Before you leave",
-          "title": "An agent, with a name",
-          "body": "When an agency picks you, you are not writing to an inbox: you get a person assigned to you, who is there through your arrival and while you work with the agency."
-        },
-        "arrival": {
-          "when": "The arrival",
-          "title": "The trip is arranged with them",
-          "body": "The journey and the first day are prepared with your agent. In some cases they pick you up at the airport or at a point the two of you agree on."
-        },
-        "paperwork": {
-          "when": "The first day",
-          "title": "Paperwork takes hours, not weeks",
-          "body": "Same day. In some offers you are handed the company vehicle right there; in others they take you straight to your accommodation."
-        },
-        "pay": {
-          "when": "The first payday",
-          "title": "And you get paid soon",
-          "body": "Some offers pay weekly and others pay monthly."
+        "sign": {
+          "title": "Sign the contract",
+          "body": "With a registered German agency. If the job includes housing and transport, it is in writing."
         }
       },
-      "note": "This is how agency work runs in Germany. What applies to you depends on the offer and on the agency that picks you."
+      "vignette": {
+        "offerTitle": "Warehouse operative",
+        "offerSub": "Warehouse · Nuremberg",
+        "offerSalary": "€14–15.50/h",
+        "applyAs": "Applying as",
+        "verified": "✓ Verified",
+        "applyCta": "Apply for this job",
+        "agency": "Agency",
+        "chat1": "Hi Carlos, could you start on 1 October?",
+        "chat2": "Yes! Is the housing close to the job?",
+        "chat3": "Yes, 10 minutes away. I'll send you the details.",
+        "contract": "Contract",
+        "contractWith": "Registered German agency",
+        "signed": "✓ Signed · starts 1 Oct",
+        "example": "Example"
+      },
+      "branch": {
+        "tag": "Your profile",
+        "title": "And the other way round.",
+        "body": "With a verified profile, agencies looking for people can see you and message you first. In that case you start straight at the conversation."
+      }
+    },
+    "profile": {
+      "kicker": "Your profile",
+      "title1": "Verify once.",
+      "title2": "Apply to everything.",
+      "lead": "Upload your ID and CV, record a short audio in English and a person reviews it. With a verified profile you can apply to any job, and agencies can find you too.",
+      "seesTitle": "What the agency sees",
+      "sees": [
+        "First name and surname initial",
+        "Experience and what has been verified",
+        "Your English audio",
+        "When you can start and what you need"
+      ],
+      "hiddenTitle": "What it doesn't see",
+      "hidden": [
+        "Surname, email and phone",
+        "Your documents, until you share them",
+        "IBAN and address, until you are hired"
+      ],
+      "cta": "Create my free profile",
+      "card": {
+        "label": "Verified profile",
+        "candidate": "Candidate",
+        "name": "Carlos M.",
+        "meta": "29 · Seville, Spain",
+        "verified": "Verified",
+        "reviewed": "✓ reviewed",
+        "seals": [
+          {
+            "label": "ID",
+            "value": "EU ID card"
+          },
+          {
+            "label": "CV",
+            "value": "3 years warehouse"
+          },
+          {
+            "label": "Forklift",
+            "value": "Certified"
+          }
+        ],
+        "english": "English",
+        "play": "Sample audio",
+        "available": "Available",
+        "availableValue": "1 Dec",
+        "needs": "Needs",
+        "needsValue": "Housing · transport",
+        "phone": "Phone",
+        "surname": "Surname",
+        "hiddenTag": "Hidden",
+        "note": "Example of how an agency sees your profile."
+      }
+    },
+    "cities": {
+      "kicker": "Cities",
+      "title": "Where you'll live, not just where you'll work.",
+      "count": "{count, plural, one {# job} other {# jobs}}"
+    },
+    "cta": {
+      "title": "Your next job in Germany starts here.",
+      "body": "Pick a job and apply. And if an agency sees your profile first, they'll message you.",
+      "jobs": "See jobs",
+      "signup": "Create my profile",
+      "kicker": "The first portal connecting you with temp agencies in Europe"
     },
     "faq": {
       "title": "What you are wondering",

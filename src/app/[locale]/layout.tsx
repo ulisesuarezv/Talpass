@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import localFont from 'next/font/local';
+import { Geist_Mono, Inter, Inter_Tight } from 'next/font/google';
 import { notFound } from 'next/navigation';
 import { hasLocale, NextIntlClientProvider } from 'next-intl';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
@@ -12,47 +12,36 @@ import { routing } from '@/i18n/routing';
 import '../globals.css';
 
 /**
- * General Sans (Fontshare / ITF), autoalojada — fase C2, ADR-39.
+ * Tipografía del rediseño de Kayao (2026-11-24): Inter para el texto, Inter
+ * Tight para titulares y cifras, Geist Mono para rótulos y códigos.
  *
- * **Un solo corte, un solo fichero, un solo `preload`: 23.904 B.** Son 5,4 KB
- * MENOS que el subconjunto `latin` de Geist que había antes (29.288 B), así que
- * la tipografía de marca entra abaratando la ruta crítica en vez de gravarla.
- *
- * 🔴 **Y solo la Regular, porque el resto se midió y no cabe.** El variable
- * 200–700 son 38 KB en un fichero y cuesta **4 puntos de Lighthouse y 0,15 s de
- * LCP**; dos estáticas preacargadas cuestan lo mismo; diferir la Semibold sin
- * preacargarla sigue empeorando el LCP en las dos páginas medidas. Lo que pesa
- * no son las peticiones, son los bytes en la ruta crítica, y el umbral cae
- * entre los 29 KB de Geist y los 38 del variable. Las seis configuraciones y
- * sus cifras, en `docs/evidencia/fase-c2/02-rendimiento.md`.
- *
- * **El precio asumido:** los `font-semibold` los emboldece el navegador a
- * partir de la Regular. No es la Semibold de verdad. Está escrito en
- * `src/app/fonts/README.md` para que sea una decisión y no una sorpresa, con lo
- * que costaría comprarla si Ulises la quiere.
- *
- * **No está subseteada, y no es un descuido:** la ITF Free Font License v2.0
- * §02 prohíbe expresamente el subsetting y la conversión de formato. Se sirve
- * el binario oficial sin tocar. §01 permite el autoalojamiento con todas las
- * letras, y hasta lo recomienda.
- *
- * `display: 'swap'` y `adjustFontFallback: 'Arial'` (el de por defecto,
- * explícito aquí para que se lea): el texto pinta con la fuente del sistema
- * ajustada por métricas mientras baja el WOFF2, así que el LCP no espera a la
- * fuente y el CLS no se mueve.
+ * Sustituye a General Sans en un solo corte (ADR-39). Aquel presupuesto se
+ * fijó para un candidato con datos limitados; Ulises lo reabre: la audiencia
+ * entra desde móviles buenos en Europa y el corte único —con negritas
+ * fingidas por el navegador— era parte de lo que hacía parecer barato el
+ * producto. `next/font/google` las descarga en el build y las sirve desde el
+ * propio dominio: no hay petición a Google en tiempo de ejecución.
  */
-const generalSans = localFont({
-  src: './../fonts/GeneralSans-Regular.woff2',
-  weight: '400',
+const inter = Inter({
+  subsets: ['latin', 'latin-ext'],
   variable: '--font-sans',
   display: 'swap',
-  adjustFontFallback: 'Arial',
-  fallback: ['system-ui', 'Segoe UI', 'Helvetica Neue', 'Arial', 'sans-serif'],
 });
 
-// Geist Mono se cargaba aquí y no se usaba en ninguna pantalla: 29 KB de
-// tipografía en el camino crítico de un producto cuyo candidato entra con 4G
-// (ADR-10). Se retira; el día que haga falta una monoespaciada, vuelve.
+const interTight = Inter_Tight({
+  subsets: ['latin', 'latin-ext'],
+  weight: ['500', '600', '700', '800'],
+  variable: '--font-display',
+  display: 'swap',
+});
+
+const geistMono = Geist_Mono({
+  subsets: ['latin', 'latin-ext'],
+  weight: ['400', '500', '600'],
+  variable: '--font-mono-brand',
+  display: 'swap',
+  preload: false,
+});
 
 /** Prerenderiza un árbol por idioma. Sin esto no habría páginas estáticas. */
 export function generateStaticParams() {
@@ -106,7 +95,7 @@ export default async function LocaleLayout({
   return (
     <html
       lang={locale}
-      className={`${generalSans.variable} h-full antialiased`}
+      className={`${inter.variable} ${interTight.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">
         <NextIntlClientProvider>
