@@ -1,7 +1,7 @@
 import { getLocale, getTranslations } from 'next-intl/server';
 
+import { BrandLogo } from '@/components/brand-logo';
 import { legalLink, LEGAL_DOCUMENTS } from '@/config/legal';
-import { siteConfig } from '@/config/site';
 import { Link } from '@/i18n/navigation';
 import type { Locale } from '@/i18n/routing';
 
@@ -54,7 +54,7 @@ export async function SiteFooter() {
           href="/"
           className="inline-flex min-h-11 items-center self-start justify-self-start text-[1.0625rem] leading-none font-semibold tracking-tight text-hero-foreground sm:min-h-0"
         >
-          {siteConfig.name}
+          <BrandLogo />
         </Link>
 
         <nav aria-labelledby="footer-sections">

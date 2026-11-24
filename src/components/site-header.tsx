@@ -1,8 +1,8 @@
 import { getTranslations } from 'next-intl/server';
 
 import { AccountNav } from '@/components/account-nav';
+import { BrandLogo } from '@/components/brand-logo';
 import { LocaleSwitcher } from '@/components/locale-switcher';
-import { siteConfig } from '@/config/site';
 import { Link } from '@/i18n/navigation';
 
 /**
@@ -73,14 +73,14 @@ export async function SiteHeader() {
         `h2` de ofertas de la home, y 48 px siguen dejando 8 px por arriba y por
         abajo alrededor del botón de cuenta, que mide 32.
       */}
-      <div className="container-page flex min-h-12 flex-wrap items-center gap-x-3 gap-y-1 sm:min-h-14 sm:gap-x-5">
+      <div className="container-page flex min-h-12 flex-wrap items-center gap-x-3 gap-y-1 py-1.5 sm:min-h-14 sm:gap-x-5">
         {/* La marca manda en el grupo de la izquierda: es el único elemento en
             color de marca, y va dos puntos por encima del enlace de sección. */}
         <Link
           href="/"
           className="inline-flex min-h-11 items-center text-[1.0625rem] leading-none font-semibold tracking-tight text-hero-foreground"
         >
-          {siteConfig.name}
+          <BrandLogo />
         </Link>
 
         {/* `mr-auto`: el hueco de la fila va aquí, entre los dos grupos. Es lo
