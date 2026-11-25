@@ -89,6 +89,7 @@
 }
 .tp-kicker::before {
   content: '';
+  flex: none;
   width: 18px;
   height: 1.5px;
   background: currentColor;
@@ -160,7 +161,8 @@
   position: absolute;
   inset: 0;
   z-index: -2;
-  background: url(/home/hero-nave.webp) center / cover no-repeat;
+  object-fit: cover;
+  object-position: center;
   animation: tp-kb 22s ease-out both;
 }
 .tp-hero::before {
@@ -322,6 +324,13 @@
   font-size: 13px;
   color: #a9c4bf;
 }
+.tp-quick > span:first-child {
+  flex-basis: 100%;
+  font-family: var(--tp-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
 .tp-qchip {
   display: inline-flex;
   align-items: center;
@@ -380,16 +389,17 @@
   z-index: 3;
   align-self: start;
   justify-self: start;
-  margin: -30px 0 0 -26px;
+  margin: -46px 0 0 -22px;
   transform: rotate(-11deg);
-  border: 3px solid var(--tp-orange);
-  color: var(--tp-orange);
+  border: 1.5px dashed rgba(36, 14, 0, 0.35);
+  outline: 4px solid var(--tp-orange);
+  color: var(--tp-orange-ink);
   border-radius: 12px;
-  padding: 8px 16px 7px;
+  padding: 7px 15px 6px;
   text-align: center;
   font-family: var(--tp-mono);
-  background: rgba(8, 46, 43, 0.4);
-  backdrop-filter: blur(3px);
+  background: var(--tp-orange);
+  box-shadow: 0 14px 30px -10px rgba(0, 0, 0, 0.55);
   text-transform: uppercase;
 }
 .tp-stamp span {
@@ -402,8 +412,8 @@
   display: block;
   font-size: 9.5px;
   letter-spacing: 0.2em;
-  opacity: 0.85;
-  margin-top: 2px;
+  opacity: 0.9;
+  margin-top: 1px;
 }
 
 /* ---------------- Billete ---------------- */
@@ -758,8 +768,7 @@
   margin-top: 3px;
 }
 .tp-includes-dark {
-  flex-wrap: nowrap;
-  overflow: hidden;
+  flex-wrap: wrap;
 }
 .tp-includes-dark > * {
   background: rgba(255, 255, 255, 0.07);
@@ -1544,18 +1553,38 @@
 .tp-cta {
   margin-top: 104px;
   border-radius: var(--tp-r-lg);
-  background: var(--tp-card);
-  border: 1px solid var(--tp-rule);
-  padding: 56px;
+  background:
+    radial-gradient(
+      120% 140% at 100% 0%,
+      rgba(254, 122, 28, 0.22) 0%,
+      rgba(254, 122, 28, 0) 46%
+    ),
+    var(--tp-petrol);
+  color: #fff;
+  padding: 64px 56px;
   display: grid;
   grid-template-columns: minmax(0, 1.2fr) auto;
   gap: 32px;
   align-items: center;
 }
-.tp-cta p {
-  color: var(--tp-ink-2);
+.tp-cta .tp-h2 {
+  color: #fff;
+}
+.tp-cta .tp-kicker {
+  color: var(--tp-orange);
+}
+.tp-cta p:not(.tp-kicker) {
+  color: rgba(255, 255, 255, 0.74);
   margin-top: 12px;
   font-size: 17px;
+}
+.tp-cta .tp-btn-dark {
+  background: transparent;
+  color: #fff;
+  box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, 0.5);
+}
+.tp-cta .tp-btn-dark:hover {
+  box-shadow: inset 0 0 0 1.5px #fff;
 }
 .tp-cta-btns {
   display: flex;
@@ -1627,7 +1656,7 @@
     right: auto;
     top: auto;
     transform: none;
-    margin: 18px auto 56px;
+    margin: 52px auto 56px;
     width: min(440px, calc(100% - 48px));
   }
   .tp-search {
@@ -1828,5 +1857,35 @@
   }
   .tp-stamp span {
     font-size: 16px;
+  }
+  .tp-stamp {
+    margin: -30px 0 0 -10px;
+  }
+  .tp-hero-ticket {
+    margin-top: 40px;
+  }
+  /* En el billete del hero, en móvil, sobra el sector y basta una etiqueta. */
+  .tp-hero-ticket .tp-ticket-top > span:first-child {
+    visibility: hidden;
+  }
+  .tp-hero-ticket .tp-includes > :nth-child(n + 2) {
+    display: none;
+  }
+  .tp-hero-ticket .tp-includes > * {
+    white-space: nowrap;
+  }
+  .tp-hero-ticket .tp-ticket-kind {
+    font-size: 9px;
+    padding: 1px 5px;
+    letter-spacing: 0.04em;
+  }
+  /* La foto pasa detrás del texto: más velo arriba. */
+  .tp-hero::before {
+    background: linear-gradient(
+      180deg,
+      rgba(6, 36, 33, 0.94) 0%,
+      rgba(6, 36, 33, 0.88) 55%,
+      rgba(6, 36, 33, 0.7) 100%
+    );
   }
 }

@@ -14,7 +14,7 @@
         "includeValue": "Alojamiento",
         "submit": "Buscar ofertas"
       },
-      "popularLabel": "Lo más buscado:",
+      "popularLabel": "Lo más buscado",
       "popular": {
         "housing": "Con alojamiento",
         "noExperience": "Sin experiencia",
@@ -64,7 +64,10 @@
       "note": "Los perfiles de mercado resumen ofertas reales analizadas el {date}. No son vacantes: sirven para saber qué esperar.",
       "jobsNote": "Ofertas publicadas por agencias registradas.",
       "seeAll": "Ver todas las ofertas",
-      "foot": "Abre una oferta para ver el detalle: sueldo, alojamiento, turnos y la agencia que la publica."
+      "foot": "Abre una oferta para ver el detalle: sueldo, alojamiento, turnos y la agencia que la publica.",
+      "kickerProfiles": "Perfiles de mercado",
+      "titleProfiles": "Lo que se paga en Alemania",
+      "footProfiles": "Abre un perfil para ver el detalle: sueldo, alojamiento, turnos y en qué ciudades se contrata. Cuando una agencia publique una vacante de ese tipo, aparecerá aquí."
     },
     "how": {
       "kicker": "Cómo funciona",
@@ -83,7 +86,7 @@
         },
         "chat": {
           "title": "Hablas con la agencia",
-          "body": "La conversación es aquí dentro. Preguntas lo que necesites y decides tú si le enseñas tus documentos."
+          "body": "Te escribe la agencia que publica la oferta. Preguntas lo que necesites y decides tú si le enseñas tus documentos."
         },
         "sign": {
           "title": "Firmas el contrato",

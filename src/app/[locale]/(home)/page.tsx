@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 
 import {
@@ -23,6 +24,7 @@ import { getHomeTranslations } from '@/lib/home';
 import { getHomeBoard } from '@/lib/home-board';
 import { seoMetadata } from '@/lib/seo';
 
+import heroPhoto from '../../../../public/home/hero-nave.webp';
 import './home.css';
 
 /**
@@ -63,7 +65,7 @@ const FAQ = ['cost', 'who', 'eu', 'travel', 'pay', 'data'] as const;
 /** Los cuatro pasos, en el orden en que le ocurren al candidato. */
 const STEPS = ['offer', 'apply', 'chat', 'sign'] as const;
 
-/** Fotos de ciudad disponibles. Las demás ciudades usan la de la nave. */
+/** Fotos de ciudad disponibles. Las demás usan una genérica de equipo. */
 const CITY_PHOTOS: Record<string, string> = {
   berlin: '/home/berlin.webp',
   hamburg: '/home/hamburg.webp',
@@ -80,7 +82,7 @@ const CITY_PHOTOS: Record<string, string> = {
 
 function cityPhoto(city: string) {
   const key = city.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
-  return CITY_PHOTOS[key] ?? '/home/hero-nave.webp';
+  return CITY_PHOTOS[key] ?? '/home/ciudad.webp';
 }
 
 /** Barras de la onda del audio de ejemplo: decorativas y deterministas. */
@@ -115,23 +117,29 @@ export default async function HomePage({
       <div className="tp-container tp-hero-wrap">
         {/* ---------------- Hero ---------------- */}
         <section className="tp-hero" aria-labelledby="home-title">
-          <div
+          {/* Es el LCP de la home: <img> con prioridad y tamaños por pantalla,
+              no fondo CSS, para que el navegador lo pida desde el HTML. */}
+          <Image
+            src={heroPhoto}
+            alt={t('hero.photoAlt')}
+            fill
+            priority
+            sizes="(max-width: 760px) 60vw, (max-width: 1280px) 100vw, 1208px"
+            placeholder="blur"
             className="tp-hero-bg"
-            role="img"
-            aria-label={t('hero.photoAlt')}
           />
           <div className="tp-hero-l">
             {/* «El primero»: reclamo publicado a sabiendas por decisión de
                 Ulises (ADR-45), y reforzado en el rediseño a petición suya. */}
-            <p className="tp-badge tp-rise">
+            <p className="tp-badge">
               <i aria-hidden>{t('hero.badgeMark')}</i>
               {t('hero.badge')}
             </p>
-            <h1 id="home-title" className="tp-h1 tp-rise tp-d1">
+            <h1 id="home-title" className="tp-h1">
               {t('hero.title')}{' '}
               <span className="tp-accent">{t('hero.titleAccent')}</span>
             </h1>
-            <p className="tp-sub tp-rise tp-d2">{t('hero.subtitle')}</p>
+            <p className="tp-sub">{t('hero.subtitle')}</p>
 
             {/* El buscador lleva al listado completo: los filtros viven en
                 `/ofertas` (ADR-24). Pendiente: pasar los filtros por URL. */}
@@ -209,9 +217,11 @@ export default async function HomePage({
         <section id="ofertas" className="tp-s" aria-labelledby="home-offers">
           <div className="tp-s-head">
             <div>
-              <p className="tp-kicker">{t('board.kicker')}</p>
+              <p className="tp-kicker">
+                {board.hasJobs ? t('board.kicker') : t('board.kickerProfiles')}
+              </p>
               <h2 id="home-offers" className="tp-h2">
-                {t('board.title')}
+                {board.hasJobs ? t('board.title') : t('board.titleProfiles')}
               </h2>
             </div>
             <Link href="/jobs" className="tp-link">
@@ -228,7 +238,9 @@ export default async function HomePage({
                 : t('board.note', { date: board.sourceDate })
             }
           />
-          <p className="tp-list-foot">{t('board.foot')}</p>
+          <p className="tp-list-foot">
+            {board.hasJobs ? t('board.foot') : t('board.footProfiles')}
+          </p>
         </section>
 
         {/* ---------------- Cómo funciona ---------------- */}
@@ -343,7 +355,7 @@ export default async function HomePage({
             ))}
           </ol>
 
-          <div className="tp-branch">
+          <div className="tp-branch" data-reveal>
             <div className="tp-br-line" aria-hidden>
               <span className="tp-br-dot">{t('how.branch.tag')}</span>
               <span className="tp-br-dash" />
@@ -401,11 +413,16 @@ export default async function HomePage({
             </div>
           </div>
 
-          <div className="tp-pass-stage">
+          <div className="tp-pass-stage" data-reveal>
             <article className="tp-pass" aria-label={t('profile.card.note')}>
               <div className="tp-pass-top">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/brand/talpass-icon-provisional.png" alt="" />
+                <img
+                  src="/brand/talpass-icon-provisional.png"
+                  alt=""
+                  loading="lazy"
+                  decoding="async"
+                />
                 <div>
                   <b>{brand.toUpperCase()}</b>
                   <small>{t('profile.card.label')}</small>
@@ -498,7 +515,7 @@ export default async function HomePage({
             <ul className="tp-cities">
               {board.jobCities.map(({ city, count }) => (
                 <li key={city}>
-                  <Link href="/jobs" className="tp-city">
+                  <Link href="/jobs" className="tp-city" data-reveal>
                     <span
                       aria-hidden
                       className="tp-city-ph"
@@ -551,7 +568,7 @@ export default async function HomePage({
         </section>
 
         {/* ---------------- Cierre ---------------- */}
-        <section className="tp-cta" aria-labelledby="home-cta">
+        <section className="tp-cta" aria-labelledby="home-cta" data-reveal>
           <div>
             <p className="tp-kicker">{t('cta.kicker')}</p>
             <h2 id="home-cta" className="tp-h2">

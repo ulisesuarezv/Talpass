@@ -14,7 +14,7 @@
         "includeValue": "Housing",
         "submit": "Search jobs"
       },
-      "popularLabel": "Popular:",
+      "popularLabel": "Popular",
       "popular": {
         "housing": "With housing",
         "noExperience": "No experience",
@@ -64,7 +64,10 @@
       "note": "Market profiles summarise real job ads analysed on {date}. They are not vacancies: they tell you what to expect.",
       "jobsNote": "Jobs published by registered agencies.",
       "seeAll": "See all jobs",
-      "foot": "Open a job to see the details: pay, housing, shifts and the agency that posted it."
+      "foot": "Open a job to see the details: pay, housing, shifts and the agency that posted it.",
+      "kickerProfiles": "Market profiles",
+      "titleProfiles": "What jobs pay in Germany",
+      "footProfiles": "Open a profile for the details: pay, housing, shifts and the cities that hire. When an agency posts a vacancy of that kind, it will show up here."
     },
     "how": {
       "kicker": "How it works",
@@ -83,7 +86,7 @@
         },
         "chat": {
           "title": "Talk to the agency",
-          "body": "The conversation happens here. Ask whatever you need, and you decide whether to show them your documents."
+          "body": "The agency that posted the job writes to you. Ask whatever you need, and you decide whether to show them your documents."
         },
         "sign": {
           "title": "Sign the contract",

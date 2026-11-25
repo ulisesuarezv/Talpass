@@ -51,7 +51,7 @@ export function OfferTicket({
       <span aria-hidden className="tp-notch tp-notch-bottom" />
       <div className="tp-ticket-main">
         <div className="tp-ticket-top">
-          <span>{offer.sub.split(' · ')[0]}</span>
+          <span>{offer.tag}</span>
           <span className="tp-ticket-kind">
             {offer.kind === 'job' ? t('ticket.job') : t('ticket.profile')}
           </span>

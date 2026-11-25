@@ -44,8 +44,10 @@ export default function HomeReveal() {
     const bars = gsap.utils.toArray<HTMLElement>('[data-redact]').filter(below);
     if (items.length === 0 && bars.length === 0) return;
 
-    gsap.set(items, { opacity: 0, y: 16 });
-    gsap.set(bars, { clipPath: 'inset(0% 100% 0% 0% round 999px)' });
+    if (items.length) gsap.set(items, { opacity: 0, y: 16 });
+    if (bars.length) {
+      gsap.set(bars, { clipPath: 'inset(0% 100% 0% 0% round 999px)' });
+    }
 
     /**
      * El escalonado entre piezas de un mismo lote, con techo: 80 ms entre una

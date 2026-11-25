@@ -39,6 +39,8 @@ export type OfferView = {
   place: string;
   title: string;
   sub: string;
+  /** Rótulo corto de arriba del billete: el sector. */
+  tag: string;
   includes: { label: string; icon: IncludeIcon; highlight: boolean }[];
   /** Cifra principal del sueldo por hora («15,69») y el resto («–17,50»). */
   salaryMain: string;
@@ -119,6 +121,7 @@ export async function getHomeBoard(locale: Locale): Promise<{
       place: job.city ?? job.countryName,
       title: job.title,
       sub: job.sectorName,
+      tag: job.sectorName,
       includes: includes.slice(0, 3),
       salaryMain: hourly ? num(job.salaryMin as number) : '—',
       salaryRest:
@@ -181,7 +184,10 @@ export async function getHomeBoard(locale: Locale): Promise<{
       code: code3(opportunity.sectorName),
       place: copy('region'),
       title: copy('title'),
-      sub: t('board.profileSub', { cities: copy('cities') }),
+      sub: copy('cities').trim()
+        ? t('board.profileSub', { cities: copy('cities') })
+        : t('ticket.profile'),
+      tag: opportunity.sectorName,
       includes: includes.slice(0, 2),
       salaryMain:
         salary.max === null

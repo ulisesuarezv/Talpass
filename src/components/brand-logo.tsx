@@ -31,6 +31,10 @@ export function BrandLogo({
       alt={siteConfig.name}
       width={4529}
       height={1177}
+      // La versión clara vive en el pie: sin esto React la precarga en el
+      // <head> y compite con la foto del hero.
+      loading={onDark ? 'lazy' : undefined}
+      decoding="async"
       className={cn('block h-7 w-auto sm:h-8', className)}
     />
   );

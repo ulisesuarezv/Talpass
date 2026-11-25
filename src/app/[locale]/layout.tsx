@@ -22,21 +22,23 @@ import '../globals.css';
  * producto. `next/font/google` las descarga en el build y las sirve desde el
  * propio dominio: no hay petición a Google en tiempo de ejecución.
  */
+// Solo el subconjunto `latin`: cubre español, alemán y portugués (ñ, ß, ä,
+// ã…). `latin-ext` duplicaba los bytes de las fuentes precargadas y retrasaba
+// el LCP en móvil; lo que falte cae en la fuente de sistema.
 const inter = Inter({
-  subsets: ['latin', 'latin-ext'],
+  subsets: ['latin'],
   variable: '--font-sans',
   display: 'swap',
 });
 
 const interTight = Inter_Tight({
-  subsets: ['latin', 'latin-ext'],
-  weight: ['500', '600', '700', '800'],
+  subsets: ['latin'],
   variable: '--font-display',
   display: 'swap',
 });
 
 const geistMono = Geist_Mono({
-  subsets: ['latin', 'latin-ext'],
+  subsets: ['latin'],
   weight: ['400', '500', '600'],
   variable: '--font-mono-brand',
   display: 'swap',
