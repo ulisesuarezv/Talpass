@@ -26,6 +26,15 @@ const nextConfig: NextConfig = {
   typedRoutes: true,
 
   /**
+   * AVIF primero: la foto del hero (el LCP de la home) pesa ~30 % menos que
+   * en WebP con la misma calidad visible. El navegador que no lo entiende
+   * recibe WebP.
+   */
+  images: {
+    formats: ['image/avif', 'image/webp'],
+  },
+
+  /**
    * 301 permanente, no el 308 de `permanent: true`.
    *
    * `redirects()` se resuelve **antes que el proxy** y antes del sistema de

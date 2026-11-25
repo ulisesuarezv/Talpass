@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Geist_Mono, Inter, Inter_Tight } from 'next/font/google';
+import localFont from 'next/font/local';
 import { notFound } from 'next/navigation';
 import { hasLocale, NextIntlClientProvider } from 'next-intl';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
@@ -19,27 +19,30 @@ import '../globals.css';
  * fijó para un candidato con datos limitados; Ulises lo reabre: la audiencia
  * entra desde móviles buenos en Europa y el corte único —con negritas
  * fingidas por el navegador— era parte de lo que hacía parecer barato el
- * producto. `next/font/google` las descarga en el build y las sirve desde el
- * propio dominio: no hay petición a Google en tiempo de ejecución.
+ * producto. Se sirven desde el propio dominio: no hay petición a Google.
  */
-// Solo el subconjunto `latin`: cubre español, alemán y portugués (ñ, ß, ä,
-// ã…). `latin-ext` duplicaba los bytes de las fuentes precargadas y retrasaba
-// el LCP en móvil; lo que falte cae en la fuente de sistema.
-const inter = Inter({
-  subsets: ['latin'],
+//
+// Se sirven recortadas (`src/app/fonts/kayao/`, ver su README): solo los
+// caracteres del español, alemán, portugués e inglés y solo los pesos que usa
+// la web. Mismo dibujo que las de Google, a la mitad de bytes, que es lo que
+// compite con la foto del hero en un móvil lento.
+const inter = localFont({
+  src: '../fonts/kayao/inter.woff2',
+  weight: '400 700',
   variable: '--font-sans',
   display: 'swap',
 });
 
-const interTight = Inter_Tight({
-  subsets: ['latin'],
+const interTight = localFont({
+  src: '../fonts/kayao/inter-tight.woff2',
+  weight: '500 800',
   variable: '--font-display',
   display: 'swap',
 });
 
-const geistMono = Geist_Mono({
-  subsets: ['latin'],
-  weight: ['400', '500', '600'],
+const geistMono = localFont({
+  src: '../fonts/kayao/geist-mono.woff2',
+  weight: '400 600',
   variable: '--font-mono-brand',
   display: 'swap',
   preload: false,

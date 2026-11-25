@@ -1100,12 +1100,86 @@
 }
 .tp-v-sign {
   display: grid;
-  grid-template-rows: 96px auto;
+  grid-template-rows: auto auto;
   margin: -4px;
 }
-.tp-v-ph {
-  background: url(/home/persona.webp) center 12% / cover;
+.tp-v-doc {
+  position: relative;
   border-radius: 10px;
+  padding: 12px 14px 10px;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      transparent 0 7px,
+      rgba(8, 46, 43, 0.035) 7px 8px
+    ),
+    #fbfaf6;
+  border: 1px solid var(--tp-rule);
+  overflow: hidden;
+}
+.tp-v-doc-head b {
+  display: block;
+  font-family: var(--tp-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--tp-petrol);
+  margin-bottom: 7px;
+}
+.tp-v-doc-head i {
+  display: block;
+  height: 5px;
+  border-radius: 3px;
+  background: rgba(8, 46, 43, 0.1);
+  margin-bottom: 5px;
+  width: 92%;
+}
+.tp-v-doc-head i + i {
+  width: 64%;
+}
+.tp-v-doc-signs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-top: 8px;
+}
+.tp-v-doc-signs svg {
+  display: block;
+  width: 100%;
+  height: 30px;
+  border-bottom: 1px solid rgba(8, 46, 43, 0.3);
+}
+.tp-v-doc-signs path {
+  fill: none;
+  stroke: #1d3f8f;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.tp-v-doc-signs small {
+  display: block;
+  margin-top: 3px;
+  font-family: var(--tp-mono);
+  font-size: 8.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--tp-mute);
+}
+.tp-v-doc-stamp {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  transform: rotate(-12deg);
+  border: 2px solid var(--tp-ok);
+  color: var(--tp-ok);
+  border-radius: 6px;
+  padding: 2px 7px;
+  font-family: var(--tp-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  background: rgba(255, 255, 255, 0.7);
 }
 .tp-v-sign-tx {
   padding: 10px 6px 2px;
@@ -1470,8 +1544,8 @@
   position: absolute;
   inset: 0;
   z-index: -2;
-  background-size: cover;
-  background-position: center;
+  object-fit: cover;
+  object-position: center;
   transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 .tp-city::before {

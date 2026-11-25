@@ -334,7 +334,38 @@ export default async function HomePage({
                   ) : null}
                   {step === 'sign' ? (
                     <div className="tp-v-sign">
-                      <div className="tp-v-ph" />
+                      {/* Un contrato dibujado, no una foto: es lo que pasa en
+                          este paso, y no pesa nada. */}
+                      <div className="tp-v-doc" aria-hidden>
+                        <div className="tp-v-doc-head">
+                          <b>{t('how.vignette.docTitle')}</b>
+                          <i />
+                          <i />
+                        </div>
+                        <div className="tp-v-doc-signs">
+                          <div>
+                            <svg
+                              viewBox="0 2 100 26"
+                              preserveAspectRatio="xMinYMid meet"
+                            >
+                              <path d="M4 22c8-14 14-16 16-8s-4 12 2 6 10-16 14-10-2 12 6 8 8-10 14-8 6 8 14 4 14-6 20-4" />
+                            </svg>
+                            <small>{t('how.vignette.signAgency')}</small>
+                          </div>
+                          <div>
+                            <svg
+                              viewBox="0 2 100 26"
+                              preserveAspectRatio="xMinYMid meet"
+                            >
+                              <path d="M6 20c6-10 10-14 12-10s-6 14 2 10 8-14 14-12-4 10 4 10 10-8 16-8 4 8 12 6 12-4 22-6" />
+                            </svg>
+                            <small>{t('how.vignette.signYou')}</small>
+                          </div>
+                        </div>
+                        <span className="tp-v-doc-stamp">
+                          {t('how.vignette.stamp')}
+                        </span>
+                      </div>
                       <div className="tp-v-sign-tx">
                         <small>{t('how.vignette.contract')}</small>
                         <b>{t('how.vignette.contractWith')}</b>
@@ -516,10 +547,15 @@ export default async function HomePage({
               {board.jobCities.map(({ city, count }) => (
                 <li key={city}>
                   <Link href="/jobs" className="tp-city" data-reveal>
-                    <span
-                      aria-hidden
+                    {/* Diferida: sin esto el navegador la pide al entrar y
+                        compite con la foto del hero. */}
+                    <Image
+                      src={cityPhoto(city)}
+                      alt=""
+                      fill
+                      loading="lazy"
+                      sizes="(max-width: 760px) 100vw, 400px"
                       className="tp-city-ph"
-                      style={{ backgroundImage: `url(${cityPhoto(city)})` }}
                     />
                     <h3>{city}</h3>
                     <span className="tp-city-row">

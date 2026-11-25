@@ -107,7 +107,11 @@
         "contract": "Contrato",
         "contractWith": "Agencia alemana registrada",
         "signed": "✓ Firmado · empieza el 1 oct",
-        "example": "Ejemplo"
+        "example": "Ejemplo",
+        "docTitle": "Arbeitsvertrag",
+        "signAgency": "Agencia",
+        "signYou": "Tú",
+        "stamp": "Firmado"
       },
       "branch": {
         "tag": "Tu perfil",
