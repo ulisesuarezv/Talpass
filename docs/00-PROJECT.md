@@ -1005,6 +1005,8 @@ volvería dinámicas todas las públicas.
 
 ### ADR-39 · General Sans va autoalojada, **sin subsetear** y **con un solo corte**
 
+> ⛔ **Sustituida el 2026-11-24 por ADR-54.** La web ya no usa General Sans: usa Inter, Inter Tight y Geist Mono recortadas (`src/app/fonts/kayao/`). El fichero y la licencia FFL se retiraron del repo; siguen en el historial de git. Lo de abajo es historia.
+
 Decidido en la fase C2, el 2026-08-20, y las dos mitades del título salen de
 sitios distintos: la primera de la licencia, la segunda de medir.
 
@@ -1314,6 +1316,8 @@ hecho (llega una ETT, hay una queja o un _Abmahnung_), se revisa con Ulises.
 
 ### ADR-46 · La home pasa a ser Indeed-first, y el sistema de layout deja de ser una columna centrada
 
+> ⛔ **La home de esta ADR se sustituyó el 2026-11-24 (ADR-54).** Las primitivas `container-page`, `section-y` y `stack-*` siguen vivas para el resto de páginas; la home usa ahora su propio sistema `tp-*` en `home.css`. Lo de abajo describe la home anterior.
+
 _(2026-09-22. Rediseño, sesión 1. Levanta el «no rehacer la home» de
 `ESTADO.md`. Boceto de Ulises.)_
 
@@ -1412,6 +1416,8 @@ anterior:
 ---
 
 ### ADR-48 · Paleta «petróleo y azafrán»: propuesta, pendiente de ajuste por Ulises
+
+> ⚠️ **Enmendada el 2026-11-24 (ADR-54):** la cabecera ya no es petróleo, es blanca (`header-light`), y la home lleva sus propios tokens `--tp-*`. El pie petróleo y los tokens de `globals.css` para el resto de páginas siguen como abajo.
 
 > ✅ **Cerrada el 2026-09-27: Ulises la da por buena tal como está**, sin
 > ajustes. Queda como definitiva, incluidas dos cosas que llegaron después de
@@ -1773,6 +1779,70 @@ seguridad · M2 lado ETT · M3 lado candidato y avisos · M4 documentos en el
 hilo · M5 contratar y revelar. La traducción y la política de privacidad van
 aparte, y **la política tiene que estar publicada antes de que una sola
 conversación real ocurra en producción**.
+
+### ADR-54 · Rediseño de Kayao: la home del candidato como portal de empleo, con su propio sistema visual
+
+_(2026-11-24/25. Kayao, a petición de Ulises: «parece un producto barato».
+Ulises reabre las ADR de diseño («sí, reabro, experimenta») y aprueba cada
+iteración; despliegue a producción autorizado por él. En producción desde
+`6ff97b6`, último `3489141`.)_
+
+**Sustituye** a ADR-39 (tipografía), al sistema de layout de la home de ADR-46
+y, solo en la cabecera y en la home, a la paleta de ADR-48. ADR-47 (GSAP diferido)
+y ADR-30/44/45 siguen vigentes y se aplican abajo.
+
+**Qué es la home ahora** (`src/app/[locale]/(home)/page.tsx` + `home.css`):
+
+- Portal de empleo 100 % para el candidato. Metáfora de «pase/billete» **solo
+  en lo visual** (billetes, panel de salidas); el copy es de portal de empleo
+  llano. Ulises lo pidió así expresamente («estamos abusando»).
+- Secciones: hero (badge «1º El primer portal que te conecta con ETTs en
+  Europa», buscador, billete), cinta, panel de ofertas, «Cómo funciona» en 4
+  pasos (oferta → aplicas → hablas con la agencia → firmas) con «Y también al
+  revés» (la agencia te encuentra), «Tu perfil» con la tarjeta de ejemplo,
+  ciudades (solo si hay vacantes con ciudad), FAQ de Ulises y cierre.
+- **Sistema visual propio de la home**: clases `tp-*` y tokens `--tp-*` en
+  `home.css`, con alcance `.tp-home`. No usa `container-page`/`section-y` de
+  ADR-46 (que siguen sirviendo al resto de páginas).
+- **Cabecera blanca en todo el sitio** (`header-light` en `globals.css`), pie
+  petróleo como antes. Logo vectorial sin fondo
+  (`public/brand/talpass-logo*.svg`, vectorizado con potrace desde la lámina;
+  coordenadas redondeadas, indistinguible a 10×).
+- **Tipografía**: Inter (texto), Inter Tight (titulares y cifras) y Geist Mono
+  (rótulos), autoalojadas y **recortadas** en `src/app/fonts/kayao/` (OFL;
+  ver su README). General Sans y su licencia FFL se retiran del repo.
+- **Fotos**: Unsplash, licencia sin atribución obligatoria; origen de cada
+  una en `public/home/CREDITOS.md`. El paso 4 es un contrato dibujado, no una
+  foto.
+
+**Reglas que se respetan, y cómo:**
+
+- **ADR-30**: con vacantes, el panel se titula «Ofertas en Alemania»; **sin
+  vacantes (producción hoy)** se titula «Perfiles de mercado · Lo que se paga
+  en Alemania», cada fila dice «Perfil de mercado», sin fecha y con «Ver
+  perfil». Lo decide `hasJobs` en `src/lib/home-board.ts`.
+- **ADR-45**: «el primero» se publica, ahora más visible (hero y cierre), por
+  decisión de Ulises; el riesgo §5 UWG sigue anotado allí.
+- **ADR-47**: GSAP sigue diferido (`home-motion.tsx`); el titular y el hero no
+  se animan al cargar para no retrasar el LCP.
+
+**Lo que la home promete y aún no existe** (decisión consciente de Ulises,
+«lo demás se soluciona después»):
+
+- Paso 2 «Aplicas … en un minuto»: la fase 5 (aplicaciones) no está hecha.
+  El resto del sitio ya decía «podrás aplicar en cuanto verifiquemos tus datos».
+- Paso 3 «Te escribe la agencia que publica la oferta»: es la conversación de
+  ADR-53 (fase 7, M1…M5), no construida.
+- El buscador del hero es un enlace a `/ofertas`: no pasa filtros.
+
+**Rendimiento** (Lighthouse 12 móvil, `pnpm measure`): producción 93 · LCP
+3,0 s · CLS 0 (8 pasadas, 2026-11-25). Antes del rediseño, 98 · 2,28 s. La
+diferencia es el precio asumido de la foto del hero y las tres familias; ya
+se aplicaron: next/image prioritaria y AVIF, fuentes recortadas, logo
+simplificado, ciudades diferidas. CSS en línea (`inlineCss`) se probó y no
+aportaba.
+
+---
 
 ## 5. Reglas de negocio
 
