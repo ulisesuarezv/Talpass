@@ -65,10 +65,17 @@ const STEPS = ['offer', 'apply', 'chat', 'sign'] as const;
 
 /** Fotos de ciudad disponibles. Las demás ciudades usan la de la nave. */
 const CITY_PHOTOS: Record<string, string> = {
+  berlin: '/home/berlin.webp',
+  hamburg: '/home/hamburg.webp',
+  leipzig: '/home/leipzig.webp',
   nuremberg: '/home/nuremberg.webp',
   nurnberg: '/home/nuremberg.webp',
-  leipzig: '/home/leipzig.webp',
-  erfurt: '/home/erfurt.webp',
+  munich: '/home/munich.webp',
+  munchen: '/home/munich.webp',
+  cologne: '/home/cologne.webp',
+  koln: '/home/cologne.webp',
+  frankfurt: '/home/frankfurt.webp',
+  'frankfurt am main': '/home/frankfurt.webp',
 };
 
 function cityPhoto(city: string) {
@@ -180,12 +187,6 @@ export default async function HomePage({
                 </div>
               </div>
             ) : null}
-            <span className="tp-photo-credit">
-              {t('hero.photoCredit', {
-                author: 'Axisadman',
-                license: 'CC BY-SA 3.0',
-              })}
-            </span>
           </div>
         </section>
 

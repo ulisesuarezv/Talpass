@@ -1,16 +1,20 @@
-# Fotos de la home (provisionales)
+# Fotos de la home
 
-Todas de Wikimedia Commons. La licencia CC BY-SA obliga a atribuir al autor; la
-atribución se muestra en la propia página, junto a cada foto. Sustituir por
-fotografía propia o con licencia comercial antes de dar la home por cerrada.
+Todas de Unsplash, con la licencia de Unsplash: uso comercial gratuito y sin
+obligación de atribuir. Se recortaron, reescalaron y se les aplicó un ajuste de
+color común (contraste +6 %, saturación −12 %). Elegidas por Ulises (hero y
+persona) y Kayao (ciudades) el 24-nov-2026.
 
-| Fichero | Autor | Licencia | Original |
-| --- | --- | --- | --- |
-| hero-nave.webp | Axisadman | CC BY-SA 3.0 | https://commons.wikimedia.org/wiki/File:Modern_warehouse_with_pallet_rack_storage_system.jpg |
-| carretillero.webp | Marius140% | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Forklift_Operator_Smile.jpg |
-| nuremberg.webp | DALIBRI | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:Pegnitz_in_der_westlichen_Altstadt_von_N%C3%BCrnberg_033.jpg |
-| leipzig.webp | Phoks | CC BY-SA 3.0 | https://commons.wikimedia.org/wiki/File:Leipzig_Augustusplatz.jpg |
-| erfurt.webp | Steffen P (Stepro) | CC BY-SA 4.0 | https://commons.wikimedia.org/wiki/File:2021-09-16_Erfurt_bei_Nacht_1DX_3958_by_Stepro.jpg |
+| Fichero | Uso | Original |
+| --- | --- | --- |
+| hero-nave.webp | Fondo del hero | https://unsplash.com/photos/workers-walking-through-warehouse-aisle-c_4eaGRDSVU |
+| persona.webp | Viñeta «Firmas» de cómo funciona | https://unsplash.com/photos/man-in-vest-using-tablet-in-a-warehouse-4kjtbC-wMHs |
+| berlin.webp | Ciudad: Berlín | https://unsplash.com/photos/city-buildings-near-body-of-water-during-daytime-1uWanmgkd5g |
+| hamburg.webp | Ciudad: Hamburgo | https://unsplash.com/photos/brown-concrete-buildings-beside-river-nt1NvYrnxsg |
+| leipzig.webp | Ciudad: Leipzig | https://unsplash.com/photos/a-large-building-with-a-clock-tower-on-top-of-it-wTM38ZnMqjk |
+| nuremberg.webp | Ciudad: Núremberg | https://unsplash.com/photos/brown-brick-building-near-body-of-water-during-daytime-flzL_1JAWBc |
+| munich.webp | Ciudad: Múnich | https://unsplash.com/photos/a-view-of-a-city-from-a-high-point-of-view-WJsGUDk-x74 |
+| cologne.webp | Ciudad: Colonia | https://unsplash.com/photos/train-crossing-a-bridge-with-cathedral-in-background-at-sunset-WaxPv3S-EXM |
+| frankfurt.webp | Ciudad: Fráncfort | https://unsplash.com/photos/frankfurt-cityscape-with-skyscrapers-river-bridge-and-cloudy-sky-XTUbGv_2FdA |
 
-Las fotos se recortaron, reescalaron y se les aplicó un ajuste de color común
-(contraste +6 %, saturación −12 %): son obras derivadas bajo la misma licencia.
+Las ciudades sin foto propia usan la del hero (`cityPhoto` en la home).

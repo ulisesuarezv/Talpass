@@ -405,15 +405,6 @@
   opacity: 0.85;
   margin-top: 2px;
 }
-.tp-photo-credit {
-  position: absolute;
-  right: 20px;
-  bottom: 14px;
-  font-family: var(--tp-mono);
-  font-size: 10px;
-  letter-spacing: 0.06em;
-  color: rgba(255, 255, 255, 0.55);
-}
 
 /* ---------------- Billete ---------------- */
 .tp-ticket {
@@ -1104,7 +1095,7 @@
   margin: -4px;
 }
 .tp-v-ph {
-  background: url(/home/carretillero.webp) center 28% / cover;
+  background: url(/home/persona.webp) center 12% / cover;
   border-radius: 10px;
 }
 .tp-v-sign-tx {
