@@ -1,6 +1,6 @@
 {
   "Metadata": {
-    "title": "{brand} — Empleo en Europa para hispanohablantes",
+    "title": "{brand} — Trabajo en Alemania con alojamiento",
     "description": "Ofertas de trabajo verificadas en Alemania para candidatos hispanohablantes y lusófonos. Ver ofertas es libre y gratuito."
   },
   "Nav": {
@@ -141,7 +141,7 @@
       "link": "{sector} en {place}",
       "marketIntro": "Todavía no hay ninguna vacante publicada de {sector} en {place}. Lo que sí hay es lo que se paga en el sector, con su fuente y su fecha.",
       "marketMetaTitle": "{sector} en {place}: cuánto se paga y qué piden",
-      "marketMetaDescription": "Cuánto se paga por hora de {sector} en {place}, qué jornada y qué turnos se hacen y qué idioma piden. Datos de ofertas reales analizadas y del convenio del sector, no una promesa."
+      "marketMetaDescription": "Cuánto se paga por hora de {sector} en {place}, qué turnos se hacen y qué idioma piden. Con datos de ofertas reales y del convenio, no una promesa."
     },
     "housing": {
       "title": "Trabajo con alojamiento en {place}",

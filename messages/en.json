@@ -1,6 +1,6 @@
 {
   "Metadata": {
-    "title": "{brand} — Jobs in Europe for Spanish and Portuguese speakers",
+    "title": "{brand} — Jobs in Germany with housing",
     "description": "Verified job openings in Germany for Spanish- and Portuguese-speaking candidates. Browsing jobs is always free."
   },
   "Nav": {
@@ -141,7 +141,7 @@
       "link": "{sector} in {place}",
       "marketIntro": "There are no published openings in {sector} in {place} yet. What there is: what the sector actually pays, with its source and its date.",
       "marketMetaTitle": "{sector} in {place}: what it pays and what is required",
-      "marketMetaDescription": "What {sector} pays per hour in {place}, what hours and shifts are worked and what language is required. Based on real job ads and the sector's collective agreement, not a promise."
+      "marketMetaDescription": "What {sector} pays per hour in {place}, which shifts are worked and what language you need. Real job ads and the collective agreement, not a promise."
     },
     "housing": {
       "title": "Jobs with housing in {place}",

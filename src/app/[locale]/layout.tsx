@@ -12,20 +12,15 @@ import { routing } from '@/i18n/routing';
 import '../globals.css';
 
 /**
- * Tipografía del rediseño de Kayao (2026-11-24): Inter para el texto, Inter
- * Tight para titulares y cifras, Geist Mono para rótulos y códigos.
+ * Tipografía del rediseño de Kayao (ADR-54): Inter para el texto, Inter Tight
+ * para titulares y cifras, Geist Mono para rótulos y códigos. Sustituye a
+ * General Sans (ADR-39, retirada).
  *
- * Sustituye a General Sans en un solo corte (ADR-39). Aquel presupuesto se
- * fijó para un candidato con datos limitados; Ulises lo reabre: la audiencia
- * entra desde móviles buenos en Europa y el corte único —con negritas
- * fingidas por el navegador— era parte de lo que hacía parecer barato el
- * producto. Se sirven desde el propio dominio: no hay petición a Google.
+ * Autoalojadas y recortadas en `src/app/fonts/kayao/` (ver su README): solo
+ * los caracteres de español, alemán, portugués e inglés y solo los pesos que
+ * usa la web. Mismo dibujo que las de Google a la mitad de bytes, que es lo
+ * que compite con la foto del hero en un móvil lento. No hay petición a Google.
  */
-//
-// Se sirven recortadas (`src/app/fonts/kayao/`, ver su README): solo los
-// caracteres del español, alemán, portugués e inglés y solo los pesos que usa
-// la web. Mismo dibujo que las de Google, a la mitad de bytes, que es lo que
-// compite con la foto del hero en un móvil lento.
 const inter = localFont({
   src: '../fonts/kayao/inter.woff2',
   weight: '400 700',

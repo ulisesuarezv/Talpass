@@ -19,9 +19,9 @@ gsap.registerPlugin(useGSAP);
  * una sola vez. Es un portal de empleo que tiene que parecer serio; la
  * animación acompaña el scroll, no lo protagoniza.
  *
- * **El único gesto con intención** son las barras de la ficha de privacidad
- * (`data-redact`): se trazan de izquierda a derecha, como un rotulador que
- * tacha. Es `clip-path` `inset → inset`, así que el redondeo no se deforma.
+ * `data-redact` (barras que se trazan como un rotulador que tacha) era de la
+ * ficha de privacidad de la home anterior. La home de ADR-54 no lo usa hoy;
+ * se deja porque no cuesta nada y vuelve a servir si se marca algo con él.
  *
  * **Sin ScrollTrigger, y se midió.** Para un revelado de una sola vez, sin
  * `scrub` ni `pin`, el `IntersectionObserver` del navegador hace lo mismo y

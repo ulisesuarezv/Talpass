@@ -42,6 +42,23 @@ export function absoluteUrl(locale: Locale, href: LocalizedHref): string {
   ).toString();
 }
 
+/**
+ * La imagen que sale al compartir un enlace (WhatsApp, Facebook, Telegram).
+ * Es el canal real del candidato: sin ella el enlace llega como una línea de
+ * texto gris. Es una sola para todo el sitio y **no lleva texto**, para no
+ * tener que traducirla: foto del hero oscurecida y el logo encima.
+ *
+ * Se genera a partir de `public/home/hero-nave.webp` y del logo en blanco; si
+ * cambia la marca, se regenera (1200×630, JPEG). El `alt` es el nombre de la
+ * marca, que sale de la configuración y no depende del idioma.
+ */
+const SHARE_IMAGE = {
+  url: new URL('/brand/og.jpg', siteConfig.url).toString(),
+  width: 1200,
+  height: 630,
+  alt: siteConfig.name,
+};
+
 export function seoMetadata({
   locale,
   href,
@@ -78,11 +95,13 @@ export function seoMetadata({
       locale,
       title,
       description,
+      images: [SHARE_IMAGE],
     },
     twitter: {
       card: 'summary_large_image',
       title,
       description,
+      images: [SHARE_IMAGE],
     },
   };
 }

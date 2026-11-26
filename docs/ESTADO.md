@@ -1,6 +1,42 @@
 # Estado del proyecto — punto de retomada
 
-> ## 🧭 RETOMA AQUÍ — foto del 2026-09-27, verificada contra producción
+> ## 🧭 RETOMA AQUÍ — foto del 2026-11-25, verificada contra producción
+>
+> - **Qué sirve `talpass.eu`:** la home rediseñada por Kayao (**ADR-54**),
+>   cabecera blanca con logo vectorial y `/ofertas` con los cinco perfiles de
+>   mercado. Último código: `3489141`. Producción **no tiene vacantes
+>   publicadas**, así que el panel de la home sale como «Perfiles de mercado ·
+>   Lo que se paga en Alemania» y la sección de ciudades no aparece.
+> - **Rendimiento de la home en producción** (2026-11-25, 8 pasadas):
+>   **93 · LCP 3,0 s · CLS 0**. Antes del rediseño, 98 · 2,28 s: es el precio
+>   asumido de la foto y las tipografías (detalle en ADR-54).
+> - **Lo que la home promete y no existe todavía:** aplicar a una oferta
+>   (fase 5), la conversación con la agencia (ADR-53, fase 7) y un buscador
+>   que filtre (hoy enlaza a `/ofertas`). Ulises lo sabe y lo aceptó.
+> - **Lo que pasó entre el 27-sep y el 24-nov, y no estaba aquí:** la bolsa
+>   del portal de agencia (ADR-52) **sí se commiteó** (`ba58b1a`) y hoy está
+>   desplegada; el censo de candidatos del admin (`1636c44`); la guía
+>   `docs/ONBOARDING.md` (`91e82a0`); el logo en cabecera y pie (`7b3491c`,
+>   ya sustituido por el vectorial). ⚠️ **Sin verificar por Kayao:** que la
+>   migración `20260927110000` (recursión de `agency_members`) esté aplicada
+>   en producción; el código que la necesita ya está desplegado.
+> - **Ramas:** `main` está protegida (cambios por pull request). Los pushes del
+>   rediseño se hicieron directos a `main` con el visto bueno de Ulises, y
+>   GitHub registró el salto de la regla. `origin/design/talpass-logo-web`
+>   (Emizario10) trae otro copy para la home, otra sección de valor y otro
+>   «Cómo funciona»: **ADR-54 lo sustituye; no fusionar esa parte**.
+>   `demo/hindi` y `docs/PILOTO-HINDI-MAIL.md` (sin commitear) no son del
+>   rediseño.
+> - **Siguiente, a elegir por Ulises:** la conversación ETT ↔ candidato
+>   (ADR-53, pegar `docs/prompts/fase-7-m1.md`), o seguir el rediseño por
+>   `/ofertas` y la ficha de vacante, que conservan el diseño anterior con la
+>   cabecera nueva.
+> - **Entorno:** `pnpm db:start`, `pnpm build:local`,
+>   `pnpm start:local -p 3210`; medir con `pnpm measure <url> --runs=8`. Al
+>   acabar, `pnpm db:stop` y matar el 3210. Ojo: `next start` deja el puerto
+>   ocupado si se mata solo el `pnpm`; matar por puerto (`lsof -ti:3210`).
+>
+> ## 🗂️ Foto anterior — 2026-09-27 (histórica: si contradice al recuadro de arriba, manda el de arriba)
 >
 > - **Qué sirve `talpass.eu`:** la home rediseñada (5 `h2`, cabecera petróleo,
 >   GSAP en el scroll, pie petróleo) y `/ofertas` con los cinco perfiles.
@@ -48,8 +84,8 @@
 > - **Entorno:** `pnpm db:start`, `pnpm build:local`,
 >   `pnpm start:local -p 3210`. Al acabar, `pnpm db:stop` y matar el 3210.
 >
-> Todo lo que viene debajo es historia fechada; cuando contradiga este
-> recuadro, gana el recuadro.
+> Todo lo que viene debajo es historia fechada; cuando contradiga al
+> recuadro 🧭 de arriba, gana el 🧭.
 
 > # 📜 El fondo del proyecto (escrito en agosto; léelo después del recuadro 🧭)
 >

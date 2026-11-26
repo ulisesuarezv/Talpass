@@ -16,6 +16,7 @@ import { DeparturesBoard } from '@/components/home/departures-board';
 import { FlapText } from '@/components/home/flap-text';
 import { HomeMotion } from '@/components/home/home-motion';
 import { OfferTicket } from '@/components/home/offer-ticket';
+import { SiteJsonLd } from '@/components/seo/site-jsonld';
 import { legalLink } from '@/config/legal';
 import { siteConfig } from '@/config/site';
 import { Link } from '@/i18n/navigation';
@@ -114,6 +115,7 @@ export default async function HomePage({
 
   return (
     <div className="tp-home">
+      <SiteJsonLd locale={locale} />
       <div className="tp-container tp-hero-wrap">
         {/* ---------------- Hero ---------------- */}
         <section className="tp-hero" aria-labelledby="home-title">

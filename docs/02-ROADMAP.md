@@ -767,6 +767,11 @@ decisión de Ulises con precio medido en ADR-39.
 
 ## Rediseño R · La home y el sistema visual, por sesiones
 
+> 🔁 **Reabierto y rehecho el 2026-11-24/25 por Kayao (ADR-54).** La home de
+> abajo ya no es la que está en producción. Lo pendiente del rediseño nuevo
+> (aplicar, conversación, buscador con filtros, `/ofertas` y ficha de vacante
+> al nivel de la home) está en el recuadro 🧭 de `docs/ESTADO.md`.
+
 _Abierta el 2026-09-22 por Ulises («la landing parece un Word»). No es una fase
 del MVP con número: es la continuación de la C2 y va sesión a sesión. El estado
 vivo, con lo hecho, lo medido y lo que queda, está en el bloque 🎨 de

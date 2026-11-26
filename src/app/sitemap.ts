@@ -24,23 +24,30 @@ import { absoluteUrl, type LocalizedHref } from '@/lib/seo';
  */
 export const revalidate = 3600;
 
+/**
+ * Una entrada **por idioma**, no una por página. Cada URL va en su propio
+ * `<url>` con todas sus alternativas, ella incluida: es lo que pide Google
+ * para el `hreflang` en el sitemap. Hasta el 2026-11-25 solo entraba la
+ * versión en `es` y la inglesa aparecía únicamente como alternativa, así que
+ * Google solo la descubría rastreando.
+ */
 function entry(
   href: LocalizedHref,
   options: { priority: number; lastModified?: Date },
-): MetadataRoute.Sitemap[number] {
-  return {
-    url: absoluteUrl(defaultLocale, href),
+): MetadataRoute.Sitemap {
+  const languages = {
+    ...Object.fromEntries(
+      locales.map((locale: Locale) => [locale, absoluteUrl(locale, href)]),
+    ),
+    'x-default': absoluteUrl(defaultLocale, href),
+  };
+
+  return locales.map((locale: Locale) => ({
+    url: absoluteUrl(locale, href),
     lastModified: options.lastModified,
     priority: options.priority,
-    alternates: {
-      languages: {
-        ...Object.fromEntries(
-          locales.map((locale: Locale) => [locale, absoluteUrl(locale, href)]),
-        ),
-        'x-default': absoluteUrl(defaultLocale, href),
-      },
-    },
-  };
+    alternates: { languages },
+  }));
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -86,5 +93,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...LEGAL_DOCUMENTS.map((document) =>
       entry(legalHref(document), { priority: 0.3 }),
     ),
-  ];
+  ].flat();
 }
